@@ -35,8 +35,9 @@ public class ChatLieu {
     @Column(name = "ngay_tao")
     private Date ngayTao;
 
+    @Column(name = "ngay_sua")
     private Date ngaySua;
 
-    @Column(name = "trangthai")
+    @Column(name = "trang_thai")
     private Integer trangThai;
 }
