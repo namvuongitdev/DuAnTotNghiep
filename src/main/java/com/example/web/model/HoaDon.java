@@ -1,4 +1,5 @@
 package com.example.web.model;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -29,18 +31,18 @@ import java.util.UUID;
 public class HoaDon {
 
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
-    @Column(name = "ma" , unique = true)
+    @Column(name = "ma", unique = true)
     private String ma;
 
     @Column(name = "diaChi")
     @Nationalized
     private String diaChi;
 
-    @Column(name="hoTen")
+    @Column(name = "hoTen")
     @Nationalized
     private String hoTen;
 
@@ -55,9 +57,6 @@ public class HoaDon {
 
     @Column(name = "ngayShip")
     private Date ngayShip;
-
-    @Column(name = "ngayThanhToan")
-    private Date ngayThanhToan;
 
     @Column(name = "phiVanChuyen")
     private BigDecimal phiVanChuyen;
@@ -86,10 +85,8 @@ public class HoaDon {
     @JoinColumn(name = "idKhachHang")
     private KhachHang khachHang;
 
-    @OneToMany(mappedBy = "hoaDon")
-    private List<HoaDonHinhThucThanhToan> hoaDonHinhThucThanhToans;
-
-    @OneToMany(mappedBy = "hoaDon")
-    private List<LichSuHoaDon> lichSuHoaDons;
+    @ManyToOne
+    @JoinColumn(name = "idHinhThucThanhToan")
+    private HinhThucThanhToan hinhThucThanhToan;
 
 }

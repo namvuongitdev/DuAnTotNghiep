@@ -62,6 +62,4 @@ public class NhanVien {
     @OneToMany(mappedBy = "nhanVien")
     private List<HoaDon> hoaDons;
 
-    @OneToMany(mappedBy = "nhanVien")
-    private List<HinhThucThanhToan> hinhThucThanhToans;
 }

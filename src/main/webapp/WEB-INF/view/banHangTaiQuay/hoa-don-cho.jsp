@@ -96,11 +96,11 @@
                 <div class="container-fluid mt-5">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item ${pageNo<=1?"disabled":""}"><a class="page-link" href="/hoa-don/hien-thi-hoa-cho?page=${pageNo-1}">Previous</a></li>
+                            <li class="page-item ${pageNo<=1?"disabled":""}"><a class="page-link" href="/hoa-don/hien-thi-hoa-cho?page=${pageNo-1}"><</a></li>
                             <c:forEach begin="1" end="${hoaDons.getTotalPages()}" var="i">
                                 <li class="page-item" ><a class="page-link ${i == pageNo ? 'active ' : ''}" href="/hoa-don/hien-thi-hoa-cho?page=${i}">${i}</a></li>
                             </c:forEach>
-                          <li class="page-item ${pageNo>=hoaDons.getTotalPages()?"disabled":""}"><a class="page-link" href="/hoa-don/hien-thi-hoa-cho?page=${pageNo+1}">Next</a></li>
+                          <li class="page-item ${pageNo>=hoaDons.getTotalPages()?"disabled":""}"><a class="page-link" href="/hoa-don/hien-thi-hoa-cho?page=${pageNo+1}"> > </a></li>
                         </ul>
                     </nav>
                 </div>

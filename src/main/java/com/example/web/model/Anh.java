@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -33,15 +32,6 @@ public class Anh {
 
     @Column(name = "ten")
     private String ten;
-
-    @Column(name = "ngay_tao")
-    private Date ngayTao;
-
-    @Column(name = "trang_thai")
-    private Integer trangThai;
-
-    @Column(name = "ngay_sua")
-    private Date ngaySua;
 
     @ManyToOne
     @JoinColumn(name = "idctsp")

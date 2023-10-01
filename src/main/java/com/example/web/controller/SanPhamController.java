@@ -1,4 +1,5 @@
 package com.example.web.controller;
+
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.SanPham;
 import com.example.web.response.SanPhamFilter;
@@ -22,9 +23,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -87,18 +90,20 @@ public class SanPhamController {
         return "quanLySanPham/sanpham/san-pham";
     }
 
-    @GetMapping("/api-hien-thi/{page}")
+    @GetMapping({"/api-hien-thi"})
     @ResponseBody
-    public Page<SanPham> apiSanPham(@PathVariable Integer page, @RequestParam(required = false) String value) {
-        Pageable pageable = PageRequest.of(page - 1, 5);
-        Page listSanPham = null;
-        if (value.isEmpty()) {
-            listSanPham = iSanPhamService.findAll(pageable);
-            return listSanPham;
-        } else {
-            listSanPham = iSanPhamService.getAllByTenOrMa(value, page);
-            return listSanPham;
-        }
+    public Page<SanPham> apiSanPham(@RequestParam Integer page) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        Page listSanPham = iSanPhamService.findAll(pageable);
+        return listSanPham;
+    }
+
+    @PostMapping("/api-filter")
+    @ResponseBody
+    public Page<SanPham> filterSanPham(@RequestParam Integer page , @RequestBody SanPhamFilter filter) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        Page listSanPham = iSanPhamService.sanPhamFilter(filter ,pageable);
+        return listSanPham;
     }
 
     @GetMapping("/new")
@@ -117,7 +122,7 @@ public class SanPhamController {
         } else {
             Date date = java.util.Calendar.getInstance().getTime();
             if (!id.isEmpty()) {
-                SanPham sp  = iSanPhamService.getOne(UUID.fromString(id));
+                SanPham sp = iSanPhamService.getOne(UUID.fromString(id));
                 sanPham.setId(sp.getId());
                 iSanPhamService.save(sanPham);
             } else {

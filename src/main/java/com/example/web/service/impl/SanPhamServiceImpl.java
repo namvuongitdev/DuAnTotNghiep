@@ -12,7 +12,6 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -45,13 +44,6 @@ public class SanPhamServiceImpl implements ISanPhamService {
       }else{
           return null;
       }
-    }
-
-    @Override
-    public Page<SanPham> getAllByTenOrMa(String value  , Integer page) {
-        Pageable pageable =  PageRequest.of(page - 1 , 5);
-        Page<SanPham> sanPhams = iSanPhamRepository.getAllSanPhamByTenOrMa("%" + value + "%" , pageable);
-        return sanPhams;
     }
 
     @Override

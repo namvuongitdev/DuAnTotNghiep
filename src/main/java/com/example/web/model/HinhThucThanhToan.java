@@ -39,6 +39,9 @@ public class HinhThucThanhToan {
     @Column(name="so_tien_thanh_toan")
     private BigDecimal soTienThanhToan;
 
+    @Column(name = "tien_thua_tra_khach")
+    private BigDecimal tienThuaTraKhach;
+
     @Column(name="trang_thai")
     private Integer trangThai;
 
@@ -52,10 +55,9 @@ public class HinhThucThanhToan {
     @Column(name="loai_giao_dich")
     private Integer loaiGiaoDich;
 
-    @ManyToOne
-    @JoinColumn(name="id_nhan_vien")
-    private NhanVien nhanVien;
+    @Column(name="nguoi_tao")
+    private String nguoiTao;
 
     @OneToMany(mappedBy = "hinhThucThanhToan")
-    private List<HoaDonHinhThucThanhToan> hoaDonHinhThucThanhToans;
+    private List<HoaDon> hoaDons;
 }

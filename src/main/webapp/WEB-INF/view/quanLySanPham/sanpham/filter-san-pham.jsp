@@ -6,7 +6,7 @@
     <input type="text" class="form-control" name="search" placeholder="tìm kiến" value="${filter.search}">
 </div>
 <div class="col l-3">
-    <select name="danhMuc" class="form-select">
+    <select name="danhMuc" id="danhMuc" class="form-select">
         <option value="">Tất cả danh mục</option>
         <c:forEach items="${listDanhMuc}" var="danhMuc">
             <option value="${danhMuc.id}" ${filter.danhMuc == danhMuc.id ? 'selected' : ''}>
@@ -59,7 +59,7 @@
     </select>
 </div>
 <div class="col l-3">
-    <button class="btn btn-primary">Tìm kiếm</button>
+    <button class="btn btn-primary" id="timKiem">Tìm kiếm</button>
 </div>
 <div class="col l-3">
   <a class="btn btn-primary" href="/san-pham/hien-thi">

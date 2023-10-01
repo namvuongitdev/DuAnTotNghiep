@@ -92,7 +92,7 @@ function getCTSP(id) {
                     return;
                 } else {
                     const message = document.getElementById('message');
-                    message.remove();
+
                     themVaoGioHang.removeAttribute('disabled');
                     document.getElementById("soLuong").innerText = `số lượng sản phẩm còn ` + dataCTSP[i].soLuong
                     themVaoGioHang.name = dataCTSP[i].id;

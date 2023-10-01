@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,5 +25,8 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> {
 
     @Override
     Optional<HoaDon> findById(UUID uuid);
+
+    @Query(value = "select  sum(hdct.donGia * hdct.soLuong)  from HoaDon hd left join hd.hoaDonChiTiets hdct where hd.id = ?1 and hdct.trangThai = 0 ")
+    BigDecimal tongTien(UUID idHD);
 
 }

@@ -26,14 +26,11 @@
             <a style="float: right" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
                name="1" onclick="getSanPham(this.name)">
                 Thêm sản phẩm
-
             </a>
             <div class="container">
                 <h4>Tạo hoá đơn</h4>
                 <br>
-
                 <%--hiển thị giỏ hàng--%>
-
                 <div class="row">
                     <div class="row" style="margin-bottom: 50px">
                         <div class="col l-3" style="background-color: white">
@@ -112,7 +109,7 @@
                         </div>
                     </div>
 
-                    <div class="row" style="background-color: white">
+                    <form class="row" style="background-color: white" action="/hoa-don/thanh-toan?idHD=${hoaDon.id}" method="post" modelAtrribute="${request}">
                         <%-- thông tin thanh toán--%>
                         <div class="col l-3">
                         </div>
@@ -123,26 +120,26 @@
                                                                     value="${tongTien}"></fmt:formatNumber></span>
                             </div>
                             <div>
-                                <h5>Tổng số tiền : <fmt:formatNumber pattern="#,###"
-                                                                     value="${tongTien}"></fmt:formatNumber></h5>
+                                <h6>Khách cần trả : <fmt:formatNumber pattern="#,###"
+                                                                     value="${tongTien}"></fmt:formatNumber></h6>
                             </div>
                             <div>
                                 <h6>Hình thức thanh toán : </h6>
-
-                                <select onchange="hinhThucThanhToan(this.value)">
-                                    <option value="0">Tiền mặt</option>
-                                    <option value="1">Chuyển Khoản</option>
-                                    <option value="2">Tiền mặt & chuyển khoản</option>
+                                <select name="hinhThucThanhToan">
+                                    <option value="true">Tiền mặt</option>
+                                    <option value="false">Chuyển Khoản</option>
                                 </select>
-
                             </div>
                             <br>
                             <div id="hinhThucThanhToan">
                                 <div class="mb-3 form-floating">
-                                    <input class="form-control" type="number" style="width: 50%"
-                                           id="tienKhachDuaTienMat" onkeydown="getTienKhachDua(this.value)">
-                                    <label for="tienKhachDuaTienMat">Khách đưa tiền mặt</label>
-                                    <span id="tienThuaCuaKhach" style="color: #03AA28"></span>
+                                    <input class="form-control" type="number" style="width: 50%" name="soTienThanhToan"
+                                           id="tienKhachDua" onkeydown="getTienKhachDua({tienKhacDua:this.value , tongTien:`${tongTien}`})">
+                                    <label for="tienKhachDua">Tiền khách đưa</label>
+                                    <c:if test="${message != null}">
+                                        <span style="color: #E43535">${message}</span>
+                                    </c:if>
+                                    <span id="tienThuaCuaKhach" name="tienThuaTraKhach"  style="color: #03AA28"></span>
                                 </div>
                             </div>
 
@@ -152,13 +149,13 @@
                                 <label for="moTa">Mô Tả</label>
                             </div>
                             <div>
-                                <button class="btn btn-primary" id="xacNhanThanhToan" disabled
+                                <button class="btn btn-primary" id="xacNhanThanhToan"
                                 >Xác nhận thanh toán
                                 </button>
                             </div>
                             </br>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -196,10 +193,9 @@
                 <div class="row">
                     <div class="col l-3">
 
-                        <input type="text" name="sanPham" id="sanPham" />
-                        <button class="btn btn-primary" name="1" onclick="timKiemSanPham(this.name)"><label for="sanPham">Tìm kiếm</label></button>
-                        <button style="color: #FFFFFF" class="btn btn-warning" onclick="loadLaiSanPham()">Làm mới
-                        </button>
+                            <div class="row">
+                                <jsp:include page="../quanLySanPham/sanpham/filter-san-pham.jsp"/>
+                            </div>
 
                     </div>
                 </div>
@@ -257,7 +253,7 @@
                 <div class="row">
                     <div>
                         <label for="soLuongTon">Số lượng :</label>
-                        <input type="number" value="1" min="1" id="soLuongTon" name="soLuongTon" style="width: 20%"
+                        <input type="number" value="1" min="1" id="soLuongTon" name="${hoaDon.id}" style="width: 20%"
                                aria-describedby="sl" />
                         <div id="soLuong" class="form-text">
                         </div>
@@ -289,31 +285,4 @@
 <script src="/js/banHangTaiQuay/sanPham.js"></script>
 <script src="/js/banHangTaiQuay/chiTietSanPham.js"></script>
 <script src="/js/banHangTaiQuay/thanhToan.js"></script>
-<script>
-    function addKhachHang(khachHangs) {
-        document.getElementById('khachHang').innerHTML = `<table>
-                        <thead>
-                        <tr>
-                            <th scope="col">Tài khoản</th>
-                            <th scope="col">Tên khách hàng</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Ngày tạo</th>
-                            <th scope="col">Thao tác</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${khachHangs}" var="khachHang" >
-                           <tr>
-                               <td>${khachHang.taiKhoan}</td>
-                               <td>${khachHang.hoTen}</td>
-                               <td>${khachHang.email}</td>
-                               <td>${khachHang.ngayTao}</td>
-                           <td> <button type="button" class="btn btn-outline-warning" onclick="getThongTin(this.name)" name="${khachHang.id}" data-bs-dismiss="modal">Chọn</button>
-                                   </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>`
-
-    }
-</script>
 </html>

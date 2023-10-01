@@ -1,20 +1,7 @@
-function timKiemSanPham(page) {
-    getSanPham(page);
-}
-
-function loadLaiSanPham() {
-    const page = "1";
-    document.getElementById("sanPham").value = "";
-    getSanPham(page);
-}
 
 function getSanPham(page) {
-    const value = document.getElementById("sanPham").value;
-    let url = '/san-pham/api-hien-thi/' + page + "?value=" + value;
-    if (value == null) {
-        url = '/san-pham/api-hien-thi/' + page;
-    }
-    fetch(url)
+
+    fetch('/san-pham/api-hien-thi?page=' + page)
         .then(response => response.json())
         .then(data => {
             let pageNo = page <= 1 ? "disabled" : "";
@@ -42,9 +29,9 @@ function getSanPham(page) {
 
             document.getElementById("body").innerHTML = sanPham;
             document.getElementById("phanTrang").innerHTML = `<li class="page-item  ` + pageNo + `">
-                                <a class="page-link" name="` + (Number.parseInt(page) - Number.parseInt(1)) + `" onclick="previous(this.name)">Previous</a>
+                                <a class="page-link" name="` + (Number.parseInt(page) - Number.parseInt(1)) + `" onclick="previous(this.name)"><</a>
                             </li>` + phanTrang + ` <li class="page-item ` + pageSize + `">
-                          <a class="page-link" name="` + (Number.parseInt(page) + Number.parseInt(1)) + `" onclick="next(this.name)" >Next</a></li>`;
+                          <a class="page-link" name="` + (Number.parseInt(page) + Number.parseInt(1)) + `" onclick="next(this.name)" > > </a></li>`;
         });
 }
 
