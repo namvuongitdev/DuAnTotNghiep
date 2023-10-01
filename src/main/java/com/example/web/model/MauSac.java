@@ -1,10 +1,11 @@
 package com.example.web.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.UUID;
 
 @Getter
@@ -22,6 +23,7 @@ public class MauSac {
     @Column(name = "id")
     private UUID id;
 
+    @NotBlank(message = "Không được để trống")
     @Column(name = "ten")
     @Nationalized
     private String ten;

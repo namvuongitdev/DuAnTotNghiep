@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 </head>
 <body>
@@ -20,83 +21,139 @@
     <div class="row flex-nowrap">
         <jsp:include page="../../sidebar/sidebar.jsp"/>
         <div class="col py-3">
-            <%--            code giao diện size --%>
-            <div class="container">
-                <nav class="navbar navbar-light" style="height:30px">
-                    <div class="container-fluid">
-                        <a class="navbar-brand" href="#"><font color="black">Danh Sách</font></a>
-                    </div>
+            <div class="pagetitle">
+                <h3>Kích cỡ</h3>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
+                        <li class="breadcrumb-item ">Quản lý sản phẩm</li>
+                        <li class="breadcrumb-item active">Kích cỡ</li>
+                    </ol>
                 </nav>
-                <hr>
-                <div style="margin-left: 460px"><font color="#696969"><h5>THÊM SIZE</h5></font></div>
-                <%--@elvariable id="size" type=""--%>
-                <form:form method="post" action="/size/add" modelAttribute="size">
-                    Tên size :<form:input path="ten" class="form-control" type="text"/><br>
-                    Trạng thái : <form:radiobutton path="trangThai" value="1" checked="checked"/> Kích Hoạt<br>
-                    <form:radiobutton  style="margin-left: 83px" path="trangThai" value="0"/> Ngừng Kích Hoạt<br>
-                    <form:button type="submit" class="btn btn-info text-white" style="margin-left: 900px;border-top-left-radius: 20px;
-                                    border-bottom-left-radius: 20px;
-                                    border-bottom-right-radius: 20px;
-                                    border-top-right-radius: 20px;background: #29B5D4;text-decoration-color: #FFFFFF"
-                                 onclick="alert('Thêm thành công!')
-                                                ">
-                        Xác
-                        Nhận
-                    </form:button>
-                </form:form>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">STT</th>
-                        <th scope="col">Tên size</th>
-                        <th scope="col">Trạng thái</th>
-                        <th scope="col">Thao tác</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${lst}" var="size" varStatus="i">
-                        <tr>
-                            <th scope="row">${i.index+1}</th>
-                            <td>${size.ten}</td>
-                            <td>${size.trangThai==1?"Kích hoạt":"Ngừng kích hoạt"}</td>
-                            <td>
-                                <button type="button" class="btn btn-info"
-                                        style="border-top-left-radius: 20px;
-                                        border-bottom-left-radius: 20px;
-                                        border-bottom-right-radius: 20px;
-                                        border-top-right-radius: 20px;background: #03AA28" ><a class="text-white" style="text-decoration: none" href="/size/view-update/${size.id}">Update</a>
+            </div><!-- End Page Title -->
+            <section class="section">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Sửa dữ liệu</h5>
 
-                                </button>
-                                <button type="button" class="btn btn-info text-white"
-                                        style="margin-left: 10px;border-top-left-radius: 20px;
-                                        border-bottom-left-radius: 20px;
-                                        border-bottom-right-radius: 20px;
-                                        border-top-right-radius: 20px;background: #E43535"
-                                        onclick="if(confirm('Bạn có chắc chắn muốn xoá không?')){window.location.href = '/size/delete/${size.id}';}
-                                                else{alert('Dữ liệu không được xoá!')}">Remove
+                        <!-- Floating Labels Form -->
+                        <%--@elvariable id="size" type=""--%>
+                        <form:form method="post" action="/size/update/${size.id}" modelAttribute="size" class="row g-3">
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Kích cỡ" readonly="true"/>
+                                    <form:label for="floatingName" path="ten">Kích cỡ</form:label>
+                                    <span style="color: red">${erro}</span>
 
-                                </button>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-                <%--                phân trang --%>
-                <div class="container-fluid mt-5">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item ${currentPage<=0?"disabled":""}"><a class="page-link" href="/size/hien-thi/${currentPage-1}">Previous</a></li>
-                            <c:forEach begin="1" end="${totalsPage}" var="i">
-                                <li class="page-item"><a class="page-link" href="/size/hien-thi/${i-1}">${i}</a></li>
-                            </c:forEach>
-                            <li class="page-item ${currentPage>=totalsPage-1?"disabled":""}"><a class="page-link" href="/size/hien-thi/${currentPage+1}">Next</a></li>
-                        </ul>
-                    </nav>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <form:button disabled="true" id="disabled" type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn sửa không?')==true){ }else{ alert('Sửa thất bại');return false; }">
+                                    Xác nhận
+                                </form:button>
+                            </div>
+                        </form:form><!-- End floating Labels Form -->
+                    </div>
                 </div>
-            </div>
+                <br><br>
+                <%--            Table--%>
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-body row">
+                                <h5 class="card-title col-9">Danh sách</h5>
+                                <div class="col-2 card-title" style="margin-left: 72px;">
+                                    <button type="button" class="btn btn-primary" title="Thêm dữ liệu" data-bs-toggle="modal" data-bs-target="#modalDialogScrollable">
+                                        <i class="bi bi-plus-circle"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Table with stripped rows -->
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Kích cỡ</th>
+                                        <th scope="col">Ngày tạo</th>
+                                        <th scope="col">Ngày sửa</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Thao tác</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach items="${list}" var="list" varStatus="i">
+                                        <tr>
+                                            <th scope="row">${i.index+1}</th>
+                                            <td>${list.ten}</td>
+                                            <td>${list.ngayTao}</td>
+                                            <td>${list.ngaySua}</td>
+                                            <td>${list.trangThai==0?"Ngừng kích hoạt":"Kích hoạt"}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-success" title="Sửa dữ liệu" onclick="myFunction()">
+                                                    <a class="text-white" style="text-decoration: none" href="/size/view-update/${list.id}"><i class="bi bi-pencil"></i></a>
+                                                </button>
+                                                <button type="button" class="btn btn-danger" title="Ngừng kích hoạt" onclick="if(confirm('Bạn có chắc chắn muốn ngừng kích hoạt không?')){window.location.href = '/size/stop/${list.id}';}
+                                                        else{alert('Ngừng kích hoạt thất bại!')}"><i class="bi bi-sign-stop"></i>
+                                                </button>
+
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                                <!-- End Table with stripped rows -->
+                                <%--                phân trang --%>
+                                <div class="container-fluid mt-5">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item ${currentPage<=0?"disabled":""}"><a class="page-link" href="/size/hien-thi/${currentPage-1}"><</a></li>
+                                            <c:forEach begin="1" end="${totalPage}" var="i">
+                                                <li class="page-item"><a class="page-link" href="/size/hien-thi/${i-1}">${i}</a></li>
+                                            </c:forEach>
+                                            <li class="page-item ${currentPage>=totalPage-1?"disabled":""}"><a class="page-link" href="/size/hien-thi/${currentPage+1}">></a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <div class="modal fade" id="modalDialogScrollable" tabindex="-1">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Thêm dữ liệu</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form:form method="post" action="/size/add" modelAttribute="size" class="row g-3">
+                            <div class="modal-body">
+                                <div class="form-floating">
+                                    <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Kích cỡ"/>
+                                    <form:label for="floatingName" path="ten">Kích cỡ</form:label>
+                                    <form:errors path="ten" cssStyle="color: red"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Sửa thất bại');return false; }">
+                                    Xác nhận
+                                </form:button>
+                            </div>
+                        </form:form><!-- End floating Labels Form -->
+                    </div>
+                </div>
+            </div><!-- End Modal Dialog Scrollable-->
         </div>
     </div>
 </div>
-
+<script>
+    function myFunction() {
+        document.getElementById("floatingName").readOnly = false;
+        document.getElementById("disabled").disabled = false
+    }
+</script>
 </body>
 </html>

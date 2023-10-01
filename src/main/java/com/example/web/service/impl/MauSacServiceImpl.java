@@ -1,10 +1,10 @@
 package com.example.web.service.impl;
-
 import com.example.web.model.MauSac;
 import com.example.web.repository.IMauSacRepository;
 import com.example.web.service.IMauSacService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -13,35 +13,37 @@ import java.util.UUID;
 
 @Service
 public class MauSacServiceImpl implements IMauSacService {
-
-
     @Autowired
-    IMauSacRepository mauSacRepository;
-
-    @Override
-    public Page<MauSac> findAll(Pageable pageable) {
-        return mauSacRepository.findAll(pageable);
-    }
-
-    @Override
-    public void deleteById(UUID id) {
-        mauSacRepository.delele(id);
-    }
-
-    @Override
-    public MauSac save(MauSac mauSac) {
-        return mauSacRepository.save(mauSac);
-    }
-
-    @Override
-    public MauSac getOne(UUID id) {
-        return mauSacRepository.getOne(id);
-    }
+    private IMauSacRepository mauSacRepository;
 
     @Override
     public List<MauSac> getAll() {
         return mauSacRepository.findAll();
     }
 
+    @Override
+    public MauSac getOne(String id) {
+        return mauSacRepository.getReferenceById(UUID.fromString(id));
+    }
 
+    @Override
+    public void add(MauSac mauSac) {
+        mauSacRepository.save(mauSac);
+    }
+
+    @Override
+    public void update(MauSac mauSac) {
+        mauSacRepository.save(mauSac);
+    }
+
+    @Override
+    public void delete(String id) {
+        mauSacRepository.deleteById(UUID.fromString(id));
+    }
+
+    @Override
+    public Page<MauSac> page(Integer pageNo, Integer size) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+        return mauSacRepository.findAll(pageable);
+    }
 }
