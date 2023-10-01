@@ -1,61 +1,103 @@
 package com.example.web.controller;
-
 import com.example.web.model.MauSac;
-import com.example.web.model.Size;
 import com.example.web.service.IMauSacService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("mausac")
+@RequestMapping("/mau-sac")
 public class MauSacController {
     @Autowired
-    IMauSacService iMauSacService;
-    Page<MauSac> list;
+    private IMauSacService iMauSacService;
 
-    @GetMapping("/hienthi")
-    String getSideBar(@RequestParam(defaultValue = "1") int page, Model model) {
-        if (page < 1) page = 1;
-        Pageable pageable = PageRequest.of(page - 1, 5);
-        list = iMauSacService.findAll(pageable);
-        model.addAttribute("list", list);
-        model.addAttribute("pageNo", page);
-        model.addAttribute("page", page != 1 ? page * 5 - 4 : page);
+    @GetMapping("/hien-thi")
+    public String hienThi(Model model, @RequestParam(value = "p", defaultValue = "0") Integer pageNo){
+
+        model.addAttribute("mauSac", new MauSac());
+        model.addAttribute("list", iMauSacService.page(pageNo, 5).getContent());
+        model.addAttribute("totalPage", iMauSacService.page(pageNo, 5).getTotalPages());
+        model.addAttribute("currentPage", pageNo);
         return "quanLySanPham/qlimausac/mausac";
     }
 
-    @GetMapping("/delete/{id}")
-    String delete(@PathVariable(name = "id") String id) {
-        iMauSacService.deleteById(UUID.fromString(id));
-        return "redirect:/mausac/hienthi";
+    @GetMapping("/view-update/{id}")
+    public String viewUpdate(@PathVariable("id") String id, Model model, @ModelAttribute("mauSac") MauSac mauSac,
+                             @RequestParam(value = "p", defaultValue = "0") Integer pageNo){
+        mauSac = iMauSacService.getOne(id);
+        model.addAttribute("mauSac", mauSac);
+        model.addAttribute("list", iMauSacService.page(pageNo, 5).getContent());
+        model.addAttribute("totalPage", iMauSacService.page(pageNo, 5).getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+        return "quanLySanPham/qlimausac/mausac";
+    }
+
+    @GetMapping("/stop/{id}")
+    public String delete(@PathVariable("id") String id){
+        MauSac ms = iMauSacService.getOne(id);
+        ms.setTrangThai(0);
+        ms.setNgaySua(Date.valueOf(LocalDate.now()));
+        iMauSacService.update(ms);
+        return "redirect:/mau-sac/hien-thi";
+    }
+
+    @GetMapping("/hien-thi/{p}")
+    public String page(@PathVariable("p") Integer p, Model model){
+        model.addAttribute("mauSac", new MauSac());
+        model.addAttribute("list", iMauSacService.page(p, 5).getContent());
+        model.addAttribute("totalPage", iMauSacService.page(p, 5).getTotalPages());
+        model.addAttribute("currentPage", p);
+        return "quanLySanPham/qlimausac/mausac";
     }
 
     @PostMapping("/add")
-    String add(@RequestParam(name = "ten") String ten,
-               @RequestParam(name = "trangthai") String trangthai, Model model) {
-        MauSac mauSac = new MauSac(ten, Integer.parseInt(trangthai));
-        MauSac mauSac1 = iMauSacService.save(mauSac);
-        //hiển thị
-        return "redirect:/mausac/hienthi";
+    public String add(@Valid @ModelAttribute("mauSac") MauSac mauSac, BindingResult result,
+                      @RequestParam(value = "p", defaultValue = "0") Integer pageNo, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("list", iMauSacService.page(pageNo, 5).getContent());
+            model.addAttribute("totalPage", iMauSacService.page(pageNo, 5).getTotalPages());
+            model.addAttribute("currentPage", pageNo);
+            return "quanLySanPham/qlimausac/mausac";
+        }else{
+            UUID uuid = UUID.randomUUID();
+            mauSac.setId(uuid);
+            mauSac.setTrangThai(1);
+            mauSac.setNgayTao(Date.valueOf(LocalDate.now()));
+            iMauSacService.add(mauSac);
+            return "redirect:/mau-sac/hien-thi";
+        }
     }
 
-    @PostMapping("/update")
-    String update(@RequestParam(name = "id") String id,
-                  @RequestParam(name = "ten") String ten,
-                  @RequestParam(name = "trangthai") String trangthai
-    ) {
-        MauSac mauSac = iMauSacService.getOne(UUID.fromString(id));
-        mauSac.setTen(ten);
-        mauSac.setTrangThai(Integer.parseInt(trangthai));
-        MauSac mauSac1 = iMauSacService.save(mauSac);
-
-        return "redirect:/mausac/hienthi";
+    @PostMapping("/update/{id}")
+    public String update(@RequestParam(name = "ten") String ten,
+                         @PathVariable("id") String id,@Valid @ModelAttribute("mauSac") MauSac mauSac, BindingResult result,
+                         @RequestParam(value = "p", defaultValue = "0") Integer pageNo, Model model){
+        if(ten.equals("")){
+            model.addAttribute("erro", "Không được để trống");
+            model.addAttribute("list", iMauSacService.page(pageNo, 5).getContent());
+            model.addAttribute("totalPage", iMauSacService.page(pageNo, 5).getTotalPages());
+            model.addAttribute("currentPage", pageNo);
+            return "quanLySanPham/qlimausac/mausac";
+        }else{
+            MauSac ms = iMauSacService.getOne(id);
+            mauSac.setId(UUID.fromString(id));
+            mauSac.setNgayTao(ms.getNgayTao());
+            mauSac.setTrangThai(ms.getTrangThai());
+            mauSac.setNgaySua(Date.valueOf(LocalDate.now()));
+            iMauSacService.update(mauSac);
+            return "redirect:/mau-sac/hien-thi";
+        }
     }
 }

@@ -5,6 +5,7 @@ import com.example.web.repository.IFormDangRepository;
 import com.example.web.service.IFormDangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -14,30 +15,36 @@ import java.util.UUID;
 @Service
 public class FormDangServiceImpl implements IFormDangService {
     @Autowired
-    IFormDangRepository iFormDangRepository;
+    private IFormDangRepository repository;
 
     @Override
-    public Page<KieuDang> findAll(Pageable pageable) {
-        return iFormDangRepository.findAll(pageable);
-    }
-
-    @Override
-    public void deleteById(UUID id) {
-        iFormDangRepository.delele(id);
-    }
-
-    @Override
-    public KieuDang save(KieuDang form) {
-        return iFormDangRepository.save(form);
+    public List<KieuDang> getAll() {
+        return repository.findAll();
     }
 
     @Override
     public KieuDang getOne(UUID id) {
-        return iFormDangRepository.getOne(id);
+        return repository.getReferenceById(id);
     }
 
     @Override
-    public List<KieuDang> getAll() {
-        return iFormDangRepository.findAll();
+    public void add(KieuDang kieuDang) {
+        repository.save(kieuDang);
+    }
+
+    @Override
+    public void update(KieuDang kieuDang) {
+        repository.save(kieuDang);
+    }
+
+    @Override
+    public void delete(UUID id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public Page<KieuDang> page(Integer pageNo, Integer size) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+        return repository.findAll(pageable);
     }
 }

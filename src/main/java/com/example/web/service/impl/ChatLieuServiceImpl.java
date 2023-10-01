@@ -16,36 +16,36 @@ import java.util.UUID;
 public class ChatLieuServiceImpl implements IChatLieuService {
 
     @Autowired
-    private IChatLieuRepository chatLieuRepository;
+    private IChatLieuRepository repository;
 
     @Override
-    public Page<ChatLieu> findAll(Integer page, Integer pageSize) {
-        Pageable pageable = PageRequest.of(page - 1, pageSize);
-        Page<ChatLieu> chatLieus = chatLieuRepository.findAll(pageable);
-        return chatLieus;
-    }
-
-    @Override
-    public void saveChatLieu(ChatLieu chatLieu) {
-          chatLieuRepository.save(chatLieu);
-    }
-
-    @Override
-    public ChatLieu getChatLieu(UUID id) {
-      Optional<ChatLieu> chatLieu =  chatLieuRepository.findById(id);
-      if(chatLieu.isPresent()){
-          return chatLieu.get();
-      }
-        return null;
+    public List<ChatLieu> getAll() {
+        return repository.findAll();
     }
 
     @Override
     public ChatLieu getOne(UUID id) {
-        return chatLieuRepository.getOne(id);
+        return repository.getReferenceById(id);
     }
 
     @Override
-    public List<ChatLieu> getAll() {
-        return chatLieuRepository.findAll();
+    public void add(ChatLieu chatLieu) {
+        repository.save(chatLieu);
+    }
+
+    @Override
+    public void update(ChatLieu chatLieu) {
+        repository.save(chatLieu);
+    }
+
+    @Override
+    public void delete(UUID id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public Page<ChatLieu> page(Integer pageNo, Integer size) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+        return repository.findAll(pageable);
     }
 }

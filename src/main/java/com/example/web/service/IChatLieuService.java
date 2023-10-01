@@ -7,13 +7,15 @@ import java.util.UUID;
 
 public interface IChatLieuService {
 
-    Page<ChatLieu> findAll(Integer page , Integer pageSize);
-
-    void saveChatLieu(ChatLieu chatLieu);
-
-    ChatLieu getChatLieu(UUID id);
+    List<ChatLieu> getAll();
 
     ChatLieu getOne(UUID id);
 
-    List<ChatLieu> getAll();
+    void add(ChatLieu chatLieu);
+
+    void update(ChatLieu chatLieu);
+
+    void delete(UUID id);
+
+    Page<ChatLieu> page(Integer pageNo, Integer size);
 }

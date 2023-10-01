@@ -8,13 +8,15 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IFormDangService {
-    Page<KieuDang> findAll(Pageable pageable);
-
-    void deleteById(UUID id);
-
-    KieuDang save(KieuDang form);
+    List<KieuDang> getAll();
 
     KieuDang getOne(UUID id);
 
-    List<KieuDang> getAll();
+    void add(KieuDang kieuDang);
+
+    void update(KieuDang kieuDang);
+
+    void delete(UUID id);
+
+    Page<KieuDang> page(Integer pageNo, Integer size);
 }

@@ -7,14 +7,15 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IMauSacService {
-
-    Page<MauSac> findAll(Pageable pageable);
-
-    void deleteById(UUID id);
-
-    MauSac save(MauSac mauSac);
-
-    MauSac getOne(UUID id);
-
     List<MauSac> getAll();
+
+    MauSac getOne(String id);
+
+    void add(MauSac mauSac);
+
+    void update(MauSac mauSac);
+
+    void delete(String id);
+
+    Page<MauSac> page(Integer pageNo, Integer size);
 }
