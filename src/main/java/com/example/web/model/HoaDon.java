@@ -75,6 +75,12 @@ public class HoaDon {
     @Column(name = "loaiHoaDon")
     private Boolean loaiHoaDon;
 
+<<<<<<< Updated upstream
+=======
+//    @Column(name = "phuongThucThanhToan")
+//    private Boolean phuongThucThanhToan;
+
+>>>>>>> Stashed changes
     @OneToMany(mappedBy = "hoaDon")
     private List<HoaDonChiTiet> hoaDonChiTiets;
 
