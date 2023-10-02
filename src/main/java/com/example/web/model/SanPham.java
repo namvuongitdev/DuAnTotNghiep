@@ -49,7 +49,6 @@ public class SanPham {
     private Integer trangThai;
 
     @Column(name = "ngaytao")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ngayTao;
 
     @Column(name = "gianhap")

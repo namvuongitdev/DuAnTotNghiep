@@ -58,6 +58,9 @@ public class HoaDon {
     @Column(name = "ngayShip")
     private Date ngayShip;
 
+    @Column(name = "ngay_thanh_toan")
+    private Date ngayThanhToan;
+
     @Column(name = "phiVanChuyen")
     private BigDecimal phiVanChuyen;
 
@@ -74,6 +77,9 @@ public class HoaDon {
     @Column(name = "loaiHoaDon")
     private Boolean loaiHoaDon;
 
+    @Column(name = "phuongThucThanhToan")
+    private Boolean phuongThucThanhToan;
+
     @OneToMany(mappedBy = "hoaDon")
     private List<HoaDonChiTiet> hoaDonChiTiets;
 
@@ -84,9 +90,5 @@ public class HoaDon {
     @ManyToOne
     @JoinColumn(name = "idKhachHang")
     private KhachHang khachHang;
-
-    @ManyToOne
-    @JoinColumn(name = "idHinhThucThanhToan")
-    private HinhThucThanhToan hinhThucThanhToan;
 
 }

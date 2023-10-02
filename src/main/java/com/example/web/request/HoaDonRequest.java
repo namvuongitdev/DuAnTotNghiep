@@ -14,7 +14,6 @@ public class HoaDonRequest {
     private String hoaDon;
     private BigDecimal soTienThanhToan;
     private Boolean hinhThucThanhToan;
-    private BigDecimal tienThuaTraKhach;
     private String moTa;
 
 }

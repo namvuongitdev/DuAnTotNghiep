@@ -1,6 +1,7 @@
 package com.example.web.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Table(name = "gio_hang_chi_tiet")
@@ -24,11 +26,14 @@ import java.math.BigDecimal;
 public class GioHangChiTiet {
 
     @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "UUID")
+    private UUID id;
+
     @ManyToOne
     @JoinColumn(name = "idGioHang")
     private GioHang gioHang;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "idCTSP")
     private ChiTietSanPham chiTietSanPham;
@@ -39,7 +44,7 @@ public class GioHangChiTiet {
     @Column(name = "donGia")
     private BigDecimal donGia;
 
-    @Column(name = "donGiaKHiGiam")
+    @Column(name = "donGiaKhiGiam")
     private BigDecimal donGiaKhiGiam;
 
 }

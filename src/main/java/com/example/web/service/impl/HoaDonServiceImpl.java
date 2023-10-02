@@ -1,11 +1,7 @@
 package com.example.web.service.impl;
-
-import com.example.web.model.ChiTietSanPham;
-import com.example.web.model.HinhThucThanhToan;
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
 import com.example.web.model.TrangThaiHoaDon;
-import com.example.web.repository.IHinhThucThanhToanRepository;
 import com.example.web.repository.IHoaDonRepository;
 import com.example.web.repository.IKhachHangRepository;
 import com.example.web.request.HoaDonRequest;
@@ -17,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -33,10 +28,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
     @Autowired
     private IKhachHangRepository khachHangRepository;
-
-    @Autowired
-    private IHinhThucThanhToanRepository hinhThucThanhToanRepository;
-
 
     @Override
     public String addHoaDon() {
@@ -109,22 +100,13 @@ public class HoaDonServiceImpl implements IHoaDonService {
         } else {
             if (hoaDon.isPresent()) {
                 Date date = java.util.Calendar.getInstance().getTime();
-                HinhThucThanhToan httt = HinhThucThanhToan.builder()
-                        .date(date)
-                        .soTienThanhToan(request.getSoTienThanhToan())
-                        .tienThuaTraKhach(request.getTienThuaTraKhach())
-                        .trangThai(1)
-                        .loaiHinhThanhToan(request.getHinhThucThanhToan())
-                        .loaiGiaoDich(1)
-                        .build();
-
                 HoaDon hd = hoaDon.get();
                 hd.setMoTa(request.getMoTa());
                 hd.setLoaiHoaDon(true);
                 hd.setTrangThai(TrangThaiHoaDon.DA_HOAN_THANH.getValue());
                 hd.setTongTien(tongTienHoaDon);
-                hd.setHinhThucThanhToan(hinhThucThanhToanRepository.save(httt));
-
+                hd.setNgayThanhToan(date);
+                hd.setPhuongThucThanhToan(request.getHinhThucThanhToan());
                 hoaDonRepository.save(hd);
                 return "redirect:/hoa-don/hien-thi-hoa-cho";
             } else {
