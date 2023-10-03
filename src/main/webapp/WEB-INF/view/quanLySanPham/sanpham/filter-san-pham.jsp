@@ -3,7 +3,7 @@
          pageEncoding="UTF-8" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 <div class="col l-3">
-    <input type="text" class="form-control" name="search" placeholder="tìm kiến" value="${filter.search}">
+    <input type="text" class="form-control" name="search" placeholder="tìm kiếm" value="${filter.search}">
 </div>
 <div class="col l-3">
     <select name="danhMuc" id="danhMuc" class="form-select">

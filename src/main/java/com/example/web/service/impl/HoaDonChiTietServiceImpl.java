@@ -101,4 +101,9 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
             return null;
         }
     }
+
+    @Override
+    public HoaDonChiTiet getOne(String id) {
+        return hoaDonChiTietRepository.getReferenceById(UUID.fromString(id));
+    }
 }

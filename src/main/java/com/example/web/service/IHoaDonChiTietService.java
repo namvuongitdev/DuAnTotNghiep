@@ -10,4 +10,7 @@ public interface IHoaDonChiTietService {
     HoaDonChiTiet getHoaDonChiTiet(String id);
 
     String updateHoaDonChiTiet(String idHDCT , String soLuong);
+
+    HoaDonChiTiet getOne(String id);
+
 }

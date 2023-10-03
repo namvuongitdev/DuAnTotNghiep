@@ -77,9 +77,18 @@ public class HoaDon {
     @Column(name = "loaiHoaDon")
     private Boolean loaiHoaDon;
 
+<<<<<<< HEAD
     @Column(name = "phuongThucThanhToan")
     private Boolean phuongThucThanhToan;
 
+=======
+<<<<<<< Updated upstream
+=======
+//    @Column(name = "phuongThucThanhToan")
+//    private Boolean phuongThucThanhToan;
+
+>>>>>>> Stashed changes
+>>>>>>> origin/tien
     @OneToMany(mappedBy = "hoaDon")
     private List<HoaDonChiTiet> hoaDonChiTiets;
 
