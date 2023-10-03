@@ -9,6 +9,7 @@ import com.example.web.service.IFormDangService;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
 import com.example.web.service.IMauSacService;
+import com.example.web.service.ISanPhamService;
 import com.example.web.service.SizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,6 +46,9 @@ public class HoDonController {
     @Autowired
     private DanhMucService danhMucService;
 
+    @Autowired
+    private ISanPhamService sanPhamService;
+
     @GetMapping("/hien-thi-hoa-cho")
     public String hoaDon(Model model, @RequestParam(defaultValue = "1") Integer page) {
         if (page < 1) page = 1;
@@ -63,7 +67,7 @@ public class HoDonController {
     }
 
     @GetMapping(value = "/detail")
-    public String getHoaDon(Model model, @RequestParam("idHD") String id) {
+    public String getHoaDon(Model model, @RequestParam("idHD") String id , @RequestParam(defaultValue = "1") Integer page) {
         model.addAttribute("filter" , new SanPhamFilter());
         model.addAttribute("listChatLieu", iChatLieuService.getAll());
         model.addAttribute("listFromDang", iFormDangService.getAll());

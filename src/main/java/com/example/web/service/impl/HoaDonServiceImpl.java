@@ -7,8 +7,10 @@ import com.example.web.repository.IKhachHangRepository;
 import com.example.web.request.HoaDonRequest;
 import com.example.web.response.HoaDonReponse;
 import com.example.web.service.IHoaDonService;
+import com.example.web.service.ISanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -57,7 +59,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
         if (hoaDon.isPresent()) {
             List<HoaDonReponse> sanPhams = hoaDonRepository.getSanPhamHD(UUID.fromString(id), 0);
             model.addAttribute("khachHangs", khachHangRepository.findAll());
-            model.addAttribute("sanPhams", sanPhams);
+            model.addAttribute("sanPhamGioHang", sanPhams);
             BigDecimal tongTien = hoaDonRepository.tongTien(hoaDon.get().getId());
             model.addAttribute("tongTien", tongTien);
             model.addAttribute("hoaDon", hoaDon.get());

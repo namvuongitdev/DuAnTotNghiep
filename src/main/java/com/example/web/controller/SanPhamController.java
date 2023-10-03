@@ -63,7 +63,7 @@ public class SanPhamController {
 
     @GetMapping(value = "/hien-thi")
     public String hienThi(Model model, @RequestParam(defaultValue = "1") Integer page) {
-        Pageable pageable = PageRequest.of(page - 1, 5);
+        Pageable pageable = PageRequest.of(page - 1, 10);
         sanPhamPage = iSanPhamService.findAll(pageable);
         model.addAttribute("listSanPham", sanPhamPage);
         model.addAttribute("listChatLieu", iChatLieuService.getAll());
@@ -78,7 +78,7 @@ public class SanPhamController {
     public String filterSanPham(@RequestParam(defaultValue = "1") Integer page,
                                 @ModelAttribute("filterSanPham") SanPhamFilter filter,
                                 Model model) {
-        Pageable pageable = PageRequest.of(page - 1, 5);
+        Pageable pageable = PageRequest.of(page - 1, 10);
         sanPhamPage = iSanPhamService.sanPhamFilter(filter, pageable);
         String url = "/san-pham/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
         model.addAttribute("filter", filter);

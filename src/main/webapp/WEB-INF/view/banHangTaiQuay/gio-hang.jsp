@@ -65,7 +65,7 @@
                                                 soLuongHDCT:`${sanPham.soLuong}`,
                                                 soLuongCTSP:`${sanPham.soLuongSanPham}`}
                                                 )" type="number"
-                                                 name="soLuong"  value="${sanPham.soLuong}" min="1"
+                                                   name="soLuong"  value="${sanPham.soLuong}" min="1"
                                                    style="width: 25%" />
                                         </td>
                                         <td id="thanhTien"><fmt:formatNumber pattern="#,###"
@@ -121,7 +121,7 @@
                             </div>
                             <div>
                                 <h6>Khách cần trả : <fmt:formatNumber pattern="#,###"
-                                                                     value="${tongTien}"></fmt:formatNumber></h6>
+                                                                      value="${tongTien}"></fmt:formatNumber></h6>
                             </div>
                             <div>
                                 <h6>Hình thức thanh toán : </h6>
@@ -193,9 +193,23 @@
                 <div class="row">
                     <div class="col l-3">
 
-                            <div class="row">
-                                <jsp:include page="../quanLySanPham/sanpham/filter-san-pham.jsp"/>
-                            </div>
+                        <select name="danhMuc" id="danhMuc" class="form-select" onchange="filterDanhMuc(this.value)">
+                            <option value="">Tất cả danh mục</option>
+                            <c:forEach items="${listDanhMuc}" var="danhMuc">
+                                <option value="${danhMuc.id}" ${filter.danhMuc == danhMuc.id ? 'selected' : ''}>
+                                        ${danhMuc.ten}
+                                </option>
+                            </c:forEach>
+                        </select>
+
+                        <select name="chatLieu" id="chatLieu" class="form-select" onchange="filterChatLieu(id: this.value)">
+                            <option value="">Tất cả chất liệu</option>
+                            <c:forEach items="${listChatLieu}" var="chatLieu">
+                                <option value="${chatLieu.id}" ${filter.chatLieu == chatLieu.id ? 'selected' : ''}>
+                                        ${chatLieu.ten}
+                                </option>
+                            </c:forEach>
+                        </select>
 
                     </div>
                 </div>

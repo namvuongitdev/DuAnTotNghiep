@@ -86,13 +86,11 @@ function getCTSP(id) {
         const themVaoGioHang = document.getElementById("themVaoGioHang");
         for (let i = 0; i < dataCTSP.length; i++) {
             if (dataCTSP[i].mauSac.id == mauSac && dataCTSP[i].size.id == kichCo && dataCTSP[i].sanPham.id == sanPham) {
-                if (dataCTSP[i].soLuong == 0 || dataCTSP[i].soLuong < 0) {
+                if (dataCTSP[i].soLuong == 0 || dataCTSP[i].soLuong < 0 || dataCTSP.trangThai == 1) {
                     themVaoGioHang.setAttribute("disabled", "");
                     sp.innerHTML += `<h5 id="message" style="color: #e43535">Sản phẩm hết hàng</h5>`
                     return;
                 } else {
-                    const message = document.getElementById('message');
-
                     themVaoGioHang.removeAttribute('disabled');
                     document.getElementById("soLuong").innerText = `số lượng sản phẩm còn ` + dataCTSP[i].soLuong
                     themVaoGioHang.name = dataCTSP[i].id;
