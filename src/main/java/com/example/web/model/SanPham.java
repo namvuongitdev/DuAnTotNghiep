@@ -60,6 +60,9 @@ public class SanPham {
     @Column(name = "mota")
     private String moTa;
 
+    @Column(name = "gioiTinh")
+    private Boolean gioiTinh;
+
     @ManyToOne
     @JoinColumn(name = "id_Kieu_dang")
     private KieuDang formDang;
