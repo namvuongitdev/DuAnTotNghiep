@@ -1,7 +1,9 @@
 package com.example.web.controller;
 import com.example.web.model.HoaDon;
+import com.example.web.model.HoaDonChiTiet;
 import com.example.web.model.TrangThaiHoaDon;
 import com.example.web.request.HoaDonRequest;
+import com.example.web.response.HoaDonFilter;
 import com.example.web.response.SanPhamFilter;
 import com.example.web.service.DanhMucService;
 import com.example.web.service.IChatLieuService;
@@ -11,6 +13,7 @@ import com.example.web.service.IHoaDonService;
 import com.example.web.service.IMauSacService;
 import com.example.web.service.ISanPhamService;
 import com.example.web.service.SizeService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,17 +22,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.UUID;
+
 @Controller
 @RequestMapping("/hoa-don")
 public class HoDonController {
 
     private String url;
+
+    @Autowired
+    private HttpServletRequest request;
 
     @Autowired
     private IHoaDonService hoaDonService;
@@ -102,9 +111,47 @@ public class HoDonController {
     }
 
     @PostMapping("/thanh-toan")
-    private String xacNhanThoan(@RequestParam String idHD , @ModelAttribute("request") HoaDonRequest hoaDonRequest , RedirectAttributes attributes){
+    private String xacNhanThoan(@RequestParam String idHD , @ModelAttribute("request") HoaDonRequest hoaDonRequest){
         hoaDonRequest.setHoaDon(idHD);
-        url = hoaDonService.thanhToan(hoaDonRequest , attributes);
+        url = hoaDonService.thanhToan(hoaDonRequest);
         return url;
     }
+    //    -----------------------------------------------------------
+    @GetMapping("/hien-thi")
+    public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page) {
+        model.addAttribute("hoaDonFillter",new HoaDonFilter());
+        model.addAttribute("lst",hoaDonService.pagination(page,10).getContent());
+        model.addAttribute("currentPage",page);
+        model.addAttribute("totalPage",hoaDonService.pagination(page,10).getTotalPages());
+        return "quanLyHoaDon/hoa-don";
+    }
+    @GetMapping("/hien-thi/{page}")
+    public String phanTrang(Model model, @PathVariable("page") Integer page) {
+        model.addAttribute("hoaDonFillter",new HoaDonFilter());
+        model.addAttribute("lst",hoaDonService.pagination(page,10).getContent());
+        model.addAttribute("currentPage",page);
+        model.addAttribute("totalPage",hoaDonService.pagination(page,10).getTotalPages());
+        return "quanLyHoaDon/hoa-don";
+    }
+    @GetMapping("/fillter")
+    public String fillter(Model model,
+                          @RequestParam(defaultValue = "0") Integer page,
+                          @ModelAttribute("hoaDonFillter") HoaDonFilter filter) {
+        Pageable pageable = PageRequest.of(page, 10);
+        String url = "/hoa-don/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
+        model.addAttribute("lst",hoaDonService.hoaDonFillter(filter,pageable).getContent());
+        model.addAttribute("fillter",filter);
+        System.out.println(filter.getDateBegin());
+        return "quanLyHoaDon/hoa-don";
+    }
+    @GetMapping("/detail/{id}")
+    public String detail(Model model,
+                         @PathVariable("id") String id) {
+        HoaDonChiTiet lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id));
+        model.addAttribute("hd",hoaDonService.getOne(id));
+        model.addAttribute("lst",lst);
+        return "quanLyHoaDon/chi-tiet-hoa-don";
+    }
+
+
 }

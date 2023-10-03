@@ -1,21 +1,11 @@
 package com.example.web.service;
-<<<<<<< HEAD
 import com.example.web.request.HoaDonRequest;
-=======
-<<<<<<< Updated upstream
-=======
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
-import com.example.web.request.HoaDonRequest;
 import com.example.web.response.HoaDonFilter;
-import com.example.web.response.SanPhamFilter;
->>>>>>> Stashed changes
->>>>>>> origin/tien
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +19,7 @@ public interface IHoaDonService {
 
     String updateHoaDonTrangThai(String id , String ghiChu);
 
-    String thanhToan(HoaDonRequest request , RedirectAttributes attributes);
+    String thanhToan(HoaDonRequest request );
 
     List<HoaDon> getAll();
 

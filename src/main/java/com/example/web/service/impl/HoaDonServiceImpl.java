@@ -4,29 +4,15 @@ import com.example.web.model.HoaDonChiTiet;
 import com.example.web.model.TrangThaiHoaDon;
 import com.example.web.repository.IHoaDonRepository;
 import com.example.web.repository.IKhachHangRepository;
-<<<<<<< HEAD
 import com.example.web.request.HoaDonRequest;
 import com.example.web.response.HoaDonReponse;
 import com.example.web.service.IHoaDonService;
-import com.example.web.service.ISanPhamService;
-=======
-<<<<<<< Updated upstream
-import com.example.web.response.HoaDonReponse;
-import com.example.web.service.IHoaDonService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-=======
-import com.example.web.request.HoaDonRequest;
 import com.example.web.response.HoaDonFilter;
-import com.example.web.response.HoaDonReponse;
-import com.example.web.service.IHoaDonService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.SneakyThrows;
->>>>>>> Stashed changes
->>>>>>> origin/tien
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,18 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-<<<<<<< HEAD
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-=======
-<<<<<<< Updated upstream
-=======
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
->>>>>>> Stashed changes
-
->>>>>>> origin/tien
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -121,13 +96,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
         }
     }
 
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> origin/tien
+
     @Override
-    public String thanhToan(HoaDonRequest request, RedirectAttributes attributes) {
+    public String thanhToan(HoaDonRequest request) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(request.getHoaDon()));
         BigDecimal tongTienHoaDon = hoaDonRepository.tongTien(UUID.fromString(request.getHoaDon()));
         List<HoaDonChiTiet> ctsp = hoaDon.get().getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() != 1).collect(Collectors.toList());
@@ -144,11 +115,8 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 hd.setTrangThai(TrangThaiHoaDon.DA_HOAN_THANH.getValue());
                 hd.setTongTien(tongTienHoaDon);
                 hd.setNgayThanhToan(date);
-<<<<<<< HEAD
                 hd.setPhuongThucThanhToan(request.getHinhThucThanhToan());
-=======
-//                hd.setPhuongThucThanhToan(request.getHinhThucThanhToan());
->>>>>>> origin/tien
+
                 hoaDonRepository.save(hd);
                 return "redirect:/hoa-don/hien-thi-hoa-cho";
             } else {
@@ -156,8 +124,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
             }
         }
     }
-<<<<<<< HEAD
-=======
 
     @Override
     public List<HoaDon> getAll() {
@@ -204,8 +170,4 @@ public class HoaDonServiceImpl implements IHoaDonService {
             }
         },pageable);
     }
-
-
->>>>>>> Stashed changes
->>>>>>> origin/tien
 }

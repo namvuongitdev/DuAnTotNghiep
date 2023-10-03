@@ -40,31 +40,12 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-floating mb-3 mt-3">
-<<<<<<< HEAD
-                                        <input class="form-control" placeholder="" path=""/>
-=======
                                         <input class="form-control" value="${hd.ma}" readonly placeholder="" path=""/>
->>>>>>> origin/tien
                                         <label class="form-label" path="">Mã hóa đơn</label>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-floating mb-3 mt-3">
-<<<<<<< HEAD
-                                        <input class="form-control" placeholder="" path=""/>
-                                        <label class="form-label" path="">Tên khách hàng</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating mb-3 mt-3">
-                                        <textarea class="form-control" path=""></textarea>
-                                        <label class="form-label" path="">Địa chỉ</label>
-                                    </div>
-                                </div>
-                                <div style="text-align: center">
-                                    <button type="submit" class="btn btn-outline-dark">Cập nhật</button>
-                                </div>
-=======
                                         <input class="form-control" value="${hd.khachHang.hoTen}" readonly placeholder="" path=""/>
                                         <label class="form-label" path="">Tên khách hàng</label>
                                     </div>
@@ -81,10 +62,9 @@
                                         <label class="form-label" path="">Ngày thanh toán</label>
                                     </div>
                                 </div>
-<%--                                <div style="text-align: center">--%>
-<%--                                    <button type="submit" class="btn btn-outline-dark">Cập nhật</button>--%>
-<%--                                </div>--%>
->>>>>>> origin/tien
+                                <%--                                <div style="text-align: center">--%>
+                                <%--                                    <button type="submit" class="btn btn-outline-dark">Cập nhật</button>--%>
+                                <%--                                </div>--%>
                             </div>
                         </form>
 
@@ -107,23 +87,15 @@
                             </tr>
                             </thead>
                             <tbody>
-<<<<<<< HEAD
-<%--                                <c:forEach>--%>
-<%--                                    <tr>--%>
-<%--    --%>
-<%--                                    </tr>--%>
-<%--                                </c:forEach>--%>
-=======
-                                <c:forEach items="${lst}" var="hdct" varStatus="i">
-                                    <tr>
-                                        <td>${i.index+1}</td>
-                                        <td>${hdct.sanPham.ten}</td>
-                                        <td>${hdct.sanPham.img}</td>
-                                        <td>${hdct.sanPham.soLuong}</td>
-                                        <td>${hdct.soLuong * hdct.sanPham.giaBan}</td>
-                                    </tr>
-                                </c:forEach>
->>>>>>> origin/tien
+                            <c:forEach items="${lst}" var="hdct" varStatus="i">
+                                <tr>
+                                    <td>${i.index+1}</td>
+                                    <td>${hdct.sanPham.ten}</td>
+                                    <td>${hdct.sanPham.img}</td>
+                                    <td>${hdct.sanPham.soLuong}</td>
+                                    <td>${hdct.soLuong * hdct.sanPham.giaBan}</td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                         <!-- End Table with stripped rows -->

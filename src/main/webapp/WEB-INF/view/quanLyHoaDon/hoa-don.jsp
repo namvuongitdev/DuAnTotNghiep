@@ -49,87 +49,40 @@
                             <br>
                             <%--tìm kiếm--%>
                             <div class="tab-pane fade show active" id="bordered-home" role="tabpanel" aria-labelledby="home-tab">
-<<<<<<< HEAD
-                                <form action="" method="post">
-                                    <div class="input-group" style="width: 500px">
-                                        <input type="text" class="form-control" placeholder="Tìm theo mã hóa đơn" aria-label="Tìm theo mã hóa đơn" aria-describedby="button-addon2"/>
-                                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Tìm kiếm</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <%--tìm kiếm nâng cao--%>
-                            <div class="tab-pane fade" id="bordered-profile" role="tabpanel" aria-labelledby="profile-tab">
-                                <form action="" method="post">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <label class="col-form-label">Từ ngày</label>
-                                            <input type="date" class="form-control"/>
-                                        </div>
-                                        <div class="col-4">
-                                            <label class="col-form-label">Đến ngày</label>
-                                            <input type="date" class="form-control"/>
-                                        </div>
-
-                                        <div class="col-4">
-                                            <label class="col-form-label">Khách hàng</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div><br>
-
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <label class="col-form-label">Trạng thái đơn hàng</label>
-                                            <select class="form-select" aria-label="Default select example">
-                                                <option selected>Tất cả</option>
-                                                <option value="1" class="text-warning">Đang xử lý</option>
-                                                <option value="2" class="text-success">Đã hoàn thành</option>
-                                                <option value="3" class="text-danger">Đã hủy</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-4">
-                                            <label class="col-form-label">Số điện thoại</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-=======
                                 <%--@elvariable id="hoaDonFillter" type=""--%>
                                 <form:form action="/hoa-don/fillter" method="get" modelAttribute="hoaDonFillter">
-                                    <div class="input-group" style="width: 500px">
-                                        <input type="text" class="form-control" name="search" value="${fillter.search}" placeholder="Tìm theo mã hóa đơn" aria-label="Tìm theo mã hóa đơn" aria-describedby="button-addon2"/>
-                                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Tìm kiếm</button>
-                                    </div>
+                                <div class="input-group" style="width: 500px">
+                                    <input type="text" class="form-control" name="search" value="${fillter.search}" placeholder="Tìm theo mã hóa đơn" aria-label="Tìm theo mã hóa đơn" aria-describedby="button-addon2"/>
+                                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Tìm kiếm</button>
+                                </div>
                             </div>
-                            <%--tìm kiếm nâng cao--%>
+                                <%--tìm kiếm nâng cao--%>
                             <div class="tab-pane fade" id="bordered-profile" role="tabpanel" aria-labelledby="profile-tab">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <label class="col-form-label">Từ ngày</label>
-                                            <input type="date" value="null" name="dateBegin" class="form-control"/>
-                                        </div>
-                                        <div class="col-4">
-                                            <label class="col-form-label">Đến ngày</label>
-                                            <input type="date" value="null" name="dateEnd"  class="form-control"/>
-                                        </div>
-                                        <div class="col-4">
-                                            <label class="col-form-label">Trạng thái đơn hàng</label>
-                                            <select class="form-select" name="trangThai" aria-label="Default select example">
-                                                <option value=" " selected>Tất cả</option>
-                                                <option value="2" class="text-warning">Đang giao hàng</option>
-                                                <option value="1" class="text-success">Đã thanh toán</option>
-                                                <option value="3" class="text-danger">Đã hủy</option>
-                                            </select>
-                                        </div>
->>>>>>> origin/tien
-                                    </div><br>
-                                    <%--button--%>
-                                    <div style="text-align: center">
-                                        <button type="submit" class="btn btn-outline-dark">Tìm kiếm</button>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="col-form-label">Từ ngày</label>
+                                        <input type="date" value="null" name="dateBegin" class="form-control"/>
                                     </div>
+                                    <div class="col-4">
+                                        <label class="col-form-label">Đến ngày</label>
+                                        <input type="date" value="null" name="dateEnd"  class="form-control"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="col-form-label">Trạng thái đơn hàng</label>
+                                        <select class="form-select" name="trangThai" aria-label="Default select example">
+                                            <option value=" " selected>Tất cả</option>
+                                            <option value="2" class="text-warning">Đang giao hàng</option>
+                                            <option value="1" class="text-success">Đã thanh toán</option>
+                                            <option value="3" class="text-danger">Đã hủy</option>
+                                        </select>
+                                    </div>
+                                </div><br>
+                                    <%--button--%>
+                                <div style="text-align: center">
+                                    <button type="submit" class="btn btn-outline-dark">Tìm kiếm</button>
+                                </div>
 
-<<<<<<< HEAD
-                                </form>
-=======
                                 </form:form>
->>>>>>> origin/tien
                             </div>
                             <br>
                         </div><!-- End Bordered Tabs -->
@@ -138,43 +91,28 @@
                             <thead>
                             <tr>
                                 <th scope="col">STT</th>
-<<<<<<< HEAD
-                                <th scope="col">Tên danh mục</th>
-                                <th scope="col">Ngày tạo</th>
-                                <th scope="col">Ngày sửa</th>
-                                <th scope="col">Trạng thái</th>
-=======
                                 <th scope="col">Mã hóa đơn</th>
                                 <th scope="col">Thời gian</th>
                                 <th scope="col">Khách hàng</th>
                                 <th scope="col">Tổng tiền hàng</th>
->>>>>>> origin/tien
                                 <th scope="col">Thao tác</th>
                             </tr>
                             </thead>
                             <tbody>
-<<<<<<< HEAD
-<%--                                <c:forEach>--%>
-<%--                                    <tr>--%>
-<%--    --%>
-<%--                                    </tr>--%>
-<%--                                </c:forEach>--%>
-=======
-                                <c:forEach items="${lst}" var="hd" varStatus="i">
-                                    <tr>
-                                        <td>${i.index+1}</td>
-                                        <td>${hd.ma}</td>
-                                        <td>${hd.ngayTao}</td>
-                                        <td>${hd.khachHang.hoTen}</td>
-                                        <td>${hd.tongTien}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-success" title="Xem Chi Tiết" onclick="myFunction()">
-                                                <a class="text-white" style="text-decoration: none" href="/hoa-don/detail/${hd.id}"><i class="bi bi-pencil"></i></a>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
->>>>>>> origin/tien
+                            <c:forEach items="${lst}" var="hd" varStatus="i">
+                                <tr>
+                                    <td>${i.index+1}</td>
+                                    <td>${hd.ma}</td>
+                                    <td>${hd.ngayTao}</td>
+                                    <td>${hd.khachHang.hoTen}</td>
+                                    <td>${hd.tongTien}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-success" title="Xem Chi Tiết" onclick="myFunction()">
+                                            <a class="text-white" style="text-decoration: none" href="/hoa-don/detail/${hd.id}"><i class="bi bi-pencil"></i></a>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                         <!-- End Table with stripped rows -->
@@ -182,19 +120,11 @@
                         <div class="container-fluid mt-5">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
-<<<<<<< HEAD
-                                    <li class="page-item ${currentPage<=0?"disabled":""}"><a class="page-link" href="/danh-muc/hien-thi/${currentPage-1}"><</a></li>
-                                    <c:forEach begin="1" end="${totalPage}" var="i">
-                                        <li class="page-item"><a class="page-link" href="/danh-muc/hien-thi/${i-1}">${i}</a></li>
-                                    </c:forEach>
-                                    <li class="page-item ${currentPage>=totalPage-1?"disabled":""}"><a class="page-link" href="/danh-muc/hien-thi/${currentPage+1}">></a></li>
-=======
                                     <li class="page-item ${currentPage<=0?"disabled":""}"><a class="page-link" href="${url}${currentPage-1}"><</a></li>
                                     <c:forEach begin="1" end="${totalPage}" var="i">
                                         <li class="page-item"><a class="page-link" href="${url}${i-1}">${i}</a></li>
                                     </c:forEach>
                                     <li class="page-item ${currentPage>=totalPage-1?"disabled":""}"><a class="page-link" href="${url}${currentPage+1}">></a></li>
->>>>>>> origin/tien
                                 </ul>
                             </nav>
                         </div>
@@ -204,10 +134,6 @@
         </div>
     </div>
 </div>
-<<<<<<< HEAD
-
-</body>
-=======
 </body>
 <script>
     function myFunction() {
@@ -215,5 +141,4 @@
         document.getElementById("disabled").disabled = false
     }
 </script>
->>>>>>> origin/tien
 </html>
