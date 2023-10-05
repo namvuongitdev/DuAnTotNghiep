@@ -1,10 +1,13 @@
 package com.example.web.controller;
+<<<<<<< Updated upstream:src/main/java/com/example/web/controller/HoaDonController.java
 <<<<<<< Updated upstream:src/main/java/com/example/web/controller/HoDonController.java
 import com.example.web.model.TrangThaiHoaDon;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
 =======
 import com.example.web.model.HoaDon;
+=======
+>>>>>>> Stashed changes:src/main/java/com/example/web/controller/HoDonController.java
 import com.example.web.model.HoaDonChiTiet;
 import com.example.web.model.TrangThaiHoaDon;
 import com.example.web.request.HoaDonRequest;
@@ -15,6 +18,10 @@ import com.example.web.service.IChatLieuService;
 import com.example.web.service.IFormDangService;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
+<<<<<<< Updated upstream:src/main/java/com/example/web/controller/HoaDonController.java
+=======
+import com.example.web.service.ISanPhamService;
+>>>>>>> Stashed changes:src/main/java/com/example/web/controller/HoDonController.java
 import jakarta.servlet.http.HttpServletRequest;
 >>>>>>> Stashed changes:src/main/java/com/example/web/controller/HoaDonController.java
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,8 +144,13 @@ public class HoaDonController {
     }
     @GetMapping("/detail/{id}")
     public String detail(Model model,
+<<<<<<< Updated upstream:src/main/java/com/example/web/controller/HoaDonController.java
                           @PathVariable("id") String id) {
         HoaDonChiTiet  lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id));
+=======
+                         @PathVariable("id") String id) {
+        List<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id));
+>>>>>>> Stashed changes:src/main/java/com/example/web/controller/HoDonController.java
         model.addAttribute("hd",hoaDonService.getOne(id));
         model.addAttribute("lst",lst);
         return "quanLyHoaDon/chi-tiet-hoa-don";

@@ -2,6 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -58,6 +59,7 @@
                             </div>
                             <%--tìm kiếm nâng cao--%>
                             <div class="tab-pane fade" id="bordered-profile" role="tabpanel" aria-labelledby="profile-tab">
+<<<<<<< Updated upstream
                                     <div class="row">
                                         <div class="col-4">
                                             <label class="col-form-label">Từ ngày</label>
@@ -77,6 +79,27 @@
                                             </select>
                                         </div>
                                     </div><br>
+=======
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="col-form-label">Từ ngày</label>
+                                        <input type="date" value="null" name="dateBegin" class="form-control"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="col-form-label">Đến ngày</label>
+                                        <input type="date" value="null" name="dateEnd"  class="form-control"/>
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="col-form-label">Trạng thái đơn hàng</label>
+                                        <select class="form-select" name="trangThai" aria-label="Default select example">
+                                            <option value="" selected>Tất cả</option>
+                                            <option value="2" class="text-warning">Đang giao hàng</option>
+                                            <option value="1" class="text-success">Đã thanh toán</option>
+                                            <option value="3" class="text-danger">Đã hủy</option>
+                                        </select>
+                                    </div>
+                                </div><br>
+>>>>>>> Stashed changes
                                     <%--button--%>
                                     <div style="text-align: center">
                                         <button type="submit" class="btn btn-outline-dark">Tìm kiếm</button>
@@ -99,6 +122,7 @@
                             </tr>
                             </thead>
                             <tbody>
+<<<<<<< Updated upstream
                                 <c:forEach items="${lst}" var="hd" varStatus="i">
                                     <tr>
                                         <td>${i.index+1}</td>
@@ -113,6 +137,26 @@
                                         </td>
                                     </tr>
                                 </c:forEach>
+=======
+                            <c:forEach items="${lst}" var="hd" varStatus="i">
+                                <tr>
+                                    <td>${i.index+1}</td>
+                                    <td>${hd.ma}</td>
+                                    <td>
+                                        <fmt:formatDate value="${hd.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                    </td>
+                                    <td>${hd.khachHang.hoTen}</td>
+                                    <td>
+                                        <fmt:formatNumber pattern="#,###" value="${hd.tongTien}"/>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-success" title="Xem Chi Tiết" onclick="myFunction()">
+                                            <a class="text-white" style="text-decoration: none" href="/hoa-don/detail/${hd.id}"><i class="bi bi-pencil"></i></a>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+>>>>>>> Stashed changes
                             </tbody>
                         </table>
                         <!-- End Table with stripped rows -->

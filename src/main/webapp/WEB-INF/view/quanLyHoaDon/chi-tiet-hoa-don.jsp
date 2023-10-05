@@ -2,6 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -26,7 +27,7 @@
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
-                        <li class="breadcrumb-item">Quản lý hóa đơn</li>
+                        <li class="breadcrumb-item"><a href="/hoa-don/hien-thi" style="text-decoration: none; color: black">Quản lý hóa đơn</a></li>
                         <li class="breadcrumb-item active">Thông tin hóa đơn</li>
                     </ol>
                 </nav>
@@ -87,6 +88,7 @@
                             </tr>
                             </thead>
                             <tbody>
+<<<<<<< Updated upstream
                                 <c:forEach items="${lst}" var="hdct" varStatus="i">
                                     <tr>
                                         <td>${i.index+1}</td>
@@ -96,6 +98,20 @@
                                         <td>${hdct.soLuong * hdct.sanPham.giaBan}</td>
                                     </tr>
                                 </c:forEach>
+=======
+                            <c:forEach items="${lst}" var="hdct" varStatus="i">
+                                <tr>
+                                    <td>${i.index+1}</td>
+                                    <td>${hdct.chiTietSanPham.sanPham.ten}</td>
+                                    <td>
+                                        <img src="/image/${hdct.chiTietSanPham.sanPham.img}">
+                                    </td>
+                                    <td>${hdct.soLuong}</td>
+                                    <td><fmt:formatNumber pattern="#,###" value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+>>>>>>> Stashed changes
                             </tbody>
                         </table>
                         <!-- End Table with stripped rows -->

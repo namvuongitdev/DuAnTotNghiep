@@ -19,8 +19,8 @@ public class HoaDonFilter {
 
     private String trangThai;
 
-    private Date dateBegin;
+    private String dateBegin;
 
-    private Date dateEnd;
+    private String dateEnd;
 
 }
