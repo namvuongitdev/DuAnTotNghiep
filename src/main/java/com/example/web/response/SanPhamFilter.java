@@ -18,6 +18,8 @@ public class SanPhamFilter {
     private String danhMuc;
     private String chatLieu;
     private String kieuDang;
+    private String mauSac;
+    private String kichCo;
     private Integer trangThai;
     private String kichCo;
     private String mauSac;

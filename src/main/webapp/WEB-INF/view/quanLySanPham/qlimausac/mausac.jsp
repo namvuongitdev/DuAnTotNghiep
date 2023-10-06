@@ -2,6 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -86,9 +87,14 @@
                                         <tr>
                                             <th scope="row">${i.index+1}</th>
                                             <td>${list.ten}</td>
-                                            <td>${list.ngayTao}</td>
-                                            <td>${list.ngaySua}</td>
-                                            <td>${list.trangThai==0?"Ngừng kích hoạt":"Kích hoạt"}</td>
+                                            <td><fmt:formatDate value="${list.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td><fmt:formatDate value="${list.ngaySua}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td>
+                                                <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                        type="button" class="${list.trangThai == 0 ? 'btn btn-danger' : 'btn btn-success'}">
+                                                        ${list.trangThai == 0 ? 'Ngừng kích hoạt' : 'Kích hoạt'}
+                                                </button>
+                                            </td>
                                             <td>
                                                 <button type="button" class="btn btn-success" title="Sửa dữ liệu" onclick="myFunction()">
                                                     <a class="text-white" style="text-decoration: none" href="/mau-sac/view-update/${list.id}"><i class="bi bi-pencil"></i></a>
@@ -138,7 +144,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Sửa thất bại');return false; }">
+                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; }">
                                     Xác nhận
                                 </form:button>
                             </div>

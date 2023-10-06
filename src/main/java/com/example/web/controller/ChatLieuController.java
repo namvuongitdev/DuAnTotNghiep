@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -49,7 +49,7 @@ public class ChatLieuController {
     public String delete(@PathVariable("id") UUID id){
         ChatLieu cl = service.getOne(id);
         cl.setTrangThai(0);
-        cl.setNgaySua(Date.valueOf(LocalDate.now()));
+        cl.setNgaySua(java.util.Calendar.getInstance().getTime());
         service.update(cl);
         return "redirect:/chat-lieu/hien-thi";
     }
@@ -75,7 +75,7 @@ public class ChatLieuController {
             UUID uuid = UUID.randomUUID();
             chatLieu.setId(uuid);
             chatLieu.setTrangThai(1);
-            chatLieu.setNgayTao(Date.valueOf(LocalDate.now()));
+            chatLieu.setNgayTao(java.util.Calendar.getInstance().getTime());
             service.add(chatLieu);
             return "redirect:/chat-lieu/hien-thi";
         }
@@ -96,7 +96,7 @@ public class ChatLieuController {
             chatLieu.setId(id);
             chatLieu.setNgayTao(cl.getNgayTao());
             chatLieu.setTrangThai(cl.getTrangThai());
-            chatLieu.setNgaySua(Date.valueOf(LocalDate.now()));
+            chatLieu.setNgaySua(java.util.Calendar.getInstance().getTime());
             service.update(chatLieu);
             return "redirect:/chat-lieu/hien-thi";
         }

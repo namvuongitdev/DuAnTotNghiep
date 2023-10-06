@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -48,7 +48,7 @@ public class MauSacController {
     public String delete(@PathVariable("id") String id){
         MauSac ms = iMauSacService.getOne(id);
         ms.setTrangThai(0);
-        ms.setNgaySua(Date.valueOf(LocalDate.now()));
+        ms.setNgaySua(java.util.Calendar.getInstance().getTime());
         iMauSacService.update(ms);
         return "redirect:/mau-sac/hien-thi";
     }
@@ -74,7 +74,7 @@ public class MauSacController {
             UUID uuid = UUID.randomUUID();
             mauSac.setId(uuid);
             mauSac.setTrangThai(1);
-            mauSac.setNgayTao(Date.valueOf(LocalDate.now()));
+            mauSac.setNgayTao(java.util.Calendar.getInstance().getTime());
             iMauSacService.add(mauSac);
             return "redirect:/mau-sac/hien-thi";
         }
@@ -95,7 +95,7 @@ public class MauSacController {
             mauSac.setId(UUID.fromString(id));
             mauSac.setNgayTao(ms.getNgayTao());
             mauSac.setTrangThai(ms.getTrangThai());
-            mauSac.setNgaySua(Date.valueOf(LocalDate.now()));
+            mauSac.setNgaySua(java.util.Calendar.getInstance().getTime());
             iMauSacService.update(mauSac);
             return "redirect:/mau-sac/hien-thi";
         }

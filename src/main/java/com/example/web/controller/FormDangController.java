@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -45,7 +45,7 @@ public class FormDangController {
     public String delete(@PathVariable("id") UUID id){
         KieuDang kd = service.getOne(id);
         kd.setTrangThai(0);
-        kd.setNgaySua(Date.valueOf(LocalDate.now()));
+        kd.setNgaySua(java.util.Calendar.getInstance().getTime());
         service.update(kd);
         return "redirect:/kieu-dang/hien-thi";
     }
@@ -71,7 +71,7 @@ public class FormDangController {
             UUID uuid = UUID.randomUUID();
             kieuDang.setId(uuid);
             kieuDang.setTrangThai(1);
-            kieuDang.setNgayTao(Date.valueOf(LocalDate.now()));
+            kieuDang.setNgayTao(java.util.Calendar.getInstance().getTime());
             service.add(kieuDang);
             return "redirect:/kieu-dang/hien-thi";
         }
@@ -92,7 +92,7 @@ public class FormDangController {
             kieuDang.setId(id);
             kieuDang.setTrangThai(kd.getTrangThai());
             kieuDang.setNgayTao(kd.getNgayTao());
-            kieuDang.setNgaySua(Date.valueOf(LocalDate.now()));
+            kieuDang.setNgaySua(java.util.Calendar.getInstance().getTime());
             service.update(kieuDang);
             return "redirect:/kieu-dang/hien-thi";
         }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.net.http.HttpRequest;
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -52,7 +52,7 @@ public class DanhMucController {
     public String delete(@PathVariable("id") String id){
         DanhMuc dm = danhMucService.getOne(id);
         dm.setTrangThai(0);
-        dm.setNgaySua(Date.valueOf(LocalDate.now()));
+        dm.setNgaySua(java.util.Calendar.getInstance().getTime());
         danhMucService.update(dm);
         return "redirect:/danh-muc/hien-thi";
     }
@@ -78,7 +78,7 @@ public class DanhMucController {
             UUID uuid = UUID.randomUUID();
             danhMuc.setId(String.valueOf(uuid));
             danhMuc.setTrangThai(1);
-            danhMuc.setNgayTao(Date.valueOf(LocalDate.now()));
+            danhMuc.setNgayTao(java.util.Calendar.getInstance().getTime());
             danhMucService.add(danhMuc);
             return "redirect:/danh-muc/hien-thi";
         }
@@ -99,7 +99,7 @@ public class DanhMucController {
             danhMuc.setId(id);
             danhMuc.setTrangThai(dm.getTrangThai());
             danhMuc.setNgayTao(dm.getNgayTao());
-            danhMuc.setNgaySua(Date.valueOf(LocalDate.now()));
+            danhMuc.setNgaySua(java.util.Calendar.getInstance().getTime());
             danhMucService.update(danhMuc);
             return "redirect:/danh-muc/hien-thi";
         }
