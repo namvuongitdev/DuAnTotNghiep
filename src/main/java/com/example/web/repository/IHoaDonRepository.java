@@ -32,8 +32,8 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> {
 
     Page<HoaDon> findAll(Specification<HoaDon> hoaDonSpecification, Pageable pageable);
 
-    @Query(value = "select * from hoa_don a join hoa_don_chi_tiet b on a.id = b.id_hoa_don \n" +
-            "\tjoin chi_tiet_san_pham c on b.idctsp=c.id where a.id=?1",nativeQuery = true)
-    HoaDonChiTiet getHoaDonChiTiet(UUID id );
+    @Query(value = "select hdct from HoaDon hd left join hd.hoaDonChiTiets hdct " +
+            "left join hdct.chiTietSanPham ctsp where hd.id = ?1")
+    List<HoaDonChiTiet> getHoaDonChiTiet(UUID id );
 
 }

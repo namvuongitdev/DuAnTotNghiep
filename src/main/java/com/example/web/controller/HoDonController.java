@@ -1,5 +1,16 @@
 package com.example.web.controller;
+<<<<<<< HEAD:src/main/java/com/example/web/controller/HoDonController.java
+=======
+<<<<<<< Updated upstream:src/main/java/com/example/web/controller/HoaDonController.java
+<<<<<<< Updated upstream:src/main/java/com/example/web/controller/HoDonController.java
+import com.example.web.model.TrangThaiHoaDon;
+import com.example.web.service.IHoaDonChiTietService;
+import com.example.web.service.IHoaDonService;
+=======
+>>>>>>> origin/tien:src/main/java/com/example/web/controller/HoaDonController.java
 import com.example.web.model.HoaDon;
+=======
+>>>>>>> Stashed changes:src/main/java/com/example/web/controller/HoDonController.java
 import com.example.web.model.HoaDonChiTiet;
 import com.example.web.model.TrangThaiHoaDon;
 import com.example.web.request.HoaDonRequest;
@@ -10,9 +21,16 @@ import com.example.web.service.IChatLieuService;
 import com.example.web.service.IFormDangService;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
+<<<<<<< HEAD:src/main/java/com/example/web/controller/HoDonController.java
 import com.example.web.service.IMauSacService;
 import com.example.web.service.ISanPhamService;
 import com.example.web.service.SizeService;
+=======
+<<<<<<< Updated upstream:src/main/java/com/example/web/controller/HoaDonController.java
+=======
+import com.example.web.service.ISanPhamService;
+>>>>>>> Stashed changes:src/main/java/com/example/web/controller/HoDonController.java
+>>>>>>> origin/tien:src/main/java/com/example/web/controller/HoaDonController.java
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -138,8 +156,18 @@ public class HoDonController {
     }
     @GetMapping("/detail/{id}")
     public String detail(Model model,
+<<<<<<< HEAD:src/main/java/com/example/web/controller/HoDonController.java
                          @PathVariable("id") String id) {
         HoaDonChiTiet lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id));
+=======
+<<<<<<< Updated upstream:src/main/java/com/example/web/controller/HoaDonController.java
+                          @PathVariable("id") String id) {
+        HoaDonChiTiet  lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id));
+=======
+                         @PathVariable("id") String id) {
+        List<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id));
+>>>>>>> Stashed changes:src/main/java/com/example/web/controller/HoDonController.java
+>>>>>>> origin/tien:src/main/java/com/example/web/controller/HoaDonController.java
         model.addAttribute("hd",hoaDonService.getOne(id));
         model.addAttribute("lst",lst);
         return "quanLyHoaDon/chi-tiet-hoa-don";

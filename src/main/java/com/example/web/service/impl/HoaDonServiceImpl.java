@@ -21,6 +21,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -136,7 +137,8 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public HoaDonChiTiet getHoaDonChiTiet(UUID id) {
+    public List<HoaDonChiTiet> getHoaDonChiTiet(UUID id) {
+        System.out.println(hoaDonRepository.getHoaDonChiTiet(id));
         return hoaDonRepository.getHoaDonChiTiet(id);
     }
 
@@ -154,17 +156,19 @@ public class HoaDonServiceImpl implements IHoaDonService {
             public Predicate toPredicate(Root<HoaDon> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
                 if (!filter.getSearch().isBlank()){
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("ma") , filter.getSearch()),
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.equal(root.get("ma") , filter.getSearch()),
                             criteriaBuilder.equal(root.get("sdt") , filter.getSearch()),
                             criteriaBuilder.equal(root.get("hoTen") , filter.getSearch())));
                 }
                 if (!filter.getTrangThai().isBlank()){
                     predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai") , filter.getTrangThai())));
                 }
-                if (filter.getDateBegin()!=null && filter.getDateEnd()!=null){
+                if (!filter.getDateBegin().isBlank() && !filter.getDateEnd().isBlank()){
                     System.out.println("ngày"+filter.getDateBegin());
-//                    SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.between(root.get("ngayTao") , filter.getDateBegin(),filter.getDateEnd())));
+                    SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+                    Date date1 =  dateFormat.parse(filter.getDateBegin());
+                    Date date2 =  dateFormat.parse(filter.getDateEnd());
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.between(root.get("ngayTao") , date1,date2)));
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
