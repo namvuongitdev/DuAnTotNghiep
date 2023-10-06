@@ -17,6 +17,7 @@ import lombok.ToString;
 import org.hibernate.annotations.Nationalized;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -57,7 +58,7 @@ public class SanPham {
     @Column(name = "giaban")
     private BigDecimal giaBan;
 
-    @Column(name = "mota")
+    @Column(name = "mota",length = 3000)
     private String moTa;
 
     @Column(name = "gioiTinh")
@@ -78,4 +79,11 @@ public class SanPham {
     @OneToMany(mappedBy = "sanPham")
     @JsonIgnore
     private List<ChiTietSanPham> chiTietSanPhams;
+
+    public String getGia() {
+        DecimalFormat formatter = new DecimalFormat("###,###,###");
+        String formatted = formatter.format(this.giaBan);
+        return formatted;
+    }
+
 }

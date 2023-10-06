@@ -394,12 +394,12 @@
 </div>
 <div class="container">
     <div class="row clearfix">
-        <c:forEach items="${list.getContent()}" var="anh">
+        <c:forEach items="${list.getContent()}" var="sanpham">
             <div class="col-lg-3 col-md-4 col-sm-12">
                 <div class="card product_item">
                     <div class="body">
                         <div class="cp_img" style="height:300px">
-                            <a  href="/sports-clothing/chi-tiet?idSP=${anh.sanPham.id}"><img src="/anh/anh13.png" style="height:250px;margin-left: 14px" class="img-fluid"></a>
+                            <a  href=""><img src="/anh/${sanpham.img}" style="height:250px;margin-left: 18px;width: 233px" class="img-fluid"></a>
                             <div class="hover">
                                 <a href="javascript:void(0);" class="btn btn-primary btn-sm waves-effect"><i
                                         class="zmdi zmdi-shopping-cart"></i></a>
@@ -407,9 +407,9 @@
                         </div>
                         <div class="product_details">
                             <h5 style="height: 40px;"><a style="text-decoration:none;"
-                                    href="/sports-clothing/chi-tiet?idSP=${anh.sanPham.id}">${anh.sanPham.ten}</a></h5>
+                                    href="">${sanpham.ten}</a></h5>
                             <ul class="product_price list-unstyled">
-                                <li class="old_price"><font color="red">${anh.sanPham.getGiaBan1()}đ</font></li>
+                                <li class="old_price"><font color="red">${sanpham.getGia()}đ</font></li>
                             </ul>
                         </div>
                     </div>
@@ -423,14 +423,14 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item ${pageNo<=1?"disabled":""}"><a class="page-link"
-                                                                href="/sports-clothing/trang-chu?page=${pageNo-1}">Previous</a>
+                                                                href="?page=${pageNo-1}">Previous</a>
             </li>
             <c:forEach begin="1" end="${list.getTotalPages()}" var="i">
                 <li class="page-item"><a class="page-link ${i == pageNo ? 'active ' : ''}"
-                                         href="/sports-clothing/trang-chu?page=${i}">${i}</a></li>
+                                         href="?page=${i}">${i}</a></li>
             </c:forEach>
             <li class="page-item ${pageNo>=list.getTotalPages()?"disabled":""}"><a class="page-link"
-                                                                                   href="/sports-clothing/trang-chu?page=${pageNo+1}">Next</a>
+                                                                                   href="?page=${pageNo+1}">Next</a>
             </li>
         </ul>
     </nav>

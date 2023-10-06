@@ -19,4 +19,9 @@ public interface ISanPhamService {
 
     Page<SanPham> sanPhamFilter(SanPhamFilter filter ,Pageable pageable);
 
+    public Page<SanPham> sanPhamFilter1(SanPhamFilter filter , Pageable pageable);
+
+    Page<SanPham> findAllGender(Pageable pageable,boolean gioi_tinh);
+
+
 }
