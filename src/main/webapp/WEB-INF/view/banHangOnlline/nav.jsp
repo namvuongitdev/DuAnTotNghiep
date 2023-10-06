@@ -32,14 +32,14 @@
 </nav>
 <nav class="navbar navbar-expand-lg navbar-light " style="height:50px;background-color: #363535">
     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 " style="margin-top: 7px">
-        <li class="nav-item" style="margin-left: 70px"><a class="nav-link text-black" href="/sports-clothing/trang-chu"><h6
+        <li class="nav-item" style="margin-left: 70px"><a class="nav-link text-black" href="/trang-chu"><h6
                 style="color: white">TRANG CHỦ</h6></a></li>
         <li class="nav-item"><a class="nav-link text-black" href="#!"><h6 style="color: white">SẢN PHẨM </h6></a></li>
         <li class="nav-item"><a class="nav-link text-black" href="#!"><h6 style="color: white">HÀNG BÁN CHẠY </h6></a>
         </li>
-        <li class="nav-item"><a class="nav-link text-black" href="#!"><h6 style="color: white">THỂ THAO NAM </h6></a>
+        <li class="nav-item"><a class="nav-link text-black" href="/thoi-trang-nam"><h6 style="color: white">THỂ THAO NAM </h6></a>
         </li>
-        <li class="nav-item"><a class="nav-link text-black" href="#!"><h6 style="color: white">THỂ THAO NỮ </h6></a>
+        <li class="nav-item"><a class="nav-link text-black" href="/thoi-trang-nu"><h6 style="color: white">THỂ THAO NỮ </h6></a>
         </li>
     </ul>
     <div class="nav-item">

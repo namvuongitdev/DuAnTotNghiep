@@ -15,6 +15,11 @@ public interface ISanPhamRepository extends JpaRepository<SanPham, UUID>  , JpaS
     @Override
     Page<SanPham> findAll(Pageable pageable);
 
+
     @Query(value = "select  sanPham from SanPham sanPham where sanPham.ten like ?1 or sanPham.ma like ?1 ")
     Page<SanPham> getAllSanPhamByTenOrMa(String value, Pageable pageable);
+
+    @Query(value = "Select * from san_pham where gioi_tinh = ?1", nativeQuery = true)
+    Page<SanPham> findAllGender(Pageable pageable,boolean gioi_tinh);
+
 }
