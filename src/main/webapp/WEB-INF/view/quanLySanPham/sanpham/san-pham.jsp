@@ -85,7 +85,7 @@
                                     </td>
                                     <td>
                                         <button  style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" type="button"
-                                                class="${sanPham.trangThai == 0 ? 'btn btn-success' : 'btn btn-danger'}">
+                                                 class="${sanPham.trangThai == 0 ? 'btn btn-success' : 'btn btn-danger'}">
                                                 ${sanPham.trangThai == 0 ? 'Kinh doanh' : 'Ngừng kinh doanh'}</button>
                                     </td>
                                     <td>

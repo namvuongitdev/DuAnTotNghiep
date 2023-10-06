@@ -1,5 +1,4 @@
 package com.example.web.model;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +13,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;

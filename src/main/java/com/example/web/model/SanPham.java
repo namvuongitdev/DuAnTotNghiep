@@ -70,7 +70,6 @@ public class SanPham {
 
 
     @Column(name = "mota",length = 3000)
-    @NotBlank(message = "Vui lòng điền mô tả.")
     private String moTa;
 
     @Column(name = "gioiTinh")
