@@ -8,6 +8,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,6 +40,7 @@ public class SanPham {
     @Column(name = "ma" , unique = true)
     private String ma;
 
+    @NotBlank(message = "Vui lòng điền tên sản phẩm.")
     @Column(name = "ten")
     @Nationalized
     private String ten;
@@ -52,12 +55,19 @@ public class SanPham {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ngayTao;
 
+    @Column(name = "ngaysua")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date ngaySua;
+
+    @NotNull(message = "Vui lòng điền giá nhập.")
     @Column(name = "gianhap")
     private BigDecimal giaNhap;
 
+    @NotNull(message = "Vui lòng điền giá bán.")
     @Column(name = "giaban")
     private BigDecimal giaBan;
 
+    @NotBlank(message = "Vui lòng điền mô tả.")
     @Column(name = "mota")
     private String moTa;
 

@@ -4,8 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -32,9 +33,11 @@ public class MauSac {
     private Integer trangThai;
 
     @Column(name = "ngay_tao")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ngayTao;
 
     @Column(name = "ngay_sua")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ngaySua;
 
     public MauSac(String ten, Integer trangThai) {

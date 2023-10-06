@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -44,7 +44,7 @@ public class SizeController {
         }else {
             UUID id = UUID.randomUUID();
             size.setId(String.valueOf(id));
-            size.setNgayTao(Date.valueOf(LocalDate.now()));
+            size.setNgayTao(java.util.Calendar.getInstance().getTime());
             size.setTrangThai(1);
             sizeService.add(size);
             return "redirect:/size/hien-thi";
@@ -65,7 +65,7 @@ public class SizeController {
             size.setId(id);
             size.setNgayTao(s.getNgayTao());
             size.setTrangThai(s.getTrangThai());
-            size.setNgaySua(Date.valueOf(LocalDate.now()));
+            size.setNgaySua(java.util.Calendar.getInstance().getTime());
             sizeService.update(size);
             return "redirect:/size/hien-thi";
         }
@@ -76,7 +76,7 @@ public class SizeController {
     public String delete(@PathVariable("id")String id){
         Size s = sizeService.getOne(id);
         s.setTrangThai(0);
-        s.setNgaySua(Date.valueOf(LocalDate.now()));
+        s.setNgaySua(java.util.Calendar.getInstance().getTime());
         sizeService.update(s);
         return "redirect:/size/hien-thi";
     }
