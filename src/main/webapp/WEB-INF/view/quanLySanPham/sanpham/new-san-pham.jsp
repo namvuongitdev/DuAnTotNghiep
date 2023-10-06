@@ -105,7 +105,7 @@
                                 <div class="form-floating">
                                 <select name="danhMuc" class="form-select   " id="danhMuc">
                                     <c:forEach items="${listDanhMuc}" var="danhMuc">
-                                        <option value="${danhMuc.id}">
+                                        <option value="${danhMuc.id}"  ${sp.danhMuc.id == danhMuc.id ? 'selected' : '' }>
                                                 ${danhMuc.ten}
                                         </option>
                                     </c:forEach>

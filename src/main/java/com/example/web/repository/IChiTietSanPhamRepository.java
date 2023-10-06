@@ -4,12 +4,13 @@ import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
 import com.example.web.model.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface IChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, UUID> {
+public interface IChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, UUID> , JpaSpecificationExecutor<ChiTietSanPham> {
 
     @Query(value = "Select * from chi_tiet_san_pham where id=?1", nativeQuery = true)
     ChiTietSanPham getOne(UUID id);

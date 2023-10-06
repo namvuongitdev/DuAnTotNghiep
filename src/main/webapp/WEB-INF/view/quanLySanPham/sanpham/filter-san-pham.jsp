@@ -6,6 +6,26 @@
     <input type="text" class="form-control" name="search" placeholder="tìm kiếm" value="${filter.search}">
 </div>
 <div class="col l-3">
+    <select name="kichCo" id="kichCo" class="form-select">
+        <option value="">Tất cả size</option>
+        <c:forEach items="${listKichCo}" var="kichCo">
+            <option value="${kichCo.id}" ${filter.kichCo == kichCo.id ? 'selected' : ''}>
+                    ${kichCo.ten}
+            </option>
+        </c:forEach>
+    </select>
+</div>
+<div class="col l-3">
+    <select name="mauSac" id="mauSac" class="form-select">
+        <option value="">Tất cả màu sắc</option>
+        <c:forEach items="${listMuaSac}" var="mauSac">
+            <option value="${mauSac.id}" ${filter.mauSac == mauSac.id ? 'selected' : ''}>
+                    ${mauSac.ten}
+            </option>
+        </c:forEach>
+    </select>
+</div>
+<div class="col l-3">
     <select name="danhMuc" id="danhMuc" class="form-select">
         <option value="">Tất cả danh mục</option>
         <c:forEach items="${listDanhMuc}" var="danhMuc">

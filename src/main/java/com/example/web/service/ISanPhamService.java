@@ -1,5 +1,4 @@
 package com.example.web.service;
-
 import com.example.web.model.SanPham;
 import com.example.web.response.SanPhamFilter;
 import org.springframework.data.domain.Page;
@@ -17,6 +16,8 @@ public interface ISanPhamService {
 
     List<SanPham> getAll();
 
-    Page<SanPham> sanPhamFilter(SanPhamFilter filter ,Pageable pageable);
+    Page<SanPham> sanPhamFilter(SanPhamFilter filter , Pageable pageable);
+
+    Page<SanPham> getAllByTenOrMa(String value  , Integer page);
 
 }

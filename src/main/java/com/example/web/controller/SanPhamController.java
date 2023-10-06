@@ -1,5 +1,4 @@
 package com.example.web.controller;
-
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.SanPham;
 import com.example.web.response.SanPhamFilter;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.Date;
 import java.util.UUID;
 
@@ -66,9 +64,7 @@ public class SanPhamController {
         Pageable pageable = PageRequest.of(page - 1, 10);
         sanPhamPage = iSanPhamService.findAll(pageable);
         model.addAttribute("listSanPham", sanPhamPage);
-        model.addAttribute("listChatLieu", iChatLieuService.getAll());
-        model.addAttribute("listFromDang", iFormDangService.getAll());
-        model.addAttribute("listDanhMuc", danhMucService.getAll());
+        danhSachThuocTinhSanPham(model);
         model.addAttribute("filterSanPham", new SanPhamFilter());
         model.addAttribute("url", "/san-pham/hien-thi?page=");
         return "quanLySanPham/sanpham/san-pham";
@@ -83,18 +79,21 @@ public class SanPhamController {
         String url = "/san-pham/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
         model.addAttribute("filter", filter);
         model.addAttribute("listSanPham", sanPhamPage);
-        model.addAttribute("listChatLieu", iChatLieuService.getAll());
-        model.addAttribute("listFromDang", iFormDangService.getAll());
-        model.addAttribute("listDanhMuc", danhMucService.getAll());
+        danhSachThuocTinhSanPham(model);
         model.addAttribute("url", url);
         return "quanLySanPham/sanpham/san-pham";
     }
 
     @GetMapping({"/api-hien-thi"})
     @ResponseBody
-    public Page<SanPham> apiSanPham(@RequestParam Integer page) {
+    public Page<SanPham> apiSanPham(@RequestParam Integer page ,@RequestParam(required = false) String value) {
+        Page listSanPham = null;
         Pageable pageable = PageRequest.of(page - 1, 10);
-        Page listSanPham = iSanPhamService.findAll(pageable);
+        if(value.isEmpty()){
+            listSanPham = iSanPhamService.findAll(pageable);
+        }else{
+            listSanPham =  iSanPhamService.getAllByTenOrMa(value, page);
+        }
         return listSanPham;
     }
 
@@ -138,11 +137,7 @@ public class SanPhamController {
     @GetMapping(value = "/hien-thi/{id}")
     public String getSanPham(@PathVariable String id, Model model) {
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(id));
-        model.addAttribute("listChatLieu", iChatLieuService.getAll());
-        model.addAttribute("listFromDang", iFormDangService.getAll());
-        model.addAttribute("listKichCo", sizeService.getAll());
-        model.addAttribute("listMuaSac", mauSacService.getAll());
-        model.addAttribute("listDanhMuc", danhMucService.getAll());
+        danhSachThuocTinhSanPham(model);
         model.addAttribute("listChiTietSanPhamBySP", chiTietSanPhamService.getChiTietSanPham(id));
         model.addAttribute("sanPham", new SanPham());
         model.addAttribute("chiTietSanPham", new ChiTietSanPham());
@@ -156,6 +151,14 @@ public class SanPhamController {
         sanPham.setImg(img);
         iSanPhamService.save(sanPham);
         return "redirect:/san-pham/hien-thi/" + sanPham.getId();
+    }
+
+    public void danhSachThuocTinhSanPham(Model model){
+        model.addAttribute("listChatLieu", iChatLieuService.getAll());
+        model.addAttribute("listFromDang", iFormDangService.getAll());
+        model.addAttribute("listKichCo", sizeService.getAll());
+        model.addAttribute("listMuaSac", mauSacService.getAll());
+        model.addAttribute("listDanhMuc", danhMucService.getAll());
     }
 
 }

@@ -14,7 +14,13 @@
     <link rel="stylesheet" href="/css/ban-hang-tai-quay.css">
 
 </head>
+<style>
+    label{
+        color: #03AA28;
+    }
+</style>
 <body>
+
 <%--navbar--%>
 <jsp:include page="../sidebar/navbar.jsp"/>
 <%--sidebar--%>
@@ -44,7 +50,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach items="${sanPhams}" var="sanPham">
+                                <c:forEach items="${sanPhamGioHang}" var="sanPham">
                                     <tr>
                                         <td>
                                             <div class="row">
@@ -191,26 +197,113 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col l-3">
-
-                        <select name="danhMuc" id="danhMuc" class="form-select" onchange="filterDanhMuc(this.value)">
-                            <option value="">Tất cả danh mục</option>
-                            <c:forEach items="${listDanhMuc}" var="danhMuc">
-                                <option value="${danhMuc.id}" ${filter.danhMuc == danhMuc.id ? 'selected' : ''}>
-                                        ${danhMuc.ten}
+                   <div class="col-sm-3">
+                       <input class="form-control" type="text" name="search" id="search-input" placeholder="tìm kiếm tên , mã sản phẩm">
+                   </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary" onclick="timKiem()">Tìm kiếm</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-warning" id="clear">Làm mới</button>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                     <div class="row d-flex justify-content-center" style="margin-bottom: 10px">
+                         <div class="col-sm-2">
+                             <label for="size">Kích cỡ</label>
+                             <select name="kichCo" id="size" class="form-select" onchange="filterSize(this.value)">
+                                 <option value="">Tất cả</option>
+                                 <c:forEach items="${listKichCo}" var="kichCo">
+                                     <option value="${kichCo.id}">
+                                             ${kichCo.ten}
+                                     </option>
+                                 </c:forEach>
+                             </select>
+                         </div>
+                         <div class="col-sm-2">
+                             <label for="mauSac">Màu sắc</label>
+                             <select name="mauSac" id="color" class="form-select" onchange="filterColor(this.value)">
+                                 <option value="">Tất cả</option>
+                                 <c:forEach items="${listMuaSac}" var="mauSac">
+                                     <option value="${mauSac.id}" >
+                                             ${mauSac.ten}
+                                     </option>
+                                 </c:forEach>
+                             </select>
+                         </div>
+                         <div class="col-sm-2">
+                             <label for="danhMuc">Danh mục</label>
+                             <select name="danhMuc" id="danhMuc" class="form-select" onchange="filterDanhMuc(this.value)">
+                                 <option value="">Tất cả</option>
+                                 <c:forEach items="${listDanhMuc}" var="danhMuc">
+                                     <option value="${danhMuc.id}">
+                                             ${danhMuc.ten}
+                                     </option>
+                                 </c:forEach>
+                             </select>
+                         </div>
+                         <div class="col-sm-2">
+                             <label for="chatLieu">Chất liệu</label>
+                             <select name="chatLieu" id="chatLieu" class="form-select" onchange="filterChatLieu(this.value)">
+                                 <option value="">Tất cả</option>
+                                 <c:forEach items="${listChatLieu}" var="chatLieu">
+                                     <option value="${chatLieu.id}">
+                                             ${chatLieu.ten}
+                                     </option>
+                                 </c:forEach>
+                             </select>
+                         </div>
+                         <div class="col-sm-2">
+                             <label for="kieuDang">Kiểu dáng</label>
+                             <select name="kieuDang" id="kieuDang" class="form-select" onchange="filterKieuDang(this.value)">
+                                 <option value="">Tất cả</option>
+                                 <c:forEach items="${listFormDang}" var="kieuDang" >
+                                     <option value="${kieuDang.id}">
+                                             ${kieuDang.ten}
+                                     </option>
+                                 </c:forEach>
+                             </select>
+                         </div>
+                     </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-sm-2">
+                            <label for="trangThai">Trang thái</label>
+                            <select name="trangThai" id="trangThai" class="form-select" onchange="filterTrangThai(this.value)">
+                                <option value="">Tất cả</option>
+                                <option value="0">
+                                    Kinh doanh
                                 </option>
-                            </c:forEach>
-                        </select>
-
-                        <select name="chatLieu" id="chatLieu" class="form-select" onchange="filterChatLieu(id: this.value)">
-                            <option value="">Tất cả chất liệu</option>
-                            <c:forEach items="${listChatLieu}" var="chatLieu">
-                                <option value="${chatLieu.id}" ${filter.chatLieu == chatLieu.id ? 'selected' : ''}>
-                                        ${chatLieu.ten}
+                                <option value="1">
+                                    Ngừng Kinh doanh
                                 </option>
-                            </c:forEach>
-                        </select>
-
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="sapXep">Sắp xếp</label>
+                            <select name="sapXep" id="sapXep" class="form-select" onchange="filterSapXep(this.value)">
+                                <option value="">Tất cả</option>
+                                <option value="ngayTao">Mới nhất</option>
+                                <option value="price-asc">
+                                    Thứ tự theo giá: thấp đến cao
+                                </option>
+                                <option value="price-desc" >
+                                    Thứ tự theo giá: cao xuống thấp
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="gioiTinh">Giới tính</label>
+                            <select name="gioiTih" id="gioiTinh" class="form-select" onchange="filterTrangThai(this.value)">
+                                <option value="">Tất cả</option>
+                                <option value="0">
+                                    Nam
+                                </option>
+                                <option value="1">
+                                    Nữ
+                                </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <br>

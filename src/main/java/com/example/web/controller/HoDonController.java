@@ -47,13 +47,7 @@ public class HoDonController {
     private IHoaDonChiTietService hoaDonChiTietService;
 
     @Autowired
-    private IFormDangService iFormDangService;
-
-    @Autowired
-    private IChatLieuService iChatLieuService;
-
-    @Autowired
-    private DanhMucService danhMucService;
+    private SanPhamController sanPhamController;
 
     @Autowired
     private ISanPhamService sanPhamService;
@@ -78,9 +72,7 @@ public class HoDonController {
     @GetMapping(value = "/detail")
     public String getHoaDon(Model model, @RequestParam("idHD") String id , @RequestParam(defaultValue = "1") Integer page) {
         model.addAttribute("filter" , new SanPhamFilter());
-        model.addAttribute("listChatLieu", iChatLieuService.getAll());
-        model.addAttribute("listFromDang", iFormDangService.getAll());
-        model.addAttribute("listDanhMuc", danhMucService.getAll());
+        sanPhamController.danhSachThuocTinhSanPham(model);
         model.addAttribute("request", new HoaDonRequest());
         url = hoaDonService.getHoaDonById(model , id);
         return url;

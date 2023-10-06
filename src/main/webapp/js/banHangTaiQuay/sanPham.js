@@ -1,6 +1,10 @@
 function getSanPham(page) {
-
-    fetch('/san-pham/api-hien-thi?page=' + page)
+    const value = document.querySelector("#search-input").value;
+    let url = `/san-pham/api-hien-thi?page=` + page + `&value=` + value;
+    if (value == null) {
+        url = `/san-pham/api-hien-thi?page=` + page;
+    }
+    fetch(url)
         .then(response => response.json())
         .then(data => {
             let pageNo = page <= 1 ? "disabled" : "";
@@ -40,17 +44,19 @@ let data = {
     chatLieu: "",
     kieuDang: "",
     trangThai: "",
-    sapXep: ""
+    sapXep: "",
+    mauSac: "",
+    kichCo: ""
 
 };
 
-function api(data) {
+function api(page, data) {
     const options = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     };
-    fetch('/san-pham/api-filter?page=1', options)
+    fetch('/san-pham/api-filter?page=' + page, options)
         .then(response => response.json())
         .then(data => {
             let pageNo = page <= 1 ? "disabled" : "";
@@ -59,9 +65,9 @@ function api(data) {
             let sanPham = "";
             let phanTrang = "";
             for (let i = 0; i < data.content.length; i++) {
-                sanPham += ` <tr>   ` +
+                sanPham += ` <tr>  ` +
                     ` <td>` +
-                    `<img style="width: 150px ; height: 150px" src="/image/` + data.content[i].img + `">` +
+                    `<img style="width: 100px ; height: 100px" src="/image/` + data.content[i].img + `">` +
                     ` <td>` + data.content[i].ma + `</td>` +
                     ` <td>` + data.content[i].ten + `</td>` +
                     ` <td>` + VND.format(data.content[i].giaBan) + `</td>` +
@@ -69,29 +75,56 @@ function api(data) {
             }
 
             for (let i = 1; i <= data.totalPages; i++) {
+                console.log(i);
                 active = page == i ? "active" : ""
                 phanTrang +=
                     `<li class="page-item" >
-                                <a class="page-link ` + active + `" name="` + i + `" onclick="page(this.name)" >` + i + `</a>
+                                <a class="page-link ` + active + `" name="` + i + `" onclick="pageFilter(this.name)" >` + i + `</a>
                                 </li>`
             }
 
             document.getElementById("body").innerHTML = sanPham;
             document.getElementById("phanTrang").innerHTML = `<li class="page-item  ` + pageNo + `">
-                                <a class="page-link" name="` + (Number.parseInt(page) - Number.parseInt(1)) + `" onclick="previous(this.name)"><</a>
+                                <a class="page-link" name="` + (Number.parseInt(page) - Number.parseInt(1)) + `" onclick="previousFilter(this.name)"><</a>
                             </li>` + phanTrang + ` <li class="page-item ` + pageSize + `">
-                          <a class="page-link" name="` + (Number.parseInt(page) + Number.parseInt(1)) + `" onclick="next(this.name)" > > </a></li>`;
+                          <a class="page-link" name="` + (Number.parseInt(page) + Number.parseInt(1)) + `" onclick="nextFilter(this.name)" > > </a></li>`;
         });
 }
 
 function filterDanhMuc(id) {
     data.danhMuc = id;
-    api(data);
+    api(1, data);
+    console.log(data)
 }
 
 const filterChatLieu = (id) => {
     data.chatLieu = id
-    api(data);
+    api(1, data);
+    console.log(data)
+}
+
+const filterKieuDang = (id) => {
+    data.kieuDang = id
+    api(1, data);
+}
+
+const filterTrangThai = (id) => {
+    data.trangThai = id
+    api(1, data);
+}
+
+const filterSapXep = (value) => {
+    data.sapXep = value
+    api(1, data);
+}
+const filterColor = (id) => {
+    data.mauSac = id;
+    api(1, data);
+}
+
+const filterSize = (id) => {
+    data.kichCo = id;
+    api(1, data);
 }
 
 
@@ -105,6 +138,27 @@ function next(page) {
 
 function page(page) {
     getSanPham(page);
+}
+
+function previousFilter(page) {
+    api(page, data)
+}
+
+function nextFilter(page) {
+    api(page, data)
+}
+
+function pageFilter(page) {
+    api(page, data)
+}
+
+document.getElementById('clear').addEventListener('click', () => {
+   document.getElementById('search-input').value = "";
+    getSanPham(1);
+})
+
+function timKiem() {
+    getSanPham(1);
 }
 
 function updateSoLuong(soLuong, sanPham) {
