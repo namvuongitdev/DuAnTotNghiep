@@ -91,7 +91,7 @@ public class SanPham {
     @JsonIgnore
     private List<ChiTietSanPham> chiTietSanPhams;
 
-    public String getGia() {
+    public String getGiaFormat() {
         DecimalFormat formatter = new DecimalFormat("###,###,###");
         String formatted = formatter.format(this.giaBan);
         return formatted;

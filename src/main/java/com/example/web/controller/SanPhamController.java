@@ -99,6 +99,7 @@ public class SanPhamController {
         }else{
             listSanPham =  iSanPhamService.getAllByTenOrMa(value, page);
         }
+        System.out.println(11111);
         return listSanPham;
     }
 

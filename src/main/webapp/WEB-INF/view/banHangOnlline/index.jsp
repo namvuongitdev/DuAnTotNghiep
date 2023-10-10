@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page trimDirectiveWhitespaces="true" %>
 <!DOCTYPE html>
 <html lang="zxx">
 <head>
@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+
 </head>
 
 <body>
@@ -202,68 +203,150 @@
     </div>
 </section>
 <!-- Men , Woman fashion End -->
-<div style="margin-left: 60px" class="col-sm-12">
-    <form  action="/filter" modelAttribute="${filterSanPham}">
-        <div class="row">
-            <jsp:include page="filer-trang-chu.jsp"></jsp:include>
+
+<%--Filter Begin--%>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-3">
+            <input class="form-control" type="text" name="search" id="search-input" style="width: 915px;margin-left: 160px" placeholder="tìm kiếm tên , mã sản phẩm">
         </div>
-    </form>
+        <div class="col-sm-2">
+            <button style="margin-left: 740px;width: 100px" class="btn btn-primary" onclick="timKiem()">Tìm kiếm</button>
+        </div>
+        <div class="col-sm-2">
+            <button style="margin-left: 630px;width: 100px" class="btn btn-warning" id="clear">Làm mới</button>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="row d-flex justify-content-center" style="margin-bottom: 10px;margin-left: 175px">
+            <div class="col-sm-1.5">
+                <label for="size">Kích cỡ</label><br>
+                <select name="kichCo" id="size" class="form-select" onchange="filterSize(this.value)">
+                    <option value="">Tất cả</option>
+                    <c:forEach items="${listKichCo}" var="kichCo">
+                        <option value="${kichCo.id}">
+                                ${kichCo.ten}
+                        </option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-sm-1.5" style="margin-left: 30px">
+                <%--@declare id="mausac"--%><label for="mauSac">Màu sắc</label><br>
+                <select name="mauSac" id="color" class="form-select" onchange="filterColor(this.value)">
+                    <option value="">Tất cả</option>
+                    <c:forEach items="${listMuaSac}" var="mauSac">
+                        <option value="${mauSac.id}" >
+                                ${mauSac.ten}
+                        </option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-sm-1.5" style="margin-left: 30px">
+                <label for="danhMuc">Danh mục</label><br>
+                <select name="danhMuc" id="danhMuc" class="form-select" onchange="filterDanhMuc(this.value)">
+                    <option value="">Tất cả</option>
+                    <c:forEach items="${listDanhMuc}" var="danhMuc">
+                        <option value="${danhMuc.id}">
+                                ${danhMuc.ten}
+                        </option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-sm-1.5" style="margin-left: 30px">
+                <label for="chatLieu">Chất liệu</label><br>
+                <select name="chatLieu" id="chatLieu" class="form-select" onchange="filterChatLieu(this.value)">
+                    <option value="">Tất cả</option>
+                    <c:forEach items="${listChatLieu}" var="chatLieu">
+                        <option value="${chatLieu.id}">
+                                ${chatLieu.ten}
+                        </option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-sm-1.5" style="margin-left: 30px">
+                <label for="kieuDang">Kiểu dáng</label><br>
+                <select name="kieuDang" id="kieuDang" class="form-select" onchange="filterKieuDang(this.value)">
+                    <option value="">Tất cả</option>
+                    <c:forEach items="${listFormDang}" var="kieuDang" >
+                        <option value="${kieuDang.id}">
+                                ${kieuDang.ten}
+                        </option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-sm-1.5" style="margin-left: 30px">
+                <label for="trangThai">Trang thái</label><br>
+                <select name="trangThai" id="trangThai" class="form-select" onchange="filterTrangThai(this.value)">
+                    <option value="">Tất cả</option>
+                    <option value="0">
+                        Kinh doanh
+                    </option>
+                    <option value="1">
+                        Ngừng Kinh doanh
+                    </option>
+                </select>
+            </div>
+            <div class="col-sm-1.5" style="margin-left: 30px">
+                <label for="sapXep">Sắp xếp</label><br>
+                <select name="sapXep" id="sapXep" class="form-select" onchange="filterSapXep(this.value)">
+                    <option value="">Tất cả</option>
+                    <option value="ngayTao">Mới nhất</option>
+                    <option value="price-asc">
+                        Thứ tự theo giá: thấp đến cao
+                    </option>
+                    <option value="price-desc" >
+                        Thứ tự theo giá: cao xuống thấp
+                    </option>
+                </select>
+            </div>
+            <div class="col-sm-1.5" style="margin-left: 30px">
+                <label for="gioiTinh">Giới tính</label><br>
+                <select name="gioiTih" id="gioiTinh" class="form-select" onchange="filterTrangThai(this.value)">
+                    <option value="">Tất cả</option>
+                    <option value="0">
+                        Nam
+                    </option>
+                    <option value="1">
+                        Nữ
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <br>
 </div>
-<br>
-<br>
-<!-- Product Section Begin -->
+<%--Filter End--%>
+
+<%--hiển thị sản phẩm begin--%>
 <section class="product spad">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <ul class="filter__controls">
                     <li class="active" data-filter="*">ALL</li>
-
                 </ul>
             </div>
         </div>
         <div class="row product__filter">
-            <c:forEach items="${list.getContent()}" var="sanpham">
-                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="/anh/${sanpham.img}">
-                            <ul class="product__hover">
-                                <li><a href="#"><img src="anh/eye.png" width="40px" alt=""></a></li>
-                                <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6>${sanpham.ten}</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <h5>${sanpham.getGia()}đ</h5>
-                        </div>
-                    </div>
-                </div>
-            </c:forEach>
+            <div id="body">
+
+            </div>
         </div>
     </div>
 </section>
-<!-- Product Section End -->
+<%--hiển thị sản phẩm end--%>
 
-<%-- Phân trang begin --%>
+<%--phân trang begin--%>
 <div class="container-fluid mt-5">
     <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <li class="page-item ${pageNo<=1?"disabled":""}"><a class="page-link"
-                                                                href="?page=${pageNo-1}">Previous</a>
-            </li>
-            <c:forEach begin="1" end="${list.getTotalPages()}" var="i">
-                <li class="page-item"><a class="page-link ${i == pageNo ? 'active ' : ''}"
-                                         href="?page=${i}">${i}</a></li>
-            </c:forEach>
-            <li class="page-item ${pageNo>=list.getTotalPages()?"disabled":""}"><a class="page-link"
-                                                                                   href="?page=${pageNo+1}">Next</a>
-            </li>
+        <ul class="pagination justify-content-center" id="phanTrang">
         </ul>
     </nav>
 </div>
-<%-- Phân trang end --%>
+<%--phân trang end--%>
+<br>
+<br>
 
 <!-- Instagram Section Begin -->
 <section class="instagram spad">
@@ -409,7 +492,7 @@
     <div class="h-100 d-flex align-items-center justify-content-center">
         <div class="search-close-switch">+</div>
         <form class="search-model-form">
-            <input type="text" id="search-input" placeholder="Search here.....">
+            <input type="text" id="search-input1" placeholder="Search here.....">
         </form>
     </div>
 </div>
@@ -426,6 +509,16 @@
 <script src="js/mixitup.min.js"></script>
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/main.js"></script>
+
+<script src="/js/banHangOnlline/sanPham.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Gọi hàm getSanPham khi trang web được tải
+        getSanPham(1); // Thay số 1 bằng trang mặc định mà bạn muốn hiển thị ban đầu.
+
+        // Các xử lý khác nếu cần
+    });
+</script>
 </body>
 
 </html>

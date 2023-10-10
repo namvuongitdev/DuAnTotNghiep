@@ -56,7 +56,7 @@
     </style>
 </head>
 <body style="background-color: #f5f5f5">
-<jsp:include page="../banHangOnlline/nav.jsp"></jsp:include>
+<%--<jsp:include page="../banHangOnlline/nav.jsp"></jsp:include>--%>
 <section class="h-100 h-custom" style="background-color: #f5f5f5 ">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
