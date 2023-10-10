@@ -3,7 +3,7 @@
          pageEncoding="UTF-8" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 <!-- Bordered Tabs -->
-    <%--tìm kiếm--%>
+<%--tìm kiếm--%>
 <div>
     <div class="row">
         <form action="" method="post">
@@ -98,13 +98,11 @@
             </select>
         </div>
     </div><br>
-<div style="text-align: center">
-    <button class="btn btn-primary">Tìm kiếm</button>
-    <a class="btn btn-warning" href="/san-pham/hien-thi">Làm mới</a>
-</div>
+    <div style="text-align: center">
+        <button class="btn btn-primary">Tìm kiếm</button>
+        <a class="btn btn-warning" href="/san-pham/hien-thi">Làm mới</a>
+    </div>
     <br>
 </div><!-- End Bordered Tabs -->
 
 <%--....--%>
-
-

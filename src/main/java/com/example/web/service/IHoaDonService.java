@@ -6,6 +6,8 @@ import com.example.web.response.HoaDonFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +21,7 @@ public interface IHoaDonService {
 
     String updateHoaDonTrangThai(String id , String ghiChu);
 
-    String thanhToan(HoaDonRequest request );
+    String thanhToan(HoaDonRequest request  , RedirectAttributes attributes);
 
     List<HoaDon> getAll();
 
@@ -30,5 +32,7 @@ public interface IHoaDonService {
     Page<HoaDon> pagination(Integer pageNo , Integer size);
 
     Page<HoaDon> hoaDonFillter(HoaDonFilter filter , Pageable pageable);
+
+    HoaDon add(HoaDon hoaDon);
 
 }

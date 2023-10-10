@@ -1,4 +1,5 @@
 package com.example.web.request;
+import com.example.web.model.KhachHang;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,13 @@ import java.math.BigDecimal;
 public class HoaDonRequest {
 
     private String hoaDon;
+    private String hoTen;
+    private String sdt;
+    private String diaChi;
+    private BigDecimal phiVanChuyen;
     private BigDecimal soTienThanhToan;
     private Boolean hinhThucThanhToan;
     private String moTa;
+    private String idKhachHang;
 
 }

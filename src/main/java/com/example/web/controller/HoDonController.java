@@ -1,4 +1,6 @@
 package com.example.web.controller;
+import com.example.web.model.HoaDon;
+import com.example.web.model.KhachHang;
 import com.example.web.model.TrangThaiHoaDon;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -94,10 +98,19 @@ public class HoDonController {
         return url;
     }
 
+    @GetMapping("/loai-hoa-don")
+    public String loaiHoaDon(@RequestParam String idHD , @RequestParam Boolean loaiHoaDon){
+       HoaDon hoaDon =  hoaDonService.getOne(idHD);
+       hoaDon.setLoaiHoaDon(loaiHoaDon);
+       hoaDonService.add(hoaDon);
+        return "redirect:/hoa-don/detail?idHD="+idHD;
+    }
+
     @PostMapping("/thanh-toan")
-    private String xacNhanThoan(@RequestParam String idHD , @ModelAttribute("request") HoaDonRequest hoaDonRequest){
+    private String xacNhanThanhToan(@RequestParam String idHD , @RequestParam String  idKhachHang , @ModelAttribute("request") HoaDonRequest hoaDonRequest , RedirectAttributes attributes){
         hoaDonRequest.setHoaDon(idHD);
-        url = hoaDonService.thanhToan(hoaDonRequest);
+        hoaDonRequest.setIdKhachHang(idKhachHang);
+        url = hoaDonService.thanhToan(hoaDonRequest , attributes);
         return url;
     }
     //    -----------------------------------------------------------

@@ -8,8 +8,11 @@ import com.example.web.repository.IHoaDonRepository;
 import com.example.web.service.IHoaDonChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
@@ -27,7 +30,8 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
     public String addHoaDonChiTiet(String idCTSP, String idHD, Integer soLuong) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(idHD));
         Optional<ChiTietSanPham> ctsp = chiTietSanPhamRepository.findById(UUID.fromString(idCTSP));
-        if (hoaDon.isEmpty() || ctsp.isEmpty()) {
+        HoaDonChiTiet hdct = null;
+       if (hoaDon.isEmpty() || ctsp.isEmpty()) {
             return null;
         } else {
             ChiTietSanPham chiTietSanPham = ctsp.get();
@@ -36,14 +40,21 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
             }else{
                 Integer result = chiTietSanPham.getSoLuong() - soLuong;
                 chiTietSanPham.setSoLuong(result);
-                HoaDonChiTiet hdct = HoaDonChiTiet.builder()
-                        .hoaDon(hoaDon.get())
-                        .donGia(chiTietSanPham.getSanPham().getGiaBan())
-                        .soLuong(soLuong)
-                        .chiTietSanPham(chiTietSanPham)
-                        .trangThai(0)
-                        .build();
-                hdct = hoaDonChiTietRepository.save(hdct);
+                hdct = hoaDonChiTietRepository.findByChiTietSanPham_IdAndAndHoaDon_IdAndTrangThai(UUID.fromString(idCTSP) , UUID.fromString(idHD) , 0);
+                    if(hdct != null){
+                        Integer setSoLuongSanPhamTrongHDCT = hdct.getSoLuong() + soLuong;
+                        hdct.setSoLuong(setSoLuongSanPhamTrongHDCT);
+                        hdct.setChiTietSanPham(chiTietSanPham);
+                    }else{
+                        hdct  = HoaDonChiTiet.builder()
+                                .hoaDon(hoaDon.get())
+                                .donGia(chiTietSanPham.getSanPham().getGiaBan())
+                                .soLuong(soLuong)
+                                .chiTietSanPham(chiTietSanPham)
+                                .trangThai(0)
+                                .build();
+                    }
+                 hoaDonChiTietRepository.save(hdct);
                 return "redirect:/hoa-don/detail?idHD=" + hoaDon.get().getId();
             }
         }

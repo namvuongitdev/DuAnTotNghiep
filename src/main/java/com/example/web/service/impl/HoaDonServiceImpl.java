@@ -1,6 +1,8 @@
 package com.example.web.service.impl;
+
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
+import com.example.web.model.KhachHang;
 import com.example.web.model.TrangThaiHoaDon;
 import com.example.web.repository.IHoaDonRepository;
 import com.example.web.repository.IKhachHangRepository;
@@ -20,6 +22,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,8 +50,8 @@ public class HoaDonServiceImpl implements IHoaDonService {
         HoaDon hoaDon = HoaDon.builder()
                 .trangThai(TrangThaiHoaDon.CHO_XAC_NHAN.getValue())
                 .ngayTao(date)
-                .hoTen("khách bán lẻ")
                 .ma("HD" + (hoaDonRepository.findAll().size() + 1))
+                .loaiHoaDon(false)
                 .build();
 
         hoaDon = hoaDonRepository.save(hoaDon);
@@ -97,27 +102,43 @@ public class HoaDonServiceImpl implements IHoaDonService {
         }
     }
 
-
     @Override
-    public String thanhToan(HoaDonRequest request) {
+    public String thanhToan(HoaDonRequest request, RedirectAttributes attributes) {
+        Date date = java.util.Calendar.getInstance().getTime();
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(request.getHoaDon()));
         BigDecimal tongTienHoaDon = hoaDonRepository.tongTien(UUID.fromString(request.getHoaDon()));
         List<HoaDonChiTiet> ctsp = hoaDon.get().getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() != 1).collect(Collectors.toList());
         if (ctsp.isEmpty()) {
-            return "redirect:/hoa-don/detail?idHD=" + request.getHoaDon();
-        } else if (tongTienHoaDon.doubleValue() > request.getSoTienThanhToan().doubleValue()) {
+            attributes.addFlashAttribute("error", "giỏ hàng chưa có sản phẩm");
             return "redirect:/hoa-don/detail?idHD=" + request.getHoaDon();
         } else {
             if (hoaDon.isPresent()) {
-                Date date = java.util.Calendar.getInstance().getTime();
                 HoaDon hd = hoaDon.get();
-                hd.setMoTa(request.getMoTa());
-                hd.setLoaiHoaDon(true);
-                hd.setTrangThai(TrangThaiHoaDon.DA_HOAN_THANH.getValue());
-                hd.setTongTien(tongTienHoaDon);
-                hd.setNgayThanhToan(date);
-                hd.setPhuongThucThanhToan(request.getHinhThucThanhToan());
-
+                if (hd.getLoaiHoaDon()) {
+                    Double tongTienDonDatHang = tongTienHoaDon.doubleValue() + request.getPhiVanChuyen().doubleValue();
+                    hd.setTrangThai(TrangThaiHoaDon.Cho_xac_nhan.getValue());
+                    hd.setPhiVanChuyen(request.getPhiVanChuyen());
+                    hd.setTongTien(BigDecimal.valueOf(tongTienDonDatHang));
+                    hd.setDiaChi(request.getDiaChi());
+                    hd.setHoTen(request.getHoTen());
+                    hd.setMoTa(request.getMoTa());
+                    hd.setSdt(request.getSdt());
+                } else {
+                    if (tongTienHoaDon.doubleValue() > request.getSoTienThanhToan().doubleValue()) {
+                        attributes.addFlashAttribute("error", "số tiền khách đưa chưa đủ");
+                        return "redirect:/hoa-don/detail?idHD=" + request.getHoaDon();
+                    } else {
+                        hd.setMoTa(request.getMoTa());
+                        hd.setTrangThai(TrangThaiHoaDon.DA_HOAN_THANH.getValue());
+                        hd.setTongTien(tongTienHoaDon);
+                        hd.setNgayThanhToan(date);
+                        hd.setPhuongThucThanhToan(request.getHinhThucThanhToan());
+                    }
+                }
+                if (request.getIdKhachHang() != null && !request.getIdKhachHang().isEmpty()) {
+                    Optional<KhachHang> khachHang = khachHangRepository.findById(UUID.fromString(request.getIdKhachHang()));
+                    hd.setKhachHang(khachHang.get());
+                }
                 hoaDonRepository.save(hd);
                 return "redirect:/hoa-don/hien-thi-hoa-cho";
             } else {
@@ -150,28 +171,33 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
     @Override
     public Page<HoaDon> hoaDonFillter(HoaDonFilter filter, Pageable pageable) {
-        return hoaDonRepository.findAll(new Specification<HoaDon>(){
+        return hoaDonRepository.findAll(new Specification<HoaDon>() {
             @SneakyThrows
             @Override
             public Predicate toPredicate(Root<HoaDon> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
-                if (!filter.getSearch().isBlank()){
-                    predicates.add(criteriaBuilder.or(criteriaBuilder.equal(root.get("ma") , filter.getSearch()),
-                            criteriaBuilder.equal(root.get("sdt") , filter.getSearch()),
-                            criteriaBuilder.equal(root.get("hoTen") , filter.getSearch())));
+                if (!filter.getSearch().isBlank()) {
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.equal(root.get("ma"), filter.getSearch()),
+                            criteriaBuilder.equal(root.get("sdt"), filter.getSearch()),
+                            criteriaBuilder.equal(root.get("hoTen"), filter.getSearch())));
                 }
-                if (!filter.getTrangThai().isBlank()){
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai") , filter.getTrangThai())));
+                if (!filter.getTrangThai().isBlank()) {
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai"), filter.getTrangThai())));
                 }
-                if (!filter.getDateBegin().isBlank() && !filter.getDateEnd().isBlank()){
-                    System.out.println("ngày"+filter.getDateBegin());
-                    SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
-                    Date date1 =  dateFormat.parse(filter.getDateBegin());
-                    Date date2 =  dateFormat.parse(filter.getDateEnd());
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.between(root.get("ngayTao") , date1,date2)));
+                if (!filter.getDateBegin().isBlank() && !filter.getDateEnd().isBlank()) {
+                    System.out.println("ngày" + filter.getDateBegin());
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date1 = dateFormat.parse(filter.getDateBegin());
+                    Date date2 = dateFormat.parse(filter.getDateEnd());
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.between(root.get("ngayTao"), date1, date2)));
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
-        },pageable);
+        }, pageable);
+    }
+
+    @Override
+    public HoaDon add(HoaDon hoaDon) {
+        return hoaDonRepository.save(hoaDon);
     }
 }

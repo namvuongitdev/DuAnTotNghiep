@@ -15,4 +15,6 @@ public interface IHoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet , 
     @Override
     Optional<HoaDonChiTiet> findById(UUID uuid);
 
+    HoaDonChiTiet findByChiTietSanPham_IdAndAndHoaDon_IdAndTrangThai(UUID idCtsp , UUID idHD ,Integer trangThai);
+
 }

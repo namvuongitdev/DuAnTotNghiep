@@ -3,11 +3,26 @@ const VND = new Intl.NumberFormat('vi-VN', {
     currency: 'VND',
 });
 
-var modal = document.getElementById("myModal");
+let scanner = new Instascan.Scanner({video:document.getElementById('preview')});
 
-var btn = document.getElementById("myBtn");
+scanner.addListener('scan' , function (c) {
+    let url_string = window.location.href;
+    let url = new URL(url_string);
+    let paramValue = url.searchParams.get("idHD");
+    window.location.href = '/hoa-don/add-san-pham?ctsp='+c+'&soLuong=1'+'&idHD='+paramValue;
+})
 
-var span = document.getElementsByClassName("close")[0];
+let modal = document.getElementById("myModal");
+
+let btn = document.getElementById("myBtn");
+
+let span = document.getElementById("close_ctsp");
+
+let modalQrcode = document.getElementById("modalQrcode");
+
+let btnQrcode = document.getElementById("myBtnQr");
+
+let spanQrcode = document.getElementById("close_qrcode");
 
 span.onclick = function () {
     colorSP.innerHTML = ""
@@ -23,3 +38,23 @@ span.onclick = function () {
     dataCTSP = undefined;
     modal.style.display = "none";
 }
+spanQrcode.onclick = function () {
+    scanner.stop();
+    modalQrcode.style.display = "none";
+}
+btnQrcode.onclick = function () {
+    Instascan.Camera.getCameras().then(function (cameras) {
+        if(cameras.length > 0){
+            scanner.start(cameras[0]);
+
+        }else{
+            alert('no cameras');
+        }
+    }).catch(function (e) {
+        console.error(e);
+    });
+    modalQrcode.style.display = "block";
+}
+
+
+

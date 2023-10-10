@@ -3,6 +3,9 @@ import com.example.web.model.KhachHang;
 import com.example.web.repository.IKhachHangRepository;
 import com.example.web.service.IKhachHangService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
@@ -14,8 +17,9 @@ public class KhachHangServiceImpl implements IKhachHangService {
     private IKhachHangRepository khachHangRepository;
 
     @Override
-    public List<KhachHang> getAll() {
-        return khachHangRepository.findAll();
+    public Page<KhachHang> getAll(Integer page) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        return khachHangRepository.findAll(pageable);
     }
 
     @Override
