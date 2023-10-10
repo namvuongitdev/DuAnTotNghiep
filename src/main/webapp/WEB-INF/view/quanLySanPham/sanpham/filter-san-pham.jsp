@@ -7,7 +7,7 @@
 <div>
     <div class="row">
         <form action="" method="post">
-            <div class="input-group" style="width: 1100px">
+            <div class="input-group">
                 <input type="text" class="form-control" name="search" placeholder="Tìm kiếm" value="${filter.search}" aria-label="Tìm kiếm"/>
             </div>
         </form>
