@@ -1,5 +1,6 @@
 package com.example.web.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ import lombok.ToString;
 import org.hibernate.annotations.Nationalized;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -52,14 +54,13 @@ public class SanPham {
     private Integer trangThai;
 
     @Column(name = "ngaytao")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ngayTao;
 
     @Column(name = "ngaysua")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ngaySua;
 
-    @NotNull(message = "Vui lòng điền giá nhập.")
+    //@NotNull(message = "Vui lòng điền giá nhập.")
     @Column(name = "gianhap")
     private BigDecimal giaNhap;
 
@@ -68,12 +69,15 @@ public class SanPham {
     private BigDecimal giaBan;
 
     @NotBlank(message = "Vui lòng điền mô tả.")
-    @Column(name = "mota")
+    @Column(name = "mota",length = 3000)
     private String moTa;
+
+    @Column(name = "gioiTinh")
+    private Boolean gioiTinh;
 
     @ManyToOne
     @JoinColumn(name = "id_Kieu_dang")
-    private KieuDang formDang;
+    private KieuDang kieuDang;
 
     @ManyToOne
     @JoinColumn(name = "id_chat_lieu")
@@ -86,4 +90,11 @@ public class SanPham {
     @OneToMany(mappedBy = "sanPham")
     @JsonIgnore
     private List<ChiTietSanPham> chiTietSanPhams;
+
+    public String getGia() {
+        DecimalFormat formatter = new DecimalFormat("###,###,###");
+        String formatted = formatter.format(this.giaBan);
+        return formatted;
+    }
+
 }

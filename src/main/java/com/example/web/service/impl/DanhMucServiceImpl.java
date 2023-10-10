@@ -23,6 +23,11 @@ public class DanhMucServiceImpl implements DanhMucService {
     }
 
     @Override
+    public List<DanhMuc> getAll1() {
+        return danhMucRepository.getAll1();
+    }
+
+    @Override
     public DanhMuc getOne(String id) {
         return danhMucRepository.getReferenceById(id);
     }

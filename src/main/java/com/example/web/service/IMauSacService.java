@@ -18,4 +18,6 @@ public interface IMauSacService {
     void delete(String id);
 
     Page<MauSac> page(Integer pageNo, Integer size);
+
+    List<MauSac> getAll1();
 }

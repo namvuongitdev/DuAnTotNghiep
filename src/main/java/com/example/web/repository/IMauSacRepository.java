@@ -1,9 +1,12 @@
 package com.example.web.repository;
+
 import com.example.web.model.MauSac;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.UUID;
 
 public interface IMauSacRepository extends JpaRepository<MauSac, UUID> {
@@ -15,4 +18,7 @@ public interface IMauSacRepository extends JpaRepository<MauSac, UUID> {
 
     @Query(value = "Select * from MauSac where id=?1",nativeQuery = true)
     MauSac getOne(UUID id);
+
+    @Query("select n from MauSac n where n.trangThai = 1")
+    List<MauSac> getAll1();
 }

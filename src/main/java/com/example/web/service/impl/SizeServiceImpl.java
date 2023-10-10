@@ -23,6 +23,11 @@ public class SizeServiceImpl implements SizeService {
     }
 
     @Override
+    public List<Size> getAll1() {
+        return sizeRepository.getAll1();
+    }
+
+    @Override
     public Size getOne(String id) {
         return sizeRepository.getReferenceById(id);
     }

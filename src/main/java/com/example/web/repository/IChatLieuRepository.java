@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,6 +20,9 @@ public interface IChatLieuRepository extends JpaRepository<ChatLieu , UUID> {
     @Override
     Optional<ChatLieu> findById(UUID uuid);
 
-    @Query(value = "Select * from ChatLieu where id=?1",nativeQuery = true)
+    @Query("select cl from ChatLieu cl where cl.trangThai = 1")
+    List<ChatLieu> getAll1();
+
+    @Query("Select cl from ChatLieu cl where cl.id=?1")
     ChatLieu getOne(UUID id);
 }

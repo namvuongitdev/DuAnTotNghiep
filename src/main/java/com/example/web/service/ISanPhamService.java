@@ -17,10 +17,10 @@ public interface ISanPhamService {
 
     SanPham getOne(UUID id);
 
-    Page<SanPham> getAllByTenOrMa(String value  , Integer page);
-
     List<SanPham> getAll();
 
     Page<SanPham> sanPhamFilter(SanPhamFilter filter ,Pageable pageable);
+
+    Page<SanPham> getAllByTenOrMa(String value, Integer page);
 
 }

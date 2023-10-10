@@ -24,6 +24,11 @@ public class ChatLieuServiceImpl implements IChatLieuService {
     }
 
     @Override
+    public List<ChatLieu> getAll1() {
+        return repository.getAll1();
+    }
+
+    @Override
     public ChatLieu getOne(UUID id) {
         return repository.getReferenceById(id);
     }

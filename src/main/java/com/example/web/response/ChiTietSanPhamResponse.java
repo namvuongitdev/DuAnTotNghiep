@@ -17,6 +17,8 @@ public class ChiTietSanPhamResponse {
 
     private Integer soLuong;
 
+    private String qrCode;
+
     private SanPhamResponse sanPham;
 
     private Integer trangThai;

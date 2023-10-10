@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -65,14 +66,10 @@ public class SanPhamController {
 
     @GetMapping(value = "/hien-thi")
     public String hienThi(Model model, @RequestParam(defaultValue = "1") Integer page) {
-        Pageable pageable = PageRequest.of(page - 1, 5);
+        Pageable pageable = PageRequest.of(page - 1, 10);
         sanPhamPage = iSanPhamService.findAll(pageable);
         model.addAttribute("listSanPham", sanPhamPage);
-        model.addAttribute("listKichCo", sizeService.getAll());
-        model.addAttribute("listMauSac", mauSacService.getAll());
-        model.addAttribute("listChatLieu", iChatLieuService.getAll());
-        model.addAttribute("listFromDang", iFormDangService.getAll());
-        model.addAttribute("listDanhMuc", danhMucService.getAll());
+        danhSachThuocTinhSanPham(model);
         model.addAttribute("filterSanPham", new SanPhamFilter());
         model.addAttribute("url", "/san-pham/hien-thi?page=");
         return "quanLySanPham/sanpham/san-pham";
@@ -82,32 +79,35 @@ public class SanPhamController {
     public String filterSanPham(@RequestParam(defaultValue = "1") Integer page,
                                 @ModelAttribute("filterSanPham") SanPhamFilter filter,
                                 Model model) {
-        Pageable pageable = PageRequest.of(page - 1, 5);
+        Pageable pageable = PageRequest.of(page - 1, 10);
         sanPhamPage = iSanPhamService.sanPhamFilter(filter, pageable);
         String url = "/san-pham/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
         model.addAttribute("filter", filter);
         model.addAttribute("listSanPham", sanPhamPage);
-        model.addAttribute("listKichCo", sizeService.getAll());
-        model.addAttribute("listMauSac", mauSacService.getAll());
-        model.addAttribute("listChatLieu", iChatLieuService.getAll());
-        model.addAttribute("listFromDang", iFormDangService.getAll());
-        model.addAttribute("listDanhMuc", danhMucService.getAll());
+        danhSachThuocTinhSanPham(model);
         model.addAttribute("url", url);
         return "quanLySanPham/sanpham/san-pham";
     }
 
-    @GetMapping("/api-hien-thi/{page}")
+    @GetMapping({"/api-hien-thi"})
     @ResponseBody
-    public Page<SanPham> apiSanPham(@PathVariable Integer page, @RequestParam(required = false) String value) {
-        Pageable pageable = PageRequest.of(page - 1, 5);
+    public Page<SanPham> apiSanPham(@RequestParam Integer page ,@RequestParam(required = false) String value) {
         Page listSanPham = null;
-        if (value.isEmpty()) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        if(value.isEmpty()){
             listSanPham = iSanPhamService.findAll(pageable);
-            return listSanPham;
-        } else {
-            listSanPham = iSanPhamService.getAllByTenOrMa(value, page);
-            return listSanPham;
+        }else{
+            listSanPham =  iSanPhamService.getAllByTenOrMa(value, page);
         }
+        return listSanPham;
+    }
+
+    @PostMapping("/api-filter")
+    @ResponseBody
+    public Page<SanPham> filterSanPham(@RequestParam Integer page , @RequestBody SanPhamFilter filter) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        Page listSanPham = iSanPhamService.sanPhamFilter(filter ,pageable);
+        return listSanPham;
     }
 
     @GetMapping("/new")
@@ -115,23 +115,26 @@ public class SanPhamController {
                                  @ModelAttribute("chatLieu")ChatLieu chatLieu, @ModelAttribute("mauSac")MauSac mauSac,
                                  @ModelAttribute("size")Size size) {
         model.addAttribute("title", "Tạo mới");
-        model.addAttribute("listKichCo", sizeService.getAll());
-        model.addAttribute("listMauSac", mauSacService.getAll());
-        model.addAttribute("listChatLieu", iChatLieuService.getAll());
-        model.addAttribute("listFromDang", iFormDangService.getAll());
-        model.addAttribute("listDanhMuc", danhMucService.getAll());
+        danhSachThuocTinhSanPham(model);
         model.addAttribute("sanPham", new SanPham());
         return "quanLySanPham/sanpham/new-san-pham";
     }
 
     @PostMapping(value = "/add")
-    public String addSanPham(@Valid @ModelAttribute("sanPham") SanPham sanPham, BindingResult result, @RequestParam(required = false) String id) {
+    public String addSanPham(@Valid @ModelAttribute("sanPham") SanPham sanPham, BindingResult result, @RequestParam(required = false) String id, Model model) {
         if (result.hasErrors()) {
-            return "redirect:/san-pham/new";
+            model.addAttribute("chatLieu", new ChatLieu());
+            model.addAttribute("mauSac", new MauSac());
+            model.addAttribute("kieuDang", new KieuDang());
+            model.addAttribute("size", new Size());
+            model.addAttribute("danhMuc", new DanhMuc());
+            model.addAttribute("title", "Tạo mới");
+            danhSachThuocTinhSanPham(model);
+            return "quanLySanPham/sanpham/new-san-pham";
         } else {
             Date date = java.util.Calendar.getInstance().getTime();
             if (!id.isEmpty()) {
-                SanPham sp  = iSanPhamService.getOne(UUID.fromString(id));
+                SanPham sp = iSanPhamService.getOne(UUID.fromString(id));
                 sanPham.setId(sp.getId());
                 sanPham.setMa(sp.getMa());
                 sanPham.setNgayTao(sp.getNgayTao());
@@ -153,12 +156,8 @@ public class SanPhamController {
                              @ModelAttribute("chatLieu")ChatLieu chatLieu, @ModelAttribute("mauSac")MauSac mauSac,
                              @ModelAttribute("size")Size size) {
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(id));
-        model.addAttribute("title", "Chi tiết sản phẩm");
-        model.addAttribute("listChatLieu", iChatLieuService.getAll());
-        model.addAttribute("listFromDang", iFormDangService.getAll());
-        model.addAttribute("listKichCo", sizeService.getAll());
-        model.addAttribute("listMauSac", mauSacService.getAll());
-        model.addAttribute("listDanhMuc", danhMucService.getAll());
+        danhSachThuocTinhSanPham(model);
+        model.addAttribute("title", "Sửa dữ liệu");
         model.addAttribute("listChiTietSanPhamBySP", chiTietSanPhamService.getChiTietSanPham(id));
         model.addAttribute("sanPham", new SanPham());
         model.addAttribute("chiTietSanPham", new ChiTietSanPham());
@@ -172,6 +171,15 @@ public class SanPhamController {
         sanPham.setImg(img);
         iSanPhamService.save(sanPham);
         return "redirect:/san-pham/hien-thi/" + sanPham.getId();
+    }
+
+
+    public void danhSachThuocTinhSanPham(Model model) {
+        model.addAttribute("listChatLieu", iChatLieuService.getAll1());
+        model.addAttribute("listFromDang", iFormDangService.getAll1());
+        model.addAttribute("listKichCo", sizeService.getAll1());
+        model.addAttribute("listMuaSac", mauSacService.getAll1());
+        model.addAttribute("listDanhMuc", danhMucService.getAll1());
     }
 
     @PostMapping("/modal-add-chat-lieu")
@@ -188,7 +196,7 @@ public class SanPhamController {
 
     @PostMapping("/modal-add-danh-muc")
     public String addDanhMuc(@ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                              @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
+                             @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
                              @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
         UUID uuid = UUID.randomUUID();
         danhMuc.setId(String.valueOf(uuid));
@@ -200,7 +208,7 @@ public class SanPhamController {
 
     @PostMapping("/modal-add-kieu-dang")
     public String addKieuDang(@ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                             @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
+                              @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
                               @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
         UUID uuid = UUID.randomUUID();
         kieuDang.setId(uuid);
@@ -212,8 +220,8 @@ public class SanPhamController {
 
     @PostMapping("/modal-add-size")
     public String addSize(@ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                              @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
-                              @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
+                          @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
+                          @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
         UUID id = UUID.randomUUID();
         size.setId(String.valueOf(id));
         size.setNgayTao(java.util.Calendar.getInstance().getTime());
@@ -224,8 +232,8 @@ public class SanPhamController {
 
     @PostMapping("/modal-add-mau-sac")
     public String addMauSac(@ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                          @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
-                          @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
+                            @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
+                            @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
         UUID uuid = UUID.randomUUID();
         mauSac.setId(uuid);
         mauSac.setTrangThai(1);

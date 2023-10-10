@@ -49,7 +49,7 @@ public class KieuDang {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ngaySua;
 
-    @OneToMany(mappedBy = "formDang")
+    @OneToMany(mappedBy = "kieuDang")
     @JsonIgnore
     private List<SanPham> sanPhams;
 

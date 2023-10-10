@@ -3,17 +3,18 @@
          pageEncoding="UTF-8" %>
 <%@ page trimDirectiveWhitespaces="true" %>
 <!-- Bordered Tabs -->
-    <%--tìm kiếm--%>
+<%--tìm kiếm--%>
 <div>
+
     <div class="row">
-        <form action="" method="post">
-            <div class="input-group">
-                <input type="text" class="form-control" name="search" placeholder="Tìm kiếm" value="${filter.search}" aria-label="Tìm kiếm"/>
-            </div>
-        </form>
-    </div>
-    <br>
-    <div class="row">
+        <div class="col l-3">
+            <span style="color: #03AA28">Tìm kiếm</span>
+            <form action="" method="post">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search" placeholder="Tìm kiếm" value="${filter.search}" aria-label="Tìm kiếm"/>
+                </div>
+            </form>
+        </div>
         <div class="col l-3">
             <span style="color: #03AA28">Danh mục</span>
             <select name="danhMuc" class="form-select">
@@ -51,7 +52,7 @@
             <span style="color: #03AA28">Màu sắc</span>
             <select name="mauSac" id="mauSac" class="form-select">
                 <option value="">Tất cả</option>
-                <c:forEach items="${listMauSac}" var="mauSac" >
+                <c:forEach items="${listMuaSac}" var="mauSac" >
                     <option value="${mauSac.id}" ${filter.mauSac == mauSac.id ? 'selected' : ''}>
                             ${mauSac.ten}
                     </option>
@@ -61,7 +62,7 @@
     </div><br>
     <%--        row2--%>
     <div class="row">
-        <div class="col l-4">
+        <div class="col l-3">
             <span style="color: #03AA28">Kích cỡ</span>
             <select name="kichCo" id="kichCo" class="form-select">
                 <option value="">Tất cả</option>
@@ -72,7 +73,7 @@
                 </c:forEach>
             </select>
         </div>
-        <div class="col l-4">
+        <div class="col l-3">
             <span style="color: #03AA28">Trạng thái</span>
             <select name="trangThai" id="trangThai" class="form-select">
                 <option value="">Tất cả</option>
@@ -84,7 +85,7 @@
                 </option>
             </select>
         </div>
-        <div class="col l-4">
+        <div class="col l-3">
             <span style="color: #03AA28">Sắp xếp theo giá</span>
             <select name="sapXep" id="sapXep" class="form-select">
                 <option value="">Tất cả</option>
@@ -97,11 +98,23 @@
                 </option>
             </select>
         </div>
+        <div class="col l-3">
+            <span style="color: #03AA28">Giới tính</span>
+            <select name="gioiTinh" id="gioiTinh" class="form-select">
+                <option value="">Tất cả</option>
+                <option value="true" ${filter.gioiTinh == true ? 'selected' : ''}>
+                    Dành cho nam
+                </option>
+                <option value="false" ${filter.gioiTinh == false ? 'selected' : ''}>
+                    Dành cho nữ
+                </option>
+            </select>
+        </div>
     </div><br>
-<div style="text-align: center">
-    <button class="btn btn-primary">Tìm kiếm</button>
-    <a class="btn btn-warning" href="/san-pham/hien-thi">Làm mới</a>
-</div>
+    <div style="text-align: center">
+        <button class="btn btn-primary">Tìm kiếm</button>
+        <a class="btn btn-warning" href="/san-pham/hien-thi">Làm mới</a>
+    </div>
     <br>
 </div><!-- End Bordered Tabs -->
 
