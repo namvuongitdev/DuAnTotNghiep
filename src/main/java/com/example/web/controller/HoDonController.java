@@ -1,6 +1,5 @@
 package com.example.web.controller;
 import com.example.web.model.HoaDon;
-import com.example.web.model.KhachHang;
 import com.example.web.model.TrangThaiHoaDon;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -130,7 +128,7 @@ public class HoDonController {
         model.addAttribute("totalPage",hoaDonService.pagination(page,10).getTotalPages());
         return "quanLyHoaDon/hoa-don";
     }
-    @GetMapping("/fillter")
+    @GetMapping("/filter")
     public String fillter(Model model,
                           @RequestParam(defaultValue = "0") Integer page,
                           @ModelAttribute("hoaDonFillter") HoaDonFilter filter) {
@@ -143,10 +141,14 @@ public class HoDonController {
     }
     @GetMapping("/detail/{id}")
     public String detail(Model model,
+                         @RequestParam(defaultValue = "0") Integer page,
                          @PathVariable("id") String id) {
-        List<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id));
+        Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
         model.addAttribute("hd",hoaDonService.getOne(id));
-        model.addAttribute("lst",lst);
+        model.addAttribute("lst",lst.getContent());
+        model.addAttribute("hoaDon",new HoaDon());
+        model.addAttribute("currentPage",page);
+        model.addAttribute("totalPage",lst.getTotalPages());
         return "quanLyHoaDon/chi-tiet-hoa-don";
     }
 

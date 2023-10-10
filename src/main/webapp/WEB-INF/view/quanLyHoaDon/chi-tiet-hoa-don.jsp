@@ -88,18 +88,6 @@
                             </tr>
                             </thead>
                             <tbody>
-<<<<<<< HEAD
-                            <c:forEach items="${lst}" var="hdct" varStatus="i">
-                                <tr>
-                                    <td>${i.index+1}</td>
-                                    <td>${hdct.sanPham.ten}</td>
-                                    <td>${hdct.sanPham.img}</td>
-                                    <td>${hdct.sanPham.soLuong}</td>
-                                    <td>${hdct.soLuong * hdct.sanPham.giaBan}</td>
-                                </tr>
-                            </c:forEach>
-=======
-<<<<<<< Updated upstream
                                 <c:forEach items="${lst}" var="hdct" varStatus="i">
                                     <tr>
                                         <td>${i.index+1}</td>
@@ -109,21 +97,6 @@
                                         <td>${hdct.soLuong * hdct.sanPham.giaBan}</td>
                                     </tr>
                                 </c:forEach>
-=======
-                            <c:forEach items="${lst}" var="hdct" varStatus="i">
-                                <tr>
-                                    <td>${i.index+1}</td>
-                                    <td>${hdct.chiTietSanPham.sanPham.ten}</td>
-                                    <td>
-                                        <img src="/image/${hdct.chiTietSanPham.sanPham.img}">
-                                    </td>
-                                    <td>${hdct.soLuong}</td>
-                                    <td><fmt:formatNumber pattern="#,###" value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/>
-                                    </td>
-                                </tr>
-                            </c:forEach>
->>>>>>> Stashed changes
->>>>>>> origin/tien
                             </tbody>
                         </table>
                         <!-- End Table with stripped rows -->
@@ -131,11 +104,11 @@
                         <div class="container-fluid mt-5">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
-                                    <li class="page-item ${currentPage<=0?"disabled":""}"><a class="page-link" href="/danh-muc/hien-thi/${currentPage-1}"><</a></li>
+                                    <li class="page-item ${currentPage<=0?"disabled":""}"><a class="page-link" href="/hoa-don/detail/${hd.id}/${currentPage-1}"><</a></li>
                                     <c:forEach begin="1" end="${totalPage}" var="i">
-                                        <li class="page-item"><a class="page-link" href="/danh-muc/hien-thi/${i-1}">${i}</a></li>
+                                        <li class="page-item"><a class="page-link" href="/hoa-don/detail/${hd.id}/${i-1}">${i}</a></li>
                                     </c:forEach>
-                                    <li class="page-item ${currentPage>=totalPage-1?"disabled":""}"><a class="page-link" href="/danh-muc/hien-thi/${currentPage+1}">></a></li>
+                                    <li class="page-item ${currentPage>=totalPage-1?"disabled":""}"><a class="page-link" href="/hoa-don/detail/${hd.id}/${currentPage+1}">></a></li>
                                 </ul>
                             </nav>
                         </div>

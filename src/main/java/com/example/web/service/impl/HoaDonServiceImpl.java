@@ -158,9 +158,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public List<HoaDonChiTiet> getHoaDonChiTiet(UUID id) {
-        System.out.println(hoaDonRepository.getHoaDonChiTiet(id));
-        return hoaDonRepository.getHoaDonChiTiet(id);
+    public Page<HoaDonChiTiet> getHoaDonChiTiet(UUID id,Integer pageNo , Integer size) {
+        Pageable pageable = PageRequest.of(pageNo, size);
+        return hoaDonRepository.getHoaDonChiTiet(id,pageable);
     }
 
     @Override
