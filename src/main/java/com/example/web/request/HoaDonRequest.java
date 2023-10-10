@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,14 +13,17 @@ import java.math.BigDecimal;
 @Setter
 public class HoaDonRequest {
 
-    private String hoaDon;
+    private String id;
     private String hoTen;
     private String sdt;
     private String diaChi;
     private BigDecimal phiVanChuyen;
-    private BigDecimal soTienThanhToan;
+    private String soTienThanhToan;
     private Boolean hinhThucThanhToan;
     private String moTa;
     private String idKhachHang;
+    private BigDecimal tongTien;
+    private Integer trangThai;
+    private Date ngayThanhToan;
 
 }

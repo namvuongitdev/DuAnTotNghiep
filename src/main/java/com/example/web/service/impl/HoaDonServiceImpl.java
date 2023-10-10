@@ -1,5 +1,4 @@
 package com.example.web.service.impl;
-
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
 import com.example.web.model.KhachHang;
@@ -22,9 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,7 +67,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(id));
         if (hoaDon.isPresent()) {
             List<HoaDonReponse> sanPhams = hoaDonRepository.getSanPhamHD(UUID.fromString(id), 0);
-            model.addAttribute("khachHangs", khachHangRepository.findAll());
             model.addAttribute("sanPhamGioHang", sanPhams);
             BigDecimal tongTien = hoaDonRepository.tongTien(hoaDon.get().getId());
             model.addAttribute("tongTien", tongTien);
@@ -104,13 +100,12 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
     @Override
     public String thanhToan(HoaDonRequest request, RedirectAttributes attributes) {
-        Date date = java.util.Calendar.getInstance().getTime();
-        Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(request.getHoaDon()));
-        BigDecimal tongTienHoaDon = hoaDonRepository.tongTien(UUID.fromString(request.getHoaDon()));
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(request.getId()));
+        BigDecimal tongTienHoaDon = hoaDonRepository.tongTien(hoaDon.get().getId());
         List<HoaDonChiTiet> ctsp = hoaDon.get().getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() != 1).collect(Collectors.toList());
         if (ctsp.isEmpty()) {
             attributes.addFlashAttribute("error", "giỏ hàng chưa có sản phẩm");
-            return "redirect:/hoa-don/detail?idHD=" + request.getHoaDon();
+            return "redirect:/hoa-don/detail?idHD=" + request.getId();
         } else {
             if (hoaDon.isPresent()) {
                 HoaDon hd = hoaDon.get();
@@ -124,10 +119,14 @@ public class HoaDonServiceImpl implements IHoaDonService {
                     hd.setMoTa(request.getMoTa());
                     hd.setSdt(request.getSdt());
                 } else {
-                    if (tongTienHoaDon.doubleValue() > request.getSoTienThanhToan().doubleValue()) {
+                    if (request.getSoTienThanhToan().isEmpty() || request.getSoTienThanhToan() == null) {
+                        attributes.addFlashAttribute("error", "chưa nhập tiền khách đưa");
+                        return "redirect:/hoa-don/detail?idHD=" + request.getId();
+                    } else if (tongTienHoaDon.doubleValue() > Double.parseDouble(request.getSoTienThanhToan())) {
                         attributes.addFlashAttribute("error", "số tiền khách đưa chưa đủ");
-                        return "redirect:/hoa-don/detail?idHD=" + request.getHoaDon();
+                        return "redirect:/hoa-don/detail?idHD=" + hd.getId();
                     } else {
+                        Date date = java.util.Calendar.getInstance().getTime();
                         hd.setMoTa(request.getMoTa());
                         hd.setTrangThai(TrangThaiHoaDon.DA_HOAN_THANH.getValue());
                         hd.setTongTien(tongTienHoaDon);
@@ -158,9 +157,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public Page<HoaDonChiTiet> getHoaDonChiTiet(UUID id,Integer pageNo , Integer size) {
+    public Page<HoaDonChiTiet> getHoaDonChiTiet(UUID id, Integer pageNo, Integer size) {
         Pageable pageable = PageRequest.of(pageNo, size);
-        return hoaDonRepository.getHoaDonChiTiet(id,pageable);
+        return hoaDonRepository.getHoaDonChiTiet(id, pageable);
     }
 
     @Override

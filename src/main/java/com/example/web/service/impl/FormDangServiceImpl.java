@@ -23,6 +23,11 @@ public class FormDangServiceImpl implements IFormDangService {
     }
 
     @Override
+    public List<KieuDang> getAll1() {
+        return repository.getAll1();
+    }
+
+    @Override
     public KieuDang getOne(UUID id) {
         return repository.getReferenceById(id);
     }

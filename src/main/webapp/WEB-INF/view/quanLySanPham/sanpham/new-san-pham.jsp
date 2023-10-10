@@ -14,6 +14,13 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <!-- Or for RTL support -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+
 </head>
 <body>
 <%--navbar--%>
@@ -24,12 +31,12 @@
         <jsp:include page="../../sidebar/sidebar.jsp"/>
         <div class="col py-3">
             <div class="pagetitle">
-                <h3>${title}</h3>
+                <h3>Sản phẩm</h3>
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
                         <li class="breadcrumb-item">Quản lý sản phẩm</li>
-                        <li class="breadcrumb-item"><a href="/san-pham/hien-thi" style="text-decoration: none; color: black">Sản phẩm</a></li>
+                        <li class="breadcrumb-item"><a href="/san-pham/hien-thi" style="text-decoration: none; color: black" onclick="clearLocalStorage()">Sản phẩm</a></li>
                         <li class="breadcrumb-item active" >${title}</li>
                     </ol>
                 </nav>
@@ -39,80 +46,84 @@
                     <div class="card-body row">
                         <h5 class="card-title">Thông tin sản phẩm</h5>
                         <br><br>
-                        <form action="/san-pham/add?id=${sp.id}" method="post" modelAttribute="${sanPham}">
+                        <form:form action="/san-pham/add?id=${sp.id}" method="post" modelAttribute="sanPham">
                             <div class="row">
                                 <div class="col-6">
-                                    <div class="mb-3 form-floating">
-                                        <input type="text" class="form-control" name="ten" id="ten"
-                                               value="${sp.ten}">
-                                        <label for="ten">Tên Sản Phẩm</label>
+                                    <div class="mb-3">
+                                        <label for="ten" class="form-label ">Tên sản phẩm</label>
+                                        <input type="text" class="form-control" name="ten" id="ten" value="${sp.ten}">
                                         <form:errors path="ten" cssStyle="color: red"/>
                                     </div>
-                                    <div class="mb-3 form-floating">
-                                        <input type="text" class="form-control" name="giaNhap" id="giaNhap"
-                                               value="${sp.giaNhap}">
-                                        <label for="giaNhap">Giá Nhập</label>
-                                        <form:errors path="giaNhap" cssStyle="color: red"/>
+                                    <div class="mb-3">
+                                        <label for="gioiTinh" class="form-label">Giới tính</label>
+                                        <select name="gioiTinh" class="form-select" id="gioiTinh">
+                                            <option value="true" ${sp.gioiTinh == true ? 'selected' : '' }>
+                                                Dành cho nam
+                                            </option>
+                                            <option value="false" ${sp.gioiTinh == false ? 'selected' : '' }>
+                                                Dành cho nữ
+                                            </option>
+                                        </select>
                                     </div>
-                                    <div class="mb-3 form-floating">
-                                        <input type="text" class="form-control" name="giaBan" id="giaBan"
-                                               value="${sp.giaBan}">
-                                        <label for="giaBan">Giá Bán</label>
+                                    <div class="mb-3">
+                                        <label for="giaBan" class="form-label">Giá bán</label>
+                                        <input type="text" class="form-control" name="giaBan" id="giaBan" value="${sp.giaBan}">
                                         <form:errors path="giaBan" cssStyle="color: red"/>
                                     </div>
-                                    <div class="mb-3 form-floating">
+                                    <div class="mb-3">
+                                        <label for="moTa" class="form-label">Mô tả</label>
                                         <textarea name="moTa" class="form-control" id="moTa">${sp.moTa}</textarea>
-                                        <label for="moTa">Mô Tả</label>
                                         <form:errors path="moTa" cssStyle="color: red"/>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row mb-3">
-                                        <div class="col-11 form-floating">
-                                            <select name="chatLieu" class="form-select" id="chatLieu">
+                                        <div class="col-11">
+                                            <label for="chatLieu" class="form-label">Chất liệu</label>
+                                            <select name="chatLieu" class="form-select" id="chatLieu" style="">
                                                 <c:forEach items="${listChatLieu}" var="chatLieu">
                                                     <option value="${chatLieu.id}" ${sp.chatLieu.id == chatLieu.id ? 'selected' : '' }>${chatLieu.ten}</option>
                                                 </c:forEach>
                                             </select>
-                                            <label for="chatLieu">Chất Liệu</label>
                                         </div>
-                                        <div class="col-1" style="padding-top: 20px">
+                                        <div class="col-1" style="padding-top: 40px">
                                             <a data-bs-toggle="modal" data-bs-target="#exampleModalChatLieu">
                                                 <i class="bi bi-plus-circle"></i>
                                             </a>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <div class="col-11 form-floating">
-                                            <select name="formDang" class="form-select" id="formDang">
+                                        <div class="col-11">
+                                            <label for="kieuDang" class="form-label">Kiểu dáng</label>
+                                            <select name="kieuDang" class="form-select" id="kieuDang">
                                                 <c:forEach items="${listFromDang}" var="dang">
-                                                    <option value="${dang.id}" ${sp.formDang.id == dang.id ? 'selected' : '' }>${dang.ten}</option>
+                                                    <option value="${dang.id}" ${sp.kieuDang.id == dang.id ? 'selected' : '' }>${dang.ten}</option>
                                                 </c:forEach>
                                             </select>
-                                            <label for="formDang">Kiểu Dáng</label>
                                         </div>
-                                        <div class="col-1" style="padding-top: 20px">
+                                        <div class="col-1" style="padding-top: 40px">
                                             <a data-bs-toggle="modal" data-bs-target="#exampleModalKieuDang">
                                                 <i class="bi bi-plus-circle"></i>
                                             </a>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <div class="col-11 form-floating">
+                                        <div class="col-11">
+                                            <label for="danhMuc" class="form-label">Danh mục</label>
                                             <select name="danhMuc" class="form-select" id="danhMuc">
                                                 <c:forEach items="${listDanhMuc}" var="dm">
                                                     <option value="${dm.id}" ${sp.danhMuc.id == dm.id ? 'selected' : '' }>${dm.ten}</option>
                                                 </c:forEach>
                                             </select>
-                                            <label for="danhMuc">Danh Mục</label>
                                         </div>
-                                        <div class="col-1" style="padding-top: 20px">
+                                        <div class="col-1" style="padding-top: 40px">
                                             <a data-bs-toggle="modal" data-bs-target="#exampleModalDanhMuc">
                                                 <i class="bi bi-plus-circle"></i>
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="mb-3 form-floating">
+                                    <div class="mb-3">
+                                        <label for="trangThai" class="form-label">Trạng Thái</label>
                                         <select name="trangThai" class="form-select" id="trangThai">
                                             <option value="0" ${sp.trangThai == 0 ? 'selected' : '' }>
                                                 Kinh doanh
@@ -121,17 +132,16 @@
                                                 Ngừng kinh doanh
                                             </option>
                                         </select>
-                                        <label for="trangThai">Trạng Thái</label>
                                     </div>
                                 </div>
                             </div>
                             <br>
                             <div style="text-align: center">
-                                <button class="btn btn-primary">Xác nhận
+                                <button class="btn btn-primary" onclick="clearLocalStorage()">Xác nhận
                                 </button>
-                                <a href="/san-pham/new" class="btn btn-warning">Làm Mới</a>
+                                <a href="/san-pham/new" class="btn btn-warning" onclick="clearLocalStorage()">Làm Mới</a>
                             </div>
-                        </form>
+                        </form:form>
                     </div>
                 </div><br><br>
                 <%-- chi tiết  sản phẩm--%>
@@ -277,7 +287,7 @@
                                         <div class="row">
                                             <div class="row">
                                                 <div class="mb-3">
-                                                    <label>Kích cỡ :</label>
+                                                    <label class="form-label">Kích cỡ :</label>
                                                     <select name="size" class="form-select">
                                                         <c:forEach items="${listKichCo}" var="kichCo">
                                                             <option value="${kichCo.id}">${kichCo.ten}</option>
@@ -287,7 +297,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="mb-3">
-                                                    <label>Màu sắc:</label>
+                                                    <label class="form-label">Màu sắc:</label>
                                                     <select name="mauSac" class="form-select">
                                                         <c:forEach items="${listMuaSac}" var="mauSac">
                                                             <option value="${mauSac.id}">
@@ -347,7 +357,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; }">
+                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; } saveInputValues()">
                                     Xác nhận
                                 </form:button>
                             </div>
@@ -373,7 +383,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; }">
+                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; } saveInputValues()">
                                     Xác nhận
                                 </form:button>
                             </div>
@@ -399,7 +409,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; }">
+                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; } saveInputValues()">
                                     Xác nhận
                                 </form:button>
                             </div>
@@ -451,7 +461,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; }">
+                                <form:button type="submit" class="btn btn-primary"  onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; }">
                                     Xác nhận
                                 </form:button>
                             </div>
@@ -462,10 +472,58 @@
         </div>
     </div>
 </div>
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script type="text/javascript">
     function addAnhCTSP(id) {
         document.getElementById("themAnh").innerHTML = `<form action=` + id + ` method="post" enctype="multipart/form-data">`
-            + `<input type='file' name='file'>` + `  <button class='btn btn-primary'>Xác Nhận</button>` + `</form>`}
+            + `<input type='file' name='file'>` + `  <button class='btn btn-primary'>Xác Nhận</button>` + `</form>`
+    }
+
+    // Lấy giá trị từ tất cả các ô input và textarea, và lưu chúng vào localStorage
+    function saveInputValues() {
+        var allInputs = document.querySelectorAll('input, textarea');
+
+        for (var i = 0; i < allInputs.length; i++) {
+            var inputId = allInputs[i].id;
+            var inputValue = allInputs[i].value;
+
+            localStorage.setItem(inputId, inputValue);
+        }
+    }
+
+    // Khôi phục giá trị từ localStorage vào các ô input và textarea
+    window.onload = function() {
+        var allInputs = document.querySelectorAll('input, textarea');
+
+        for (var i = 0; i < allInputs.length; i++) {
+            var inputId = allInputs[i].id;
+            var savedValue = localStorage.getItem(inputId);
+
+            if (savedValue) {
+                allInputs[i].value = savedValue;
+            }
+        }
+    }
+
+    function clearLocalStorage() {
+        localStorage.clear();
+    }
+
+    $(document).ready(function () {
+        $('#chatLieu').select2({
+            theme: "bootstrap-5"
+        });
+        $('#kieuDang').select2({
+            theme: 'bootstrap-5'
+        });
+        $('#danhMuc').select2({
+            theme: 'bootstrap-5'
+        });
+
+    });
 </script>
 </body>
 </html>

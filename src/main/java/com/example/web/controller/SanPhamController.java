@@ -99,7 +99,6 @@ public class SanPhamController {
         }else{
             listSanPham =  iSanPhamService.getAllByTenOrMa(value, page);
         }
-        System.out.println(11111);
         return listSanPham;
     }
 
@@ -116,19 +115,22 @@ public class SanPhamController {
                                  @ModelAttribute("chatLieu")ChatLieu chatLieu, @ModelAttribute("mauSac")MauSac mauSac,
                                  @ModelAttribute("size")Size size) {
         model.addAttribute("title", "Tạo mới");
-        model.addAttribute("listKichCo", sizeService.getAll());
-        model.addAttribute("listMauSac", mauSacService.getAll());
-        model.addAttribute("listChatLieu", iChatLieuService.getAll());
-        model.addAttribute("listFromDang", iFormDangService.getAll());
-        model.addAttribute("listDanhMuc", danhMucService.getAll());
+        danhSachThuocTinhSanPham(model);
         model.addAttribute("sanPham", new SanPham());
         return "quanLySanPham/sanpham/new-san-pham";
     }
 
     @PostMapping(value = "/add")
-    public String addSanPham(@Valid @ModelAttribute("sanPham") SanPham sanPham, BindingResult result, @RequestParam(required = false) String id) {
+    public String addSanPham(@Valid @ModelAttribute("sanPham") SanPham sanPham, BindingResult result, @RequestParam(required = false) String id, Model model) {
         if (result.hasErrors()) {
-            return "redirect:/san-pham/new";
+            model.addAttribute("chatLieu", new ChatLieu());
+            model.addAttribute("mauSac", new MauSac());
+            model.addAttribute("kieuDang", new KieuDang());
+            model.addAttribute("size", new Size());
+            model.addAttribute("danhMuc", new DanhMuc());
+            model.addAttribute("title", "Tạo mới");
+            danhSachThuocTinhSanPham(model);
+            return "quanLySanPham/sanpham/new-san-pham";
         } else {
             Date date = java.util.Calendar.getInstance().getTime();
             if (!id.isEmpty()) {
@@ -155,6 +157,7 @@ public class SanPhamController {
                              @ModelAttribute("size")Size size) {
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(id));
         danhSachThuocTinhSanPham(model);
+        model.addAttribute("title", "Sửa dữ liệu");
         model.addAttribute("listChiTietSanPhamBySP", chiTietSanPhamService.getChiTietSanPham(id));
         model.addAttribute("sanPham", new SanPham());
         model.addAttribute("chiTietSanPham", new ChiTietSanPham());
@@ -172,11 +175,11 @@ public class SanPhamController {
 
 
     public void danhSachThuocTinhSanPham(Model model) {
-        model.addAttribute("listChatLieu", iChatLieuService.getAll());
-        model.addAttribute("listFromDang", iFormDangService.getAll());
-        model.addAttribute("listKichCo", sizeService.getAll());
-        model.addAttribute("listMuaSac", mauSacService.getAll());
-        model.addAttribute("listDanhMuc", danhMucService.getAll());
+        model.addAttribute("listChatLieu", iChatLieuService.getAll1());
+        model.addAttribute("listFromDang", iFormDangService.getAll1());
+        model.addAttribute("listKichCo", sizeService.getAll1());
+        model.addAttribute("listMuaSac", mauSacService.getAll1());
+        model.addAttribute("listDanhMuc", danhMucService.getAll1());
     }
 
     @PostMapping("/modal-add-chat-lieu")
@@ -193,7 +196,7 @@ public class SanPhamController {
 
     @PostMapping("/modal-add-danh-muc")
     public String addDanhMuc(@ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                              @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
+                             @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
                              @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
         UUID uuid = UUID.randomUUID();
         danhMuc.setId(String.valueOf(uuid));
@@ -205,7 +208,7 @@ public class SanPhamController {
 
     @PostMapping("/modal-add-kieu-dang")
     public String addKieuDang(@ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                             @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
+                              @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
                               @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
         UUID uuid = UUID.randomUUID();
         kieuDang.setId(uuid);
@@ -217,8 +220,8 @@ public class SanPhamController {
 
     @PostMapping("/modal-add-size")
     public String addSize(@ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                              @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
-                              @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
+                          @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
+                          @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
         UUID id = UUID.randomUUID();
         size.setId(String.valueOf(id));
         size.setNgayTao(java.util.Calendar.getInstance().getTime());
@@ -229,8 +232,8 @@ public class SanPhamController {
 
     @PostMapping("/modal-add-mau-sac")
     public String addMauSac(@ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                          @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
-                          @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
+                            @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
+                            @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
         UUID uuid = UUID.randomUUID();
         mauSac.setId(uuid);
         mauSac.setTrangThai(1);

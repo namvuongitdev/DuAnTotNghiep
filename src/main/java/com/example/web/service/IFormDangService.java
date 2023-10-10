@@ -10,6 +10,8 @@ import java.util.UUID;
 public interface IFormDangService {
     List<KieuDang> getAll();
 
+    List<KieuDang> getAll1();
+
     KieuDang getOne(UUID id);
 
     void add(KieuDang kieuDang);

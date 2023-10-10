@@ -32,7 +32,6 @@
     }
 </style>
 <body>
-
 <%--navbar--%>
 <jsp:include page="../sidebar/navbar.jsp"/>
 <%--sidebar--%>
@@ -167,105 +166,11 @@
                         <c:choose>
                             <%-- đặt hàng--%>
                             <c:when test="${hoaDon.loaiHoaDon}">
-                                <div class="col l-3" style="margin-top: 45px; margin-bottom: 20px">
-                                    <div class="row">
-                                        <div class="col-sm-12"><label for="hoTen">Họ tên</label>
-                                            <input type="text" class="form-control" name="hoTen" id="hoTen"></div>
-                                    </div>
-                                    <div class="row">
-
-                                        <div class="col-sm-5">
-                                            <label for="sdt">Số điện thoại</label>
-                                            <input type="number" class="form-control" name="sdt" id="sdt">
-                                        </div>
-
-                                        <div class="col-sm-7">
-                                            <label for="diaChi">Địa chỉ</label>
-                                            <input type="text" class="form-control" name="diaChi" id="diaChi">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-5">
-                                            <label for="phiVanChuyen">Phí vận chuyến</label>
-                                            <input type="number" class="form-control" name="phiVanChuyen"
-                                                   id="phiVanChuyen">
-                                        </div>
-                                        <div class="col-sm-7">
-                                            <label for="ghiChu">Ghi chú</label>
-                                            <input type="text" class="form-control" name="moTa" id="ghiChu">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col l-3">
-                                    <h2>Thông tin thanh toán</h2>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="mySwitch"
-                                               name="darkmode" ${hoaDon.loaiHoaDon == true? 'checked' : ''}>
-                                        <label class="form-check-label" for="mySwitch" >Đặt hàng</label>
-                                    </div>
-                                    <div>
-                                <span>Tiền Hàng : <fmt:formatNumber pattern="#,###"
-                                                                    value="${tongTien}"></fmt:formatNumber></span>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-primary" id="xacNhanDatHang"
-                                        >Đặt hàng
-                                        </button>
-                                    </div>
-                                </div>
+                              <jsp:include page="dat-hang.jsp"></jsp:include>
                             </c:when>
                             <%--                                tại quầy--%>
                             <c:otherwise>
-                                <div class="col l-3"></div>
-                                <div class="col l-3">
-                                    <h2>Thông tin thanh toán</h2>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="mySwitch"
-                                               name="darkmode" ${hoaDon.loaiHoaDon == false ? '' : 'checked'}>
-                                        <label class="form-check-label" for="mySwitch">Đặt hàng</label>
-                                    </div>
-                                    <div>
-                                <span>Tiền Hàng : <fmt:formatNumber pattern="#,###"
-                                                                    value="${tongTien}"></fmt:formatNumber></span>
-                                    </div>
-                                    <div>
-                                        <h6>Khách cần trả : <fmt:formatNumber pattern="#,###"
-                                                                              value="${tongTien}"></fmt:formatNumber></h6>
-                                    </div>
-                                    <div>
-                                        <h6>Hình thức thanh toán : </h6>
-                                        <select name="hinhThucThanhToan">
-                                            <option value="true">Tiền mặt</option>
-                                            <option value="false">Chuyển Khoản</option>
-                                        </select>
-                                    </div>
-                                    <br>
-                                    <div id="hinhThucThanhToan">
-                                        <div class="mb-3 form-floating">
-                                            <input class="form-control" type="number" style="width: 50%"
-                                                   name="soTienThanhToan"
-                                                   id="tienKhachDua"
-                                                   onkeydown="getTienKhachDua({tienKhacDua:this.value , tongTien:`${tongTien}`})">
-                                            <label for="tienKhachDua">Tiền khách đưa</label>
-                                            <c:if test="${message != null}">
-                                                <span style="color: #E43535">${message}</span>
-                                            </c:if>
-                                            <span id="tienThuaCuaKhach" name="tienThuaTraKhach"
-                                                  style="color: #03AA28"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3 form-floating">
-                            <textarea name="moTa" class="form-control" id="moTa"
-                                      style="width: 50%"></textarea>
-                                        <label for="moTa">Mô Tả</label>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-primary" id="xacNhanThanhToan"
-                                        >Xác nhận thanh toán
-                                        </button>
-                                    </div>
-                                </div>
+                               <jsp:include page="tai-quay.jsp"></jsp:include>
                             </c:otherwise>
                         </c:choose>
                     </form>
@@ -320,7 +225,6 @@
         </div>
     </div>
 </div>
-
 <%--thêm sản phẩm--%>
 <div id="extraLargeModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-xl">
@@ -432,13 +336,13 @@
                         </div>
                         <div class="col-sm-2">
                             <label for="gioiTinh">Giới tính</label>
-                            <select name="gioiTih" id="gioiTinh" class="form-select"
-                                    onchange="filterTrangThai(this.value)">
+                            <select name="gioiTinh" id="gioiTinh" class="form-select"
+                                    onchange="filterGioiTinh(this.value)">
                                 <option value="">Tất cả</option>
-                                <option value="0">
+                                <option value="true">
                                     Nam
                                 </option>
-                                <option value="1">
+                                <option value="false">
                                     Nữ
                                 </option>
                             </select>

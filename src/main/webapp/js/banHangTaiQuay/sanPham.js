@@ -46,7 +46,8 @@ let data = {
     trangThai: "",
     sapXep: "",
     mauSac: "",
-    kichCo: ""
+    kichCo: "",
+    gioiTinh:""
 
 };
 
@@ -125,6 +126,11 @@ const filterColor = (id) => {
 const filterSize = (id) => {
     data.kichCo = id;
     api(1, data);
+}
+
+const filterGioiTinh = (id) => {
+    data.gioiTinh = id;
+    api(1 , data);
 }
 
 

@@ -24,5 +24,6 @@ public class SanPhamResponse {
     private Date ngayTao;
     private BigDecimal giaNhap;
     private BigDecimal giaBan;
+    private Boolean gioiTinh;
     private String moTa;
 }

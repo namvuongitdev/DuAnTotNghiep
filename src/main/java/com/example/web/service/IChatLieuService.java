@@ -9,6 +9,8 @@ public interface IChatLieuService {
 
     List<ChatLieu> getAll();
 
+    List<ChatLieu> getAll1();
+
     ChatLieu getOne(UUID id);
 
     void add(ChatLieu chatLieu);

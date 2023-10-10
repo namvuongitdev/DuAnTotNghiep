@@ -9,6 +9,8 @@ import java.util.UUID;
 public interface SizeService {
     List<Size> getAll();
 
+    List<Size> getAll1();
+
     Size getOne(String id);
 
     Size getOne1(UUID id);

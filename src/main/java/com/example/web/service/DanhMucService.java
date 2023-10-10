@@ -9,6 +9,8 @@ import java.util.UUID;
 public interface DanhMucService {
     List<DanhMuc> getAll();
 
+    List<DanhMuc> getAll1();
+
     DanhMuc getOne(String id);
 
     DanhMuc getOne1(UUID id);

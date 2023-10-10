@@ -46,4 +46,9 @@ public class MauSacServiceImpl implements IMauSacService {
         Pageable pageable = PageRequest.of(pageNo, size);
         return mauSacRepository.findAll(pageable);
     }
+
+    @Override
+    public List<MauSac> getAll1() {
+        return mauSacRepository.getAll1();
+    }
 }

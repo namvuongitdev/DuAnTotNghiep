@@ -41,6 +41,9 @@ public class ChiTietSanPham {
     @Column(name = "trangthai")
     private Integer trangThai;
 
+    @Column(name = "qrcode")
+    private String qrCode;
+
     @ManyToOne
     @JoinColumn(name = "idmausac")
     private MauSac mauSac;

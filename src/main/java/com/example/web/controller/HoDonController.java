@@ -106,7 +106,7 @@ public class HoDonController {
 
     @PostMapping("/thanh-toan")
     private String xacNhanThanhToan(@RequestParam String idHD , @RequestParam String  idKhachHang , @ModelAttribute("request") HoaDonRequest hoaDonRequest , RedirectAttributes attributes){
-        hoaDonRequest.setHoaDon(idHD);
+        hoaDonRequest.setId(idHD);
         hoaDonRequest.setIdKhachHang(idKhachHang);
         url = hoaDonService.thanhToan(hoaDonRequest , attributes);
         return url;

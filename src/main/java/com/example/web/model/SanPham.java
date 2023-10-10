@@ -60,7 +60,7 @@ public class SanPham {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ngaySua;
 
-    @NotNull(message = "Vui lòng điền giá nhập.")
+    //@NotNull(message = "Vui lòng điền giá nhập.")
     @Column(name = "gianhap")
     private BigDecimal giaNhap;
 
@@ -68,7 +68,7 @@ public class SanPham {
     @Column(name = "giaban")
     private BigDecimal giaBan;
 
-
+    @NotBlank(message = "Vui lòng điền mô tả.")
     @Column(name = "mota",length = 3000)
     private String moTa;
 
@@ -77,7 +77,7 @@ public class SanPham {
 
     @ManyToOne
     @JoinColumn(name = "id_Kieu_dang")
-    private KieuDang formDang;
+    private KieuDang kieuDang;
 
     @ManyToOne
     @JoinColumn(name = "id_chat_lieu")
@@ -96,5 +96,4 @@ public class SanPham {
         String formatted = formatter.format(this.giaBan);
         return formatted;
     }
-
 }

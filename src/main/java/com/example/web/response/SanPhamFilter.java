@@ -21,5 +21,6 @@ public class SanPhamFilter {
     private String mauSac;
     private String kichCo;
     private Integer trangThai;
+    private Boolean gioiTinh;
     private String sapXep;
 }
