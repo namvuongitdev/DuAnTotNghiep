@@ -41,7 +41,7 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> {
 =======
     @Query(value = "select hdct from HoaDon hd left join hd.hoaDonChiTiets hdct " +
             "left join hdct.chiTietSanPham ctsp where hd.id = ?1")
-    List<HoaDonChiTiet> getHoaDonChiTiet(UUID id );
+    Page<HoaDonChiTiet> getHoaDonChiTiet(UUID id ,Pageable pageable);
 
 >>>>>>> Stashed changes
 }

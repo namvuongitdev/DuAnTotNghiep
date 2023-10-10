@@ -42,15 +42,13 @@
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#bordered-home" type="button" role="tab" aria-controls="home" aria-selected="true">Tìm kiếm</button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Tìm kiếm nâng cao</button>
-                            </li>
                         </ul>
                         <div class="tab-content pt-2" id="borderedTabContent">
                             <br>
                             <%--tìm kiếm--%>
                             <div class="tab-pane fade show active" id="bordered-home" role="tabpanel" aria-labelledby="home-tab">
                                 <%--@elvariable id="hoaDonFillter" type=""--%>
+<<<<<<< Updated upstream
                                 <form:form action="/hoa-don/fillter" method="get" modelAttribute="hoaDonFillter">
                                     <div class="input-group" style="width: 500px">
                                         <input type="text" class="form-control" name="search" value="${fillter.search}" placeholder="Tìm theo mã hóa đơn" aria-label="Tìm theo mã hóa đơn" aria-describedby="button-addon2"/>
@@ -60,24 +58,30 @@
                             <%--tìm kiếm nâng cao--%>
                             <div class="tab-pane fade" id="bordered-profile" role="tabpanel" aria-labelledby="profile-tab">
 <<<<<<< Updated upstream
+=======
+                                <form:form action="/hoa-don/filter" method="get" modelAttribute="hoaDonFillter">
+                                <div class="input-group" style="width: 500px">
+                                    <input type="text" class="form-control" name="search" value="${fillter.search}" placeholder="Tìm theo mã hóa đơn" aria-label="Tìm theo mã hóa đơn" aria-describedby="button-addon2"/>
+                                </div>
+                                <%--tìm kiếm nâng cao--%>
+>>>>>>> Stashed changes
                                     <div class="row">
                                         <div class="col-4">
                                             <label class="col-form-label">Từ ngày</label>
-                                            <input type="date" value="null" name="dateBegin" class="form-control"/>
+                                            <input type="date" value="${fillter.dateBegin}" name="dateBegin" class="form-control"/>
                                         </div>
                                         <div class="col-4">
                                             <label class="col-form-label">Đến ngày</label>
-                                            <input type="date" value="null" name="dateEnd"  class="form-control"/>
+                                            <input type="date" value="${fillter.dateEnd}" name="dateEnd"  class="form-control"/>
                                         </div>
                                         <div class="col-4">
                                             <label class="col-form-label">Trạng thái đơn hàng</label>
                                             <select class="form-select" name="trangThai" aria-label="Default select example">
-                                                <option value=" " selected>Tất cả</option>
-                                                <option value="2" class="text-warning">Đang giao hàng</option>
-                                                <option value="1" class="text-success">Đã thanh toán</option>
-                                                <option value="3" class="text-danger">Đã hủy</option>
+                                                <option value="" selected>Tất cả</option>
+                                                <option value="2" ${fillter.trangThai == 2? 'selected':''} class="text-warning">Đang giao hàng</option>
+                                                <option value="1" ${fillter.trangThai == 1? 'selected':''} class="text-success">Đã thanh toán</option>
+                                                <option value="3" ${fillter.trangThai == 3? 'selected':''} class="text-danger">Đã hủy</option>
                                             </select>
-                                        </div>
                                     </div><br>
 =======
                                 <div class="row">
@@ -107,6 +111,7 @@
 
                                 </form:form>
                             </div>
+                            </div>
                             <br>
                         </div><!-- End Bordered Tabs -->
                         <!-- Table with stripped rows -->
@@ -118,6 +123,7 @@
                                 <th scope="col">Thời gian</th>
                                 <th scope="col">Khách hàng</th>
                                 <th scope="col">Tổng tiền hàng</th>
+                                <th scope="col">Tình trạng</th>
                                 <th scope="col">Thao tác</th>
                             </tr>
                             </thead>
@@ -142,6 +148,13 @@
                                 <tr>
                                     <td>${i.index+1}</td>
                                     <td>${hd.ma}</td>
+<<<<<<< Updated upstream
+=======
+                                    <td>${hd.ngayTao}</td>
+                                    <td>${hd.khachHang.hoTen}</td>
+                                    <td>${hd.tongTien}</td>
+                                    <td>${hd.trangThai==1?'Đã thanh toán':(hd.trangThai==2)?'Đang giao hàng':'Đã hủy'}</td>
+>>>>>>> Stashed changes
                                     <td>
                                         <fmt:formatDate value="${hd.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                     </td>

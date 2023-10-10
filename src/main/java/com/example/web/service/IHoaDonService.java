@@ -29,7 +29,7 @@ public interface IHoaDonService {
 
     HoaDon getOne(String id);
 
-    List<HoaDonChiTiet> getHoaDonChiTiet(UUID id );
+    Page<HoaDonChiTiet> getHoaDonChiTiet(UUID id,Integer pageNo , Integer size);
 
     Page<HoaDon> pagination(Integer pageNo , Integer size);
 
