@@ -10,10 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping()
@@ -43,37 +40,60 @@ public class TrangChuController {
     @Autowired
     private HttpServletRequest request;
 
+    private Page<SanPham> sanPhamPage = null;
+
     @GetMapping("trang-chu")
     public String hienThi(Model model, @RequestParam(defaultValue = "1") int page) {
-        if (page < 1) page = 1;
-        Pageable pageable = PageRequest.of(page - 1, 20);
-        Page<SanPham> list = iSanPhamService.findAll(pageable);
-        model.addAttribute("list", list);
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        sanPhamPage = iSanPhamService.findAll(pageable);
+        model.addAttribute("listSanPham", sanPhamPage);
+        danhSachThuocTinhSanPham(model);
+        model.addAttribute("filterSanPham", new SanPhamFilter());
+        model.addAttribute("url", "/san-pham/hien-thi?page=");
+        return "banHangOnlline/index";
+    }
+
+    public void danhSachThuocTinhSanPham(Model model) {
         model.addAttribute("listChatLieu", iChatLieuService.getAll());
         model.addAttribute("listFormDang", iFormDangService.getAll());
+        model.addAttribute("listKichCo", sizeService.getAll());
+        model.addAttribute("listMuaSac", mauSacService.getAll());
         model.addAttribute("listDanhMuc", danhMucService.getAll());
-        model.addAttribute("filterSanPham", new SanPhamFilter());
-        model.addAttribute("pageNo", page);
-        model.addAttribute("page", page != 1 ? page * 5 - 4 : page);
-        return "banHangOnlline/index";
     }
 
     @GetMapping("filter")
     public String filterSanPham(@RequestParam(defaultValue = "1") int page,
                                 @ModelAttribute("filterSanPham") SanPhamFilter filter,
                                 Model model) {
-        if (page < 1) page = 1;
-        Pageable pageable = PageRequest.of(page - 1, 20);
-        Page<SanPham> sanPhamPage = iSanPhamService.sanPhamFilter1(filter, pageable);
-        model.addAttribute("list", sanPhamPage);
-        model.addAttribute("filterSanPham", filter);
-        model.addAttribute("listChatLieu", iChatLieuService.getAll());
-        model.addAttribute("listFormDang", iFormDangService.getAll());
-        model.addAttribute("listDanhMuc", danhMucService.getAll());
-
-        model.addAttribute("pageNo", page);
-        model.addAttribute("page", page != 1 ? page * 5 - 4 : page);
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        sanPhamPage = iSanPhamService.sanPhamFilter(filter, pageable);
+        String url = "/san-pham/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
+        model.addAttribute("filter", filter);
+        model.addAttribute("listSanPham", sanPhamPage);
+        danhSachThuocTinhSanPham(model);
+        model.addAttribute("url", url);
         return "banHangOnlline/index";
+    }
+
+    @GetMapping({"/api-hien-thi"})
+    @ResponseBody
+    public Page<SanPham> apiSanPham(@RequestParam Integer page ,@RequestParam(required = false) String value) {
+        Page listSanPham = null;
+        Pageable pageable = PageRequest.of(page - 1, 20);
+        if(value.isEmpty()){
+            listSanPham = iSanPhamService.findAll(pageable);
+        }else{
+            listSanPham =  iSanPhamService.getAllByTenOrMa(value, page);
+        }
+        return listSanPham;
+    }
+
+    @PostMapping("/api-filter")
+    @ResponseBody
+    public Page<SanPham> filterSanPham(@RequestParam Integer page , @RequestBody SanPhamFilter filter) {
+        Pageable pageable = PageRequest.of(page - 1, 20);
+        Page listSanPham = iSanPhamService.sanPhamFilter(filter ,pageable);
+        return listSanPham;
     }
 
     @GetMapping("thoi-trang-nam")

@@ -1,0 +1,219 @@
+function getSanPham(page) {
+    const value = document.querySelector("#search-input").value;
+    let url = `/api-hien-thi?page=` + page + `&value=` + value;
+    if (value == null) {
+        url = `/api-hien-thi?page=` + page;
+    }
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            let pageNo = page <= 1 ? "disabled" : "";
+            let active;
+            let pageSize = page >= data.totalPages ? "disabled" : "";
+            let phanTrang = "";
+            // Lấy thẻ div với id="body"
+            const bodyDiv = document.getElementById("body");
+            // Tạo một div chứa danh sách sản phẩm và thêm lớp Bootstrap
+            const productDiv = document.createElement("div");
+            productDiv.className = "row product__filter"; // Thêm lớp Bootstrap cho div chứa danh sách sản phẩm
+            // Lặp qua danh sách sản phẩm và thêm từng sản phẩm vào div sản phẩm
+            for (let i = 0; i < data.content.length; i++) {
+                const sanPhamDiv = document.createElement("div");
+                // sanPhamDiv.className = "col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals"; // Thêm lớp Bootstrap cho sản phẩm
+                // Tạo nội dung sản phẩm và thêm lớp Bootstrap
+                sanPhamDiv.innerHTML = `
+                <div class="product__item" style="margin-left: 30px">
+                        <div class="product__item__pic">
+                            <img src="/anh/${data.content[i].img}" style="width:265px;height: 270px" >
+                            <ul class="product__hover">
+                                <li><a href="#"><img src="anh/eye.png" width="40px" alt=""></a></li>
+                                <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6>${data.content[i].ten}</h6>
+                            <a href="#" class="add-cart">+ Add To Cart</a>
+                            <h5>${data.content[i].giaFormat} đ</h5>
+                        </div>
+                </div>
+                `;
+                // Thêm sản phẩm vào div chứa danh sách sản phẩm
+                productDiv.appendChild(sanPhamDiv);
+            }
+                // Xóa toàn bộ nội dung hiện tại của div với id="body"
+                bodyDiv.innerHTML = "";
+                // Thêm div chứa danh sách sản phẩm vào div với id="body"
+                bodyDiv.appendChild(productDiv);
+
+            for (let i = 1; i <= data.totalPages; i++) {
+                active = page == i ? "active" : ""
+                phanTrang +=
+                    `<li class="page-item" >
+                                <a class="page-link ` + active + `" name="` + i + `" onclick="page(this.name)" >` + i + `</a>
+                                </li>`
+            }
+            // document.getElementById("body").innerHTML = sanPham;
+            document.getElementById("phanTrang").innerHTML = `<li class="page-item  ` + pageNo + `">
+                                <a class="page-link" name="` + (Number.parseInt(page) - Number.parseInt(1)) + `" onclick="previous(this.name)"><</a>
+                            </li>` + phanTrang + ` <li class="page-item ` + pageSize + `">
+                          <a class="page-link" name="` + (Number.parseInt(page) + Number.parseInt(1)) + `" onclick="next(this.name)" > > </a></li>`;
+        });
+}
+
+let data = {
+    search: "",
+    danhMuc: "",
+    chatLieu: "",
+    kieuDang: "",
+    trangThai: "",
+    sapXep: "",
+    mauSac: "",
+    kichCo: ""
+
+};
+
+function api(page, data) {
+    const options = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    };
+    fetch('/api-filter?page=' + page, options)
+        .then(response => response.json())
+        .then(data => {
+            let pageNo = page <= 1 ? "disabled" : "";
+            let active;
+            let pageSize = page >= data.totalPages ? "disabled" : "";
+            let phanTrang = "";
+            // Lấy thẻ div với id="body"
+            const bodyDiv = document.getElementById("body");
+            // Tạo một div chứa danh sách sản phẩm và thêm lớp Bootstrap
+            const productDiv = document.createElement("div");
+            productDiv.className = "row product__filter"; // Thêm lớp Bootstrap cho div chứa danh sách sản phẩm
+            // Lặp qua danh sách sản phẩm và thêm từng sản phẩm vào div sản phẩm
+            for (let i = 0; i < data.content.length; i++) {
+                const sanPhamDiv = document.createElement("div");
+                // sanPhamDiv.className = "col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals"; // Thêm lớp Bootstrap cho sản phẩm
+                // Tạo nội dung sản phẩm và thêm lớp Bootstrap
+                sanPhamDiv.innerHTML = `
+                <div class="product__item" style="margin-left: 30px">
+                        <div class="product__item__pic">
+                            <img src="/anh/${data.content[i].img}" style="width:265px;height: 270px" >
+                            <ul class="product__hover">
+                                <li><a href="#"><img src="anh/eye.png" width="40px" alt=""></a></li>
+                                <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6>${data.content[i].ten}</h6>
+                            <a href="#" class="add-cart">+ Add To Cart</a>
+                            <h5>${data.content[i].giaFormat} đ</h5>
+                        </div>
+                </div>
+                `;
+                // Thêm sản phẩm vào div chứa danh sách sản phẩm
+                productDiv.appendChild(sanPhamDiv);
+            }
+            // Xóa toàn bộ nội dung hiện tại của div với id="body"
+            bodyDiv.innerHTML = "";
+            // Thêm div chứa danh sách sản phẩm vào div với id="body"
+            bodyDiv.appendChild(productDiv);
+            for (let i = 1; i <= data.totalPages; i++) {
+                console.log(i);
+                active = page == i ? "active" : ""
+                phanTrang +=
+                    `<li class="page-item" >
+                                <a class="page-link ` + active + `" name="` + i + `" onclick="pageFilter(this.name)" >` + i + `</a>
+                                </li>`
+            }
+            document.getElementById("phanTrang").innerHTML = `<li class="page-item  ` + pageNo + `">
+                                <a class="page-link" name="` + (Number.parseInt(page) - Number.parseInt(1)) + `" onclick="previousFilter(this.name)"><</a>
+                            </li>` + phanTrang + ` <li class="page-item ` + pageSize + `">
+                          <a class="page-link" name="` + (Number.parseInt(page) + Number.parseInt(1)) + `" onclick="nextFilter(this.name)" > > </a></li>`;
+        });
+}
+
+function filterDanhMuc(id) {
+    data.danhMuc = id;
+    api(1, data);
+    console.log(data)
+}
+
+const filterChatLieu = (id) => {
+    data.chatLieu = id
+    api(1, data);
+    console.log(data)
+}
+
+const filterKieuDang = (id) => {
+    data.kieuDang = id
+    api(1, data);
+}
+
+const filterTrangThai = (id) => {
+    data.trangThai = id
+    api(1, data);
+}
+
+const filterSapXep = (value) => {
+    data.sapXep = value
+    api(1, data);
+}
+
+const filterColor = (id) => {
+    data.mauSac = id;
+    api(1, data);
+}
+
+const filterSize = (id) => {
+    data.kichCo = id;
+    api(1, data);
+}
+
+function previous(page) {
+    getSanPham(page);
+}
+
+function next(page) {
+    getSanPham(page);
+}
+
+function page(page) {
+    getSanPham(page);
+}
+
+function previousFilter(page) {
+    api(page, data)
+}
+
+function nextFilter(page) {
+    api(page, data)
+}
+
+function pageFilter(page) {
+    api(page, data)
+}
+
+document.getElementById('clear').addEventListener('click', () => {
+   document.getElementById('search-input').value = "";
+    getSanPham(1);
+})
+
+function timKiem() {
+    getSanPham(1);
+}
+
+function updateSoLuong(soLuong, sanPham) {
+    const soLuongTon = +sanPham.soLuongHDCT + +sanPham.soLuongCTSP;
+    if (soLuong < 0) {
+        alert("số lượng phải  lớn hơn 0");
+    } else if (soLuong > soLuongTon) {
+        alert("số lượng hiện tại trong của hàng không đủ");
+        window.location.reload();
+    } else {
+        window.location.href = "/hoa-don/update-san-pham?idHD=" + sanPham.id + "&soLuong=" + Number.parseInt(soLuong);
+    }
+}
+
