@@ -45,7 +45,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
         Date date = java.util.Calendar.getInstance().getTime();
         HoaDon hoaDon = HoaDon.builder()
-                .trangThai(TrangThaiHoaDon.CHO_XAC_NHAN.getValue())
+                .trangThai(TrangThaiHoaDon.HOA_DON_CHO.getValue())
                 .ngayTao(date)
                 .ma("HD" + (hoaDonRepository.findAll().size() + 1))
                 .loaiHoaDon(false)
@@ -57,9 +57,8 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public Page<Object[]> getAllByTrangThai(Integer trangThai, Pageable pageable) {
-        Page<Object[]> listHoaDonCho = hoaDonRepository.findAllByTrangThai_hoaDon(trangThai, 0, pageable);
-        return listHoaDonCho;
+    public Page<Object[]> findByHoaDonCho(Integer trangThai, Pageable pageable) {
+       return hoaDonRepository.findAllByHoaDonCho(trangThai , pageable);
     }
 
     @Override

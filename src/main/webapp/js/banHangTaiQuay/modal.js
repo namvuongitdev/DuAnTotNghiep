@@ -18,6 +18,7 @@ let btn = document.getElementById("myBtn");
 
 let span = document.getElementById("close_ctsp");
 
+
 let modalQrcode = document.getElementById("modalQrcode");
 
 let btnQrcode = document.getElementById("myBtnQr");

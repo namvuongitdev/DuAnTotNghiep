@@ -62,8 +62,6 @@
                     <tr>
                         <th scope="col">STT</th>
                         <th scope="col">Mã</th>
-                        <th scope="col">Số sản phẩm</th>
-                        <th scope="col">Tổng tiền</th>
                         <th scope="col">Ngày tạo</th>
                         <th scope="col">Trạng thái</th>
                     </tr>
@@ -73,16 +71,12 @@
                         <tr>
                             <th scope="row">${i.index+page}</th>
                             <td>${hoaDon[1]}</td>
-                            <td><fmt:formatNumber pattern="#,###" value="${hoaDon[2]}">
-
-                            </fmt:formatNumber></td>
-                            <td>${hoaDon[3]}</td>
-                            <td><fmt:formatDate value="${hoaDon[5]}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                            <td><fmt:formatDate value="${hoaDon[2]}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                             <td>
                                 <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
                                         type="button"
-                                        class="${hoaDon[4] == 0 ? 'btn btn-primary' : ''}">
-                                        ${hoaDon[4] == 0 ? 'Đang chờ' : ''}</button>
+                                        class="${hoaDon[3] == 0 ? 'btn btn-primary' : ''}">
+                                        ${hoaDon[3] == 0 ? 'Đang chờ' : ''}</button>
                             </td>
                             <td>
                                 <a href="/hoa-don/detail?idHD=${hoaDon[0]}" class="btn btn-outline-success">Chi tiết</a>

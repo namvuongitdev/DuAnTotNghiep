@@ -23,12 +23,17 @@
     </svg>
 </head>
 <style>
-    label {
-        color: #03AA28;
-    }
-
     .pagetitle nav .breadcrumb .breadcrumb-item a:hover {
         box-shadow: 0 3px;
+    }
+
+    #thongTinKhachHang{
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    #thongTinKhachHang:hover{
+        background-color: #f5f5f5;
     }
 </style>
 <body>
@@ -131,7 +136,7 @@
                             <br>
                             <div class="row">
                                 <h4>Thông tin khách hàng</h4>
-                                <div class="col-2">
+                                <div class="col-sm-2">
                                     <a type="button" class="btn btn-secondary"
                                        id="btnKhachHang"
                                     >
@@ -139,12 +144,19 @@
                                     </a>
                                 </div>
                                 <c:if test="${khachHang != null}">
-                                    <div class="col-2">
+                                    <div class="col-sm-2">
                                         <button class="btn btn-danger"
                                                 onclick="window.location.href = '/hoa-don/detail?idHD=${hoaDon.id}'">Huỷ
                                             chọn
                                         </button>
                                     </div>
+                                    <c:if test="${hoaDon.loaiHoaDon}">
+                                        <div class="col-sm-2">
+                                            <button class="btn btn-secondary" id="diaChiKhachHang">
+                                                Đia Chỉ
+                                            </button>
+                                        </div>
+                                    </c:if>
                                 </c:if>
                             </div>
                             <hr>
@@ -429,7 +441,23 @@
         </div>
     </div>
 </div>
-
+<%-- địa chỉ khách hàng--%>
+<div id="modalDiaChiKhachHang" class="modal">
+    <div class="modal-content-1">
+        <span class="close" id="close_diaChiKhachHang">&times;</span>
+        <div class="row">
+             <c:if test="${khachHang.diaChis != null}">
+                 <c:forEach items="${khachHang.diaChis}" var="thongTinKhachHang">
+                     <div class="row" id="thongTinKhachHang" onclick="findDiaChi({hoTen:`${thongTinKhachHang.hoTen}` , sdt:`${thongTinKhachHang.sdt}` , diaChi:`${thongTinKhachHang.diaChi}`})">
+                         <div><p>Họ tên : ${thongTinKhachHang.hoTen}</p></div>
+                         <div><p>Số điện thoại : ${thongTinKhachHang.sdt}</p></div>
+                         <div><p>Địa chỉ : ${thongTinKhachHang.diaChi}</p></div>
+                     </div>
+                 </c:forEach>
+             </c:if>
+        </div>
+    </div>
+</div>
 </body>
 <script src="/js/banHangTaiQuay/modal.js">
 </script>
@@ -437,4 +465,5 @@
 <script src="/js/banHangTaiQuay/chiTietSanPham.js"></script>
 <script src="/js/banHangTaiQuay/thanhToan.js"></script>
 <script src="/js/banHangTaiQuay/khachHang.js"></script>
+<script src="/js/banHangTaiQuay/diaChiKhachHang.js"></script>
 </html>

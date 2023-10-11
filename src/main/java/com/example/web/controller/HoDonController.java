@@ -50,7 +50,7 @@ public class HoDonController {
     public String hoaDon(Model model, @RequestParam(defaultValue = "1") Integer page) {
         if (page < 1) page = 1;
         Pageable pageable = PageRequest.of(page - 1, 5);
-        Page<Object[]> hoaDons = hoaDonService.getAllByTrangThai(TrangThaiHoaDon.CHO_XAC_NHAN.getValue(), pageable);
+        Page<Object[]> hoaDons = hoaDonService.findByHoaDonCho(TrangThaiHoaDon.HOA_DON_CHO.getValue() ,pageable);
         model.addAttribute("pageNo", page);
         model.addAttribute("hoaDons", hoaDons);
         model.addAttribute("page", page != 1 ? page * 5 - 4 : page);

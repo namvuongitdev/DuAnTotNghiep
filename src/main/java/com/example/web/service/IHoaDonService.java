@@ -15,7 +15,7 @@ public interface IHoaDonService {
 
     String addHoaDon();
 
-    Page<Object[]> getAllByTrangThai(Integer trangThai , Pageable pageable);
+    Page<Object[]> findByHoaDonCho(Integer trangThaiHD ,Pageable pageable);
 
     String getHoaDonById(Model model ,  String id);
 
