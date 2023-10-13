@@ -31,6 +31,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
+@ToString
 @Table(name = "san_pham")
 public class SanPham {
 
@@ -96,4 +97,5 @@ public class SanPham {
         String formatted = formatter.format(this.giaBan);
         return formatted;
     }
+
 }

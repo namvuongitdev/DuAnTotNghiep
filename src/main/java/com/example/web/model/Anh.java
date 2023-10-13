@@ -36,4 +36,32 @@ public class Anh {
     @ManyToOne
     @JoinColumn(name = "idctsp")
     private ChiTietSanPham chiTietSanPham;
+
+    public Anh(String ten) {
+        this.ten = ten;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getTen() {
+        return ten;
+    }
+
+    public void setTen(String ten) {
+        this.ten = ten;
+    }
+
+    public ChiTietSanPham getChiTietSanPham() {
+        return chiTietSanPham;
+    }
+
+    public void setChiTietSanPham(ChiTietSanPham chiTietSanPham) {
+        this.chiTietSanPham = chiTietSanPham;
+    }
 }

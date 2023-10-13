@@ -26,9 +26,9 @@ function getSanPham(page) {
                         <div class="product__item__pic">
                             <img src="/anh/${data.content[i].img}" style="width:265px;height: 270px" >
                             <ul class="product__hover">
-                                <li><a href="#"><img src="anh/eye.png" width="40px" alt=""></a></li>
-                                <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
+                            <form method="get" action="admin/chi-tiet-san-pham/${data.content[i].id}">
+                                <li><a href="/chi-tiet-san-pham-onl?id=${data.content[i].id}"><img src="anh/eye.png" width="40px" alt=""></a></li>
+                            </form>
                             </ul>
                         </div>
                         <div class="product__item__text">
@@ -102,8 +102,6 @@ function api(page, data) {
                             <img src="/anh/${data.content[i].img}" style="width:265px;height: 270px" >
                             <ul class="product__hover">
                                 <li><a href="#"><img src="anh/eye.png" width="40px" alt=""></a></li>
-                                <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
                             </ul>
                         </div>
                         <div class="product__item__text">

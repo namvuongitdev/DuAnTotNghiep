@@ -20,6 +20,8 @@ public interface ISanPhamService {
 
     Page<SanPham> getAllByTenOrMa(String value  , Integer page);
 
+    List<SanPham> theoTen(String ten,String ten2,String ten3 );
+
     Page<SanPham> findAllGender(Pageable pageable,boolean gioi_tinh);
 
 }

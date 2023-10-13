@@ -29,4 +29,7 @@ public class ChiTietSanPhamResponse {
 
     private DanhMucResponse danhMuc;
 
+    public ChiTietSanPhamResponse(UUID id) {
+        this.id = id;
+    }
 }

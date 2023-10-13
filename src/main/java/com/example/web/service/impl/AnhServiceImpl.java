@@ -2,6 +2,7 @@ package com.example.web.service.impl;
 import com.example.web.model.Anh;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.repository.IAnhRepository;
+import com.example.web.response.AnhResponse;
 import com.example.web.service.IAnhService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,11 @@ public class AnhServiceImpl implements IAnhService {
     @Override
     public void reomveAnhById(String id) {
         anhRepository.deleteById(UUID.fromString(id));
+    }
+
+    @Override
+    public List<Anh> getTenAnh(UUID idSanPham) {
+        return anhRepository.getTenAnh(idSanPham);
     }
 
 }

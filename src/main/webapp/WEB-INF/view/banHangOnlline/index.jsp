@@ -114,7 +114,7 @@
             </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
-                    <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
+                    <a href="/gio-hang-onl"><img src="img/icon/cart.png" alt=""> <span></span></a>
                 </div>
             </div>
         </div>
@@ -183,7 +183,7 @@
                     </div>
                     <div class="banner__item__text">
                         <h2>Men</h2>
-                        <a href="/thoi-trang-nam">Shop now</a>
+                        <a href="/thoi-trang-nam/vi">Shop now</a>
                     </div>
                 </div>
             </div>
