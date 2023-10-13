@@ -83,6 +83,8 @@
                                 <th scope="col">STT</th>
                                 <th scope="col">Tên sản phẩm</th>
                                 <th scope="col">Hình ảnh</th>
+                                <th scope="col">Màu sắc</th>
+                                <th scope="col">Kích cỡ</th>
                                 <th scope="col">Số lượng</th>
                                 <th scope="col">Tổng giá</th>
                             </tr>
@@ -91,10 +93,14 @@
                                 <c:forEach items="${lst}" var="hdct" varStatus="i">
                                     <tr>
                                         <td>${i.index+1}</td>
-                                        <td>${hdct.sanPham.ten}</td>
-                                        <td>${hdct.sanPham.img}</td>
-                                        <td>${hdct.sanPham.soLuong}</td>
-                                        <td>${hdct.soLuong * hdct.sanPham.giaBan}</td>
+                                        <td>${hdct.chiTietSanPham.sanPham.ten}</td>
+                                        <td>
+                                            <img src="/image/${hdct.chiTietSanPham.sanPham.img}">
+                                        </td>
+                                        <td>${hdct.chiTietSanPham.mauSac.ten}</td>
+                                        <td>${hdct.chiTietSanPham.size.ten}</td>
+                                        <td>${hdct.soLuong}</td>
+                                        <td><fmt:formatNumber pattern="#,###" value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/>
                                     </tr>
                                 </c:forEach>
                             </tbody>

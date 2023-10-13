@@ -37,4 +37,7 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
             "left join hdct.chiTietSanPham ctsp where hd.id = ?1")
     Page<HoaDonChiTiet> getHoaDonChiTiet(UUID id ,Pageable pageable);
 
+    @Query(value = "update hoa_don set ho_ten =?1,dia_chi=?2,sdt=?3,tong_tien=?4 where id=?5",nativeQuery = true)
+    String updateHoaDonById(String hoTen,String diaChi,String sdt,String tongTien,String idHd);
+
 }
