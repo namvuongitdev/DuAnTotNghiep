@@ -13,4 +13,24 @@ public class AnhResponse {
 
     private UUID id;
     private String ten;
+
+    public AnhResponse(String ten) {
+        this.ten = ten;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getTen() {
+        return ten;
+    }
+
+    public void setTen(String ten) {
+        this.ten = ten;
+    }
 }

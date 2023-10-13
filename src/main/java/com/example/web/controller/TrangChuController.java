@@ -1,6 +1,8 @@
 package com.example.web.controller;
 
+import com.example.web.model.Anh;
 import com.example.web.model.SanPham;
+import com.example.web.response.AnhResponse;
 import com.example.web.response.SanPhamFilter;
 import com.example.web.service.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,8 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @Controller
-@RequestMapping()
+@RequestMapping("")
 public class TrangChuController {
 
     @Autowired
@@ -38,11 +43,14 @@ public class TrangChuController {
     ISanPhamService iSanPhamService;
 
     @Autowired
+    IAnhService iAnhService;
+
+    @Autowired
     private HttpServletRequest request;
 
     private Page<SanPham> sanPhamPage = null;
 
-    @GetMapping("trang-chu")
+    @GetMapping("/trang-chu")
     public String hienThi(Model model, @RequestParam(defaultValue = "1") int page) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         sanPhamPage = iSanPhamService.findAll(pageable);
@@ -96,7 +104,7 @@ public class TrangChuController {
         return listSanPham;
     }
 
-    @GetMapping("thoi-trang-nam")
+    @GetMapping("thoi-trang-nam/vi")
     public String thoiTrangNam(Model model, @RequestParam(defaultValue = "1") int page) {
         if (page < 1) page = 1;
         Pageable pageable = PageRequest.of(page - 1, 12);
@@ -118,6 +126,18 @@ public class TrangChuController {
         model.addAttribute("pageNo", page);
         model.addAttribute("page", page != 1 ? page * 5 - 4 : page);
         return "banHangOnlline/index";
+    }
+
+    @GetMapping("/chi-tiet-san-pham-onl")
+    public String chiTiet(Model model,@RequestParam (name = "id") String
+                          idSanPham){
+        List<Anh> listAnh = iAnhService.getTenAnh(UUID.fromString(idSanPham));
+        SanPham sanPham = iSanPhamService.getOne(UUID.fromString(idSanPham));
+        List<SanPham> listSanPham = iSanPhamService.theoTen("%"+ sanPham.getTen(),"%"+sanPham.getTen()+"%",sanPham.getTen()+"%");
+        model.addAttribute("sanPham",sanPham);
+        model.addAttribute("listAnh",listAnh);
+        model.addAttribute("listSanPham",listSanPham);
+        return "banHangOnlline/chitiet";
     }
 
 

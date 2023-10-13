@@ -112,6 +112,11 @@ public class SanPhamServiceImpl implements ISanPhamService {
     }
 
     @Override
+    public List<SanPham> theoTen(String ten, String ten2, String ten3) {
+        return iSanPhamRepository.theoTen(ten,ten2,ten3);
+    }
+
+    @Override
     public Page<SanPham> findAllGender(Pageable pageable, boolean gioi_tinh) {
         return iSanPhamRepository.findAllGender(pageable,gioi_tinh);
     }

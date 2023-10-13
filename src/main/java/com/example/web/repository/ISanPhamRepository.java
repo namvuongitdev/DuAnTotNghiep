@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 import java.util.UUID;
 
 public interface ISanPhamRepository extends JpaRepository<SanPham, UUID>  , JpaSpecificationExecutor<SanPham> {
@@ -14,6 +16,10 @@ public interface ISanPhamRepository extends JpaRepository<SanPham, UUID>  , JpaS
 
     @Override
     Page<SanPham> findAll(Pageable pageable);
+
+    @Query(value = "\n" +
+            "select top 8 * from san_pham where ten like ?1 or ten like ?2 or ten like ?3",nativeQuery = true)
+    List<SanPham> theoTen(String ten,String ten2,String ten3 );
 
 
     @Query(value = "select  sanPham from SanPham sanPham where sanPham.ten like ?1 or sanPham.ma like ?1 ")
