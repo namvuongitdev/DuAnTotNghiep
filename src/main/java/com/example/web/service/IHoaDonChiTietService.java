@@ -13,4 +13,8 @@ public interface IHoaDonChiTietService {
 
     HoaDonChiTiet getOne(String id);
 
+    String addSanPhamHoaDonChiTietKhiUpdate(String idCTSP , String idHD ,Integer soLuong);
+
+   String updateSoLuongSanPhamHoaDonChiTietKhiUpdate(String idHDCT, String soLuong);
+
 }

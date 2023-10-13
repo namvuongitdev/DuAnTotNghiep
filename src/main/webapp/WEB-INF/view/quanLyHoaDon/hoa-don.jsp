@@ -76,13 +76,13 @@
                                             <select class="form-select" name="trangThai"
                                                     aria-label="Default select example">
                                                 <option value="" selected>Tất cả</option>
-                                                <option value="2" ${fillter.trangThai == 2? 'selected':''}
+                                                <option value="3" ${fillter.trangThai == 3? 'selected':''}
                                                         class="text-warning">Đang giao hàng
                                                 </option>
-                                                <option value="1" ${fillter.trangThai == 1? 'selected':''}
+                                                <option value="4" ${fillter.trangThai == 4? 'selected':''}
                                                         class="text-success">Đã thanh toán
                                                 </option>
-                                                <option value="3" ${fillter.trangThai == 3? 'selected':''}
+                                                <option value="5" ${fillter.trangThai == 5? 'selected':''}
                                                         class="text-danger">Đã hủy
                                                 </option>
                                             </select>
@@ -121,19 +121,17 @@
                                 <td>${hd.ngayTao}</td>
                                 <td>${hd.khachHang.hoTen}</td>
                                 <td>${hd.tongTien}</td>
-                                <td>${hd.trangThai==1?'Đã thanh toán':(hd.trangThai==2)?'Đang giao hàng':'Đã hủy'}</td>
-                                <td>
-                                    <fmt:formatDate value="${hd.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/>
-                                </td>
-                                <td>${hd.khachHang.hoTen}</td>
-                                <td>
-                                    <fmt:formatNumber pattern="#,###" value="${hd.tongTien}"/>
-                                </td>
+                                <td>${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':'Đã hủy'}</td>
                                 <td>
                                     <button type="button" class="btn btn-success" title="Xem Chi Tiết"
                                             onclick="myFunction()">
                                         <a class="text-white" style="text-decoration: none"
                                            href="/hoa-don/detail/${hd.id}"><i class="bi bi-pencil"></i></a>
+                                    </button>
+                                    <button type="button" class="btn btn-success" title="Cập nhật"
+                                            onclick="myFunction()">
+                                        <a class="text-white" style="text-decoration: none"
+                                           href="/hoa-don/view-update/${hd.id}"><i class="bi bi-pencil"></i></a>
                                     </button>
                                 </td>
                             </tr>
@@ -149,7 +147,7 @@
                                                                                          href="${url}${currentPage-1}"><</a>
                                 </li>
                                 <c:forEach begin="1" end="${totalPage}" var="i">
-                                    <li class="page-item"><a class="page-link" href="${url}${i-1}">${i}</a></li>
+                                    <li class="page-item"><a class="page-link ${lst1+1==i?'active':''}" href="${url}${i-1}">${i}</a></li>
                                 </c:forEach>
                                 <li class="page-item ${currentPage>=totalPage-1?"disabled":""}"><a class="page-link"
                                                                                                    href="${url}${currentPage+1}">></a>

@@ -1,5 +1,6 @@
 package com.example.web.controller;
 import com.example.web.model.HoaDon;
+import com.example.web.model.KhachHang;
 import com.example.web.model.TrangThaiHoaDon;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -116,6 +116,7 @@ public class HoDonController {
     public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page) {
         model.addAttribute("hoaDonFillter",new HoaDonFilter());
         model.addAttribute("lst",hoaDonService.pagination(page,10).getContent());
+        model.addAttribute("lst1",hoaDonService.pagination(page,10).getNumber());
         model.addAttribute("currentPage",page);
         model.addAttribute("totalPage",hoaDonService.pagination(page,10).getTotalPages());
         return "quanLyHoaDon/hoa-don";
@@ -146,10 +147,33 @@ public class HoDonController {
         Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
         model.addAttribute("hd",hoaDonService.getOne(id));
         model.addAttribute("lst",lst.getContent());
-        model.addAttribute("hoaDon",new HoaDon());
+        model.addAttribute("lst1",lst.getNumber());
         model.addAttribute("currentPage",page);
         model.addAttribute("totalPage",lst.getTotalPages());
         return "quanLyHoaDon/chi-tiet-hoa-don";
+    }
+    @GetMapping("/view-update/{id}")
+    public String viewUpdate(Model model,
+                         @RequestParam(defaultValue = "0") Integer page,
+                         @PathVariable("id") String id) {
+        Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
+        model.addAttribute("hd",hoaDonService.getOne(id));
+        model.addAttribute("lst",lst.getContent());
+        model.addAttribute("hoaDon",new HoaDon());
+        model.addAttribute("khachHang",new KhachHang());
+        model.addAttribute("currentPage",page);
+        model.addAttribute("totalPage",lst.getTotalPages());
+        return "quanLyHoaDon/update-hoa-don";
+    }
+    @GetMapping("/update")
+    public String updateHoaDonChiTiet(@RequestParam("ctsp") String idCTSP, @RequestParam("soLuong") String soLuong, @RequestParam("idHD") String idHD) {
+        url = hoaDonChiTietService.addSanPhamHoaDonChiTietKhiUpdate(idCTSP,idHD,Integer.parseInt(soLuong));
+        return url;
+    }
+    @GetMapping("/update-so-luong")
+    public String updateSoLuongSanPhamHoaDonChiTiet(@RequestParam("ctsp") String idCTSP, @RequestParam("soLuong") String soLuong, @RequestParam("idHD") String idHD) {
+        url = hoaDonChiTietService.updateSoLuongSanPhamHoaDonChiTietKhiUpdate(idCTSP,soLuong);
+        return url;
     }
 
 
