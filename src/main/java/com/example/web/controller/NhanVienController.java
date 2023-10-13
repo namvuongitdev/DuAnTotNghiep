@@ -1,0 +1,149 @@
+package com.example.web.controller;
+
+import com.example.web.model.ChucVu;
+import com.example.web.model.NhanVien;
+import com.example.web.response.NhanVienFilter;
+import com.example.web.response.SanPhamFilter;
+import com.example.web.service.IChucVuService;
+import com.example.web.service.INhanVienService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
+
+@Controller
+@RequestMapping("/nhan-vien")
+public class NhanVienController {
+
+    @Autowired
+    private INhanVienService nhanVienService;
+
+    @Autowired
+    private IChucVuService chucVuService;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    Page<NhanVien> nhanVienPage = null;
+
+    @GetMapping("/hien-thi")
+    public String hienThi(Model model, @RequestParam("num") Optional<Integer> num,
+                          @RequestParam(name = "size", defaultValue = "10", required = false) Integer size){
+        Sort sort = Sort.by("ngayTao").descending();
+        Pageable pageable = PageRequest.of(num.orElse(0), size, sort);
+        nhanVienPage = nhanVienService.getAll(pageable);
+        model.addAttribute("listNhanVien", nhanVienPage);
+        model.addAttribute("filterNhanVien", new SanPhamFilter());
+        model.addAttribute("url", "/nhan-vien/hien-thi?page=");
+        return "quanLyTaiKhoan/nhanVien/hien-thi";
+    }
+
+    @GetMapping("/filter")
+    public String filterNhanVien(Model model, @RequestParam("num") Optional<Integer> num,
+                                 @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+                                 @ModelAttribute("filterNhanVien") NhanVienFilter filter){
+        Sort sort = Sort.by("ngayTao").descending();
+        Pageable pageable = PageRequest.of(num.orElse(0), size, sort);
+        nhanVienPage = nhanVienService.nhanVienFilter(filter, pageable);
+        String url = "/nhan-vien/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
+        model.addAttribute("filter", filter);
+        model.addAttribute("listNhanVien", nhanVienPage);
+        model.addAttribute("url", url);
+        return "quanLyTaiKhoan/nhanVien/hien-thi";
+    }
+
+    @GetMapping("/view-add")
+    public String viewAdd(Model model){
+        model.addAttribute("listChucVu", chucVuService.getAll1());
+        model.addAttribute("chucVu", new ChucVu());
+        model.addAttribute("nhanVien", new NhanVien());
+        return "quanLyTaiKhoan/nhanVien/add";
+    }
+
+    @PostMapping("/add")
+    public String add(@Valid @ModelAttribute("nhanVien") NhanVien nhanVien, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("chucVu", new ChucVu());
+            model.addAttribute("listChucVu", chucVuService.getAll1());
+            return "quanLyTaiKhoan/nhanVien/add";
+        }else{
+            Date date = java.util.Calendar.getInstance().getTime();
+            nhanVien.setNgayTao(date);
+            nhanVienService.add(nhanVien);
+            return "redirect:/nhan-vien/hien-thi";
+        }
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@Valid @ModelAttribute("nhanVien") NhanVien nhanVien, BindingResult result, @PathVariable String id, Model model){
+        NhanVien nv = nhanVienService.findById(UUID.fromString(id));
+        if(result.hasErrors()){
+            model.addAttribute("chucVu", new ChucVu());
+            model.addAttribute("listChucVu", chucVuService.getAll1());
+            return "quanLyTaiKhoan/nhanVien/update";
+        }else{
+            Date date = java.util.Calendar.getInstance().getTime();
+            nhanVien.setId(nv.getId());
+            nhanVien.setNgayTao(nv.getNgayTao());
+            nhanVien.setNgaySua(date);
+            nhanVienService.update(UUID.fromString(id), nhanVien);
+            return "redirect:/nhan-vien/hien-thi";
+        }
+    }
+
+    @GetMapping("/view-update/{id}")
+    public String hienThi(@PathVariable String id, Model model, @ModelAttribute("chucVu") ChucVu chucVu){
+        NhanVien nv = nhanVienService.findById(UUID.fromString(id));
+        model.addAttribute("listChucVu", chucVuService.getAll1());
+        model.addAttribute("nhanVien", nv);
+        return "quanLyTaiKhoan/nhanVien/update";
+    }
+
+    @PostMapping("/modal-add-chuc-vu")
+    public String addCV(@ModelAttribute("chucVu") ChucVu chucVu){
+        UUID uuid = UUID.randomUUID();
+        Date date = java.util.Calendar.getInstance().getTime();
+        chucVu.setId(uuid);
+        chucVu.setTrangThai(0);
+        chucVu.setNgayTao(date);
+        chucVuService.add(chucVu);
+        return "redirect:/nhan-vien/view-add";
+    }
+
+    @PostMapping("/modal-update-chuc-vu")
+    public String addChucVu(@ModelAttribute("chucVu") ChucVu chucVu, @RequestParam("id") String id){
+        NhanVien nv = nhanVienService.findById(UUID.fromString(id));
+        UUID uuid = UUID.randomUUID();
+        Date date = java.util.Calendar.getInstance().getTime();
+        chucVu.setId(uuid);
+        chucVu.setTrangThai(0);
+        chucVu.setNgayTao(date);
+        chucVuService.add(chucVu);
+        return "redirect:/nhan-vien/view-update/" + nv.getId();
+    }
+
+    @GetMapping("/stop/{id}")
+    public String stop(@PathVariable("id") UUID id){
+        NhanVien sp = nhanVienService.findById(id);
+        sp.setTrangThai(1);
+        sp.setNgaySua(java.util.Calendar.getInstance().getTime());
+        nhanVienService.update(id, sp);
+        return "redirect:/nhan-vien/hien-thi";
+    }
+}
