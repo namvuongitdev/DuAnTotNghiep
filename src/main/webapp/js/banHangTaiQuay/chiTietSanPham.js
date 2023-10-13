@@ -101,21 +101,20 @@ function getCTSP(id) {
         }
     }
 }
-
-function themSanPhamVaoGioHang(idCTSP) {
-    var soLuong = document.getElementById("soLuongTon").value;
-    var idHD = document.getElementById("soLuongTon").name;
-    if (idCTSP == "") {
+function themSanPhamVaoGioHang(data) {
+    let soLuong = document.getElementById("soLuongTon").value;
+    let idHD = document.getElementById("soLuongTon").name;
+    if (data.idCTSP == "") {
         alert("lựa chon các thuộc tính sản phẩm")
     } else {
         for (let i = 0; i < dataCTSP.length; i++) {
-            if (idCTSP == dataCTSP[i].soLuong) {
+            if (data.idCTSP == dataCTSP[i].soLuong) {
                 if (soLuong > dataCTSP[i].soLuong) {
                     alert("số lượng sản phẩm không đủ");
                     return;
                 }
             }
         }
-        window.location.href = "/hoa-don/add-san-pham?ctsp=" + idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD;
+        window.location.href = "/hoa-don/add-san-pham?ctsp=" + data.idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD + "&idKhachHang=" + data.idKhachHang;
     }
 }

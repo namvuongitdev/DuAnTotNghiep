@@ -3,13 +3,13 @@ import com.example.web.model.HoaDonChiTiet;
 
 public interface IHoaDonChiTietService {
 
-    String  addHoaDonChiTiet(String idCTSP , String idHD ,Integer soLuong);
+    HoaDonChiTiet addHoaDonChiTiet(String idCTSP , String idHD , Integer soLuong);
 
-    String deleteSanPhamHoaDon(String idHDCT);
+    String deleteSanPhamHoaDon(String idHDCT , String idKhacHang);
 
     HoaDonChiTiet getHoaDonChiTiet(String id);
 
-    String updateHoaDonChiTiet(String idHDCT , String soLuong);
+    String updateHoaDonChiTiet(String idHDCT , String soLuong  ,String idKhachHang);
 
     HoaDonChiTiet getOne(String id);
 

@@ -4,16 +4,27 @@ function getTienKhachDua(value) {
     const tienThua = +tienKhachTra - +value.tongTien;
     document.getElementById("tienThuaCuaKhach").innerHTML = `Tiền thừa của khách :` + VND.format(tienThua);
 }
-
-
-document.getElementById('mySwitch').addEventListener('click', (e) => {
+const mySwitch  = document.getElementById('mySwitch')
+mySwitch.addEventListener('click', (e) => {
 
     let url_string = window.location.href;
     let url = new URL(url_string);
     let paramValue = url.searchParams.get("idHD");
+    let uri = null;
     if (e.target.checked) {
-        window.location.href = '/hoa-don/loai-hoa-don?loaiHoaDon=' + e.target.checked+ '&idHD='+paramValue;
+        uri = '/hoa-don/loai-hoa-don?loaiHoaDon=' + e.target.checked+ '&idHD='+paramValue;
+        if(mySwitch.name != ""){
+            window.location.href = uri + '&idKhachHang='+mySwitch.name;
+        }else{
+            window.location.href = uri + '&idKhachHang=';
+        }
+
     } else {
-        window.location.href = '/hoa-don/loai-hoa-don?loaiHoaDon=' + e.target.checked + '&idHD='+paramValue;
+        uri = '/hoa-don/loai-hoa-don?loaiHoaDon=' + e.target.checked+ '&idHD='+paramValue;
+        if(mySwitch.name != ""){
+            window.location.href = uri+ '&idKhachHang='+mySwitch.name;
+        }else{
+            window.location.href = uri + '&idKhachHang=';
+        }
     }
 })

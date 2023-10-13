@@ -27,7 +27,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
     private IChiTietSanPhamRepository chiTietSanPhamRepository;
 
     @Override
-    public String addHoaDonChiTiet(String idCTSP, String idHD, Integer soLuong) {
+    public HoaDonChiTiet addHoaDonChiTiet(String idCTSP, String idHD, Integer soLuong) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(idHD));
         Optional<ChiTietSanPham> ctsp = chiTietSanPhamRepository.findById(UUID.fromString(idCTSP));
         HoaDonChiTiet hdct = null;
@@ -54,14 +54,13 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                                 .trangThai(0)
                                 .build();
                     }
-                 hoaDonChiTietRepository.save(hdct);
-                return "redirect:/hoa-don/detail?idHD=" + hoaDon.get().getId();
+                return hoaDonChiTietRepository.save(hdct);
             }
         }
     }
 
     @Override
-    public String deleteSanPhamHoaDon(String idHDCT) {
+    public String deleteSanPhamHoaDon(String idHDCT , String idKhachHang) {
         Optional<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findById(UUID.fromString(idHDCT));
         if (hoaDonChiTiet.isPresent()) {
             HoaDonChiTiet hdct = hoaDonChiTiet.get();
@@ -71,6 +70,9 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
             hdct.setChiTietSanPham(ctsp);
             hdct.setTrangThai(1);
             hoaDonChiTietRepository.save(hdct);
+            if(idKhachHang != null && !idKhachHang.isEmpty()){
+                return "redirect:/hoa-don/detail?idHD=" + hdct.getHoaDon().getId() + "&idKhachHang="+idKhachHang;
+            }
             return "redirect:/hoa-don/detail?idHD=" + hdct.getHoaDon().getId();
         } else {
             return null;
@@ -87,7 +89,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
     }
 
     @Override
-    public String updateHoaDonChiTiet(String idHDCT, String soLuong) {
+    public String updateHoaDonChiTiet(String idHDCT, String soLuong , String idKhachHang) {
         Optional<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findById(UUID.fromString(idHDCT));
         if (hoaDonChiTiet.isPresent()) {
             HoaDonChiTiet hdct = hoaDonChiTiet.get();
@@ -103,8 +105,10 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                     ctsp.setSoLuong(soLuongTon - Integer.parseInt(soLuong));
                     hdct.setChiTietSanPham(ctsp);
                     hdct.setSoLuong(Integer.parseInt(soLuong));
-
                     hoaDonChiTietRepository.save(hdct);
+                    if(idKhachHang != null && !idKhachHang.isEmpty()){
+                        return "redirect:/hoa-don/detail?idHD=" + hdct.getHoaDon().getId() + "&idKhachHang="+idKhachHang;
+                    }
                     return "redirect:/hoa-don/detail?idHD=" + hdct.getHoaDon().getId();
                 }
             }

@@ -22,6 +22,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
     @Override
     public Page<Object[]> findByHoaDonCho(Integer trangThai, Pageable pageable) {
-       return hoaDonRepository.findAllByHoaDonCho(trangThai , pageable);
+        return hoaDonRepository.findAllByHoaDonCho(trangThai, pageable);
     }
 
     @Override
@@ -104,26 +105,27 @@ public class HoaDonServiceImpl implements IHoaDonService {
         List<HoaDonChiTiet> ctsp = hoaDon.get().getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() != 1).collect(Collectors.toList());
         if (ctsp.isEmpty()) {
             attributes.addFlashAttribute("error", "giỏ hàng chưa có sản phẩm");
-            return "redirect:/hoa-don/detail?idHD=" + request.getId();
+            return "redirect:/hoa-don/detail?idHD=" + request.getId() + "&idKhachHang=" + request.getIdKhachHang();
         } else {
             if (hoaDon.isPresent()) {
                 HoaDon hd = hoaDon.get();
                 if (hd.getLoaiHoaDon()) {
-                    Double tongTienDonDatHang = tongTienHoaDon.doubleValue() + request.getPhiVanChuyen().doubleValue();
-                    hd.setTrangThai(TrangThaiHoaDon.Cho_xac_nhan.getValue());
-                    hd.setPhiVanChuyen(request.getPhiVanChuyen());
-                    hd.setTongTien(BigDecimal.valueOf(tongTienDonDatHang));
-                    hd.setDiaChi(request.getDiaChi());
-                    hd.setHoTen(request.getHoTen());
-                    hd.setMoTa(request.getMoTa());
-                    hd.setSdt(request.getSdt());
+                        Double tongTienDonDatHang = tongTienHoaDon.doubleValue() + request.getPhiVanChuyen().doubleValue();
+                        hd.setTrangThai(TrangThaiHoaDon.Cho_xac_nhan.getValue());
+                        hd.setPhiVanChuyen(request.getPhiVanChuyen());
+                        hd.setTongTien(BigDecimal.valueOf(tongTienDonDatHang));
+                        hd.setDiaChi(request.getDiaChi());
+                        hd.setHoTen(request.getHoTen());
+                        hd.setMoTa(request.getMoTa());
+                        hd.setSdt(request.getSdt());
                 } else {
                     if (request.getSoTienThanhToan().isEmpty() || request.getSoTienThanhToan() == null) {
                         attributes.addFlashAttribute("error", "chưa nhập tiền khách đưa");
-                        return "redirect:/hoa-don/detail?idHD=" + request.getId();
+                        return "redirect:/hoa-don/detail?idHD=" + request.getId() + "&idKhachHang=" + request.getIdKhachHang();
                     } else if (tongTienHoaDon.doubleValue() > Double.parseDouble(request.getSoTienThanhToan())) {
                         attributes.addFlashAttribute("error", "số tiền khách đưa chưa đủ");
-                        return "redirect:/hoa-don/detail?idHD=" + hd.getId();
+                        attributes.addFlashAttribute("soTienKhachTra" , request.getSoTienThanhToan());
+                        return "redirect:/hoa-don/detail?idHD=" + hd.getId() + "&idKhachHang=" + request.getIdKhachHang();
                     } else {
                         Date date = java.util.Calendar.getInstance().getTime();
                         hd.setMoTa(request.getMoTa());

@@ -16,27 +16,15 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/ban-hang-tai-quay.css">
+    <script src="https://code.jquery.com/jquery-latest.js"></script>
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
         <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
             <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
         </symbol>
     </svg>
 </head>
-<style>
-    .pagetitle nav .breadcrumb .breadcrumb-item a:hover {
-        box-shadow: 0 3px;
-    }
-
-    #thongTinKhachHang{
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-    #thongTinKhachHang:hover{
-        background-color: #f5f5f5;
-    }
-</style>
 <body>
+
 <%--navbar--%>
 <jsp:include page="../sidebar/navbar.jsp"/>
 <%--sidebar--%>
@@ -97,7 +85,7 @@
                                             <div class="row">
                                                 <div class="col l-3">
                                                     <img src="/image/${sanPham.img}"
-                                                         style="width: 150px; height: 150px">
+                                                         style="width: 100px; height: 100px">
                                                 </div>
                                                 <div class="col l-3">
                                                     <h5>${sanPham.tenSanPham}</h5>
@@ -108,17 +96,19 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td><input onchange="updateSoLuong(this.value , {id:`${sanPham.id}`,
-                                                soLuongHDCT:`${sanPham.soLuong}`,
-                                                soLuongCTSP:`${sanPham.soLuongSanPham}`}
-                                                )" type="number"
-                                                   name="soLuong" value="${sanPham.soLuong}" min="1"
-                                                   style="width: 25%"/>
+                                        <td style="width: 110px ;"><input
+                                                onchange="updateSoLuong(this.value , {id:`${sanPham.id}`,
+                                                        soLuongHDCT:`${sanPham.soLuong}`,
+                                                        soLuongCTSP:`${sanPham.soLuongSanPham}`,
+                                                        idKhachHang: `${khachHang.id}`}
+                                                        )" type="number"
+                                                name="soLuong" class="form-control" value="${sanPham.soLuong}" min="1"
+                                        />
                                         </td>
                                         <td id="thanhTien"><fmt:formatNumber pattern="#,###"
                                                                              value="${sanPham.soLuong * sanPham.donGia}"></fmt:formatNumber></td>
                                         <td><a onclick="if(confirm('Bạn có muốn xoá không') == true){
-                                                window.location.href = '/hoa-don/delete?idHD=${idHD}&idHDCT=${sanPham.id}';
+                                                window.location.href = '/hoa-don/delete?idHD=${idHD}&idHDCT=${sanPham.id}&idKhachHang=${khachHang.id}';
                                                 }" class="btn btn-danger">Xoá khỏi giỏ</a></td>
                                     </tr>
                                 </c:forEach>
@@ -135,23 +125,30 @@
                         <div class="col l-3" style="background-color: white">
                             <br>
                             <div class="row">
-                                <h4>Thông tin khách hàng</h4>
-                                <div class="col-sm-2">
-                                    <a type="button" class="btn btn-secondary"
-                                       id="btnKhachHang"
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h4>Thông tin khách hàng</h4>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button class="btn btn-light" id="btnThemKhachHang">+</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2" style="width: 14%">
+                                    <button type="button" class="btn btn-secondary"
+                                            id="btnKhachHang"
                                     >
                                         Chọn tài khoản
-                                    </a>
+                                    </button>
                                 </div>
                                 <c:if test="${khachHang != null}">
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-2" style="width: 11%">
                                         <button class="btn btn-danger"
                                                 onclick="window.location.href = '/hoa-don/detail?idHD=${hoaDon.id}'">Huỷ
                                             chọn
                                         </button>
                                     </div>
                                     <c:if test="${hoaDon.loaiHoaDon}">
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-2" style="width: 14%">
                                             <button class="btn btn-secondary" id="diaChiKhachHang">
                                                 Đia Chỉ
                                             </button>
@@ -178,11 +175,11 @@
                         <c:choose>
                             <%-- đặt hàng--%>
                             <c:when test="${hoaDon.loaiHoaDon}">
-                              <jsp:include page="dat-hang.jsp"></jsp:include>
+                                <jsp:include page="dat-hang.jsp"></jsp:include>
                             </c:when>
-                            <%--                                tại quầy--%>
+                            <%--tại quầy--%>
                             <c:otherwise>
-                               <jsp:include page="tai-quay.jsp"></jsp:include>
+                                <jsp:include page="tai-quay.jsp"></jsp:include>
                             </c:otherwise>
                         </c:choose>
                     </form>
@@ -194,7 +191,7 @@
 </div>
 
 
-<%--thêm khách hàng--%>
+<%--hiển thị khách hàng--%>
 <div id="khachHangModal" class="modal">
     <!-- Modal content -->
     <div class="modal-content-1">
@@ -209,7 +206,7 @@
                     <button class="btn btn-primary" onclick="timKiemKhachHang()">Tìm kiếm</button>
                 </div>
                 <div class="col-sm-2">
-                    <button class="btn btn-warning" id="lamMoi">Làm mới</button>
+                    <button class="btn btn-warning" onclick="lamMoi()">Làm mới</button>
                 </div>
             </div>
             <div class="row">
@@ -413,17 +410,18 @@
                 </div>
                 <br>
                 <div class="row">
-                    <div>
+                    <div style="width: 110px ;">
                         <label for="soLuongTon">Số lượng :</label>
-                        <input type="number" value="1" min="1" id="soLuongTon" name="${hoaDon.id}" style="width: 20%"
-                               aria-describedby="sl"/>
-                        <div id="soLuong" class="form-text">
-                        </div>
+                        <input type="number" value="1" min="1" class="form-control" id="soLuongTon" name="${hoaDon.id}"
+                        >
+                    </div>
+                    <div id="soLuong" class="form-text">
                     </div>
                 </div>
                 <br>
                 <div class="row">
-                    <button type="button" id="themVaoGioHang" name="" onclick="themSanPhamVaoGioHang(this.name)"
+                    <button type="button" id="themVaoGioHang" name=""
+                            onclick="themSanPhamVaoGioHang({idCTSP:this.name , idKhachHang:`${khachHang.id}`})"
                             class="btn btn-primary">Thêm vào giỏ hàng
                     </button>
                 </div>
@@ -435,26 +433,63 @@
 <div id="modalQrcode" class="modal">
     <!-- Modal content -->
     <div class="modal-content-1" style="width: 40%">
-        <span class="close" id="close_qrcode">&times;</span>
+        <span class="close" id="close_qrcode" accesskey="${khachHang.id}">&times;</span>
         <div class="row" id="qrcode">
             <video id="preview"></video>
         </div>
     </div>
 </div>
 <%-- địa chỉ khách hàng--%>
-<div id="modalDiaChiKhachHang" class="modal">
+<c:if test="${khachHang != null}">
+    <div id="modalDiaChiKhachHang" class="modal">
+        <div class="modal-content-1">
+            <span class="close" id="close_diaChiKhachHang">&times;</span>
+            <div class="row">
+                <c:if test="${khachHang.diaChis != null}">
+                    <c:forEach items="${khachHang.diaChis}" var="thongTinKhachHang">
+                        <div class="row" id="showTongTinKhachHang"
+                             onclick="findDiaChi({hoTen:`${thongTinKhachHang.hoTen}` , sdt:`${thongTinKhachHang.sdt}` , diaChi:`${thongTinKhachHang.diaChi}`})">
+                            <div><p>Họ tên : ${thongTinKhachHang.hoTen}</p></div>
+                            <div><p>Số điện thoại : ${thongTinKhachHang.sdt}</p></div>
+                            <div><p>Địa chỉ : ${thongTinKhachHang.diaChi}</p></div>
+                        </div>
+                    </c:forEach>
+                </c:if>
+            </div>
+        </div>
+    </div>
+</c:if>
+<%--thêm khách hàng--%>
+<div id="modalThemKhachHang" class="modal">
+    <!-- Modal content -->
     <div class="modal-content-1">
-        <span class="close" id="close_diaChiKhachHang">&times;</span>
-        <div class="row">
-             <c:if test="${khachHang.diaChis != null}">
-                 <c:forEach items="${khachHang.diaChis}" var="thongTinKhachHang">
-                     <div class="row" id="thongTinKhachHang" onclick="findDiaChi({hoTen:`${thongTinKhachHang.hoTen}` , sdt:`${thongTinKhachHang.sdt}` , diaChi:`${thongTinKhachHang.diaChi}`})">
-                         <div><p>Họ tên : ${thongTinKhachHang.hoTen}</p></div>
-                         <div><p>Số điện thoại : ${thongTinKhachHang.sdt}</p></div>
-                         <div><p>Địa chỉ : ${thongTinKhachHang.diaChi}</p></div>
-                     </div>
-                 </c:forEach>
-             </c:if>
+        <span class="close" id="close_themKhachHang" accesskey="${khachHang.id}">&times;</span>
+        <div class="row" id="themKhachHang">
+                <div class="col-sm-6">
+                    <div>
+                        <label for="tenKhachHang">Họ tên</label>
+                        <input type="text" class="form-control" name="tenKhachHang" id="tenKhachHang">
+                    </div>
+                    <div>
+                        <label for="soDienThoaiKhachHang">Số điện thoại</label>
+                        <input type="number" class="form-control" name="soDienThoaiKhachHang" id="soDienThoaiKhachHang">
+                    </div>
+                    <div>
+                        <label for="diaChiKhachHangThemMoi">Địa chỉ</label>
+                        <input type="text" class="form-control" name="diaChiKhachHangThemMoi" id="diaChiKhachHangThemMoi">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div style="margin-bottom: 20px">
+                        <label for="emailKhachHang">Email</label>
+                        <input type="email" class="form-control" name="emailKhachHang" id="emailKhachHang">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary" onclick="themKhachHang()">Thêm</button>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 </div>

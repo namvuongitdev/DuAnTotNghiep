@@ -1,15 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div class="col l-3"></div>
 <div class="col l-3">
     <h2>Thông tin thanh toán</h2>
     <div class="form-check form-switch">
         <input class="form-check-input" type="checkbox" id="mySwitch"
-               name="darkmode" ${hoaDon.loaiHoaDon == false ? '' : 'checked'}>
+               name="${khachHang.id}" ${hoaDon.loaiHoaDon == false ? '' : 'checked'}>
         <label class="form-check-label" for="mySwitch">Đặt hàng</label>
     </div>
     <div>
-                                <span>Tiền Hàng : <fmt:formatNumber pattern="#,###"
+      <span>Tiền Hàng : <fmt:formatNumber pattern="#,###"
                                                                     value="${tongTien}"></fmt:formatNumber></span>
     </div>
     <div>
@@ -29,7 +32,7 @@
             <input class="form-control" type="number" style="width: 50%"
                    name="soTienThanhToan"
                    id="tienKhachDua"
-                   onkeydown="getTienKhachDua({tienKhacDua:this.value , tongTien:`${tongTien}`})">
+                   onkeydown="getTienKhachDua({tienKhacDua:this.value , tongTien:`${tongTien}`})" value="${soTienKhachTra}">
             <label for="tienKhachDua">Tiền khách đưa</label>
             <c:if test="${message != null}">
                 <span style="color: #E43535">${message}</span>

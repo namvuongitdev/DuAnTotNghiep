@@ -175,6 +175,6 @@ function updateSoLuong(soLuong, sanPham) {
         alert("số lượng hiện tại trong của hàng không đủ");
         window.location.reload();
     } else {
-        window.location.href = "/hoa-don/update-san-pham?idHD=" + sanPham.id + "&soLuong=" + Number.parseInt(soLuong);
+        window.location.href = "/hoa-don/update-san-pham?idHD=" + sanPham.id + "&soLuong=" + Number.parseInt(soLuong) + "&idKhachHang="+sanPham.idKhachHang;
     }
 }

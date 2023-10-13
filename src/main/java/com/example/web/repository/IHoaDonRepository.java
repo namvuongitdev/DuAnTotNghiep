@@ -19,7 +19,7 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
     @Override
     <S extends HoaDon> S save(S entity);
 
-    @Query(value = "select hd.id , hd.ma  , hd.ngayTao  ,hd.trangThai from HoaDon hd left join hd.hoaDonChiTiets hdct  where hd.trangThai = :trangThaiHD")
+    @Query(value = "select hd.id , hd.ma  , hd.ngayTao  ,hd.trangThai from HoaDon hd  where hd.trangThai = :trangThaiHD")
     Page<Object[]> findAllByHoaDonCho(@Param("trangThaiHD") Integer trangThaiHD , Pageable pageable);
 
     @Query(value = "select new com.example.web.response.HoaDonReponse(hdct.id ,  sp.ten ,sp.img ,  hdct.donGia , hdct.soLuong , ctsp.mauSac.ten , ctsp.size.ten , hd.hoTen , hd.sdt ,hd.diaChi , kh.email , ctsp.soLuong) from HoaDon hd left join  hd.hoaDonChiTiets hdct left join hdct.chiTietSanPham ctsp left join  ctsp.sanPham sp left join hd.khachHang kh where hd.id = ?1 and hdct.trangThai = ?2")

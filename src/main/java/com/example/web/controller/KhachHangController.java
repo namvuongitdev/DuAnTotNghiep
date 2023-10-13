@@ -4,9 +4,14 @@ import com.example.web.service.IKhachHangService;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,7 +33,20 @@ public class KhachHangController {
 
     @GetMapping("/api-hien-thi")
     @ResponseBody
-    public Page<KhachHang> getKhachHangs(@RequestParam Integer page){
-        return khachHangService.getAll(page);
+    public Page<KhachHang> getKhachHangs(@RequestParam Integer page , @RequestParam String value){
+        Page listKhachHang = null;
+        if(value.isEmpty()){
+            listKhachHang = khachHangService.getAll(page);
+        }else{
+            listKhachHang =  khachHangService.getKhachHangByHoTenOrSdtOrTaiKhoan(value, page);
+        }
+        return listKhachHang;
     }
+
+    @PostMapping("/create")
+    @ResponseBody
+    public KhachHang createKhachHang(@RequestBody KhachHang khachHang){
+      return khachHangService.themMoiKhachHang(khachHang);
+    }
+
 }
