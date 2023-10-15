@@ -42,7 +42,7 @@
     </div><br>
     <div style="text-align: center">
         <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-        <a class="btn btn-warning" href="/nhan-vien/hien-thi">Làm mới</a>
+        <a class="btn btn-warning" href="/admin/nhan-vien/hien-thi">Làm mới</a>
     </div>
     <br>
 </div><!-- End Bordered Tabs -->

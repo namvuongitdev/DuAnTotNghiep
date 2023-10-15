@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("trangchu")
+@RequestMapping("/admin/trangchu")
 public class SideBarController {
 
     @GetMapping

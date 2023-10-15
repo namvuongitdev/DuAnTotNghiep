@@ -33,9 +33,9 @@
                 <h3>Nhân viên</h3>
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
                         <li class="breadcrumb-item ">Quản lý tài khoản</li>
-                        <li class="breadcrumb-item "><a href="/nhan-vien/hien-thi" style="text-decoration: none; color: black">Nhân viên</a></li>
+                        <li class="breadcrumb-item "><a href="/admin/nhan-vien/hien-thi" style="text-decoration: none; color: black">Nhân viên</a></li>
                         <li class="breadcrumb-item active">Sửa dữ liệu</li>
                     </ol>
                 </nav>
@@ -46,7 +46,7 @@
                         <h5 class="card-title">Thông tin sản phẩm</h5>
                         <br><br>
                         <%--@elvariable id="nhanVien" type=""--%>
-                        <form:form action="/nhan-vien/update/${nhanVien.id}" method="post" modelAttribute="nhanVien">
+                        <form:form action="/admin/nhan-vien/update/${nhanVien.id}" method="post" modelAttribute="nhanVien">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="mb-3">
@@ -123,7 +123,7 @@
                                 <button class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn sửa thông tin không?')){}
                                         else{alert('Sửa thông tin thất bại!')} clearLocalStorage()">Xác nhận
                                 </button>
-                                <a href="/nhan-vien/view-add" class="btn btn-warning" onclick="clearLocalStorage()">Làm Mới</a>
+                                <a href="/admin/nhan-vien/view-add" class="btn btn-warning" onclick="clearLocalStorage()">Làm Mới</a>
                             </div>
                         </form:form>
                     </div>
@@ -138,7 +138,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <%--@elvariable id="chucVu" type=""--%>
-                        <form:form method="post" action="/nhan-vien/modal-update-chuc-vu?id=${nhanVien.id}" modelAttribute="chucVu" class="row g-3">
+                        <form:form method="post" action="/admin/nhan-vien/modal-update-chuc-vu?id=${nhanVien.id}" modelAttribute="chucVu" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
                                     <form:input class="form-control" placeholder="" path="ten"/>

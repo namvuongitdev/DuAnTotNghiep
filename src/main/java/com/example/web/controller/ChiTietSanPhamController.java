@@ -35,7 +35,7 @@ import java.util.Random;
 import java.util.UUID;
 
 @Controller
-@RequestMapping(value = "/chi-tiet-san-pham")
+@RequestMapping(value = "/admin/chi-tiet-san-pham")
 public class ChiTietSanPhamController {
 
     @Value("${qrcode.directory}")

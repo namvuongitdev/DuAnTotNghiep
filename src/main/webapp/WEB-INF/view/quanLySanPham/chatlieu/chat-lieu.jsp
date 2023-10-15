@@ -26,7 +26,7 @@
                 <h3>Chất liệu</h3>
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
                         <li class="breadcrumb-item ">Quản lý sản phẩm</li>
                         <li class="breadcrumb-item active">Chất liệu</li>
                     </ol>
@@ -39,7 +39,7 @@
 
                         <!-- Floating Labels Form -->
                         <%--@elvariable id="chatLieu" type=""--%>
-                        <form:form method="post" action="/chat-lieu/update/${chatLieu.id}" modelAttribute="chatLieu" class="row g-3">
+                        <form:form method="post" action="/admin/chat-lieu/update/${chatLieu.id}" modelAttribute="chatLieu" class="row g-3">
                             <div class="col-md-12">
                                 <div class="form-floating">
                                     <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Chất liệu" readonly="true"/>
@@ -97,9 +97,9 @@
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-success" title="Sửa dữ liệu" onclick="myFunction()">
-                                                    <a class="text-white" style="text-decoration: none" href="/chat-lieu/view-update/${list.id}"><i class="bi bi-pencil"></i></a>
+                                                    <a class="text-white" style="text-decoration: none" href="/admin/chat-lieu/view-update/${list.id}"><i class="bi bi-pencil"></i></a>
                                                 </button>
-                                                <button type="button" class="btn btn-danger" title="Ngừng kích hoạt" onclick="if(confirm('Bạn có chắc chắn muốn ngừng kích hoạt không?')){window.location.href = '/chat-lieu/stop/${list.id}';}
+                                                <button type="button" class="btn btn-danger" title="Ngừng kích hoạt" onclick="if(confirm('Bạn có chắc chắn muốn ngừng kích hoạt không?')){window.location.href = '/admin/chat-lieu/stop/${list.id}';}
                                                         else{alert('Ngừng kích hoạt thất bại!')}"><i class="bi bi-sign-stop"></i>
                                                 </button>
 
@@ -113,11 +113,11 @@
                                 <div class="container-fluid mt-5">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination justify-content-center">
-                                            <li class="page-item ${currentPage<=0?"disabled":""}"><a class="page-link" href="/chat-lieu/hien-thi/${currentPage-1}"><</a></li>
+                                            <li class="page-item ${currentPage<=0?"disabled":""}"><a class="page-link" href="/admin/chat-lieu/hien-thi/${currentPage-1}"><</a></li>
                                             <c:forEach begin="1" end="${totalPage}" var="i">
-                                                <li class="page-item"><a class="page-link" href="/chat-lieu/hien-thi/${i-1}">${i}</a></li>
+                                                <li class="page-item"><a class="page-link" href="/admin/chat-lieu/hien-thi/${i-1}">${i}</a></li>
                                             </c:forEach>
-                                            <li class="page-item ${currentPage>=totalPage-1?"disabled":""}"><a class="page-link" href="/chat-lieu/hien-thi/${currentPage+1}">></a></li>
+                                            <li class="page-item ${currentPage>=totalPage-1?"disabled":""}"><a class="page-link" href="/admin/chat-lieu/hien-thi/${currentPage+1}">></a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -134,7 +134,7 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/chat-lieu/add" modelAttribute="chatLieu" class="row g-3">
+                        <form:form method="post" action="/admin/chat-lieu/add" modelAttribute="chatLieu" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
                                     <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Chất liệu"/>

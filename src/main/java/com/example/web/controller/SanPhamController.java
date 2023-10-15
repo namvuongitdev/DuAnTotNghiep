@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/san-pham")
+@RequestMapping("/admin/san-pham")
 public class SanPhamController {
 
     @Autowired

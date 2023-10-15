@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/size/")
+@RequestMapping("/admin/size/")
 public class SizeController {
 
     @Autowired

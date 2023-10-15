@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/mau-sac")
+@RequestMapping("/admin/mau-sac")
 public class MauSacController {
     @Autowired
     private IMauSacService iMauSacService;

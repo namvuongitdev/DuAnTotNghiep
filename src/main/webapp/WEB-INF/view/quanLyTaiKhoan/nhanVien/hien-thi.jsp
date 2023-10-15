@@ -26,7 +26,7 @@
                 <h3>Nhân viên</h3>
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
                         <li class="breadcrumb-item ">Quản lý tài khoản</li>
                         <li class="breadcrumb-item active">Nhân viên</li>
                     </ol>
@@ -42,13 +42,13 @@
                                 <h5 class="card-title col-10">Danh sách nhân viên</h5>
                                 <div class="col-2 card-title">
                                     <button type="button" class="btn btn-primary" title="Thêm dữ liệu">
-                                        <a href="/nhan-vien/view-add" style="color: white"><i class="bi bi-plus-circle"></i></a>
+                                        <a href="/admin/nhan-vien/view-add" style="color: white"><i class="bi bi-plus-circle"></i></a>
                                     </button>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <form method="get"  action="/nhan-vien/filter" modelAttribute="${filterNhanVien}">
+                                        <form method="get"  action="/admin/nhan-vien/filter" modelAttribute="${filterNhanVien}">
                                             <jsp:include page="../nhanVien/filter.jsp"/>
                                         </form>
                                     </div>
@@ -86,9 +86,9 @@
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-success" title="Sửa dữ liệu" onclick="myFunction()">
-                                                    <a class="text-white" style="text-decoration: none" href="/nhan-vien/view-update/${nv.id}"><i class="bi bi-pencil"></i></a>
+                                                    <a class="text-white" style="text-decoration: none" href="/admin/nhan-vien/view-update/${nv.id}"><i class="bi bi-pencil"></i></a>
                                                 </button>
-                                                <button type="button" class="btn btn-danger" title="Dừng làm việc" onclick="if(confirm('Bạn có chắc chắn muốn dừng làm việc không?')){window.location.href = '/nhan-vien/stop/${nv.id}';}
+                                                <button type="button" class="btn btn-danger" title="Dừng làm việc" onclick="if(confirm('Bạn có chắc chắn muốn dừng làm việc không?')){window.location.href = '/admin/nhan-vien/stop/${nv.id}';}
                                                         else{alert('Dừng làm việc thất bại!')}"><i class="bi bi-sign-stop"></i>
                                                 </button>
 

@@ -113,7 +113,7 @@
     </div><br>
     <div style="text-align: center">
         <button class="btn btn-primary">Tìm kiếm</button>
-        <a class="btn btn-warning" href="/san-pham/hien-thi">Làm mới</a>
+        <a class="btn btn-warning" href="/admin/san-pham/hien-thi">Làm mới</a>
     </div>
     <br>
 </div><!-- End Bordered Tabs -->

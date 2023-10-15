@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/kieu-dang")
+@RequestMapping("/admin/kieu-dang")
 public class FormDangController {
 
     @Autowired
