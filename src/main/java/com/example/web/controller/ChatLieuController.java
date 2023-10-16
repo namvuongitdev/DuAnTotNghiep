@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Controller
-@RequestMapping(value = "/chat-lieu")
+@RequestMapping(value = "/admin/chat-lieu")
 public class ChatLieuController {
 
     @Autowired

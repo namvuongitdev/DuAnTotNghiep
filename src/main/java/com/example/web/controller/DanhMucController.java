@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/danh-muc")
+@RequestMapping("/admin/danh-muc")
 public class DanhMucController {
     @Autowired
     private DanhMucService danhMucService;

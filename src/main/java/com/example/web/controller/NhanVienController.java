@@ -28,7 +28,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/nhan-vien")
+@RequestMapping("/admin/nhan-vien")
 public class NhanVienController {
 
     @Autowired

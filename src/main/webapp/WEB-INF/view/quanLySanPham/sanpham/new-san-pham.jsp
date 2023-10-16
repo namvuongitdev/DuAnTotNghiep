@@ -34,9 +34,9 @@
                 <h3>Sản phẩm</h3>
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
                         <li class="breadcrumb-item">Quản lý sản phẩm</li>
-                        <li class="breadcrumb-item"><a href="/san-pham/hien-thi" style="text-decoration: none; color: black" onclick="clearLocalStorage()">Sản phẩm</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/san-pham/hien-thi" style="text-decoration: none; color: black" onclick="clearLocalStorage()">Sản phẩm</a></li>
                         <li class="breadcrumb-item active" >${title}</li>
                     </ol>
                 </nav>
@@ -46,7 +46,7 @@
                     <div class="card-body row">
                         <h5 class="card-title">Thông tin sản phẩm</h5>
                         <br><br>
-                        <form:form action="/san-pham/add?id=${sp.id}" method="post" modelAttribute="sanPham">
+                        <form:form action="/admin/san-pham/add?id=${sp.id}" method="post" modelAttribute="sanPham">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="mb-3">
@@ -139,7 +139,7 @@
                             <div style="text-align: center">
                                 <button class="btn btn-primary" onclick="clearLocalStorage()">Xác nhận
                                 </button>
-                                <a href="/san-pham/new" class="btn btn-warning" onclick="clearLocalStorage()">Làm Mới</a>
+                                <a href="/admin/san-pham/new" class="btn btn-warning" onclick="clearLocalStorage()">Làm Mới</a>
                             </div>
                         </form:form>
                     </div>
@@ -167,10 +167,10 @@
                                             </div>
 
                                             <div>
-                                                <a href="/chi-tiet-san-pham/remove-anh?idAnh=${anh.id}&idCTSP=${anh.chiTietSanPham.id}&idSP=${anh.chiTietSanPham.sanPham.id} "
+                                                <a href="/admin/chi-tiet-san-pham/remove-anh?idAnh=${anh.id}&idCTSP=${anh.chiTietSanPham.id}&idSP=${anh.chiTietSanPham.sanPham.id} "
                                                    style="margin-right: 10px"> Xoá
                                                 </a>
-                                                <a href="/san-pham/add-anh-mac-dinh?img=${anh.ten}&idSP=${sp.id}"> Mặc định
+                                                <a href="/admin/san-pham/add-anh-mac-dinh?img=${anh.ten}&idSP=${sp.id}"> Mặc định
                                                 </a>
                                             </div>
 
@@ -201,7 +201,7 @@
                                     <tbody>
 
                                     <c:forEach items="${listChiTietSanPhamBySP}" var="ctsp">
-                                        <form action="/chi-tiet-san-pham/update-chi-tiet-san-pham?idCTSP=${ctsp.id}&idSP=${sp.id}"
+                                        <form action="/admin/chi-tiet-san-pham/update-chi-tiet-san-pham?idCTSP=${ctsp.id}&idSP=${sp.id}"
                                               method="post" modelAttribute="${chiTietSanPham}">
                                             <tr style="text-align: center">
                                                 <td>
@@ -227,7 +227,7 @@
                                                 </td>
                                                 <td>
                                                     <button  style="--bs-btn-padding-y: .56rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" type="button"
-                                                             onclick="if(confirm('Bạn có chắc chắn muốn ngừng kinh doanh không?')){window.location.href = '/san-pham/stop-ctsp/${ctsp.id}?idSP=${ctsp.sanPham.id}';}
+                                                             onclick="if(confirm('Bạn có chắc chắn muốn ngừng kinh doanh không?')){window.location.href = '/admin/san-pham/stop-ctsp/${ctsp.id}?idSP=${ctsp.sanPham.id}';}
                                                                      else{alert('Ngừng kinh doanh thất bại!')}"
                                                              class="${ctsp.trangThai == 0 ? 'btn btn-danger' : 'btn btn-success'}">
                                                             ${ctsp.trangThai == 0 ? 'Ngừng kinh doanh' : 'Kinh doanh'
@@ -240,13 +240,13 @@
                                                         }else{
                                                         return false;}">Sửa
                                                     </button>
-                                                    <a name="/chi-tiet-san-pham/add-anh?idCTSP=${ctsp.id}" type="button"
+                                                    <a name="/admin/chi-tiet-san-pham/add-anh?idCTSP=${ctsp.id}" type="button"
                                                        class="btn btn-secondary"
                                                        data-bs-toggle="modal"
                                                        data-bs-target="#exampleModalAnh" onclick="addAnhCTSP(this.name)">
                                                         Thêm ảnh
                                                     </a>
-                                                    <a href="/chi-tiet-san-pham/anh/${ctsp.id}?idSP=${ctsp.sanPham.id}"
+                                                    <a href="/admin/chi-tiet-san-pham/anh/${ctsp.id}?idSP=${ctsp.sanPham.id}"
                                                        class="btn btn-secondary">
                                                         Xem
                                                     </a>
@@ -281,7 +281,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col l-3">
-                                    <form action="/chi-tiet-san-pham/add?id=${sp.id}" method="post"
+                                    <form action="/admin/chi-tiet-san-pham/add?id=${sp.id}" method="post"
                                           enctype="multipart/form-data"
                                           modelAttribute="${chiTietSanPham}">
                                         <div class="row">
@@ -347,7 +347,7 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/san-pham/modal-add-chat-lieu" modelAttribute="chatLieu" class="row g-3">
+                        <form:form method="post" action="/admin/san-pham/modal-add-chat-lieu" modelAttribute="chatLieu" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
                                     <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Chất liệu"/>
@@ -373,7 +373,7 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/san-pham/modal-add-danh-muc" modelAttribute="danhMuc" class="row g-3">
+                        <form:form method="post" action="/admin/san-pham/modal-add-danh-muc" modelAttribute="danhMuc" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
                                     <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Tên danh mục"/>
@@ -399,7 +399,7 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/san-pham/modal-add-kieu-dang" modelAttribute="kieuDang" class="row g-3">
+                        <form:form method="post" action="/admin/san-pham/modal-add-kieu-dang" modelAttribute="kieuDang" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
                                     <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Kiểu dáng"/>
@@ -425,7 +425,7 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/san-pham/modal-add-size" modelAttribute="size" class="row g-3">
+                        <form:form method="post" action="/admin/san-pham/modal-add-size" modelAttribute="size" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
                                     <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Kích cỡ"/>
@@ -451,7 +451,7 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/san-pham/modal-add-mau-sac" modelAttribute="mauSac" class="row g-3">
+                        <form:form method="post" action="/admin/san-pham/modal-add-mau-sac" modelAttribute="mauSac" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
                                     <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Tên màu"/>

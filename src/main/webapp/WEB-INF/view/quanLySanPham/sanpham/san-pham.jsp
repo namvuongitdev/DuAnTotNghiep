@@ -26,7 +26,7 @@
                 <h3>Sản phẩm</h3>
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
                         <li class="breadcrumb-item">Quản lý sản phẩm</li>
                         <li class="breadcrumb-item active">Sản phẩm</li>
                     </ol>
@@ -37,13 +37,13 @@
                     <div class="card-body row">
                         <h5 class="card-title col-9">Danh sách sản phẩm</h5>
                         <div class="col l-3">
-                            <a href="/san-pham/new" class="btn btn-primary">Tạo Mới</a>
+                            <a href="/admin/san-pham/new" class="btn btn-primary">Tạo Mới</a>
                         </div>
                         <br><br>
                         <%--                filter sản phẩm--%>
                         <div class="row">
                             <div class="col-sm-12">
-                                <form  action="/san-pham/filter" modelAttribute="${filterSanPham}">
+                                <form  action="/admin/san-pham/filter" modelAttribute="${filterSanPham}">
                                     <div class="row">
                                         <jsp:include page="filter-san-pham.jsp"></jsp:include>
                                     </div>
@@ -73,7 +73,7 @@
                                         <img src="/image/${sanPham.img}">
                                     </td>
                                     <td>${sanPham.ma}</td>
-                                    <td onclick="window.location.href='/san-pham/hien-thi/${sanPham.id}'">${sanPham.ten}</td>
+                                    <td onclick="window.location.href='/admin/san-pham/hien-thi/${sanPham.id}'">${sanPham.ten}</td>
                                     <td><fmt:formatNumber pattern="#,###" value="${sanPham.giaBan}">
 
                                     </fmt:formatNumber></td>
@@ -89,7 +89,7 @@
                                                 ${sanPham.trangThai == 0 ? 'Kinh doanh' : 'Ngừng kinh doanh'}</button>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" title="Ngừng kinh doanh" onclick="if(confirm('Bạn có chắc chắn muốn ngừng kinh doanh không?')){window.location.href = '/san-pham/stop/${sanPham.id}';}
+                                        <button type="button" class="btn btn-danger" title="Ngừng kinh doanh" onclick="if(confirm('Bạn có chắc chắn muốn ngừng kinh doanh không?')){window.location.href = '/admin/san-pham/stop/${sanPham.id}';}
                                                 else{alert('Ngừng kinh doanh thất bại!')}"><i class="bi bi-sign-stop"></i>
                                         </button>
                                     </td>
