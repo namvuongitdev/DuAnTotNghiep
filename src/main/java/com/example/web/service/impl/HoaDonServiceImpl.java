@@ -2,9 +2,11 @@ package com.example.web.service.impl;
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
 import com.example.web.model.KhachHang;
+import com.example.web.model.NhanVien;
 import com.example.web.model.TrangThaiHoaDon;
 import com.example.web.repository.IHoaDonRepository;
 import com.example.web.repository.IKhachHangRepository;
+import com.example.web.repository.INhanVienRepository;
 import com.example.web.request.HoaDonRequest;
 import com.example.web.response.HoaDonReponse;
 import com.example.web.service.IHoaDonService;
@@ -19,10 +21,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,6 +44,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Autowired
     private IKhachHangRepository khachHangRepository;
 
+    @Autowired
+    private INhanVienRepository nhanVienRepository;
+
     @Override
     public String addHoaDon() {
 
@@ -54,7 +60,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
         hoaDon = hoaDonRepository.save(hoaDon);
 
-        return "redirect:/hoa-don/detail?idHD=" + hoaDon.getId();
+        return "redirect:/admin/hoa-don/detail?idHD=" + hoaDon.getId();
     }
 
     @Override
@@ -91,7 +97,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 hoaDonChiTiet.setTrangThai(1);
                 hoaDonRepository.save(hd);
             });
-            return "redirect:/hoa-don/hien-thi-hoa-cho";
+            return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
 
         } else {
             return null;
@@ -103,12 +109,15 @@ public class HoaDonServiceImpl implements IHoaDonService {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(request.getId()));
         BigDecimal tongTienHoaDon = hoaDonRepository.tongTien(hoaDon.get().getId());
         List<HoaDonChiTiet> ctsp = hoaDon.get().getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() != 1).collect(Collectors.toList());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+       NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         if (ctsp.isEmpty()) {
             attributes.addFlashAttribute("error", "giỏ hàng chưa có sản phẩm");
-            return "redirect:/hoa-don/detail?idHD=" + request.getId() + "&idKhachHang=" + request.getIdKhachHang();
+            return "redirect:/admin/hoa-don/detail?idHD=" + request.getId() + "&idKhachHang=" + request.getIdKhachHang();
         } else {
             if (hoaDon.isPresent()) {
                 HoaDon hd = hoaDon.get();
+                hd.setNhanVien(nhanVien);
                 if (hd.getLoaiHoaDon()) {
                         Double tongTienDonDatHang = tongTienHoaDon.doubleValue() + request.getPhiVanChuyen().doubleValue();
                         hd.setTrangThai(TrangThaiHoaDon.Cho_xac_nhan.getValue());
@@ -121,11 +130,11 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 } else {
                     if (request.getSoTienThanhToan().isEmpty() || request.getSoTienThanhToan() == null) {
                         attributes.addFlashAttribute("error", "chưa nhập tiền khách đưa");
-                        return "redirect:/hoa-don/detail?idHD=" + request.getId() + "&idKhachHang=" + request.getIdKhachHang();
+                        return "redirect:/admin/hoa-don/detail?idHD=" + request.getId() + "&idKhachHang=" + request.getIdKhachHang();
                     } else if (tongTienHoaDon.doubleValue() > Double.parseDouble(request.getSoTienThanhToan())) {
                         attributes.addFlashAttribute("error", "số tiền khách đưa chưa đủ");
                         attributes.addFlashAttribute("soTienKhachTra" , request.getSoTienThanhToan());
-                        return "redirect:/hoa-don/detail?idHD=" + hd.getId() + "&idKhachHang=" + request.getIdKhachHang();
+                        return "redirect:/admin/hoa-don/detail?idHD=" + hd.getId() + "&idKhachHang=" + request.getIdKhachHang();
                     } else {
                         Date date = java.util.Calendar.getInstance().getTime();
                         hd.setMoTa(request.getMoTa());
@@ -140,7 +149,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                     hd.setKhachHang(khachHang.get());
                 }
                 hoaDonRepository.save(hd);
-                return "redirect:/hoa-don/hien-thi-hoa-cho";
+                return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
             } else {
                 return null;
             }

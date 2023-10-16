@@ -1,11 +1,8 @@
 package com.example.web.controller;
-
 import com.example.web.model.Anh;
 import com.example.web.model.SanPham;
-import com.example.web.response.AnhResponse;
 import com.example.web.response.SanPhamFilter;
 import com.example.web.service.*;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,12 +10,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("")
+@RequestMapping("/index")
 public class TrangChuController {
 
     @Autowired
@@ -37,20 +33,15 @@ public class TrangChuController {
     private DanhMucService danhMucService;
 
     @Autowired
-    private IChiTietSanPhamService chiTietSanPhamService;
+    private ISanPhamService iSanPhamService;
 
     @Autowired
-    ISanPhamService iSanPhamService;
+    private IAnhService iAnhService;
 
-    @Autowired
-    IAnhService iAnhService;
-
-    @Autowired
-    private HttpServletRequest request;
 
     private Page<SanPham> sanPhamPage = null;
 
-    @GetMapping("/trang-chu")
+    @GetMapping("/home")
     public String hienThi(Model model, @RequestParam(defaultValue = "1") int page) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         sanPhamPage = iSanPhamService.findAll(pageable);
@@ -67,20 +58,6 @@ public class TrangChuController {
         model.addAttribute("listKichCo", sizeService.getAll());
         model.addAttribute("listMuaSac", mauSacService.getAll());
         model.addAttribute("listDanhMuc", danhMucService.getAll());
-    }
-
-    @GetMapping("filter")
-    public String filterSanPham(@RequestParam(defaultValue = "1") int page,
-                                @ModelAttribute("filterSanPham") SanPhamFilter filter,
-                                Model model) {
-        Pageable pageable = PageRequest.of(page - 1, 10);
-        sanPhamPage = iSanPhamService.sanPhamFilter(filter, pageable);
-        String url = "/san-pham/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
-        model.addAttribute("filter", filter);
-        model.addAttribute("listSanPham", sanPhamPage);
-        danhSachThuocTinhSanPham(model);
-        model.addAttribute("url", url);
-        return "banHangOnlline/index";
     }
 
     @GetMapping({"/api-hien-thi"})
@@ -104,7 +81,7 @@ public class TrangChuController {
         return listSanPham;
     }
 
-    @GetMapping("thoi-trang-nam/vi")
+    @GetMapping("/thoi-trang-nam/vi")
     public String thoiTrangNam(Model model, @RequestParam(defaultValue = "1") int page) {
         if (page < 1) page = 1;
         Pageable pageable = PageRequest.of(page - 1, 12);
@@ -116,7 +93,7 @@ public class TrangChuController {
         return "banHangOnlline/index";
     }
 
-    @GetMapping("thoi-trang-nu")
+    @GetMapping("/thoi-trang-nu")
     public String thoiTrangNu(Model model, @RequestParam(defaultValue = "1") int page) {
         if (page < 1) page = 1;
         Pageable pageable = PageRequest.of(page - 1, 12);

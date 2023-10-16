@@ -115,6 +115,6 @@ function themSanPhamVaoGioHang(data) {
                 }
             }
         }
-        window.location.href = "/hoa-don/add-san-pham?ctsp=" + data.idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD + "&idKhachHang=" + data.idKhachHang;
+        window.location.href = "/admin/hoa-don/add-san-pham?ctsp=" + data.idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD + "&idKhachHang=" + data.idKhachHang;
     }
 }

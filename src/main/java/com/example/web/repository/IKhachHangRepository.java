@@ -22,4 +22,7 @@ public interface IKhachHangRepository extends JpaRepository<KhachHang , UUID> {
 
     @Override
     <S extends KhachHang> S save(S entity);
+
+    @Query(value = "select kh from KhachHang kh where kh.email = ?1 or kh.taiKhoan = ?1")
+    KhachHang findByEmailOrAndTaiKhoan(String username);
 }

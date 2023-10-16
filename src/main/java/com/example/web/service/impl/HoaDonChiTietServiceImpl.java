@@ -8,11 +8,8 @@ import com.example.web.repository.IHoaDonRepository;
 import com.example.web.service.IHoaDonChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
@@ -71,9 +68,9 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
             hdct.setTrangThai(1);
             hoaDonChiTietRepository.save(hdct);
             if(idKhachHang != null && !idKhachHang.isEmpty()){
-                return "redirect:/hoa-don/detail?idHD=" + hdct.getHoaDon().getId() + "&idKhachHang="+idKhachHang;
+                return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId() + "&idKhachHang="+idKhachHang;
             }
-            return "redirect:/hoa-don/detail?idHD=" + hdct.getHoaDon().getId();
+            return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId();
         } else {
             return null;
         }
@@ -94,7 +91,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
         if (hoaDonChiTiet.isPresent()) {
             HoaDonChiTiet hdct = hoaDonChiTiet.get();
             if (Integer.parseInt(soLuong) == 0 || soLuong.isEmpty()) {
-                return "redirect:/hoa-don/delete?idHDCT=" + hdct.getId() + "&idHD=" + hdct.getHoaDon().getId();
+                return "redirect:/admin/hoa-don/delete?idHDCT=" + hdct.getId() + "&idHD=" + hdct.getHoaDon().getId();
             } else {
                 ChiTietSanPham ctsp = hdct.getChiTietSanPham();
                 Integer soLuongTon = hdct.getSoLuong() + ctsp.getSoLuong();
@@ -107,9 +104,9 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                     hdct.setSoLuong(Integer.parseInt(soLuong));
                     hoaDonChiTietRepository.save(hdct);
                     if(idKhachHang != null && !idKhachHang.isEmpty()){
-                        return "redirect:/hoa-don/detail?idHD=" + hdct.getHoaDon().getId() + "&idKhachHang="+idKhachHang;
+                        return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId() + "&idKhachHang="+idKhachHang;
                     }
-                    return "redirect:/hoa-don/detail?idHD=" + hdct.getHoaDon().getId();
+                    return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId();
                 }
             }
         }else{

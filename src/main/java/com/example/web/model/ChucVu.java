@@ -1,6 +1,4 @@
 package com.example.web.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +14,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Nationalized;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -50,5 +47,8 @@ public class ChucVu {
     @Column(name = "ngay_sua")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ngaySua;
+
+    @OneToMany(mappedBy = "chucVu")
+    private List<NhanVien> nhanViens;
 
 }

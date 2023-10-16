@@ -38,7 +38,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/hoa-don/hien-thi" class="nav-link align-middle px-0">
+                <a href="/admin/hoa-don/hien-thi" class="nav-link align-middle px-0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
                         <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zM11.5 4a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
@@ -48,7 +48,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/hoa-don/hien-thi-hoa-cho" class="nav-link align-middle px-0">
+                <a href="/admin/hoa-don/hien-thi-hoa-cho" class="nav-link align-middle px-0">
                     <%--                    icon--%>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="bi bi-cart" viewBox="0 0 16 16">
@@ -69,7 +69,7 @@
                 <ul class="collapse nav flex-column ms-1 coll <%= request.getRequestURI().contains("quanLySanPham") ? "collapsed show" : ""  %>"
                     id="submenu1" data-bs-parent="#menu">
                     <li class="w-100" style="margin-left: 15px">
-                        <a href="/san-pham/hien-thi" class="nav-link px-0">
+                        <a href="/admin/san-pham/hien-thi" class="nav-link px-0">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-caret-right" viewBox="0 0 16 16">
                                 <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -79,7 +79,7 @@
                     </li>
                     <li style="margin-left: 15px">
 
-                        <a href="/kieu-dang/hien-thi" class="nav-link px-0">
+                        <a href="/admin/kieu-dang/hien-thi" class="nav-link px-0">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-caret-right" viewBox="0 0 16 16">
                                 <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -89,7 +89,7 @@
                         </a>
                     </li>
                     <li style="margin-left: 15px">
-                        <a href="/chat-lieu/hien-thi" class="nav-link px-0">
+                        <a href="/admin/chat-lieu/hien-thi" class="nav-link px-0">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-caret-right" viewBox="0 0 16 16">
                                 <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -99,7 +99,7 @@
                         </a>
                     </li>
                     <li style="margin-left: 15px">
-                        <a href="/size/hien-thi" class="nav-link px-0">
+                        <a href="/admin/size/hien-thi" class="nav-link px-0">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-caret-right" viewBox="0 0 16 16">
                                 <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -108,7 +108,7 @@
                                     color="black">Kích Cỡ</font></span> </a>
                     </li>
                     <li style="margin-left: 15px">
-                        <a href="/danh-muc/hien-thi" class="nav-link px-0">
+                        <a href="/admin/danh-muc/hien-thi" class="nav-link px-0">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-caret-right" viewBox="0 0 16 16">
                                 <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -117,7 +117,7 @@
                                     color="black">Danh Mục</font></span> </a>
                     </li>
                     <li style="margin-left: 15px">
-                        <a href="/mau-sac/hien-thi" class="nav-link px-0">
+                        <a href="/admin/mau-sac/hien-thi" class="nav-link px-0">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-caret-right" viewBox="0 0 16 16">
                                 <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -137,7 +137,7 @@
                     <span class="ms-1 d-none d-sm-inline"><font color="black">Quản Lý Tài Khoản</font></span></a>
                 <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
                     <li class="w-100" style="margin-left: 15px">
-                        <a href="/nhan-vien/hien-thi" class="nav-link px-0">
+                        <a href="/admin/nhan-vien/hien-thi" class="nav-link px-0">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-caret-right" viewBox="0 0 16 16">
                                 <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>

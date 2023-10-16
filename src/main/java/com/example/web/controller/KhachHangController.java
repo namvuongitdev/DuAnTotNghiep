@@ -33,7 +33,7 @@ public class KhachHangController {
 
     @GetMapping("/api-hien-thi")
     @ResponseBody
-    public Page<KhachHang> getKhachHangs(@RequestParam Integer page , @RequestParam String value){
+    public Page<KhachHang> getKhachHangs(@RequestParam Integer page , @RequestParam(required = false) String value){
         Page listKhachHang = null;
         if(value.isEmpty()){
             listKhachHang = khachHangService.getAll(page);

@@ -1,8 +1,8 @@
 function getSanPham(page) {
     const value = document.querySelector("#search-input").value;
-    let url = `/san-pham/api-hien-thi?page=` + page + `&value=` + value;
+    let url = `/admin/san-pham/api-hien-thi?page=` + page + `&value=` + value;
     if (value == null) {
-        url = `/san-pham/api-hien-thi?page=` + page;
+        url = `/admin/san-pham/api-hien-thi?page=` + page;
     }
     fetch(url)
         .then(response => response.json())
@@ -57,7 +57,7 @@ function api(page, data) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     };
-    fetch('/san-pham/api-filter?page=' + page, options)
+    fetch('/admin/san-pham/api-filter?page=' + page, options)
         .then(response => response.json())
         .then(data => {
             let pageNo = page <= 1 ? "disabled" : "";
@@ -175,6 +175,6 @@ function updateSoLuong(soLuong, sanPham) {
         alert("số lượng hiện tại trong của hàng không đủ");
         window.location.reload();
     } else {
-        window.location.href = "/hoa-don/update-san-pham?idHD=" + sanPham.id + "&soLuong=" + Number.parseInt(soLuong) + "&idKhachHang="+sanPham.idKhachHang;
+        window.location.href = "/admin/hoa-don/update-san-pham?idHD=" + sanPham.id + "&soLuong=" + Number.parseInt(soLuong) + "&idKhachHang="+sanPham.idKhachHang;
     }
 }

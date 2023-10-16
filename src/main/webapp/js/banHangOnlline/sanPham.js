@@ -1,8 +1,8 @@
 function getSanPham(page) {
     const value = document.querySelector("#search-input").value;
-    let url = `/api-hien-thi?page=` + page + `&value=` + value;
+    let url = `/index/api-hien-thi?page=` + page + `&value=` + value;
     if (value == null) {
-        url = `/api-hien-thi?page=` + page;
+        url = `/index/api-hien-thi?page=` + page;
     }
     fetch(url)
         .then(response => response.json())
@@ -26,8 +26,8 @@ function getSanPham(page) {
                         <div class="product__item__pic">
                             <img src="/anh/${data.content[i].img}" style="width:265px;height: 270px" >
                             <ul class="product__hover">
-                            <form method="get" action="admin/chi-tiet-san-pham/${data.content[i].id}">
-                                <li><a href="/chi-tiet-san-pham-onl?id=${data.content[i].id}"><img src="anh/eye.png" width="40px" alt=""></a></li>
+                            <form method="get" action="/index/chi-tiet-san-pham/${data.content[i].id}">
+                                <li><a href="/index/chi-tiet-san-pham-onl?id=${data.content[i].id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>
                             </form>
                             </ul>
                         </div>
@@ -47,10 +47,10 @@ function getSanPham(page) {
                 bodyDiv.appendChild(productDiv);
 
             for (let i = 1; i <= data.totalPages; i++) {
-                active = page == i ? "active" : ""
+                active = page == i ? "background-color:#4e555b" : ""
                 phanTrang +=
                     `<li class="page-item" >
-                                <a class="page-link ` + active + `" name="` + i + `" onclick="page(this.name)" >` + i + `</a>
+                                <a class="page-link" style="`+active+`" name="` + i + `" onclick="page(this.name)" >` + i + `</a>
                                 </li>`
             }
             // document.getElementById("body").innerHTML = sanPham;
@@ -79,7 +79,7 @@ function api(page, data) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     };
-    fetch('/api-filter?page=' + page, options)
+    fetch('/index/api-filter?page=' + page, options)
         .then(response => response.json())
         .then(data => {
             let pageNo = page <= 1 ? "disabled" : "";
@@ -203,15 +203,4 @@ function timKiem() {
     getSanPham(1);
 }
 
-function updateSoLuong(soLuong, sanPham) {
-    const soLuongTon = +sanPham.soLuongHDCT + +sanPham.soLuongCTSP;
-    if (soLuong < 0) {
-        alert("số lượng phải  lớn hơn 0");
-    } else if (soLuong > soLuongTon) {
-        alert("số lượng hiện tại trong của hàng không đủ");
-        window.location.reload();
-    } else {
-        window.location.href = "/hoa-don/update-san-pham?idHD=" + sanPham.id + "&soLuong=" + Number.parseInt(soLuong);
-    }
-}
 

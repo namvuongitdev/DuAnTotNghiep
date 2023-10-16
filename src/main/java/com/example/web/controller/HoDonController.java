@@ -31,7 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/hoa-don")
+@RequestMapping("/admin/hoa-don")
 public class HoDonController {
 
     private String url;
@@ -91,7 +91,7 @@ public class HoDonController {
         if(idKhachHang != null && !idKhachHang.isEmpty()){
             return "redirect:/hoa-don/detail?idHD="+ idHD + "&idKhachHang="+idKhachHang;
         }
-        return "redirect:/hoa-don/detail?idHD="+idHD;
+        return "redirect:/admin/hoa-don/detail?idHD="+idHD;
     }
 
     @GetMapping("/delete")
@@ -130,7 +130,7 @@ public class HoDonController {
 
                }
                attributes.addFlashAttribute("datHang" , hoaDonRequest);
-               return  "redirect:/hoa-don/detail?idHD=" + hoaDon.getId() + "&idKhachHang=" + idKhachHang;
+               return  "redirect:/admin/hoa-don/detail?idHD=" + hoaDon.getId() + "&idKhachHang=" + idKhachHang;
            }
        }
         hoaDonRequest.setId(idHD);

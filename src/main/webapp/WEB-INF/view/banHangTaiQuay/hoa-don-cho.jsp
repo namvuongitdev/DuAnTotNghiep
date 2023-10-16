@@ -51,7 +51,7 @@
                      </div>
                     <div class="col l-3">
                         <div>
-                            <form action="/hoa-don/create" method="post">
+                            <form action="/admin/hoa-don/create" method="post">
                                 <button class="btn btn-primary">Tạo hoá đơn</button>
                             </form>
                         </div>
@@ -79,7 +79,7 @@
                                         ${hoaDon[3] == 0 ? 'Đang chờ' : ''}</button>
                             </td>
                             <td>
-                                <a href="/hoa-don/detail?idHD=${hoaDon[0]}" class="btn btn-outline-success">Chi tiết</a>
+                                <a href="/admin/hoa-don/detail?idHD=${hoaDon[0]}" class="btn btn-outline-success">Chi tiết</a>
                                 <button name="${hoaDon[0]}" onclick="deleteHoaDonCho(this.name)" type="button" class="btn btn-outline-danger">Xoá</button>
                             </td>
                         </tr>

@@ -45,10 +45,10 @@
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a
-                                    href="/hoa-don/hien-thi-hoa-cho" <%= request.getRequestURI().contains("hoa-don-cho") ? "class=\"link-primary\"" : ""  %>
+                                    href="/admin/hoa-don/hien-thi-hoa-cho" <%= request.getRequestURI().contains("hoa-don-cho") ? "class=\"link-primary\"" : ""  %>
                                     style="text-decoration: none; color: black">Hoá đơn chờ</a></li>
                             <li class="breadcrumb-item"><a
-                                    href="/hoa-don/detail?idHD=${hoaDon.id}" <%= request.getRequestURI().contains("gio-hang") ? "class=\"link-primary\"" : ""  %>
+                                    href="/admin/hoa-don/detail?idHD=${hoaDon.id}" <%= request.getRequestURI().contains("gio-hang") ? "class=\"link-primary\"" : ""  %>
                                     style="text-decoration: none; color: black ; ">Tạo hoá đơn</a></li>
                         </ol>
                     </nav>
@@ -108,7 +108,7 @@
                                         <td id="thanhTien"><fmt:formatNumber pattern="#,###"
                                                                              value="${sanPham.soLuong * sanPham.donGia}"></fmt:formatNumber></td>
                                         <td><a onclick="if(confirm('Bạn có muốn xoá không') == true){
-                                                window.location.href = '/hoa-don/delete?idHD=${idHD}&idHDCT=${sanPham.id}&idKhachHang=${khachHang.id}';
+                                                window.location.href = '/admin/hoa-don/delete?idHD=${idHD}&idHDCT=${sanPham.id}&idKhachHang=${khachHang.id}';
                                                 }" class="btn btn-danger">Xoá khỏi giỏ</a></td>
                                     </tr>
                                 </c:forEach>
@@ -143,7 +143,7 @@
                                 <c:if test="${khachHang != null}">
                                     <div class="col-sm-2" style="width: 11%">
                                         <button class="btn btn-danger"
-                                                onclick="window.location.href = '/hoa-don/detail?idHD=${hoaDon.id}'">Huỷ
+                                                onclick="window.location.href = '/admin/hoa-don/detail?idHD=${hoaDon.id}'">Huỷ
                                             chọn
                                         </button>
                                     </div>
@@ -170,7 +170,7 @@
                     </div>
                     <%-- thông tin thanh toán--%>
                     <form class="row" style="background-color: white"
-                          action="/hoa-don/thanh-toan?idHD=${hoaDon.id}&idKhachHang=${khachHang.id}" method="post"
+                          action="/admin/hoa-don/thanh-toan?idHD=${hoaDon.id}&idKhachHang=${khachHang.id}" method="post"
                           modelAtrribute="${request}">
                         <c:choose>
                             <%-- đặt hàng--%>

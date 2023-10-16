@@ -1,5 +1,4 @@
 package com.example.web.service.impl;
-
 import com.example.web.model.NhanVien;
 import com.example.web.repository.INhanVienRepository;
 import com.example.web.response.NhanVienFilter;
@@ -13,6 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class NhanVienServiceImpl implements INhanVienService {
+public class NhanVienServiceImpl implements INhanVienService  {
     @Autowired
     private INhanVienRepository iNhanVienRepository;
 
