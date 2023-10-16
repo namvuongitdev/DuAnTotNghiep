@@ -200,4 +200,14 @@ public class HoaDonServiceImpl implements IHoaDonService {
     public HoaDon add(HoaDon hoaDon) {
         return hoaDonRepository.save(hoaDon);
     }
+
+    @Override
+    public HoaDon updateHoaDonById(HoaDon hoaDon) {
+        Optional<HoaDon> hd =hoaDonRepository.findById(hoaDon.getId());
+        hd.get().setHoTen(hoaDon.getHoTen());
+        hd.get().setDiaChi(hoaDon.getDiaChi());
+        hd.get().setSdt(hoaDon.getSdt());
+        hd.get().setTongTien(hoaDon.getTongTien());
+        return hoaDonRepository.save(hd.get());
+    }
 }

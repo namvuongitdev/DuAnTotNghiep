@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Controller
@@ -165,7 +167,7 @@ public class HoDonController {
                           @RequestParam(defaultValue = "0") Integer page,
                           @ModelAttribute("hoaDonFillter") HoaDonFilter filter) {
         Pageable pageable = PageRequest.of(page, 10);
-        String url = "/hoa-don/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
+        String url = "/admin/hoa-don/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
         model.addAttribute("lst", hoaDonService.hoaDonFillter(filter, pageable).getContent());
         model.addAttribute("fillter", filter);
         System.out.println(filter.getDateBegin());
@@ -186,8 +188,8 @@ public class HoDonController {
     }
     @GetMapping("/view-update/{id}")
     public String viewUpdate(Model model,
-                         @RequestParam(defaultValue = "0") Integer page,
-                         @PathVariable("id") String id) {
+                             @RequestParam(defaultValue = "0") Integer page,
+                             @PathVariable("id") String id) {
         Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
         model.addAttribute("hd",hoaDonService.getOne(id));
         model.addAttribute("lst",lst.getContent());
@@ -201,6 +203,23 @@ public class HoDonController {
     public String updateHoaDonChiTiet(@RequestParam("ctsp") String idCTSP, @RequestParam("soLuong") String soLuong, @RequestParam("idHD") String idHD) {
         url = hoaDonChiTietService.addSanPhamHoaDonChiTietKhiUpdate(idCTSP,idHD,Integer.parseInt(soLuong));
         return url;
+    }
+    @GetMapping("/update-so-luong")
+    public String updateSoLuongSanPhamHoaDonChiTiet2(@RequestParam("hdct") String idHdct, @RequestParam("soLuong") String soLuong) {
+        url = hoaDonChiTietService.updateSoLuongSanPhamHoaDonChiTietKhiUpdate(idHdct,soLuong);
+        return url;
+    }
+    @PostMapping("/update-hoa-don/{id}")
+    public String capNhatHoaDonChiTiet(@RequestParam(defaultValue = "0") Integer page,@Valid @ModelAttribute("hoaDon")HoaDon hoaDon,@PathVariable("id") String id) {
+        Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
+        Integer tongTien = 0;
+        for (int i = 0; i <= lst.getContent().size()-1; i++) {
+            tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getChiTietSanPham().getSanPham().getGiaBan().intValue();
+        }
+        hoaDon.setId(UUID.fromString(id));
+        hoaDon.setTongTien(BigDecimal.valueOf(tongTien));
+        hoaDonService.updateHoaDonById(hoaDon);
+        return  "redirect:/admin/hoa-don/view-update/"+id;
     }
 
 }

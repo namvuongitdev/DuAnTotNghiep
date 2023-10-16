@@ -38,8 +38,8 @@
             </div><!-- End Page Title -->
             <section class="section">
                 <%--@elvariable id="hoaDon" type=""--%>
-                <form:form class="row" action="" method="post" modelAttribute="hoaDon">
-                    <div class="col-8">
+                <form:form action="/admin/hoa-don/update-hoa-don/${hd.id}" method="post" modelAttribute="hoaDon">
+                    <div class="col">
                         <div class="card">
                             <div class="card-body row">
                                 <h5 class="card-title">Thông tin chi tiết</h5>
@@ -51,13 +51,13 @@
                                             <label class="form-label" path="">Mã hóa đơn</label>
                                         </div>
                                         <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.ngayTao}" readonly="true" path="ngayTao"/>
+                                            <input class="form-control" value="${hd.ngayTao}" readonly />
                                             <label class="form-label" path="">Ngày tạo</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.ngayThanhToan}" readonly="true" path="ngayThanhToan"/>
+                                            <input class="form-control" value="${hd.ngayThanhToan}" readonly />
                                             <label class="form-label" path="">Ngày thanh toán</label>
                                         </div>
                                     </div>
@@ -65,7 +65,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col mt-5">
                         <div class="card">
                             <div class="card-body row">
                                 <h5 class="card-title">Thông tin khách hàng</h5>
@@ -73,17 +73,17 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.hoTen}" readonly="true" path="hoTen"/>
+                                            <form:input class="form-control" value="${hd.hoTen}" path="hoTen"/>
                                             <label class="form-label" path="">Tên khách hàng</label>
                                         </div>
                                         <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.sdt}" readonly="true" path="sdt"/>
+                                            <form:input class="form-control" value="${hd.sdt}" path="sdt"/>
                                             <label class="form-label" path="">SĐT</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.diaChi}" readonly="true" path="diaChi"/>
+                                            <form:input class="form-control" value="${hd.diaChi}" path="diaChi"/>
                                             <label class="form-label" path="">Địa chỉ</label>
                                         </div>
                                     </div>
@@ -104,11 +104,10 @@
                         </div>
                         <div class="col-6">
                             <button style="float: right" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
-                               name="1" onclick="getSanPham(this.name)">
+                                    name="1" onclick="getSanPham(this.name)">
                                 Thêm sản phẩm
                             </button>
                         </div>
-
                         <br><br>
                         <!-- Table with stripped rows -->
                         <table class="table">
@@ -131,12 +130,12 @@
                                     <td>
                                         <img src="/image/${hdct.chiTietSanPham.sanPham.img}">
                                     </td>
-                                    <td><input type="number" class="form-control" id="soLuongSp" onchange="myFunction()" value="${hdct.soLuong}" min="1" style="width: 40%"></td>
-                                   <td>
-                                       <input type="text" class="form-control" id="giaBan" readonly value="<fmt:formatNumber pattern="#,###"  value="${hdct.chiTietSanPham.sanPham.giaBan}"/>"/>
-                                   </td>
+                                    <td><input type="number" class="form-control" id="soLuongSp" onchange="myFunction({idhdct:`${hdct.id}`,soLuong:this.value})" value="${hdct.soLuong}" min="1" style="width: 40%"></td>
+                                    <td>
+                                        <input type="text" class="form-control" id="giaBan" readonly value="<fmt:formatNumber pattern="#,###"  value="${hdct.chiTietSanPham.sanPham.giaBan}"/>"/>
+                                    </td>
                                     <td>${hdct.trangThai==0?'Đã mua':'Hủy'}</td>
-                                    <td><input type="text" class="form-control" readonly id="thanhTien" value="<fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/>"></td>
+                                    <td><input type="text" class="form-control" readonly name="thanhTien" id="thanhTien" value="<fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/>"></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -482,12 +481,16 @@
         }
     }
     // --------------------------------------------
-    function myFunction(){
-        var slSp = document.getElementById("soLuongSp").value;
+    function myFunction(data){
+        var slSp = document.getElementById("soLuongSp");
         var giaSp = Number.parseFloat(document.getElementById("giaBan").value)
         console.log(giaSp)
-        document.getElementById("thanhTien").value = slSp*giaSp;
-        // return window.location.reload();
+        if (confirm("Bạn có muốn thay đổi số lượng không")==true){
+            window.location.href = "/hoa-don/update-so-luong?hdct=" + data.idhdct + "&soLuong=" + data.soLuong;
+        }else {
+            window.location.reload();
+            return;
+        }
     }
 
 </script>
