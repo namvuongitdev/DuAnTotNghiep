@@ -53,7 +53,7 @@
                             <div class="tab-pane fade show active" id="bordered-home" role="tabpanel"
                                  aria-labelledby="home-tab">
                                 <%--@elvariable id="hoaDonFillter" type=""--%>
-                                <form:form action="/admin/hoa-don/filter" method="get" modelAttribute="hoaDonFillter">
+                                <form:form action="/hoa-don/filter" method="get" modelAttribute="hoaDonFillter">
                                     <div class="input-group" style="width: 500px">
                                         <input type="text" class="form-control" name="search" value="${fillter.search}"
                                                placeholder="Tìm theo mã hóa đơn" aria-label="Tìm theo mã hóa đơn"
@@ -106,6 +106,7 @@
                         <tr>
                             <th scope="col">STT</th>
                             <th scope="col">Mã hóa đơn</th>
+                            <th scope="col">Loại hóa đơn</th>
                             <th scope="col">Thời gian</th>
                             <th scope="col">Khách hàng</th>
                             <th scope="col">Tổng tiền hàng</th>
@@ -118,16 +119,12 @@
                             <tr>
                                 <td>${i.index+1}</td>
                                 <td>${hd.ma}</td>
+                                <td>${hd.loaiHoaDon==false?'Đơn tại quầy':'Đơn giao'}</td>
                                 <td><fmt:formatDate value="${hd.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                 <td>${hd.khachHang.hoTen}</td>
                                 <td><fmt:formatNumber pattern="#,###" value="${hd.tongTien}"/></td>
-                                <td>${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':'Đã hủy'}</td>
+                                <td>${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Đã tiếp nhận':(hd.trangThai==6)?'Giao hàng thành công':(hd.trangThai==5)?'Hủy đơn hàng':''}</td>
                                 <td>
-                                    <button type="button" class="btn btn-success" title="Xem Chi Tiết"
-                                            onclick="myFunction()">
-                                        <a class="text-white" style="text-decoration: none"
-                                           href="/admin/hoa-don/detail/${hd.id}"><i class="bi bi-pencil"></i></a>
-                                    </button>
                                     <button type="button" class="btn btn-success" title="Cập nhật"
                                             onclick="myFunction()">
                                         <a class="text-white" style="text-decoration: none"

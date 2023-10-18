@@ -144,7 +144,6 @@ public class HoDonController {
     //    -----------------------------------------------------------
     @GetMapping("/hien-thi")
     public String hienThi(Model model, @RequestParam(defaultValue = "0") Integer page) {
-
         model.addAttribute("hoaDonFillter",new HoaDonFilter());
         model.addAttribute("lst",hoaDonService.pagination(page,10).getContent());
         model.addAttribute("lst1",hoaDonService.pagination(page,10).getNumber());
@@ -172,19 +171,6 @@ public class HoDonController {
         model.addAttribute("fillter", filter);
         System.out.println(filter.getDateBegin());
         return "quanLyHoaDon/hoa-don";
-    }
-
-    @GetMapping("/detail/{id}")
-    public String detail(Model model,
-                         @RequestParam(defaultValue = "0") Integer page,
-                         @PathVariable("id") String id) {
-        Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
-        model.addAttribute("hd",hoaDonService.getOne(id));
-        model.addAttribute("lst",lst.getContent());
-        model.addAttribute("lst1",lst.getNumber());
-        model.addAttribute("currentPage",page);
-        model.addAttribute("totalPage",lst.getTotalPages());
-        return "quanLyHoaDon/chi-tiet-hoa-don";
     }
     @GetMapping("/view-update/{id}")
     public String viewUpdate(Model model,
