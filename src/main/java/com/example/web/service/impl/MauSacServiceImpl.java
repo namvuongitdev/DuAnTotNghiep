@@ -51,4 +51,11 @@ public class MauSacServiceImpl implements IMauSacService {
     public List<MauSac> getAll1() {
         return mauSacRepository.getAll1();
     }
+
+    @Override
+    public List<MauSac> getTheoCTSP(UUID idSP) {
+        return mauSacRepository.getTheoCTSP(idSP);
+    }
+
+
 }

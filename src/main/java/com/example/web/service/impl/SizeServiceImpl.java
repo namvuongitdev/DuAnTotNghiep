@@ -58,5 +58,10 @@ public class SizeServiceImpl implements SizeService {
         return sizeRepository.findAll(pageable);
     }
 
+    @Override
+    public List<Size> getTheoCT(UUID idSP) {
+        return sizeRepository.getTheoCT(idSP);
+    }
+
 
 }

@@ -427,7 +427,6 @@
                         <div class="item">
                             <img src="/anh/${anh.ten}"/>
                         </div>
-
                     </c:forEach>
                 </div>
                 <div id="thumb" class="owl-carousel product-thumb">
@@ -472,41 +471,28 @@
                             <div class="col-md-6">
                                 <label>Color</label>
                                 <br>
-                                <select name="color" class="form-control">
-                                    <option value="">Màu Vàng</option>
-                                    <option value="">Màu Trắng</option>
-                                    <option value="">Màu Xanh</option>
-                                    <option value="">Màu Đen</option>
-
-<%--                                    <c:forEach items="${listMau}" var="mau">--%>
-<%--                                        <option value="${mau.id}" ${idMau==mau.id?"selected":""}>${mau.ten}</option>--%>
-<%--                                    </c:forEach>--%>
+                                <select name="color" class="form-control" id="colorSelector">
+                                    <c:forEach items="${listMau}" var="mau">
+                                        <option value="${mau.id}" ${idMau==mau.id?"selected":""}>${mau.ten}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
                                 <label>Size</label>
+
                                 <ul>
-                                <button
-                                style="width: 40px;height: 40px;margin-top: 3px;background-color:
-                                 white;color: black">S</button> <button type="submit"
-                                style="width: 40px;height: 40px;margin-top: 3px;background-color:
-                                 white;color: black">M</button> <button type="submit"
-                                style="width: 40px;height: 40px;margin-top: 3px;background-color:
-                                 white;color: black">L</button> <button type="submit"
-                                style="width: 40px;height: 40px;margin-top: 3px;background-color:
-                                 white;color: black">XL</button>
-<%--                                    <c:forEach items="${listSize}" var="size">--%>
-<%--                                        <button type="submit"--%>
-<%--                                                formmethod="get"--%>
-<%--                                                formaction="/sports-clothing/tong-san-pham/${id}/${size.id}"--%>
-<%--                                                style="width: 40px;height: 40px;margin-top: 3px;background-color:--%>
-<%--                                                 white;color: black">${size.ten}</button>--%>
-<%--                                    </c:forEach>--%>
+                                    <c:forEach items="${listSize}" var="size">
+                                        <button type="submit"
+                                                onclick="alert(anamdd)"
+                                                style="width: 40px;height: 40px;margin-top: 3px;background-color:
+                                                 white;color: black">${size.ten}</button>
+                                    </c:forEach>
+<%--                                    HELLL0--%>
+<%--                                    <div id="ten" style="color: cadetblue"></div>--%>
                                 </ul>
                             </div>
                         </div>
-
                     </form>
                     <div class="product-count">
                         <label>Quantity</label>
@@ -597,6 +583,7 @@
         </div>
     </div>
 </div>
+
 <%--body end--%>
 <%-- sản phẩm liên quan begin--%>
 <div class="container-fluid bg-3 text-center">
@@ -702,9 +689,11 @@
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/main.js"></script>
 <script>
+
     $(document).ready(function () {
         var slider = $("#slider");
         var thumb = $("#thumb");
+        var colorSelector = $("#colorSelector");
         var slidesPerPage = 4; //globaly define number of elements per page
         var syncedSecondary = true;
         slider.owlCarousel({
@@ -716,8 +705,8 @@
             loop: true,
             responsiveRefreshRate: 200
         }).on('changed.owl.carousel', syncPosition);
-        thumb
-            .on('initialized.owl.carousel', function () {
+
+        thumb.on('initialized.owl.carousel', function () {
                 thumb.find(".owl-item").eq(0).addClass("current");
             })
             .owlCarousel({
@@ -787,7 +776,15 @@
             }
         });
     });
+
+    function getTen(idSize) {
+        console.log("ddd");
+        // fetch('/index/so-luong/' + idSP +'/'+ idSize)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         document.getElementById("ten").innerHTML = "Còn" + data.soLuong + "sản phẩm";
+        //     });
+    }
 </script>
 </body>
-
 </html>

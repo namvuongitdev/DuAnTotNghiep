@@ -22,4 +22,7 @@ public interface SizeService {
     void delete(String id);
 
     Page<Size> pagination(Integer pageNo, Integer size);
+
+    List<Size> getTheoCT (UUID idSP);
+
 }
