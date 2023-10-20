@@ -18,8 +18,8 @@ public interface ISanPhamRepository extends JpaRepository<SanPham, UUID>  , JpaS
     Page<SanPham> findAll(Pageable pageable);
 
     @Query(value = "\n" +
-            "select top 8 * from san_pham where ten like ?1 or ten like ?2 or ten like ?3",nativeQuery = true)
-    List<SanPham> theoTen(String ten,String ten2,String ten3 );
+            "select top 8 * from san_pham where id_chat_lieu like ?1 or id_kieu_dang like ?2 or id_danh_muc_san_pham like ?3",nativeQuery = true)
+    List<SanPham> theoTen(UUID chatLieu,UUID kieuDang,String danhMuc );
 
 
     @Query(value = "select  sanPham from SanPham sanPham where sanPham.ten like ?1 or sanPham.ma like ?1 ")

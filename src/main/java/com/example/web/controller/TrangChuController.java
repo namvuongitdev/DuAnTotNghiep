@@ -122,7 +122,7 @@ public class TrangChuController {
                 .stream()
                 .collect(Collectors.toList());
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(idSanPham));
-        List<SanPham> listSanPham = iSanPhamService.theoTen("%"+ sanPham.getTen(),"%"+sanPham.getTen()+"%",sanPham.getTen()+"%");
+        List<SanPham> listSanPham = iSanPhamService.theoTen(sanPham.getChatLieu().getId(),sanPham.getKieuDang().getId(),sanPham.getDanhMuc().getId());
         List<ChiTietSanPham> listCT = iChiTietSanPhamService.listCTSPTheoIdSP(UUID.fromString(idSanPham));
         List<MauSac> listMS = mauSacService.getTheoCTSP(UUID.fromString(idSanPham));
         List<Size> listSize = sizeService.getTheoCT(UUID.fromString(idSanPham));

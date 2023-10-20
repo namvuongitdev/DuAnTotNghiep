@@ -20,7 +20,7 @@ public interface ISanPhamService {
 
     Page<SanPham> getAllByTenOrMa(String value  , Integer page);
 
-    List<SanPham> theoTen(String ten,String ten2,String ten3 );
+    List<SanPham> theoTen(UUID chatLieu,UUID kieuDang,String danhMuc );
 
     Page<SanPham> findAllGender(Pageable pageable,boolean gioi_tinh);
 

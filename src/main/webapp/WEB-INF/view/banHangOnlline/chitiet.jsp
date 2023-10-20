@@ -591,14 +591,47 @@
     <div class="row">
         <c:forEach items="${listSanPham}" var="sp">
             <div class="col-sm-3">
-                <b>${sp.ten}</b>
-                <font color="#5f9ea0"> ${sp.giaFormat} đ </font>
-                <img src="/anh/${sp.img}" class="img-responsive" style="width:200px;height: 200px" alt="Image">
+                        <div class="product__item" style="margin-left: 30px">
+                            <div class="product__item__pic">
+                                <img src="/anh/${sp.img}" style="swidth:265px;height: 270px" >
+                                <ul class="product__hover">
+                                    <form method="get" action="/index/chi-tiet-san-pham/${sp.id}">
+                                        <li><a href="/index/chi-tiet-san-pham-onl?id=${sp.id}"><img src="/anh/eye.png"style="margin-right: 20px;width:40px" alt=""></a></li>
+                                    </form>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6>${sp.ten}</h6>
+                                    <%--                    <a href="#" class="add-cart">+ Add To Cart</a>--%>
+                                <h5>${sp.giaFormat} đ</h5>
+                            </div>
+                        </div>
             </div>
         </c:forEach>
 
     </div>
 </div><br>
+
+<%--<c:forEach items="${listSanPham}" var="sp">--%>
+
+
+<%--    <div class="product__item" style="margin-left: 30px">--%>
+<%--        <div class="product__item__pic">--%>
+<%--            <img src="/anh/${sp.img}" style="swidth:265px;height: 270px" >--%>
+<%--            <ul class="product__hover">--%>
+<%--                <form method="get" action="/index/chi-tiet-san-pham/${sp.id}">--%>
+<%--                    <li><a href="/index/chi-tiet-san-pham-onl?id=${sp.id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>--%>
+<%--                </form>--%>
+<%--            </ul>--%>
+<%--        </div>--%>
+<%--        <div class="product__item__text">--%>
+<%--            <h6>${sp.ten}</h6>--%>
+<%--                &lt;%&ndash;                    <a href="#" class="add-cart">+ Add To Cart</a>&ndash;%&gt;--%>
+<%--            <h5>${sp.giaFormat} đ</h5>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</c:forEach>--%>
+
 <%-- sản phẩm liên quan end--%>
 <!-- Footer Section begin -->
 <footer class="footer">
