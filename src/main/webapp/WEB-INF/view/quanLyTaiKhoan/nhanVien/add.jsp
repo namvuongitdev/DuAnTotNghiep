@@ -60,16 +60,6 @@
                                         <form:errors path="hoTen" cssStyle="color: red"/>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="sdt" class="form-label">Số điện thoại</label>
-                                        <form:input type="text" class="form-control" path="sdt" id="sdt"/>
-                                        <form:errors path="sdt" cssStyle="color: red"/>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email</label>
-                                        <form:input type="text" class="form-control" path="email" id="email"/>
-                                        <form:errors path="email" cssStyle="color: red"/>
-                                    </div>
-                                    <div class="mb-3">
                                         <label for="gioiTinh" class="form-label">Giới tính</label>
                                         <select name="gioiTinh" class="form-select" id="gioiTinh">
                                             <option value="true" ${nhanVien.gioiTinh == true ? 'selected' : '' }>
@@ -80,17 +70,22 @@
                                             </option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="mb-3">
-                                        <label for="matKhau" class="form-label">Mật khẩu</label>
-                                        <form:input type="password" class="form-control" path="matKhau" id="matKhau"/>
-                                        <form:errors path="matKhau" cssStyle="color: red"/>
-                                    </div>
                                     <div class="mb-3">
                                         <label for="diaChi" class="form-label">Địa chỉ</label>
                                         <form:textarea style="height: 125px" type="text" class="form-control" path="diaChi" id="diaChi" />
                                         <form:errors path="diaChi" cssStyle="color: red"/>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <form:input type="text" class="form-control" path="email" id="email"/>
+                                        <form:errors path="email" cssStyle="color: red"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="sdt" class="form-label">Số điện thoại</label>
+                                        <form:input type="text" class="form-control" path="sdt" id="sdt"/>
+                                        <form:errors path="sdt" cssStyle="color: red"/>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-11">

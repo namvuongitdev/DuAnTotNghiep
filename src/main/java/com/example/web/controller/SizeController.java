@@ -47,7 +47,7 @@ public class SizeController {
             size.setNgayTao(java.util.Calendar.getInstance().getTime());
             size.setTrangThai(1);
             sizeService.add(size);
-            return "redirect:/size/hien-thi";
+            return "redirect:/admin/size/hien-thi";
         }
     }
 
@@ -67,7 +67,7 @@ public class SizeController {
             size.setTrangThai(s.getTrangThai());
             size.setNgaySua(java.util.Calendar.getInstance().getTime());
             sizeService.update(size);
-            return "redirect:/size/hien-thi";
+            return "redirect:/admin/size/hien-thi";
         }
 
     }
@@ -78,7 +78,7 @@ public class SizeController {
         s.setTrangThai(0);
         s.setNgaySua(java.util.Calendar.getInstance().getTime());
         sizeService.update(s);
-        return "redirect:/size/hien-thi";
+        return "redirect:/admin/size/hien-thi";
     }
     @GetMapping("view-update/{id}")
     public String viewUpdate(@PathVariable("id")String id,Model model,@ModelAttribute("size")Size size,
