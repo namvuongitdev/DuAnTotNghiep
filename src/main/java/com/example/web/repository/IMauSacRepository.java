@@ -21,4 +21,7 @@ public interface IMauSacRepository extends JpaRepository<MauSac, UUID> {
 
     @Query("select n from MauSac n where n.trangThai = 1")
     List<MauSac> getAll1();
+
+    @Query(value = "select distinct mau_sac.* from mau_sac,chi_tiet_san_pham where mau_sac.id=chi_tiet_san_pham.idmausac and idsanpham= ?1",nativeQuery = true)
+    List<MauSac> getTheoCTSP(UUID idSP);
 }

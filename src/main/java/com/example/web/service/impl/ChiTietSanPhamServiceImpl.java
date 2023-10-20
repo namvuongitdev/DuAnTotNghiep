@@ -1,6 +1,7 @@
 package com.example.web.service.impl;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.repository.IChiTietSanPhamRepository;
+import com.example.web.response.ChiTietOnllineResponse;
 import com.example.web.response.ChiTietSanPhamResponse;
 import com.example.web.service.IChiTietSanPhamService;
 import org.modelmapper.ModelMapper;
@@ -61,5 +62,15 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
         }else {
             return null;
         }
+    }
+
+    @Override
+    public List<ChiTietSanPham> listCTSPTheoIdSP(UUID idSP) {
+        return iChiTietSanPhamRepository.listCTSPTheoIdSP(idSP);
+    }
+
+    @Override
+    public ChiTietOnllineResponse getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id1(UUID mauSac_Id, String size, UUID sanPham_Id) {
+        return iChiTietSanPhamRepository.getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id1(mauSac_Id,size,sanPham_Id);
     }
 }

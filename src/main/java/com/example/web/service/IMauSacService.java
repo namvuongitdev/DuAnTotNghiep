@@ -20,4 +20,6 @@ public interface IMauSacService {
     Page<MauSac> page(Integer pageNo, Integer size);
 
     List<MauSac> getAll1();
+
+    List<MauSac> getTheoCTSP(UUID idSP);
 }

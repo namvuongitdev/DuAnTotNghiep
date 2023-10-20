@@ -113,8 +113,8 @@ public class SanPhamServiceImpl implements ISanPhamService {
     }
 
     @Override
-    public List<SanPham> theoTen(String ten, String ten2, String ten3) {
-        return iSanPhamRepository.theoTen(ten,ten2,ten3);
+    public List<SanPham> theoTen(UUID chatLieu,UUID kieuDang,String danhMuc ) {
+        return iSanPhamRepository.theoTen(chatLieu,kieuDang,danhMuc);
     }
 
     @Override

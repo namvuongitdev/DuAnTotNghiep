@@ -1,6 +1,7 @@
 package com.example.web.controller;
-import com.example.web.model.Anh;
-import com.example.web.model.SanPham;
+import com.example.web.model.*;
+import com.example.web.response.ChiTietOnllineResponse;
+import com.example.web.response.ChiTietSanPhamResponse;
 import com.example.web.response.SanPhamFilter;
 import com.example.web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/index")
@@ -37,6 +42,8 @@ public class TrangChuController {
 
     @Autowired
     private IAnhService iAnhService;
+
+    @Autowired IChiTietSanPhamService iChiTietSanPhamService;
 
 
     private Page<SanPham> sanPhamPage = null;
@@ -109,12 +116,32 @@ public class TrangChuController {
     public String chiTiet(Model model,@RequestParam (name = "id") String
                           idSanPham){
         List<Anh> listAnh = iAnhService.getTenAnh(UUID.fromString(idSanPham));
+        List<Anh> distinctListAnh = listAnh.stream()
+                .collect(Collectors.toMap(Anh::getTen, anh -> anh, (existing, replacement) -> existing))
+                .values()
+                .stream()
+                .collect(Collectors.toList());
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(idSanPham));
-        List<SanPham> listSanPham = iSanPhamService.theoTen("%"+ sanPham.getTen(),"%"+sanPham.getTen()+"%",sanPham.getTen()+"%");
+        List<SanPham> listSanPham = iSanPhamService.theoTen(sanPham.getChatLieu().getId(),sanPham.getKieuDang().getId(),sanPham.getDanhMuc().getId());
+        List<ChiTietSanPham> listCT = iChiTietSanPhamService.listCTSPTheoIdSP(UUID.fromString(idSanPham));
+        List<MauSac> listMS = mauSacService.getTheoCTSP(UUID.fromString(idSanPham));
+        List<Size> listSize = sizeService.getTheoCT(UUID.fromString(idSanPham));
+        model.addAttribute("listMau",listMS);
+        model.addAttribute("listSize",listSize);
         model.addAttribute("sanPham",sanPham);
-        model.addAttribute("listAnh",listAnh);
+        model.addAttribute("listAnh",distinctListAnh);
         model.addAttribute("listSanPham",listSanPham);
         return "banHangOnlline/chitiet";
+    }
+
+    @GetMapping("/so-luong/{idSP}/{idSize}")
+    @ResponseBody
+    public ChiTietOnllineResponse getSoLuong(@PathVariable (name = "idSP") String idSP,
+                          @PathVariable (name = "idSize") String idSize,
+                          @RequestParam(name = "color") String idMau ){
+        System.out.println(idSize + "helo");
+        ChiTietOnllineResponse listCT = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id1(UUID.fromString(idMau),idSize,UUID.fromString(idSP));
+        return listCT;
     }
 
 

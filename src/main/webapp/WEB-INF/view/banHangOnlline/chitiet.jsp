@@ -427,7 +427,6 @@
                         <div class="item">
                             <img src="/anh/${anh.ten}"/>
                         </div>
-
                     </c:forEach>
                 </div>
                 <div id="thumb" class="owl-carousel product-thumb">
@@ -472,41 +471,28 @@
                             <div class="col-md-6">
                                 <label>Color</label>
                                 <br>
-                                <select name="color" class="form-control">
-                                    <option value="">Màu Vàng</option>
-                                    <option value="">Màu Trắng</option>
-                                    <option value="">Màu Xanh</option>
-                                    <option value="">Màu Đen</option>
-
-<%--                                    <c:forEach items="${listMau}" var="mau">--%>
-<%--                                        <option value="${mau.id}" ${idMau==mau.id?"selected":""}>${mau.ten}</option>--%>
-<%--                                    </c:forEach>--%>
+                                <select name="color" class="form-control" id="colorSelector">
+                                    <c:forEach items="${listMau}" var="mau">
+                                        <option value="${mau.id}" ${idMau==mau.id?"selected":""}>${mau.ten}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
                                 <label>Size</label>
+
                                 <ul>
-                                <button
-                                style="width: 40px;height: 40px;margin-top: 3px;background-color:
-                                 white;color: black">S</button> <button type="submit"
-                                style="width: 40px;height: 40px;margin-top: 3px;background-color:
-                                 white;color: black">M</button> <button type="submit"
-                                style="width: 40px;height: 40px;margin-top: 3px;background-color:
-                                 white;color: black">L</button> <button type="submit"
-                                style="width: 40px;height: 40px;margin-top: 3px;background-color:
-                                 white;color: black">XL</button>
-<%--                                    <c:forEach items="${listSize}" var="size">--%>
-<%--                                        <button type="submit"--%>
-<%--                                                formmethod="get"--%>
-<%--                                                formaction="/sports-clothing/tong-san-pham/${id}/${size.id}"--%>
-<%--                                                style="width: 40px;height: 40px;margin-top: 3px;background-color:--%>
-<%--                                                 white;color: black">${size.ten}</button>--%>
-<%--                                    </c:forEach>--%>
+                                    <c:forEach items="${listSize}" var="size">
+                                        <button type="submit"
+                                                onclick="alert(anamdd)"
+                                                style="width: 40px;height: 40px;margin-top: 3px;background-color:
+                                                 white;color: black">${size.ten}</button>
+                                    </c:forEach>
+<%--                                    HELLL0--%>
+<%--                                    <div id="ten" style="color: cadetblue"></div>--%>
                                 </ul>
                             </div>
                         </div>
-
                     </form>
                     <div class="product-count">
                         <label>Quantity</label>
@@ -597,6 +583,7 @@
         </div>
     </div>
 </div>
+
 <%--body end--%>
 <%-- sản phẩm liên quan begin--%>
 <div class="container-fluid bg-3 text-center">
@@ -604,14 +591,47 @@
     <div class="row">
         <c:forEach items="${listSanPham}" var="sp">
             <div class="col-sm-3">
-                <b>${sp.ten}</b>
-                <font color="#5f9ea0"> ${sp.giaFormat} đ </font>
-                <img src="/anh/${sp.img}" class="img-responsive" style="width:200px;height: 200px" alt="Image">
+                        <div class="product__item" style="margin-left: 30px">
+                            <div class="product__item__pic">
+                                <img src="/anh/${sp.img}" style="swidth:265px;height: 270px" >
+                                <ul class="product__hover">
+                                    <form method="get" action="/index/chi-tiet-san-pham/${sp.id}">
+                                        <li><a href="/index/chi-tiet-san-pham-onl?id=${sp.id}"><img src="/anh/eye.png"style="margin-right: 20px;width:40px" alt=""></a></li>
+                                    </form>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6>${sp.ten}</h6>
+                                    <%--                    <a href="#" class="add-cart">+ Add To Cart</a>--%>
+                                <h5>${sp.giaFormat} đ</h5>
+                            </div>
+                        </div>
             </div>
         </c:forEach>
 
     </div>
 </div><br>
+
+<%--<c:forEach items="${listSanPham}" var="sp">--%>
+
+
+<%--    <div class="product__item" style="margin-left: 30px">--%>
+<%--        <div class="product__item__pic">--%>
+<%--            <img src="/anh/${sp.img}" style="swidth:265px;height: 270px" >--%>
+<%--            <ul class="product__hover">--%>
+<%--                <form method="get" action="/index/chi-tiet-san-pham/${sp.id}">--%>
+<%--                    <li><a href="/index/chi-tiet-san-pham-onl?id=${sp.id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>--%>
+<%--                </form>--%>
+<%--            </ul>--%>
+<%--        </div>--%>
+<%--        <div class="product__item__text">--%>
+<%--            <h6>${sp.ten}</h6>--%>
+<%--                &lt;%&ndash;                    <a href="#" class="add-cart">+ Add To Cart</a>&ndash;%&gt;--%>
+<%--            <h5>${sp.giaFormat} đ</h5>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</c:forEach>--%>
+
 <%-- sản phẩm liên quan end--%>
 <!-- Footer Section begin -->
 <footer class="footer">
@@ -702,9 +722,11 @@
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/main.js"></script>
 <script>
+
     $(document).ready(function () {
         var slider = $("#slider");
         var thumb = $("#thumb");
+        var colorSelector = $("#colorSelector");
         var slidesPerPage = 4; //globaly define number of elements per page
         var syncedSecondary = true;
         slider.owlCarousel({
@@ -716,8 +738,8 @@
             loop: true,
             responsiveRefreshRate: 200
         }).on('changed.owl.carousel', syncPosition);
-        thumb
-            .on('initialized.owl.carousel', function () {
+
+        thumb.on('initialized.owl.carousel', function () {
                 thumb.find(".owl-item").eq(0).addClass("current");
             })
             .owlCarousel({
@@ -787,7 +809,15 @@
             }
         });
     });
+
+    function getTen(idSize) {
+        console.log("ddd");
+        // fetch('/index/so-luong/' + idSP +'/'+ idSize)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         document.getElementById("ten").innerHTML = "Còn" + data.soLuong + "sản phẩm";
+        //     });
+    }
 </script>
 </body>
-
 </html>
