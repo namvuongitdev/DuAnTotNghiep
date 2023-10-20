@@ -75,14 +75,14 @@ public class ChiTietSanPhamController {
 
         MatrixToImageWriter.writeToPath(bitMatrix, format, filePath);
 
-        return "redirect:/san-pham/hien-thi/" + idSanPham;
+        return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
     }
 
     @PostMapping(value = "/add-anh")
     public String addAnhChiTietSanPham(@RequestParam("file") MultipartFile file, HttpServletRequest request, @RequestParam String idCTSP) throws IOException {
         ChiTietSanPham chiTietSanPham = chiTietSanPhamService.getOne(UUID.fromString(idCTSP));
         anhService.addAnhCtsp(file, request, chiTietSanPham);
-        return "redirect:/chi-tiet-san-pham/anh/" + chiTietSanPham.getId() + "?idSP=" + chiTietSanPham.getSanPham().getId();
+        return "redirect:/admin/chi-tiet-san-pham/anh/" + chiTietSanPham.getId() + "?idSP=" + chiTietSanPham.getSanPham().getId();
     }
 
     @PostMapping(value = "/update-chi-tiet-san-pham")
@@ -90,20 +90,20 @@ public class ChiTietSanPhamController {
         chiTietSanPham.setId(UUID.fromString(idCTSP));
         chiTietSanPham.setSanPham(sanPhamService.getOne(UUID.fromString(idSP)));
         chiTietSanPhamService.save(chiTietSanPham);
-        return "redirect:/san-pham/hien-thi/" + chiTietSanPham.getSanPham().getId();
+        return "redirect:/admin/san-pham/hien-thi/" + chiTietSanPham.getSanPham().getId();
     }
 
     @GetMapping(value = "/anh/{id}")
     public String getAnhByChiTietSanPham_id(RedirectAttributes redirectAttributes, @PathVariable("id") String idCTSP, @RequestParam String idSP) {
         List<Anh> anhs = anhService.getAnh(idCTSP);
         redirectAttributes.addFlashAttribute("listAnhChiTietSanPham_id", anhs);
-        return "redirect:/san-pham/hien-thi/" + idSP;
+        return "redirect:/admin/san-pham/hien-thi/" + idSP;
     }
 
     @GetMapping(value = "/remove-anh")
     public String removeAnhById(@RequestParam String idAnh, @RequestParam String idCTSP, @RequestParam String idSP) {
         anhService.reomveAnhById(idAnh);
-        return "redirect:/chi-tiet-san-pham/anh/" + idCTSP + "?idSP=" + idSP;
+        return "redirect:/admin/chi-tiet-san-pham/anh/" + idCTSP + "?idSP=" + idSP;
     }
 
     @GetMapping(value = "/{id}")

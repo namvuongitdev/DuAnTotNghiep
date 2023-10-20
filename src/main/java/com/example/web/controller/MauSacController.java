@@ -47,7 +47,7 @@ public class MauSacController {
         ms.setTrangThai(0);
         ms.setNgaySua(java.util.Calendar.getInstance().getTime());
         iMauSacService.update(ms);
-        return "redirect:/mau-sac/hien-thi";
+        return "redirect:/admin/mau-sac/hien-thi";
     }
 
     @GetMapping("/hien-thi/{p}")
@@ -73,7 +73,7 @@ public class MauSacController {
             mauSac.setTrangThai(1);
             mauSac.setNgayTao(java.util.Calendar.getInstance().getTime());
             iMauSacService.add(mauSac);
-            return "redirect:/mau-sac/hien-thi";
+            return "redirect:/admin/mau-sac/hien-thi";
         }
     }
 
@@ -94,7 +94,7 @@ public class MauSacController {
             mauSac.setTrangThai(ms.getTrangThai());
             mauSac.setNgaySua(java.util.Calendar.getInstance().getTime());
             iMauSacService.update(mauSac);
-            return "redirect:/mau-sac/hien-thi";
+            return "redirect:/admin/mau-sac/hien-thi";
         }
     }
 }

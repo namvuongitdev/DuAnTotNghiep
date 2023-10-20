@@ -81,7 +81,7 @@ public class SanPhamController {
                                 Model model) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         sanPhamPage = iSanPhamService.sanPhamFilter(filter, pageable);
-        String url = "/san-pham/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
+        String url = "/admin/san-pham/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
         model.addAttribute("filter", filter);
         model.addAttribute("listSanPham", sanPhamPage);
         danhSachThuocTinhSanPham(model);
@@ -147,7 +147,7 @@ public class SanPhamController {
                 iSanPhamService.save(sanPham);
             }
         }
-        return "redirect:/san-pham/hien-thi/" + sanPham.getId();
+        return "redirect:/admin/san-pham/hien-thi/" + sanPham.getId();
     }
 
     @GetMapping(value = "/hien-thi/{id}")
@@ -170,7 +170,7 @@ public class SanPhamController {
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(idSP));
         sanPham.setImg(img);
         iSanPhamService.save(sanPham);
-        return "redirect:/san-pham/hien-thi/" + sanPham.getId();
+        return "redirect:/admin/san-pham/hien-thi/" + sanPham.getId();
     }
 
 
@@ -191,7 +191,7 @@ public class SanPhamController {
         chatLieu.setTrangThai(1);
         chatLieu.setNgayTao(java.util.Calendar.getInstance().getTime());
         iChatLieuService.add(chatLieu);
-        return "redirect:/san-pham/new";
+        return "redirect:/admin/san-pham/new";
     }
 
     @PostMapping("/modal-add-danh-muc")
@@ -203,7 +203,7 @@ public class SanPhamController {
         danhMuc.setTrangThai(1);
         danhMuc.setNgayTao(java.util.Calendar.getInstance().getTime());
         danhMucService.add(danhMuc);
-        return "redirect:/san-pham/new";
+        return "redirect:/admin/san-pham/new";
     }
 
     @PostMapping("/modal-add-kieu-dang")
@@ -215,7 +215,7 @@ public class SanPhamController {
         kieuDang.setTrangThai(1);
         kieuDang.setNgayTao(java.util.Calendar.getInstance().getTime());
         iFormDangService.add(kieuDang);
-        return "redirect:/san-pham/new";
+        return "redirect:/admin/san-pham/new";
     }
 
     @PostMapping("/modal-add-size")
@@ -227,7 +227,7 @@ public class SanPhamController {
         size.setNgayTao(java.util.Calendar.getInstance().getTime());
         size.setTrangThai(1);
         sizeService.add(size);
-        return "redirect:/san-pham/new";
+        return "redirect:/admin/san-pham/new";
     }
 
     @PostMapping("/modal-add-mau-sac")
@@ -239,7 +239,7 @@ public class SanPhamController {
         mauSac.setTrangThai(1);
         mauSac.setNgayTao(java.util.Calendar.getInstance().getTime());
         mauSacService.add(mauSac);
-        return "redirect:/san-pham/new";
+        return "redirect:/admin/san-pham/new";
     }
 
     @GetMapping("/stop/{id}")
@@ -248,7 +248,7 @@ public class SanPhamController {
         sp.setTrangThai(1);
         sp.setNgaySua(java.util.Calendar.getInstance().getTime());
         iSanPhamService.save(sp);
-        return "redirect:/san-pham/hien-thi";
+        return "redirect:/admin/san-pham/hien-thi";
     }
 
     @GetMapping("/stop-ctsp/{id}")
@@ -256,7 +256,7 @@ public class SanPhamController {
         ChiTietSanPham ctsp = chiTietSanPhamService.getOne(id);
         ctsp.setTrangThai(0);
         chiTietSanPhamService.save(ctsp);
-        return "redirect:/san-pham/hien-thi/" + idSP;
+        return "redirect:/admin/san-pham/hien-thi/" + idSP;
     }
 
 }

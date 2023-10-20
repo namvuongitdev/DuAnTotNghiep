@@ -1,13 +1,16 @@
 package com.example.web.controller;
 
+import com.example.web.Config.BcryptedPasswordEncoderConfig;
 import com.example.web.model.ChucVu;
 import com.example.web.model.NhanVien;
 import com.example.web.response.NhanVienFilter;
 import com.example.web.response.SanPhamFilter;
 import com.example.web.service.IChucVuService;
 import com.example.web.service.INhanVienService;
+import com.example.web.service.MailService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import com.example.web.util.RandomUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +43,12 @@ public class NhanVienController {
     @Autowired
     private HttpServletRequest request;
 
+    @Autowired
+    private BcryptedPasswordEncoderConfig passwordEncoder;
+
+    @Autowired
+    private MailService mailService;
+
     Page<NhanVien> nhanVienPage = null;
 
     @GetMapping("/hien-thi")
@@ -61,7 +70,7 @@ public class NhanVienController {
         Sort sort = Sort.by("ngayTao").descending();
         Pageable pageable = PageRequest.of(num.orElse(0), size, sort);
         nhanVienPage = nhanVienService.nhanVienFilter(filter, pageable);
-        String url = "/nhan-vien/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
+        String url = "/admin/nhan-vien/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
         model.addAttribute("filter", filter);
         model.addAttribute("listNhanVien", nhanVienPage);
         model.addAttribute("url", url);
@@ -78,6 +87,8 @@ public class NhanVienController {
 
     @PostMapping("/add")
     public String add(@Valid @ModelAttribute("nhanVien") NhanVien nhanVien, BindingResult result, Model model){
+        char[] password = RandomUntil.randomFull();
+
         if(result.hasErrors()){
             model.addAttribute("chucVu", new ChucVu());
             model.addAttribute("listChucVu", chucVuService.getAll1());
@@ -85,8 +96,18 @@ public class NhanVienController {
         }else{
             Date date = java.util.Calendar.getInstance().getTime();
             nhanVien.setNgayTao(date);
+            System.out.println(password);
+            nhanVien.setMatKhau(passwordEncoder.encode(new String(password)));
+            mailService.sendMail("sportsclothing46@gmail.com",
+                    nhanVien.getEmail(),
+                    "Chúc mừng bạn đã ứng tuyển thành công.",
+                    "Tên đăng nhập: " + nhanVien.getTaiKhoan() + "\n"
+                            + "Mật khẩu : " + new String(password) + "\n\n"
+                            + "Họ tên  : " + nhanVien.getHoTen() + "\n"
+                            + "Số điện thoại  :" + nhanVien.getSdt() + "\n\n"
+                            + "Chúc bạn ngày đầu đi làm vui vẻ.");
             nhanVienService.add(nhanVien);
-            return "redirect:/nhan-vien/hien-thi";
+            return "redirect:/admin/nhan-vien/hien-thi";
         }
     }
 
@@ -103,7 +124,7 @@ public class NhanVienController {
             nhanVien.setNgayTao(nv.getNgayTao());
             nhanVien.setNgaySua(date);
             nhanVienService.update(UUID.fromString(id), nhanVien);
-            return "redirect:/nhan-vien/hien-thi";
+            return "redirect:/admin/nhan-vien/hien-thi";
         }
     }
 
@@ -123,7 +144,7 @@ public class NhanVienController {
         chucVu.setTrangThai(0);
         chucVu.setNgayTao(date);
         chucVuService.add(chucVu);
-        return "redirect:/nhan-vien/view-add";
+        return "redirect:/admin/nhan-vien/view-add";
     }
 
     @PostMapping("/modal-update-chuc-vu")
@@ -135,7 +156,7 @@ public class NhanVienController {
         chucVu.setTrangThai(0);
         chucVu.setNgayTao(date);
         chucVuService.add(chucVu);
-        return "redirect:/nhan-vien/view-update/" + nv.getId();
+        return "redirect:/admin/nhan-vien/view-update/" + nv.getId();
     }
 
     @GetMapping("/stop/{id}")
@@ -144,6 +165,6 @@ public class NhanVienController {
         sp.setTrangThai(1);
         sp.setNgaySua(java.util.Calendar.getInstance().getTime());
         nhanVienService.update(id, sp);
-        return "redirect:/nhan-vien/hien-thi";
+        return "redirect:/admin/nhan-vien/hien-thi";
     }
 }

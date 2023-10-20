@@ -56,7 +56,6 @@ public class NhanVien {
     @Column(name = "taiKhoan")
     private String taiKhoan;
 
-    @NotBlank(message = "Vui lòng không để trống thông tin.")
     @Column(name = "matKhau")
     private String matKhau;
 

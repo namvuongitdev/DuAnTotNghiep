@@ -51,7 +51,7 @@ public class ChatLieuController {
         cl.setTrangThai(0);
         cl.setNgaySua(java.util.Calendar.getInstance().getTime());
         service.update(cl);
-        return "redirect:/chat-lieu/hien-thi";
+        return "redirect:/admin/chat-lieu/hien-thi";
     }
 
     @GetMapping("/hien-thi/{p}")
@@ -77,7 +77,7 @@ public class ChatLieuController {
             chatLieu.setTrangThai(1);
             chatLieu.setNgayTao(java.util.Calendar.getInstance().getTime());
             service.add(chatLieu);
-            return "redirect:/chat-lieu/hien-thi";
+            return "redirect:/admin/chat-lieu/hien-thi";
         }
     }
 
@@ -98,7 +98,7 @@ public class ChatLieuController {
             chatLieu.setTrangThai(cl.getTrangThai());
             chatLieu.setNgaySua(java.util.Calendar.getInstance().getTime());
             service.update(chatLieu);
-            return "redirect:/chat-lieu/hien-thi";
+            return "redirect:/admin/chat-lieu/hien-thi";
         }
     }
 }
