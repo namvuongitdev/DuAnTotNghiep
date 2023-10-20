@@ -157,7 +157,13 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
     @Override
     public List<HoaDon> getAll() {
-        return hoaDonRepository.findAll();
+        List<HoaDon> lst = new ArrayList<>();
+        for (int i = 0; i <= hoaDonRepository.findAll().size()-1; i++) {
+            if (hoaDonRepository.findAll().get(i).getTrangThai()!=0){
+                lst.add(hoaDonRepository.findAll().get(i));
+            }
+        }
+        return lst;
     }
 
     @Override
@@ -174,7 +180,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public Page<HoaDon> pagination(Integer pageNo, Integer size) {
         Pageable pageable = PageRequest.of(pageNo, size);
-        return hoaDonRepository.findAll(pageable);
+        return hoaDonRepository.findAll3(pageable);
     }
 
     @Override
@@ -207,5 +213,15 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public HoaDon add(HoaDon hoaDon) {
         return hoaDonRepository.save(hoaDon);
+    }
+
+    @Override
+    public HoaDon updateHoaDonById(HoaDon hoaDon) {
+        Optional<HoaDon> hd =hoaDonRepository.findById(hoaDon.getId());
+        hd.get().setHoTen(hoaDon.getHoTen());
+        hd.get().setDiaChi(hoaDon.getDiaChi());
+        hd.get().setSdt(hoaDon.getSdt());
+        hd.get().setTongTien(hoaDon.getTongTien());
+        return hoaDonRepository.save(hd.get());
     }
 }

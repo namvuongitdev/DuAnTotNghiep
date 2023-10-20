@@ -38,8 +38,8 @@
             </div><!-- End Page Title -->
             <section class="section">
                 <%--@elvariable id="hoaDon" type=""--%>
-                <form:form class="row" action="" method="post" modelAttribute="hoaDon">
-                    <div class="col-8">
+                <form:form action="/admin/hoa-don/update-hoa-don/${hd.id}" method="post" modelAttribute="hoaDon">
+                    <div class="col">
                         <div class="card">
                             <div class="card-body row">
                                 <h5 class="card-title">Thông tin chi tiết</h5>
@@ -51,13 +51,13 @@
                                             <label class="form-label" path="">Mã hóa đơn</label>
                                         </div>
                                         <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.ngayTao}" readonly="true" path="ngayTao"/>
+                                            <input class="form-control" value="${hd.ngayTao}" readonly />
                                             <label class="form-label" path="">Ngày tạo</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.ngayThanhToan}" readonly="true" path="ngayThanhToan"/>
+                                            <input class="form-control" value="${hd.ngayThanhToan}" readonly />
                                             <label class="form-label" path="">Ngày thanh toán</label>
                                         </div>
                                     </div>
@@ -65,7 +65,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col mt-5">
                         <div class="card">
                             <div class="card-body row">
                                 <h5 class="card-title">Thông tin khách hàng</h5>
@@ -73,17 +73,17 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.hoTen}" readonly="true" path="hoTen"/>
+                                            <form:input class="form-control" value="${hd.hoTen}" path="hoTen"/>
                                             <label class="form-label" path="">Tên khách hàng</label>
                                         </div>
                                         <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.sdt}" readonly="true" path="sdt"/>
+                                            <form:input class="form-control" value="${hd.sdt}" path="sdt"/>
                                             <label class="form-label" path="">SĐT</label>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.diaChi}" readonly="true" path="diaChi"/>
+                                            <form:input class="form-control" value="${hd.diaChi}" path="diaChi"/>
                                             <label class="form-label" path="">Địa chỉ</label>
                                         </div>
                                     </div>
@@ -92,7 +92,7 @@
                         </div>
                     </div>
                     <div style="text-align: center; margin-top: 20px">
-                        <button type="submit" class="btn btn-outline-dark">Cập nhật</button>
+                        <button type="submit" ${hd.loaiHoaDon==false?'disabled':''} class="btn btn-outline-dark" >Cập nhật</button>
                     </div>
                 </form:form>
                 <br><br>
@@ -103,12 +103,11 @@
                             <h5 class="card-title">Danh sách sản phẩm trong hóa đơn</h5>
                         </div>
                         <div class="col-6">
-                            <button style="float: right" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
-                               name="1" onclick="getSanPham(this.name)">
+                            <button style="float: right;display: ${hd.loaiHoaDon==false?'none':'block'}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
+                                    name="1"  onclick="getSanPham(this.name)">
                                 Thêm sản phẩm
                             </button>
                         </div>
-
                         <br><br>
                         <!-- Table with stripped rows -->
                         <table class="table">
@@ -131,26 +130,30 @@
                                     <td>
                                         <img src="/image/${hdct.chiTietSanPham.sanPham.img}">
                                     </td>
-                                    <td><input type="number" class="form-control" id="soLuongSp" onchange="myFunction()" value="${hdct.soLuong}" min="1" style="width: 40%"></td>
-                                   <td>
-                                       <input type="text" class="form-control" id="giaBan" readonly value="<fmt:formatNumber pattern="#,###"  value="${hdct.chiTietSanPham.sanPham.giaBan}"/>"/>
-                                   </td>
+                                    <td><input type="number" class="form-control" id="soLuongSp"  ${hd.loaiHoaDon==false?'disabled':''} onchange="myFunction({idhdct:`${hdct.id}`,soLuong:this.value})" value="${hdct.soLuong}" min="1" style="width: 40%"></td>
+                                    <td>
+                                        <input type="text" class="form-control" id="giaBan" readonly value="<fmt:formatNumber pattern="#,###"  value="${hdct.chiTietSanPham.sanPham.giaBan}"/>"/>
+                                    </td>
                                     <td>${hdct.trangThai==0?'Đã mua':'Hủy'}</td>
-                                    <td><input type="text" class="form-control" readonly id="thanhTien" value="<fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/>"></td>
+                                    <td><input type="text" class="form-control" readonly name="thanhTien" id="thanhTien" value="<fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/>"></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
                         </table>
+                        <div class="row mt-3" style="padding-left: 750px">
+                            <label style="font-weight: bold">Phí vận chuyển: <fmt:formatNumber pattern="#,###"  value="${hd.phiVanChuyen}"/> VND</label>
+                            <label style="font-weight: bold">Tổng tiền: <fmt:formatNumber pattern="#,###"  value="${hd.phiVanChuyen + hd.tongTien}"/> VND</label>
+                        </div>
                         <!-- End Table with stripped rows -->
                         <%--                phân trang --%>
                         <div class="container-fluid mt-5">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
-                                    <li class="page-item ${currentPage<=0?"disabled":""}"><a class="page-link" href="/hoa-don/detail/${hd.id}/${currentPage-1}"><</a></li>
+                                    <li class="page-item ${currentPage<=0?"disabled":""}"><a class="page-link" href="/admin/hoa-don/view-update/${hd.id}/${currentPage-1}"><</a></li>
                                     <c:forEach begin="1" end="${totalPage}" var="i">
-                                        <li class="page-item"><a class="page-link ${lst1+1==i?'active':''}" href="/hoa-don/detail/${hd.id}/${i-1}" >${i}</a></li>
+                                        <li class="page-item"><a class="page-link ${lst1+1==i?'active':''}" href="/admin/hoa-don/view-update/${hd.id}/${i-1}" >${i}</a></li>
                                     </c:forEach>
-                                    <li class="page-item ${currentPage>=totalPage-1?"disabled":""}"><a class="page-link" href="/hoa-don/detail/${hd.id}/${currentPage+1}">></a></li>
+                                    <li class="page-item ${currentPage>=totalPage-1?"disabled":""}"><a class="page-link" href="/admin/hoa-don/view-update/${hd.id}/${currentPage+1}">></a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -161,17 +164,17 @@
     </div>
 </div>
 <%--thêm sản phẩm--%>
-<div id="extraLargeModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="extraLargeModal" class="modal fade" tabindex="-1" role="dialog" >
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Thêm sản phẩm</h5>
+                <h5 class="modal-title" id="modalAdd">Thêm sản phẩm</h5>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-3">
                         <input class="form-control" type="text" name="search" id="search-input"
-                               placeholder="tìm kiếm tên , mã sản phẩm">
+                               placeholder="tìm kiếm tên, mã sản phẩm">
                     </div>
                     <div class="col-sm-2">
                         <button class="btn btn-primary" onclick="timKiem()">Tìm kiếm</button>
@@ -478,16 +481,20 @@
                     }
                 }
             }
-            window.location.href = "/hoa-don/update?ctsp=" + idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD;
+            window.location.href = "/admin/hoa-don/update?ctsp=" + idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD;
         }
     }
     // --------------------------------------------
-    function myFunction(){
-        var slSp = document.getElementById("soLuongSp").value;
+    function myFunction(data){
+        var slSp = document.getElementById("soLuongSp");
         var giaSp = Number.parseFloat(document.getElementById("giaBan").value)
         console.log(giaSp)
-        document.getElementById("thanhTien").value = slSp*giaSp;
-        // return window.location.reload();
+        if (confirm("Bạn có muốn thay đổi số lượng không")==true){
+            window.location.href = "/admin/hoa-don/update-so-luong?hdct=" + data.idhdct + "&soLuong=" + data.soLuong;
+        }else {
+            window.location.reload();
+            return;
+        }
     }
 
 </script>

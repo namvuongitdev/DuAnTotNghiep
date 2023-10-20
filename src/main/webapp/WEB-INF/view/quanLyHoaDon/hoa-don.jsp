@@ -106,6 +106,7 @@
                         <tr>
                             <th scope="col">STT</th>
                             <th scope="col">Mã hóa đơn</th>
+                            <th scope="col">Loại hóa đơn</th>
                             <th scope="col">Thời gian</th>
                             <th scope="col">Khách hàng</th>
                             <th scope="col">Tổng tiền hàng</th>
@@ -118,20 +119,16 @@
                             <tr>
                                 <td>${i.index+1}</td>
                                 <td>${hd.ma}</td>
-                                <td>${hd.ngayTao}</td>
+                                <td>${hd.loaiHoaDon==false?'Đơn tại quầy':'Đơn giao'}</td>
+                                <td><fmt:formatDate value="${hd.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                 <td>${hd.khachHang.hoTen}</td>
-                                <td>${hd.tongTien}</td>
-                                <td>${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':'Đã hủy'}</td>
+                                <td><fmt:formatNumber pattern="#,###" value="${hd.tongTien}"/></td>
+                                <td>${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Đã tiếp nhận':(hd.trangThai==6)?'Giao hàng thành công':(hd.trangThai==5)?'Hủy đơn hàng':''}</td>
                                 <td>
-                                    <button type="button" class="btn btn-success" title="Xem Chi Tiết"
-                                            onclick="myFunction()">
-                                        <a class="text-white" style="text-decoration: none"
-                                           href="/hoa-don/detail/${hd.id}"><i class="bi bi-pencil"></i></a>
-                                    </button>
                                     <button type="button" class="btn btn-success" title="Cập nhật"
                                             onclick="myFunction()">
                                         <a class="text-white" style="text-decoration: none"
-                                           href="/hoa-don/view-update/${hd.id}"><i class="bi bi-pencil"></i></a>
+                                           href="/admin/hoa-don/view-update/${hd.id}"><i class="bi bi-floppy2-fill"></i></a>
                                     </button>
                                 </td>
                             </tr>
