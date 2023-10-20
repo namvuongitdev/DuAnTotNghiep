@@ -83,13 +83,12 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public String updateHoaDonTrangThai(String id, String ghiChu) {
+    public String updateHoaDonTrangThai(String id) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(id));
         if (hoaDon.isPresent()) {
 
             HoaDon hd = hoaDon.get();
             hd.setTrangThai(TrangThaiHoaDon.HUY_HOA_DON.getValue());
-            hd.setMoTa(ghiChu);
 
             hd.getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() == 0).forEach(hoaDonChiTiet -> {
                 Integer soLuong = hoaDonChiTiet.getSoLuong() + hoaDonChiTiet.getChiTietSanPham().getSoLuong();
@@ -110,7 +109,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
         BigDecimal tongTienHoaDon = hoaDonRepository.tongTien(hoaDon.get().getId());
         List<HoaDonChiTiet> ctsp = hoaDon.get().getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() != 1).collect(Collectors.toList());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-       NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
+        NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         if (ctsp.isEmpty()) {
             attributes.addFlashAttribute("error", "giỏ hàng chưa có sản phẩm");
             return "redirect:/admin/hoa-don/detail?idHD=" + request.getId() + "&idKhachHang=" + request.getIdKhachHang();

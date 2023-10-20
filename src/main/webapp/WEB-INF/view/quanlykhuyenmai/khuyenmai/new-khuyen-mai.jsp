@@ -2,6 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -27,6 +28,44 @@
     tr:hover {
         background-color: #f5f5f5;
     }
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content-1{
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
 </style>
 <body>
 <%--navbar--%>
@@ -37,90 +76,65 @@
     <div class="col py-3">
         <div class="container">
             <form class="row" action="/admin/khuyen-mai/create" method="post" modelAttribute="${khuyenMai}">
-                    <div class="col-sm-5">
+                   <div class="col-sm-3">
+                   </div>
+                    <div class="col-sm-6">
                         <div class="mb-3 form-floating">
-                            <input type="text" class="form-control" name="ten" id="ten">
+                            <input type="text" class="form-control" name="ten" id="ten" value="${dataKhuyenMai.ten}">
                             <label for="ten">Tên giảm giá</label>
+                            <form:errors path="ten" cssStyle="color: red"/>
                         </div>
                         <div class="row">
                             <div class="col l-3">
-                                <div class="form-check">
-                                    <input type="radio" class="form-check-input" id="%" name="loaiGiamGia" value="true"
-                                           checked>
-                                    <label class="form-check-label" for="%">%</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="radio" class="form-check-input" id="VND" name="loaiGiamGia"
-                                           value="false">
-                                    <label class="form-check-label" for="VND">VND</label>
-                                </div>
-                            </div>
-                            <div class="col l-3">
                                 <div class="mb-3 form-floating">
-                                    <input type="text" class="form-control" name="mucGiamGia" id="mucGiamGia">
-                                    <label for="mucGiamGia">Mức giảm giá</label>
+                                    <input type="text" class="form-control" name="moTa" id="moTa" ${dataKhuyenMai.moTa}>
+                                    <label for="moTa">Mô tả</label>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col l-3">
                                 <div class="mb-3 form-floating">
-                                    <input type="date" class="form-control" name="ngayBatDau" id="ngayBatDau">
+                                    <input type="date" class="form-control" name="ngayBatDau" id="ngayBatDau" value="${dataKhuyenMai.ngayBatDau}">
                                     <label for="ngayBatDau">Ngày bắt đầu</label>
+                                    <form:errors path="ngayBatDau" cssStyle="color: red"/>
                                 </div>
                             </div>
                             <div class="col l-3">
                                 <div class="mb-3 form-floating">
-                                    <input type="date" class="form-control" name="ngayKetThuc" id="ngayKetThuc">
+                                    <input type="date" class="form-control" name="ngayKetThuc" id="ngayKetThuc" value="${dataKhuyenMai.ngayKetThuc}">
                                     <label for="ngayKetThuc">Ngày kết thúc</label>
+                                    <form:errors path="ngayKetThuc" cssStyle="color: red"/>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div>
-                                <button class="btn btn-primary">Xác nhận</button>
-                            </div>
+                            <c:choose>
+                                <c:when test="${dataKhuyenMai == null}">
+                                    <div>
+                                        <button class="btn btn-primary">Xác nhận</button>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div>
+                                        <button class="btn btn-primary">Update</button>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
-
-                    </div>
-                    <div class="col-sm-7">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th scope="col">STT</th>
-                                <th scope="col">Chọn</th>
-                                <th scope="col">Mã</th>
-                                <th scope="col">Tên Sản Phẩm</th>
-                                <th scope="col">Giá</th>
-                                <th scope="col">Trang Thái</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${listCtspSanPham.content}" var="ctsp" varStatus="i">
-                                <tr>
-                                    <th scope="row">${i.index+page}</th>
-                                    <td>
-                                        <input type="checkbox" name="chiTietSanPhams" value="${ctsp.id}">
-                                    </td>
-                                    <td>${ctsp.sanPham.ma}</td>
-                                    <td>${ctsp.sanPham.ten} [${ctsp.mauSac.ten}] [${ctsp.size.ten}]</td>
-                                    <td><fmt:formatNumber pattern="#,###" value="${ctsp.sanPham.giaBan}">
-                                    </fmt:formatNumber></td>
-                                    <td>
-                                        <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                type="button"
-                                                class="${ctsp.sanPham.trangThai == 0 ? 'btn btn-success' : 'btn btn-danger'}">
-                                                ${ctsp.sanPham.trangThai == 0 ? 'Kinh doanh' : 'Ngừng kinh doanh'}</button>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
+                        <div class="col-sm-3">
+                        </div>
                     </div>
             </form>
-            <div class="row">
-
-            </div>
+              <c:if test="${listChiTietKhuyenMai.content != null}">
+                  <jsp:include page="chi-tiet.jsp"></jsp:include>
+              </c:if>
         </div>
     </div>
+        <c:if test="${dataKhuyenMai != null}">
+            <jsp:include page="modal-san-pham.jsp"></jsp:include>
+        <script src="/js/khuyenMai/khuyen-mai.js"></script>
+        <script src="/js/khuyenMai/modal.js"></script>
+        </c:if>
+
 </body>

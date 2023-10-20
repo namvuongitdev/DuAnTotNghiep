@@ -8,7 +8,7 @@ let dataCTSP;
 function getModal(id) {
     sanPham = id;
     modal.style.display = "block";
-    fetch("/chi-tiet-san-pham/" + id)
+    fetch("/admin/chi-tiet-san-pham/" + id)
         .then(response => response.json())
         .then(data => {
             dataCTSP = data;

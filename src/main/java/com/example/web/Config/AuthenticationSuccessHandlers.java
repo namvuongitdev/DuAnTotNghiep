@@ -26,7 +26,14 @@ public class AuthenticationSuccessHandlers implements AuthenticationSuccessHandl
               } catch (IOException e) {
                   e.printStackTrace();
               }
-          }else if(authori.getAuthority().equals("CLIENT")){
+          }else if(authori.getAuthority().equals("STAFF")){
+              try {
+                  redirectStrategy.sendRedirect(request , response , "/admin/trang-chu");
+              } catch (IOException e) {
+                  e.printStackTrace();
+              }
+          }
+          else if(authori.getAuthority().equals("CLIENT")){
               try {
                   redirectStrategy.sendRedirect(request , response , "/index/home");
               } catch (IOException e) {

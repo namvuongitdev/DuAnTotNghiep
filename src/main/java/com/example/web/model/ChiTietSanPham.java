@@ -60,7 +60,4 @@ public class ChiTietSanPham {
     @OneToMany(mappedBy = "chiTietSanPham")
     private List<GioHangChiTiet> gioHangChiTiets;
 
-    @OneToMany(mappedBy = "chiTietSanPham")
-    private List<CTSPKhuyenMai> ctspKhuyenMais;
-
 }

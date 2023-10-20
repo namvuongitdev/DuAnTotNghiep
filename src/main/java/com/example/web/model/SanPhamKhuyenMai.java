@@ -1,5 +1,4 @@
 package com.example.web.model;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +12,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -26,7 +24,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 
-public class CTSPKhuyenMai {
+public class SanPhamKhuyenMai {
 
     @Id
     @Column(name = "id")
@@ -34,17 +32,25 @@ public class CTSPKhuyenMai {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "id_ctsp")
-    private ChiTietSanPham chiTietSanPham;
+    @JoinColumn(name = "id_san_pham")
+    private SanPham sanPhamKM;
 
     @ManyToOne
     @JoinColumn(name = "id_khuyen_mai")
     private KhuyenMai khuyenMai;
 
-    @Column(name = "donGia")
-    private BigDecimal donGia;
+    @Column(name = "loai_giam_gia")
+    private Boolean loaiGiamGia;
 
-    @Column(name = "so_tien_sau_khi_giam")
-    private BigDecimal soTienSauKhiGiam;
+    @Column(name = "muc_giam")
+    private BigDecimal mucGiam;
 
+    @Column(name = "trang_thai")
+    private Integer trangThai;
+
+    @Column(name = "don_gia_sau_khi_giam")
+    private BigDecimal donGiaSauKhiGiam;
+
+    @Transient
+    private List<SanPham> sanPhams;
 }

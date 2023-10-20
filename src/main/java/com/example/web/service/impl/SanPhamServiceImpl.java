@@ -6,6 +6,7 @@ import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
 import com.example.web.model.Size;
 import com.example.web.repository.ISanPhamRepository;
+import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.response.SanPhamFilter;
 import com.example.web.service.ISanPhamService;
 import jakarta.persistence.criteria.CriteriaBuilder;

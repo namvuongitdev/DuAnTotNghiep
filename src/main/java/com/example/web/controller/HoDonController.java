@@ -107,8 +107,8 @@ public class HoDonController {
     }
 
     @GetMapping("/huy")
-    public String huyHoaDon(@RequestParam String idHD, @RequestParam(required = false) String ghiChu) {
-        url = hoaDonService.updateHoaDonTrangThai(idHD, ghiChu);
+    public String huyHoaDon(@RequestParam String idHD) {
+        url = hoaDonService.updateHoaDonTrangThai(idHD);
         return url;
     }
 
@@ -117,7 +117,7 @@ public class HoDonController {
         HoaDon hoaDon = hoaDonService.getOne(idHD);
         hoaDon.setLoaiHoaDon(loaiHoaDon);
         hoaDonService.add(hoaDon);
-        return "redirect:/hoa-don/detail?idHD=" + idHD + "&idKhachHang=" +idKhachHang;
+        return "redirect:/admin/hoa-don/detail?idHD=" + idHD + "&idKhachHang=" +idKhachHang;
     }
 
     @PostMapping("/thanh-toan")

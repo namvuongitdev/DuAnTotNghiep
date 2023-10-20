@@ -1,18 +1,19 @@
 package com.example.web.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.math.BigDecimal;
-import java.util.Date;
+import org.hibernate.annotations.Nationalized;
+
+import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,19 +44,15 @@ public class KhuyenMai {
     @Column(name = "ngay_Ket_thuc")
     private Date ngayKetThuc;
 
-    @Column(name = "loai_giam_gia")
-    private Boolean loaiGiamGia;
-
-    @Column(name = "muc_giam_gia")
-    private BigDecimal mucGiamGia;
+    @Column(name = "mo_ta" , length = 500)
+    @Nationalized
+    private String moTa;
 
     @Column(name = "trang_thai")
     private Integer trangThai;
 
     @OneToMany(mappedBy = "khuyenMai")
-    private List<CTSPKhuyenMai> ctspKhuyenMais;
-
-    @Transient
-    private List<ChiTietSanPham> chiTietSanPhams;
+    @JsonIgnore
+    private List<SanPhamKhuyenMai> sanPhamKhuyenMais;
 
 }

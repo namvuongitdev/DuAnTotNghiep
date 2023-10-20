@@ -105,11 +105,11 @@
 </body>
 <script>
    function  deleteHoaDonCho(idHD) {
-       let ghiChu = prompt("Ghí chú");
-       if(ghiChu != null){
-            window.location.href = "/hoa-don/huy?idHD="+idHD+"&ghiChu="+ghiChu;
+       let check = confirm("Bạn có chắc muốn xoá không!");
+       if(check){
+            window.location.href = "/hoa-don/huy?idHD="+idHD;
        }else{
-           alert("nhập lý do huỷ hoá đơn");
+           return;
        }
    }
 </script>

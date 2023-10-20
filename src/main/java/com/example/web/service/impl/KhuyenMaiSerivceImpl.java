@@ -1,9 +1,11 @@
 package com.example.web.service.impl;
-import com.example.web.model.CTSPKhuyenMai;
+
 import com.example.web.model.KhuyenMai;
-import com.example.web.repository.ICTSPKhuyenMai;
+import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.repository.IKhuyenMaiRepository;
+import com.example.web.repository.SanPhamKhuyenMaiRepository;
 import com.example.web.response.FilterKhuyenMai;
+import com.example.web.response.KhuyenMaiReponse;
 import com.example.web.service.IKhuyenMaiService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -15,8 +17,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
@@ -25,52 +31,120 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     private IKhuyenMaiRepository repository;
 
     @Autowired
-    private ICTSPKhuyenMai ictspKhuyenMai;
+    private SanPhamKhuyenMaiRepository sanPhamKhuyenMaiRepository;
 
     @Override
-    public String addKhuyenMai(KhuyenMai khuyenMai ) {
-       KhuyenMai km = repository.save(khuyenMai);
-        khuyenMai.getChiTietSanPhams().forEach(o -> {
-            CTSPKhuyenMai ctspKhuyenMai = CTSPKhuyenMai.builder()
-                    .khuyenMai(km)
-                    .chiTietSanPham(o)
-                    .build();
-            ictspKhuyenMai.save(ctspKhuyenMai);
-        });
-        return "redirect:/admin/khuyen-mai/";
+    public KhuyenMai addKhuyenMai(KhuyenMai khuyenMai) {
+        Integer maKhuyenMai = repository.findAll().size() + 1;
+        khuyenMai.setMa("KM" + maKhuyenMai);
+        khuyenMai.setTrangThai(1);
+        return repository.save(khuyenMai);
     }
 
     @Override
     public Page<KhuyenMai> getAll(Integer page) {
-        if(page < 0){
+        if (page < 0) {
             return null;
-        }else{
-            Pageable pageable = PageRequest.of(page - 1 , 10);
+        } else {
+            Pageable pageable = PageRequest.of(page - 1, 10);
             Page<KhuyenMai> pageKhuyenMai = repository.findAll(pageable);
             return pageKhuyenMai;
         }
     }
 
     @Override
-    public Page<KhuyenMai> filterKhuyenMai(Integer page ,FilterKhuyenMai filter) {
-      Pageable pageable = PageRequest.of(page - 1 , 10);
+    public Page<KhuyenMai> filterKhuyenMai(Integer page, FilterKhuyenMai filter) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
         return repository.findAll(new Specification<KhuyenMai>() {
             @Override
             public Predicate toPredicate(Root<KhuyenMai> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-             List<Predicate> predicateList = new ArrayList<>();
-              if(!filter.getSearch().isEmpty() && filter.getSearch() != null){
-                   predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("ten") , filter.getSearch()) ,
-                           criteriaBuilder.equal(root.get("ma") , filter.getSearch())));
-              }
-              if(!filter.getTrangThai().isEmpty() && filter.getTrangThai() != null){
-                   predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai") , filter.getTrangThai())));
-              }
-              if(!filter.getLoaiGiamGia().isEmpty() && filter.getLoaiGiamGia() != null){
-                  predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("loaiGiamGia") , Boolean.parseBoolean(filter.getLoaiGiamGia()))));
-
-              }
+                List<Predicate> predicateList = new ArrayList<>();
+                if (!filter.getSearch().isEmpty() && filter.getSearch() != null) {
+                    predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("ten"), filter.getSearch()),
+                            criteriaBuilder.equal(root.get("ma"), filter.getSearch())));
+                }
+                if (!filter.getTrangThai().isEmpty() && filter.getTrangThai() != null) {
+                    predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai"), filter.getTrangThai())));
+                }
                 return criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()]));
             }
-        } , pageable);
+        }, pageable);
+    }
+
+    @Override
+    public Page<KhuyenMaiReponse> getKhuyenMaiById(UUID id, Integer page) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        return repository.chiTietKhuyenMaiById(id, pageable);
+    }
+
+    @Override
+    public Boolean addSanPhamKhuyenMai(SanPhamKhuyenMai sanPhamKhuyenMai, String idKM) {
+        Optional<KhuyenMai> khuyenMai = repository.findById(UUID.fromString(idKM));
+        if (khuyenMai.isPresent()) {
+            sanPhamKhuyenMai.getSanPhams().forEach(o -> {
+                if(sanPhamKhuyenMaiRepository.kiemTraDaTonTai(o.getId() , khuyenMai.get().getId()) != null){
+                 return;
+                }
+                SanPhamKhuyenMai spkm = SanPhamKhuyenMai.builder()
+                        .khuyenMai(khuyenMai.get())
+                        .sanPhamKM(o)
+                        .trangThai(1)
+                        .mucGiam(sanPhamKhuyenMai.getMucGiam())
+                        .loaiGiamGia(sanPhamKhuyenMai.getLoaiGiamGia())
+                        .build();
+                if (sanPhamKhuyenMai.getLoaiGiamGia()) {
+                    Integer  donGiaKhiGiamPhanTram = spkm.getSanPhamKM().getGiaBan().intValue() - (spkm.getSanPhamKM().getGiaBan().intValue() / 100) * sanPhamKhuyenMai.getMucGiam().intValue();
+                    spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamPhanTram));
+                }else{
+                    Integer donGiaKhiGiamVND = spkm.getSanPhamKM().getGiaBan().intValue() - sanPhamKhuyenMai.getMucGiam().intValue();
+                    spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamVND));
+                }
+                sanPhamKhuyenMaiRepository.save(spkm);
+            });
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public KhuyenMai getById(UUID uuid) {
+        return repository.findById(uuid).get();
+    }
+
+    @Override
+    public SanPhamKhuyenMai updateTrangThaiKhuyenMaiChiTiet(Integer trangThai, UUID uuid) {
+        Optional<SanPhamKhuyenMai> sanPhamKhuyenMai = sanPhamKhuyenMaiRepository.findById(uuid);
+        if (sanPhamKhuyenMai.isPresent()) {
+            sanPhamKhuyenMai.get().setTrangThai(trangThai);
+            return sanPhamKhuyenMaiRepository.save(sanPhamKhuyenMai.get());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public KhuyenMai updateTrangThaiKhuyenMai(Integer trangThai, UUID uuid) {
+        Optional<KhuyenMai> khuyenMai = repository.findById(uuid);
+        if (khuyenMai.isPresent()) {
+            khuyenMai.get().setTrangThai(trangThai);
+            return repository.save(khuyenMai.get());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public SanPhamKhuyenMai getSanPhamKhuyenMai(UUID id) {
+        Optional<SanPhamKhuyenMai> sanPhamKhuyenMai = sanPhamKhuyenMaiRepository.findById(id);
+        if (sanPhamKhuyenMai.isPresent()) {
+            return sanPhamKhuyenMai.get();
+        }
+        return null;
+    }
+
+    @Override
+    public SanPhamKhuyenMai updateSanPhamKhuyenMai(SanPhamKhuyenMai sanPhamKhuyenMai) {
+        return sanPhamKhuyenMaiRepository.save(sanPhamKhuyenMai);
     }
 }

@@ -19,7 +19,7 @@ public interface IHoaDonService {
 
     String getHoaDonById(Model model ,  String id);
 
-    String updateHoaDonTrangThai(String id , String ghiChu);
+    String updateHoaDonTrangThai(String id);
 
     String thanhToan(HoaDonRequest request  , RedirectAttributes attributes);
 

@@ -6,6 +6,7 @@ import com.example.web.model.KieuDang;
 import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
 import com.example.web.model.Size;
+import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.response.SanPhamFilter;
 import com.example.web.service.DanhMucService;
 import com.example.web.service.IChatLieuService;
@@ -80,10 +81,10 @@ public class SanPhamController {
                                 @ModelAttribute("filterSanPham") SanPhamFilter filter,
                                 Model model) {
         Pageable pageable = PageRequest.of(page - 1, 10);
-        sanPhamPage = iSanPhamService.sanPhamFilter(filter, pageable);
+       // sanPhamPage = iSanPhamService.sanPhamFilter(filter, pageable);
         String url = "/san-pham/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
         model.addAttribute("filter", filter);
-        model.addAttribute("listSanPham", sanPhamPage);
+       // model.addAttribute("listSanPham", sanPhamPage);
         danhSachThuocTinhSanPham(model);
         model.addAttribute("url", url);
         return "quanLySanPham/sanpham/san-pham";
@@ -104,7 +105,7 @@ public class SanPhamController {
 
     @PostMapping("/api-filter")
     @ResponseBody
-    public Page<SanPham> filterSanPham(@RequestParam Integer page , @RequestBody SanPhamFilter filter) {
+    public Page<SanPhamAsKhuyenMai> filterSanPham(@RequestParam Integer page , @RequestBody SanPhamFilter filter) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         Page listSanPham = iSanPhamService.sanPhamFilter(filter ,pageable);
         return listSanPham;
