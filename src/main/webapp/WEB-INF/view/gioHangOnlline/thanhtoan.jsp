@@ -20,6 +20,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://kit.fontawesome.com/35a8b342cd.js" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
           rel="stylesheet">
@@ -34,6 +36,8 @@
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
     <link rel="stylesheet" href="../../../css/banHangOnline/thanhToan/thanhToan.css" type="text/css">
+
+    <script src="../../../js/banHangOnlline/thanhToan/thanhtoan.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -77,8 +81,32 @@
                                 <label>Địa chỉ</label>
                             </div>
                         </div>
+                        <div class="col-4">
+                            <div class="form-floating">
+                                <select id="province" class="form-select tinhThanhPho">
+                                    <option value="">Chọn tỉnh / thành</option>
+                                </select>
+                                <label>Tỉnh / thành</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-floating">
+                                <select id="district" disabled class="form-select chonQuanHuyen">
+                                    <option value="">Chọn quận / huyện</option>
+                                </select>
+                                <label>Quận / huyện</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-floating">
+                                <select id="ward" disabled class="form-select chonPhuongXa">
+                                    <option value="">Chọn phường / xã</option>
+                                </select>
+                                <label>Phường / xã</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mt-2">
+                    <div class="mt-5">
                         <h5>Phương thức thanh toán</h5>
                     </div>
                     <div class="mt-3 card-radio">
@@ -164,8 +192,8 @@
 
                     <div class="col-12">
                         <div class="row">
-                            <label class="form-label ml">Phí vận chuyển:</label>
-                            <label class="form-label mr">0 đ</label>
+                            <label for="shippingFee" class="form-label ml">Phí vận chuyển:</label>
+                            <label type="text" id="shippingFee" readonly class="form-label mr">0 đ</label>
                         </div>
                         <hr>
                     </div>
