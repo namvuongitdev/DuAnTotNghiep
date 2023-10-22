@@ -1,0 +1,192 @@
+//Api Giao Hàng Nhanh
+$(document).ready(function () {
+    $.ajax({
+        url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
+        type: "POST",
+        dataType: "json",
+        headers: {
+            "Content-Type": "application/json",
+            Token: "847c9bb7-6e42-11ee-a59f-a260851ba65c",
+        },
+        success: function (response) {
+            const provinces = response.data;
+            const provinceSelect = $("#province");
+
+            provinces.forEach(function (province) {
+                provinceSelect.append(
+                    "<option value='" +
+                    province.ProvinceID +
+                    "'>" +
+                    province.ProvinceName +
+                    "</option>"
+                );
+            });
+        },
+        error: function (xhr, status, error) {
+            console.log("API Request Failed:", error);
+        },
+    });
+
+    $("#province").change(function () {
+        const selectedProvinceId = $(this).val();
+
+        $("#district")
+            .prop("disabled", true)
+            .empty()
+            .append("<option value=''>Chọn Quận/Huyện</option>");
+        $("#ward")
+            .prop("disabled", true)
+            .empty()
+            .append("<option value=''>Chọn Phường/Xã</option>");
+
+        if (selectedProvinceId) {
+            $.ajax({
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
+                type: "GET",
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json",
+                    Token: "847c9bb7-6e42-11ee-a59f-a260851ba65c",
+                },
+                data: {
+                    province_id: selectedProvinceId,
+                },
+                success: function (response) {
+                    const districts = response.data;
+                    const districtSelect = $("#district");
+                    districts.forEach(function (district) {
+                        districtSelect.append(
+                            "<option value='" +
+                            district.DistrictID +
+                            "'>" +
+                            district.DistrictName +
+                            "</option>"
+                        );
+                    });
+
+                    districtSelect.prop("disabled", false);
+                },
+                error: function (xhr, status, error) {
+                    console.log("API Request Failed:", error);
+                },
+            });
+        }
+    });
+
+    $("#district").change(function () {
+        const selectedDistrictId = $(this).val();
+
+        $("#ward")
+            .prop("disabled", true)
+            .empty()
+            .append("<option value=''>Chọn Phường/Xã</option>");
+
+        if (selectedDistrictId) {
+            // Populate wards based on selected district
+            $.ajax({
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward",
+                type: "GET",
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json",
+                    Token: "847c9bb7-6e42-11ee-a59f-a260851ba65c",
+                },
+                data: {
+                    district_id: selectedDistrictId,
+                },
+                success: function (response) {
+                    const wards = response.data;
+                    const wardSelect = $("#ward");
+                    wards.forEach(function (ward) {
+                        wardSelect.append(
+                            "<option value='" +
+                            ward.WardCode +
+                            "'>" +
+                            ward.WardName +
+                            "</option>"
+                        );
+                    });
+
+                    // Enable ward selection
+                    wardSelect.prop("disabled", false);
+                },
+                error: function (xhr, status, error) {
+                    console.log("API Request Failed:", error);
+                },
+            });
+        }
+    });
+
+    $("#province, #district, #ward").change(function () {
+        calculateShippingFee();
+    });
+
+    function calculateShippingFee() {
+        const toDistrictId = parseInt($("#district").val());
+        const toWardCode = $("#ward").val();
+
+        if (toDistrictId && toWardCode) {
+            $.ajax({
+                url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services",
+                type: "POST",
+                dataType: "json",
+                headers: {
+                    "Content-Type": "application/json",
+                    Token: "847c9bb7-6e42-11ee-a59f-a260851ba65c",
+                },
+                data: JSON.stringify({
+                    shop_id: 4642718,
+                    from_district: 1454,
+                    to_district: toDistrictId,
+                }),
+                success: function (response) {
+                    const availableServices = response.data;
+                    if (availableServices.length > 0) {
+                        const serviceId = availableServices[0].service_id;
+
+                        $.ajax({
+                            url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+                            type: "POST",
+                            dataType: "json",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Token: "847c9bb7-6e42-11ee-a59f-a260851ba65c",
+                                ShopId: 4642718,
+                            },
+                            data: JSON.stringify({
+                                from_district_id: 1454,
+                                from_ward_code: "21211",
+                                service_id: serviceId,
+                                to_district_id: toDistrictId,
+                                to_ward_code: toWardCode,
+                                weight: 200,
+                            }),
+                            success: function (response) {
+                                const shippingFee = response.data.total;
+
+                                // Format the shipping fee with commas and "VNĐ" before updating the label
+                                const formattedShippingFee = shippingFee.toLocaleString("vi-VN", {
+                                    style: "currency",
+                                    currency: "VND",
+                                });
+
+                                // Update shipping fee in the label
+                                $("#shippingFee").text(formattedShippingFee);
+                                $("#tienShip").text(formattedShippingFee);
+                                calculateTotal();
+                            },
+                            error: function (xhr, status, error) {
+                                console.log("API Request Failed:", error);
+                            },
+                        });
+                    } else {
+                        console.log("No available services.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("API Request Failed:", error);
+                },
+            });
+        }
+    }
+});
