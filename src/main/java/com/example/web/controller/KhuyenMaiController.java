@@ -5,6 +5,7 @@ import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.request.KhuyenMaiRequest;
 import com.example.web.response.FilterKhuyenMai;
 import com.example.web.response.KhuyenMaiReponse;
+import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.service.IKhuyenMaiService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -107,14 +108,14 @@ public class KhuyenMaiController {
 
     @GetMapping("/api-san-pham-khuyen-mai/{id}")
     @ResponseBody
-    public SanPhamKhuyenMai sanPhamKhuyenMai(@PathVariable String id) {
-        SanPhamKhuyenMai sanPhamKhuyenMai = khuyenMaiService.getSanPhamKhuyenMai(UUID.fromString(id));
+    public SanPhamAsKhuyenMai sanPhamKhuyenMai(@PathVariable String id) {
+        SanPhamAsKhuyenMai sanPhamKhuyenMai = khuyenMaiService.getSanPhamAsKhuyenMai(UUID.fromString(id));
         return sanPhamKhuyenMai;
     }
 
     @PostMapping("/update-san-pham-khuyen-mai")
     public String updateSanPhamKhuyenMai(@RequestParam String idSPKM, @ModelAttribute("sanPhamKhuyenMai") SanPhamKhuyenMai sanPhamKhuyenMai) {
-        SanPhamKhuyenMai spkm = khuyenMaiService.getSanPhamKhuyenMai(UUID.fromString(idSPKM));
+        SanPhamKhuyenMai spkm = khuyenMaiService.getSanPhamKhuyenMaiById(UUID.fromString(idSPKM));
         if (sanPhamKhuyenMai.getLoaiGiamGia()) {
             Integer donGiaKhiGiamPhanTram = spkm.getSanPhamKM().getGiaBan().intValue() - (spkm.getSanPhamKM().getGiaBan().intValue() / 100) * sanPhamKhuyenMai.getMucGiam().intValue();
             spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamPhanTram));

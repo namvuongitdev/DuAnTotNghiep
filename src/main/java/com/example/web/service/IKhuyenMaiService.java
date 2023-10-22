@@ -3,6 +3,7 @@ import com.example.web.model.KhuyenMai;
 import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.response.FilterKhuyenMai;
 import com.example.web.response.KhuyenMaiReponse;
+import com.example.web.response.SanPhamAsKhuyenMai;
 import org.springframework.data.domain.Page;
 import java.util.UUID;
 
@@ -24,7 +25,9 @@ public interface IKhuyenMaiService {
 
     KhuyenMai updateTrangThaiKhuyenMai(Integer trangThai , UUID uuid);
 
-    SanPhamKhuyenMai getSanPhamKhuyenMai(UUID id);
+    SanPhamAsKhuyenMai getSanPhamAsKhuyenMai(UUID id);
 
     SanPhamKhuyenMai updateSanPhamKhuyenMai(SanPhamKhuyenMai sanPhamKhuyenMai);
+
+    SanPhamKhuyenMai getSanPhamKhuyenMaiById(UUID id);
 }

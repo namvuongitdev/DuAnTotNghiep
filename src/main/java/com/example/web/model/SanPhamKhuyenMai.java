@@ -1,4 +1,5 @@
 package com.example.web.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +34,7 @@ public class SanPhamKhuyenMai {
 
     @ManyToOne
     @JoinColumn(name = "id_san_pham")
+    @JsonIgnore
     private SanPham sanPhamKM;
 
     @ManyToOne
@@ -53,4 +55,5 @@ public class SanPhamKhuyenMai {
 
     @Transient
     private List<SanPham> sanPhams;
+
 }

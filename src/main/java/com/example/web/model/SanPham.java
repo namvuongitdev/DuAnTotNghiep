@@ -94,7 +94,6 @@ public class SanPham {
     private List<ChiTietSanPham> chiTietSanPhams;
 
     @OneToMany(mappedBy = "sanPhamKM")
-    @JsonIgnore
     private List<SanPhamKhuyenMai> sanPhamKhuyenMais;
 
     public String getGiaFormat() {
@@ -102,5 +101,4 @@ public class SanPham {
         String formatted = formatter.format(this.giaBan);
         return formatted;
     }
-
 }

@@ -26,14 +26,29 @@ function getSanPham(page) {
             let pageSize = page >= data.totalPages ? "disabled" : "";
             let sanPham = "";
             let phanTrang = "";
+            let giaBanSanPham = null;
             for (let i = 0; i < data.content.length; i++) {
-                sanPham += ` <tr>   ` +
-                    ` <td>` +
-                    `<img style="width: 60px ; height: 60px" src="/image/` + data.content[i].img + `">` +
-                    ` <td>` + data.content[i].ma + `</td>` +
-                    ` <td>` + data.content[i].ten + `</td>` +
-                    ` <td>` + VND.format(data.content[i].giaBan) + `</td>` +
-                    ` <td><button  id="myBtn" name="` + data.content[i].id + `" onclick="getModal(this.name)" class="btn btn-warning" >Chọn</button></td> </tr>`
+                if (data.content[i].sanPhamKhuyenMais.length > 0) {
+                    data.content[i].sanPhamKhuyenMais.map(function (e) {
+                        if (e.trangThai == 1 && e.trangThai == 1) {
+                            giaBanSanPham = e.donGiaSauKhiGiam;
+                        } else {
+                            giaBanSanPham = data.content[i].giaBan;
+                        }
+                    })
+                } else {
+                    giaBanSanPham = data.content[i].giaBan;
+                }
+                sanPham += `<tr>
+                   <td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img} "></td>
+                    <td>${data.content[i].ma}</td>
+                    <td>${data.content[i].ten}</td>
+                    <td>${VND.format(giaBanSanPham)}</td>
+                    ${data.content[i].trangThai != 0 ? `<td style="color: #E43535">ngừng kinh doanh</td>` : `<td>
+                   <button  id="myBtn"  onclick="getModal({idSanPham:'${data.content[i].id}' , 
+                    tenSanPham:'${data.content[i].ten}' , giaSanPham:${giaBanSanPham} , img:'${data.content[i].img}'})" class="btn btn-warning" >Chọn</button>
+                   </td>` }
+                    </tr>`
             }
 
             for (let i = 1; i <= data.totalPages; i++) {
@@ -67,14 +82,28 @@ function api(page, data) {
             let pageSize = page >= data.totalPages ? "disabled" : "";
             let sanPham = "";
             let phanTrang = "";
+            let giaBanSanPham = null;
             for (let i = 0; i < data.content.length; i++) {
-                sanPham += ` <tr>   ` +
-                    ` <td>` +
-                    `<img style="width: 60px ; height: 60px" src="/image/` + data.content[i].img + `">` +
-                    ` <td>` + data.content[i].ma + `</td>` +
-                    ` <td>` + data.content[i].ten + `</td>` +
-                    ` <td>` + VND.format(data.content[i].giaBan) + `</td>` +
-                    ` <td><button  id="myBtn" name="` + data.content[i].id + `" onclick="getModal(this.name)" class="btn btn-warning" >Chọn</button></td> </tr>`
+                if (data.content[i].sanPhamKhuyenMais.length > 0) {
+                    data.content[i].sanPhamKhuyenMais.map(function (e) {
+                        if (e.trangThai == 1 && e.trangThai == 1) {
+                            giaBanSanPham = e.donGiaSauKhiGiam;
+                        } else {
+                            giaBanSanPham = data.content[i].giaBan;
+                        }
+                    })
+
+                } else {
+                    giaBanSanPham = data.content[i].giaBan;
+                }
+                sanPham += `<tr>
+                   <td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img} "></td>
+                    <td>${data.content[i].ma}</td>
+                    <td>${data.content[i].ten}</td>
+                    <td>${VND.format(giaBanSanPham)}</td>
+                    <td> <button  id="myBtn"  onclick="getModal({idSanPham:'${data.content[i].id}' , 
+                    tenSanPham:'${data.content[i].ten}' , giaSanPham:${giaBanSanPham} , img:'${data.content[i].img}'})" class="btn btn-warning" >Chọn</button></td>
+                    </tr>`
             }
 
             for (let i = 1; i <= data.totalPages; i++) {

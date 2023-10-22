@@ -5,16 +5,16 @@ let mauSac;
 let sanPham;
 let dataCTSP;
 
-function getModal(id) {
-    sanPham = id;
+function getModal(dataSanPham) {
+    sanPham = dataSanPham.idSanPham;
     modal.style.display = "block";
-    fetch("/admin/chi-tiet-san-pham/" + id)
+    fetch("/admin/chi-tiet-san-pham/" + dataSanPham.idSanPham)
         .then(response => response.json())
         .then(data => {
             dataCTSP = data;
             for (let i = 0; i < data.length; i++) {
-                document.getElementById("img").innerHTML = `<img src="/image/` + data[i].sanPham.img + `">`
-                document.getElementById("sp").innerHTML = `<div><h3>` + data[i].sanPham.ten + `</h3></div> <div><h5 style="color: #03AA28">` + VND.format(data[i].sanPham.giaBan) + `</h5></div>`
+                document.getElementById("img").innerHTML = `<img src="/image/${dataSanPham.img}">`
+                document.getElementById("sp").innerHTML = `<div><h3>${dataSanPham.tenSanPham}</h3></div> <div><h5 style="color: #03AA28"> ${VND.format(dataSanPham.giaSanPham)} </h5></div>`
                 break;
             }
             getMauSac(data);
@@ -82,11 +82,13 @@ function getCTSP(id) {
         }
     }
     if (mauSac != undefined && kichCo != undefined) {
+        console.log('trang thai : ' + dataCTSP.trangThai);
         const sp = document.getElementById("sp");
         const themVaoGioHang = document.getElementById("themVaoGioHang");
         for (let i = 0; i < dataCTSP.length; i++) {
             if (dataCTSP[i].mauSac.id == mauSac && dataCTSP[i].size.id == kichCo && dataCTSP[i].sanPham.id == sanPham) {
-                if (dataCTSP[i].soLuong == 0 || dataCTSP[i].soLuong < 0 || dataCTSP.trangThai == 1) {
+                if (dataCTSP[i].soLuong == 0 || dataCTSP[i].soLuong < 0 ) {
+                    console.log("null")
                     themVaoGioHang.setAttribute("disabled", "");
                     sp.innerHTML += `<h5 id="message" style="color: #e43535">Sản phẩm hết hàng</h5>`
                     return;

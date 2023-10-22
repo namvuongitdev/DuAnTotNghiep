@@ -6,11 +6,13 @@ import com.example.web.repository.IKhuyenMaiRepository;
 import com.example.web.repository.SanPhamKhuyenMaiRepository;
 import com.example.web.response.FilterKhuyenMai;
 import com.example.web.response.KhuyenMaiReponse;
+import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.service.IKhuyenMaiService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +34,9 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
 
     @Autowired
     private SanPhamKhuyenMaiRepository sanPhamKhuyenMaiRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public KhuyenMai addKhuyenMai(KhuyenMai khuyenMai) {
@@ -135,16 +140,22 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     }
 
     @Override
-    public SanPhamKhuyenMai getSanPhamKhuyenMai(UUID id) {
-        Optional<SanPhamKhuyenMai> sanPhamKhuyenMai = sanPhamKhuyenMaiRepository.findById(id);
-        if (sanPhamKhuyenMai.isPresent()) {
-            return sanPhamKhuyenMai.get();
-        }
-        return null;
+    public SanPhamAsKhuyenMai getSanPhamAsKhuyenMai(UUID id) {
+    SanPhamAsKhuyenMai sanPhamAsKhuyenMai  = sanPhamKhuyenMaiRepository.findSanPhamKhuyenMaiById(id);
+        return sanPhamAsKhuyenMai;
     }
 
     @Override
     public SanPhamKhuyenMai updateSanPhamKhuyenMai(SanPhamKhuyenMai sanPhamKhuyenMai) {
         return sanPhamKhuyenMaiRepository.save(sanPhamKhuyenMai);
+    }
+
+    @Override
+    public SanPhamKhuyenMai getSanPhamKhuyenMaiById(UUID id) {
+        Optional<SanPhamKhuyenMai> sanPhamKhuyenMai = sanPhamKhuyenMaiRepository.findById(id);
+        if(sanPhamKhuyenMai.isPresent()){
+            return sanPhamKhuyenMai.get();
+        }
+        return null;
     }
 }

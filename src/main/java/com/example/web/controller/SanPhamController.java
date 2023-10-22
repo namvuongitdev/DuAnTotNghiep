@@ -5,6 +5,7 @@ import com.example.web.model.DanhMuc;
 import com.example.web.model.KieuDang;
 import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
+import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.model.Size;
 import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.response.SanPhamFilter;
@@ -92,7 +93,7 @@ public class SanPhamController {
 
     @GetMapping({"/api-hien-thi"})
     @ResponseBody
-    public Page<SanPham> apiSanPham(@RequestParam Integer page ,@RequestParam(required = false) String value) {
+    public Page<SanPhamKhuyenMai> apiSanPham(@RequestParam Integer page , @RequestParam(required = false) String value) {
         Page listSanPham = null;
         Pageable pageable = PageRequest.of(page - 1, 10);
         if(value.isEmpty()){
@@ -105,7 +106,7 @@ public class SanPhamController {
 
     @PostMapping("/api-filter")
     @ResponseBody
-    public Page<SanPhamAsKhuyenMai> filterSanPham(@RequestParam Integer page , @RequestBody SanPhamFilter filter) {
+    public Page<SanPham> filterSanPham(@RequestParam Integer page , @RequestBody SanPhamFilter filter) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         Page listSanPham = iSanPhamService.sanPhamFilter(filter ,pageable);
         return listSanPham;

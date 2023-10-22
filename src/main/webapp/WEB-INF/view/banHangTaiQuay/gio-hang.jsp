@@ -85,7 +85,7 @@
                                             <div class="row">
                                                 <div class="col l-3">
                                                     <img src="/image/${sanPham.img}"
-                                                         style="width: 100px; height: 100px">
+                                                         style="width: 80px; height: 80px">
                                                 </div>
                                                 <div class="col l-3">
                                                     <h5>${sanPham.tenSanPham}</h5>

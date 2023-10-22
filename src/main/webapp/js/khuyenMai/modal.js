@@ -34,8 +34,8 @@ function getSanPhamKhuyenMai(id) {
             } else {
                 loaiGiamGiaSanPham[1].checked = "checked";
             }
-            document.getElementById("tenSanPham").value = data.sanPhamKM.ten;
-            document.getElementById("maSanPham").value = data.sanPhamKM.ma;
+            document.getElementById("tenSanPham").value = data.tenSanPham;
+            document.getElementById("maSanPham").value = data.maSanPham;
             document.getElementById("mucGiamSanPham").value = data.mucGiam;
             document.getElementById("updateSanPhamKhuyenMai").action="/admin/khuyen-mai/update-san-pham-khuyen-mai?idSPKM="+id;
 
