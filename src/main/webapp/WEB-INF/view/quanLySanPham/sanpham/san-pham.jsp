@@ -70,7 +70,7 @@
                                 <tr>
                                     <th scope="row">${i.index + (listSanPham.number + 1 != 1 ? ((listSanPham.number + 1) * listSanPham.size) -(listSanPham.size - 1) : listSanPham.number + 1)}</th>
                                     <td>
-                                        <img src="/image/${sanPham.img}">
+                                        <img src="/image/${sanPham.img}"alt="" style="width: 80px; height: 80px">
                                     </td>
                                     <td>${sanPham.ma}</td>
                                     <td onclick="window.location.href='/admin/san-pham/hien-thi/${sanPham.id}'">${sanPham.ten}</td>

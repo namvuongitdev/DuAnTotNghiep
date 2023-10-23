@@ -36,40 +36,28 @@
     <div class="col py-3">
         <div class="container">
             <form class="row" action="/admin/khuyen-mai/filter" modelAttrubute="${khuyenMai}">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <div>
-                        <input class="form-control" type="text" name="search" placeholder="Tìm kiếm mã , tên" value="${filter.search}">
+                        <label for="search">Tìm kiếm</label>
+                        <input class="form-control" type="text" name="search" id="search" placeholder="Tìm kiếm mã , tên" value="${filter.search}">
                     </div>
                 </div>
                 <div class="col-sm-2">
-                    <select name="loaiGiamGia" class="form-select">
-                        <option value="">Loại</option>
-                        <option value="true" ${filter.loaiGiamGia == "true" ? 'selected' : ''}>
-                            Phần trăm
-                        </option>
-                        <option value="false" ${filter.loaiGiamGia == "false" ? 'selected' : ''}>
-                            VND
-                        </option>
-                    </select>
-                </div>
-                <div class="col-sm-2">
-                    <select name="trangThai" class="form-select">
-                        <option value="">Trang thái</option>
-                        <option value="0" ${filter.trangThai == "0" ? 'selected' : ''}>
+                    <label for="trangThai">Trang thái</label>
+                    <select name="trangThai" id="trangThai" class="form-select">
+                        <option value="">Tất cả</option>
+                        <option value="1" ${filter.trangThai == "1" ? 'selected' : ''}>
                             Kích hoạt
                         </option>
-                        <option value="1" ${filter.trangThai == "1"? 'selected' : ''}>
-                            Chờ
-                        </option>
-                        <option value="2" ${filter.trangThai == "2" ? 'selected' : ''}>
+                        <option value="0" ${filter.trangThai == "0" ? 'selected' : ''}>
                             Ngừng kích hoạt
                         </option>
                     </select>
                 </div>
                 <div class="col-sm-2">
-                    <div>
+                    <div style="margin-top: 21px">
                         <button class="btn btn-primary">Tìm kiếm</button>
-                        <a class="btn btn-primary" href="/admin/khuyen-mai/">
+                        <a class="btn btn-outline-warning" href="/admin/khuyen-mai/">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
                                 <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
@@ -77,20 +65,20 @@
                         </a>
                     </div>
                 </div>
+                <br>
                 <div class="col-sm-2">
-                    <div>
+                    <div style="margin-top: 21px">
                         <a href="/admin/khuyen-mai/new" class="btn btn-primary"> + Tạo mới</a>
                     </div>
                 </div>
             </form>
-            <div class="row">
+            <div class="row" style="margin-top: 60px">
                 <table>
                     <thead>
                     <tr>
                         <th scope="col">STT</th>
                         <th scope="col">Mã</th>
                         <th scope="col">Tên Khuyến mãi</th>
-                        <th scope="col">Giá trị</th>
                         <th scope="col">Ngày bắt đầu</th>
                         <th scope="col">Ngày kết thúc</th>
                         <th scope="col">Trang Thái</th>
@@ -98,21 +86,27 @@
                     </thead>
                     <tbody>
                     <c:forEach items="${khuyenMais.content}" var="khuyenMai" varStatus="i">
-                        <tr onclick="window.location.href='/san-pham/hien-thi/${khuyenMai.id}'">
+                        <tr onclick="window.location.href='/admin/khuyen-mai/detail?id=${khuyenMai.id}'">
                             <th scope="row">${i.index+ (khuyenMais.number + 1 != 1 ? ((khuyenMais.number + 1) * khuyenMais.size) -(khuyenMais.size - 1) : khuyenMais.number + 1)}</th>
                             <td>
                                ${khuyenMai.ma}
                             </td>
                             <td>${khuyenMai.ten}</td>
-                            <td>${khuyenMai.mucGiamGia}${khuyenMai.loaiGiamGia}</td>
                             <td>
                                 <fmt:formatDate value="${khuyenMai.ngayBatDau}" pattern="yyyy-MM-dd HH:mm:ss"/>
                             </td>
                             <td>
                                 <fmt:formatDate value="${khuyenMai.ngayKetThuc}" pattern="yyyy-MM-dd HH:mm:ss"/>
                             </td>
-                            <td>
-                               ${khuyenMai.trangThai}
+                            <td style="${khuyenMai.trangThai == 1 ? 'color: #03AA28' : 'color:red'}">${khuyenMai.trangThai == 1 ? 'kích hoạt' : 'ngừng hoạt động'}</td>
+                            <td><c:choose>
+                                <c:when test="${khuyenMai.trangThai == 1}">
+                                    <a href="/admin/khuyen-mai/update-trang-thai?idKM=${khuyenMai.id}&trangThai=${khuyenMai.trangThai == 1 ? 0 : 1}" class="btn btn-danger">huỷ</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="/admin/khuyen-mai/update-trang-thai?idKM=${khuyenMai.id}&trangThai=${khuyenMai.trangThai == 1 ? 0 : 1}" class="btn btn-success">Kích hoạt</a>
+                                </c:otherwise>
+                            </c:choose></td>
                         </tr>
                     </c:forEach>
                     </tbody>

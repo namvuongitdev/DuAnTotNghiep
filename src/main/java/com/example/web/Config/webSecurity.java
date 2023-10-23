@@ -37,8 +37,8 @@ public class webSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests().requestMatchers("/WEB-INF/view/**", "/css/**", "/anh/**", "/fonts/**"
-                , "/img/**", "/js/**", "/index/**" ).permitAll()
-                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                , "/img/**", "/js/**", "/index/**" , "/image/**" ).permitAll()
+                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN" , "STAFF")
                 .requestMatchers("/gio-hang-onl/**" ).hasAuthority("CLIENT")
                 .and().formLogin().loginPage("/login").permitAll()
                 .usernameParameter("username")

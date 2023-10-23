@@ -1,6 +1,6 @@
 package com.example.web.model;
+import com.example.web.response.SanPhamAsKhuyenMai;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -92,10 +93,12 @@ public class SanPham {
     @JsonIgnore
     private List<ChiTietSanPham> chiTietSanPhams;
 
+    @OneToMany(mappedBy = "sanPhamKM")
+    private List<SanPhamKhuyenMai> sanPhamKhuyenMais;
+
     public String getGiaFormat() {
         DecimalFormat formatter = new DecimalFormat("###,###,###");
         String formatted = formatter.format(this.giaBan);
         return formatted;
     }
-
 }

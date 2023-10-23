@@ -7,6 +7,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -56,7 +57,6 @@ public class NhanVien {
     @Column(name = "taiKhoan")
     private String taiKhoan;
 
-    @NotBlank(message = "Vui lòng không để trống thông tin.")
     @Column(name = "matKhau")
     private String matKhau;
 

@@ -47,7 +47,7 @@ public class FormDangController {
         kd.setTrangThai(0);
         kd.setNgaySua(java.util.Calendar.getInstance().getTime());
         service.update(kd);
-        return "redirect:/kieu-dang/hien-thi";
+        return "redirect:/admin/kieu-dang/hien-thi";
     }
 
     @GetMapping("/hien-thi/{p}")
@@ -73,7 +73,7 @@ public class FormDangController {
             kieuDang.setTrangThai(1);
             kieuDang.setNgayTao(java.util.Calendar.getInstance().getTime());
             service.add(kieuDang);
-            return "redirect:/kieu-dang/hien-thi";
+            return "redirect:/admin/kieu-dang/hien-thi";
         }
     }
 
@@ -94,7 +94,7 @@ public class FormDangController {
             kieuDang.setNgayTao(kd.getNgayTao());
             kieuDang.setNgaySua(java.util.Calendar.getInstance().getTime());
             service.update(kieuDang);
-            return "redirect:/kieu-dang/hien-thi";
+            return "redirect:/admin/kieu-dang/hien-thi";
         }
     }
 

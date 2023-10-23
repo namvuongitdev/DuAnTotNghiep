@@ -1,7 +1,9 @@
 package com.example.web.service.impl;
+
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
+import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.repository.IChiTietSanPhamRepository;
 import com.example.web.repository.IHoaDonChiTietRepository;
 import com.example.web.repository.IHoaDonRepository;
@@ -28,36 +30,46 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(idHD));
         Optional<ChiTietSanPham> ctsp = chiTietSanPhamRepository.findById(UUID.fromString(idCTSP));
         HoaDonChiTiet hdct = null;
-       if (hoaDon.isEmpty() || ctsp.isEmpty()) {
+        if (hoaDon.isEmpty() || ctsp.isEmpty()) {
             return null;
         } else {
             ChiTietSanPham chiTietSanPham = ctsp.get();
-            if(chiTietSanPham.getSoLuong() < soLuong){
+            if (chiTietSanPham.getSoLuong() < soLuong) {
                 return null;
-            }else{
+            } else {
                 Integer result = chiTietSanPham.getSoLuong() - soLuong;
                 chiTietSanPham.setSoLuong(result);
-                hdct = hoaDonChiTietRepository.findByChiTietSanPham_IdAndAndHoaDon_IdAndTrangThai(UUID.fromString(idCTSP) , UUID.fromString(idHD) , 0);
-                    if(hdct != null){
-                        Integer setSoLuongSanPhamTrongHDCT = hdct.getSoLuong() + soLuong;
-                        hdct.setSoLuong(setSoLuongSanPhamTrongHDCT);
-                        hdct.setChiTietSanPham(chiTietSanPham);
-                    }else{
-                        hdct  = HoaDonChiTiet.builder()
-                                .hoaDon(hoaDon.get())
-                                .donGia(chiTietSanPham.getSanPham().getGiaBan())
-                                .soLuong(soLuong)
-                                .chiTietSanPham(chiTietSanPham)
-                                .trangThai(0)
-                                .build();
+                hdct = hoaDonChiTietRepository.findByChiTietSanPham_IdAndAndHoaDon_IdAndTrangThai(UUID.fromString(idCTSP), UUID.fromString(idHD), 0);
+                if (hdct != null) {
+                    Integer setSoLuongSanPhamTrongHDCT = hdct.getSoLuong() + soLuong;
+                    hdct.setSoLuong(setSoLuongSanPhamTrongHDCT);
+                    hdct.setChiTietSanPham(chiTietSanPham);
+                } else {
+                    hdct = HoaDonChiTiet.builder()
+                            .hoaDon(hoaDon.get())
+                            .soLuong(soLuong)
+                            .chiTietSanPham(chiTietSanPham)
+                            .trangThai(0)
+                            .build();
+                    if (!chiTietSanPham.getSanPham().getSanPhamKhuyenMais().isEmpty()) {
+                        for (SanPhamKhuyenMai o : chiTietSanPham.getSanPham().getSanPhamKhuyenMais()) {
+                            if (o.getKhuyenMai().getTrangThai() == 1 && o.getTrangThai() == 1) {
+                                hdct.setDonGia(o.getDonGiaSauKhiGiam());
+                            } else {
+                                hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
+                            }
+                        }
+                    } else {
+                        hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
                     }
+                }
                 return hoaDonChiTietRepository.save(hdct);
             }
         }
     }
 
     @Override
-    public String deleteSanPhamHoaDon(String idHDCT , String idKhachHang) {
+    public String deleteSanPhamHoaDon(String idHDCT, String idKhachHang) {
         Optional<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findById(UUID.fromString(idHDCT));
         if (hoaDonChiTiet.isPresent()) {
             HoaDonChiTiet hdct = hoaDonChiTiet.get();
@@ -67,8 +79,8 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
             hdct.setChiTietSanPham(ctsp);
             hdct.setTrangThai(1);
             hoaDonChiTietRepository.save(hdct);
-            if(idKhachHang != null && !idKhachHang.isEmpty()){
-                return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId() + "&idKhachHang="+idKhachHang;
+            if (idKhachHang != null && !idKhachHang.isEmpty()) {
+                return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId() + "&idKhachHang=" + idKhachHang;
             }
             return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId();
         } else {
@@ -86,7 +98,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
     }
 
     @Override
-    public String updateHoaDonChiTiet(String idHDCT, String soLuong , String idKhachHang) {
+    public String updateHoaDonChiTiet(String idHDCT, String soLuong, String idKhachHang) {
         Optional<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findById(UUID.fromString(idHDCT));
         if (hoaDonChiTiet.isPresent()) {
             HoaDonChiTiet hdct = hoaDonChiTiet.get();
@@ -95,21 +107,21 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
             } else {
                 ChiTietSanPham ctsp = hdct.getChiTietSanPham();
                 Integer soLuongTon = hdct.getSoLuong() + ctsp.getSoLuong();
-                if(Integer.parseInt(soLuong) > soLuongTon){
+                if (Integer.parseInt(soLuong) > soLuongTon) {
                     return null;
-                }else{
+                } else {
 
                     ctsp.setSoLuong(soLuongTon - Integer.parseInt(soLuong));
                     hdct.setChiTietSanPham(ctsp);
                     hdct.setSoLuong(Integer.parseInt(soLuong));
                     hoaDonChiTietRepository.save(hdct);
-                    if(idKhachHang != null && !idKhachHang.isEmpty()){
-                        return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId() + "&idKhachHang="+idKhachHang;
+                    if (idKhachHang != null && !idKhachHang.isEmpty()) {
+                        return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId() + "&idKhachHang=" + idKhachHang;
                     }
                     return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId();
                 }
             }
-        }else{
+        } else {
             return null;
         }
     }
@@ -119,6 +131,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
         return hoaDonChiTietRepository.getReferenceById(UUID.fromString(id));
     }
 
+    //--------------------------------------------------------------------------
     @Override
     public String addSanPhamHoaDonChiTietKhiUpdate(String idCTSP, String idHD, Integer soLuong) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(idHD));
@@ -128,18 +141,18 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
             return null;
         } else {
             ChiTietSanPham chiTietSanPham = ctsp.get();
-            if(chiTietSanPham.getSoLuong() < soLuong){
+            if (chiTietSanPham.getSoLuong() < soLuong) {
                 return null;
-            }else{
+            } else {
                 Integer result = chiTietSanPham.getSoLuong() - soLuong;
                 chiTietSanPham.setSoLuong(result);
-                hdct = hoaDonChiTietRepository.findByChiTietSanPham_IdAndAndHoaDon_IdAndTrangThai(UUID.fromString(idCTSP) , UUID.fromString(idHD) , 0);
-                if(hdct != null){
+                hdct = hoaDonChiTietRepository.findByChiTietSanPham_IdAndAndHoaDon_IdAndTrangThai(UUID.fromString(idCTSP), UUID.fromString(idHD), 0);
+                if (hdct != null) {
                     Integer setSoLuongSanPhamTrongHDCT = hdct.getSoLuong() + soLuong;
                     hdct.setSoLuong(setSoLuongSanPhamTrongHDCT);
                     hdct.setChiTietSanPham(chiTietSanPham);
-                }else{
-                    hdct  = HoaDonChiTiet.builder()
+                } else {
+                    hdct = HoaDonChiTiet.builder()
                             .hoaDon(hoaDon.get())
                             .donGia(chiTietSanPham.getSanPham().getGiaBan())
                             .soLuong(soLuong)
@@ -148,33 +161,31 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                             .build();
                 }
                 hoaDonChiTietRepository.save(hdct);
-                return "redirect:/hoa-don/view-update/" + idHD;
+                return "redirect:/admin/hoa-don/view-update/" + idHD;
             }
         }
     }
+
     @Override
     public String updateSoLuongSanPhamHoaDonChiTietKhiUpdate(String idHDCT, String soLuong) {
         Optional<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findById(UUID.fromString(idHDCT));
         if (hoaDonChiTiet.isPresent()) {
             HoaDonChiTiet hdct = hoaDonChiTiet.get();
-            if (Integer.parseInt(soLuong) == 0 || soLuong.isEmpty()) {
-                return "redirect:/hoa-don/delete?idHDCT=" + hdct.getId() + "&idHD=" + hdct.getHoaDon().getId();
-            } else {
-                ChiTietSanPham ctsp = hdct.getChiTietSanPham();
-                Integer soLuongTon = hdct.getSoLuong() + ctsp.getSoLuong();
-                if(Integer.parseInt(soLuong) > soLuongTon){
-                    return null;
-                }else{
 
-                    ctsp.setSoLuong(soLuongTon - Integer.parseInt(soLuong));
-                    hdct.setChiTietSanPham(ctsp);
-                    hdct.setSoLuong(Integer.parseInt(soLuong));
+            ChiTietSanPham ctsp = hdct.getChiTietSanPham();
+            Integer soLuongTon = hdct.getSoLuong() + ctsp.getSoLuong();
+            if(Integer.parseInt(soLuong) > soLuongTon){
+                return null;
+            }else{
 
-                    hoaDonChiTietRepository.save(hdct);
-                    return "redirect:/hoa-don/view-update/" + hdct.getHoaDon().getId();
-                }
+                ctsp.setSoLuong(soLuongTon - Integer.parseInt(soLuong));
+                hdct.setChiTietSanPham(ctsp);
+                hdct.setSoLuong(Integer.parseInt(soLuong));
+
+                hoaDonChiTietRepository.save(hdct);
+                return "redirect:/admin/hoa-don/view-update/" + hdct.getHoaDon().getId();
             }
-        }else{
+        } else {
             return null;
         }
     }

@@ -4,8 +4,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
+
 <html>
 <head>
+    <link rel="shortcut icon" href="#">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
           rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
           crossorigin="anonymous">
@@ -263,7 +265,10 @@
                             <div class="row text-center">
                                 <p>Ảnh mặc định của sản phẩm</p>
                                 <div class="col l-3">
-                                    <img src="/image/${sp.img}" alt="..." style="width: 200px ; height: 200px">
+                                    <c:if test="${sp.img != null}">
+                                        <img src="/image/${sp.img}" alt="..." style="width: 200px ; height: 200px">
+                                    </c:if>
+
                                 </div>
                             </div>
                         </div>

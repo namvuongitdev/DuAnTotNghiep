@@ -1,3 +1,10 @@
+const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+});
+let url_string = window.location.href;
+let url = new URL(url_string);
+let paramValue = url.searchParams.get("id");
 let data = {
     search: "",
     danhMuc: "",
@@ -26,36 +33,20 @@ function getSanPham(page) {
             let pageSize = page >= data.totalPages ? "disabled" : "";
             let sanPham = "";
             let phanTrang = "";
-            let giaBanSanPham = null;
             for (let i = 0; i < data.content.length; i++) {
-                if (data.content[i].sanPhamKhuyenMais.length > 0) {
-                    data.content[i].sanPhamKhuyenMais.map(function (e) {
-                        if (e.trangThai == 1 && e.trangThai == 1) {
-                            giaBanSanPham = e.donGiaSauKhiGiam;
-                        } else {
-                            giaBanSanPham = data.content[i].giaBan;
-                        }
-                    })
-                } else {
-                    giaBanSanPham = data.content[i].giaBan;
-                }
-                sanPham += `<tr>
-                   <td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img} "></td>
-                    <td>${data.content[i].ma}</td>
-                    <td>${data.content[i].ten}</td>
-                    <td>${VND.format(giaBanSanPham)}</td>
-                    ${data.content[i].trangThai != 0 ? `<td style="color: #E43535">ngừng kinh doanh</td>` : `<td>
-                   <button  id="myBtn"  onclick="getModal({idSanPham:'${data.content[i].id}' , 
-                    tenSanPham:'${data.content[i].ten}' , giaSanPham:${giaBanSanPham} , img:'${data.content[i].img}'})" class="btn btn-warning" >Chọn</button>
-                   </td>` }
-                    </tr>`
+                sanPham += `<tr><td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img}"></td>
+                  <td>${data.content[i].ma}</td>
+                  <td>${data.content[i].ten}</td>
+                  <td>${VND.format(data.content[i].giaBan)}</td>
+                 ${data.content[i].sanPhamKhuyenMais.length > 0 ? `<td style="color: #03AA28"> Đã được áp dụng</td>` : `<td><input type="checkbox" name="sanPhams" value="${data.content[i].id}"></td>`}
+                   </tr>`
             }
 
             for (let i = 1; i <= data.totalPages; i++) {
                 active = page == i ? "active" : ""
                 phanTrang +=
                     `<li class="page-item" >
-                                <a class="page-link ${active}" name="${i}" onclick="page(this.name)" >${i}</a>
+                                <a class="page-link ` + active + `" name="` + i + `" onclick="page(this.name)" >` + i + `</a>
                                 </li>`
             }
 
@@ -76,34 +67,18 @@ function api(page, data) {
     fetch('/admin/san-pham/api-filter?page=' + page, options)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             let pageNo = page <= 1 ? "disabled" : "";
             let active;
             let pageSize = page >= data.totalPages ? "disabled" : "";
             let sanPham = "";
             let phanTrang = "";
-            let giaBanSanPham = null;
             for (let i = 0; i < data.content.length; i++) {
-                if (data.content[i].sanPhamKhuyenMais.length > 0) {
-                    data.content[i].sanPhamKhuyenMais.map(function (e) {
-                        if (e.trangThai == 1 && e.trangThai == 1) {
-                            giaBanSanPham = e.donGiaSauKhiGiam;
-                        } else {
-                            giaBanSanPham = data.content[i].giaBan;
-                        }
-                    })
-
-                } else {
-                    giaBanSanPham = data.content[i].giaBan;
-                }
-                sanPham += `<tr>
-                   <td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img} "></td>
-                    <td>${data.content[i].ma}</td>
-                    <td>${data.content[i].ten}</td>
-                    <td>${VND.format(giaBanSanPham)}</td>
-                    <td> <button  id="myBtn"  onclick="getModal({idSanPham:'${data.content[i].id}' , 
-                    tenSanPham:'${data.content[i].ten}' , giaSanPham:${giaBanSanPham} , img:'${data.content[i].img}'})" class="btn btn-warning" >Chọn</button></td>
-                    </tr>`
+                sanPham += `<tr><td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img}"></td>
+               <td>${data.content[i].ma}</td>
+               <td>${data.content[i].ten}</td>
+               <td>${VND.format(data.content[i].giaBan)}</td>
+               <td><input type="checkbox" name="sanPhams" value="${data.content[i].id}"></td>
+                </tr>`
             }
 
             for (let i = 1; i <= data.totalPages; i++) {
@@ -196,16 +171,4 @@ document.getElementById('clear').addEventListener('click', () => {
 
 function timKiem() {
     getSanPham(1);
-}
-
-function updateSoLuong(soLuong, sanPham) {
-    const soLuongTon = +sanPham.soLuongHDCT + +sanPham.soLuongCTSP;
-    if (soLuong < 0) {
-        alert("số lượng phải  lớn hơn 0");
-    } else if (soLuong > soLuongTon) {
-        alert("số lượng hiện tại trong của hàng không đủ");
-        window.location.reload();
-    } else {
-        window.location.href = "/admin/hoa-don/update-san-pham?idHD=" + sanPham.id + "&soLuong=" + Number.parseInt(soLuong) + "&idKhachHang=" + sanPham.idKhachHang;
-    }
 }

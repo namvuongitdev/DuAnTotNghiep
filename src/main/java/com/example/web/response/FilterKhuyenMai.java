@@ -1,5 +1,4 @@
 package com.example.web.response;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,5 +12,4 @@ public class FilterKhuyenMai {
 
     private String search;
     private String trangThai;
-    private String loaiGiamGia;
 }

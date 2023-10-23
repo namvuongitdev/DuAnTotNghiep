@@ -90,19 +90,19 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${lst}" var="hdct" varStatus="i">
-                                    <tr>
-                                        <td>${i.index+1}</td>
-                                        <td>${hdct.chiTietSanPham.sanPham.ten}</td>
-                                        <td>
-                                            <img src="/image/${hdct.chiTietSanPham.sanPham.img}">
-                                        </td>
-                                        <td>${hdct.chiTietSanPham.mauSac.ten}</td>
-                                        <td>${hdct.chiTietSanPham.size.ten}</td>
-                                        <td>${hdct.soLuong}</td>
-                                        <td><fmt:formatNumber pattern="#,###" value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/>
-                                    </tr>
-                                </c:forEach>
+                            <c:forEach items="${lst}" var="hdct" varStatus="i">
+                                <tr>
+                                    <td>${i.index+1}</td>
+                                    <td>${hdct.chiTietSanPham.sanPham.ten}</td>
+                                    <td>
+                                        <img src="/image/${hdct.chiTietSanPham.sanPham.img}">
+                                    </td>
+                                    <td>${hdct.chiTietSanPham.mauSac.ten}</td>
+                                    <td>${hdct.chiTietSanPham.size.ten}</td>
+                                    <td>${hdct.soLuong}</td>
+                                    <td><fmt:formatNumber pattern="#,###" value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                         <!-- End Table with stripped rows -->

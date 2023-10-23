@@ -54,7 +54,7 @@ public class DanhMucController {
         dm.setTrangThai(0);
         dm.setNgaySua(java.util.Calendar.getInstance().getTime());
         danhMucService.update(dm);
-        return "redirect:/danh-muc/hien-thi";
+        return "redirect:/admin/danh-muc/hien-thi";
     }
 
     @GetMapping("/hien-thi/{p}")
@@ -80,7 +80,7 @@ public class DanhMucController {
             danhMuc.setTrangThai(1);
             danhMuc.setNgayTao(java.util.Calendar.getInstance().getTime());
             danhMucService.add(danhMuc);
-            return "redirect:/danh-muc/hien-thi";
+            return "redirect:/admin/danh-muc/hien-thi";
         }
     }
 
@@ -101,7 +101,7 @@ public class DanhMucController {
             danhMuc.setNgayTao(dm.getNgayTao());
             danhMuc.setNgaySua(java.util.Calendar.getInstance().getTime());
             danhMucService.update(danhMuc);
-            return "redirect:/danh-muc/hien-thi";
+            return "redirect:/admin/danh-muc/hien-thi";
         }
     }
 }

@@ -83,13 +83,12 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public String updateHoaDonTrangThai(String id, String ghiChu) {
+    public String updateHoaDonTrangThai(String id) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(id));
         if (hoaDon.isPresent()) {
 
             HoaDon hd = hoaDon.get();
             hd.setTrangThai(TrangThaiHoaDon.HUY_HOA_DON.getValue());
-            hd.setMoTa(ghiChu);
 
             hd.getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() == 0).forEach(hoaDonChiTiet -> {
                 Integer soLuong = hoaDonChiTiet.getSoLuong() + hoaDonChiTiet.getChiTietSanPham().getSoLuong();
@@ -110,7 +109,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
         BigDecimal tongTienHoaDon = hoaDonRepository.tongTien(hoaDon.get().getId());
         List<HoaDonChiTiet> ctsp = hoaDon.get().getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() != 1).collect(Collectors.toList());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-       NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
+        NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         if (ctsp.isEmpty()) {
             attributes.addFlashAttribute("error", "giỏ hàng chưa có sản phẩm");
             return "redirect:/admin/hoa-don/detail?idHD=" + request.getId() + "&idKhachHang=" + request.getIdKhachHang();
@@ -158,7 +157,13 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
     @Override
     public List<HoaDon> getAll() {
-        return hoaDonRepository.findAll();
+        List<HoaDon> lst = new ArrayList<>();
+        for (int i = 0; i <= hoaDonRepository.findAll().size()-1; i++) {
+            if (hoaDonRepository.findAll().get(i).getTrangThai()!=0){
+                lst.add(hoaDonRepository.findAll().get(i));
+            }
+        }
+        return lst;
     }
 
     @Override
@@ -175,7 +180,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public Page<HoaDon> pagination(Integer pageNo, Integer size) {
         Pageable pageable = PageRequest.of(pageNo, size);
-        return hoaDonRepository.findAll(pageable);
+        return hoaDonRepository.findAll3(pageable);
     }
 
     @Override
@@ -208,5 +213,15 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public HoaDon add(HoaDon hoaDon) {
         return hoaDonRepository.save(hoaDon);
+    }
+
+    @Override
+    public HoaDon updateHoaDonById(HoaDon hoaDon) {
+        Optional<HoaDon> hd =hoaDonRepository.findById(hoaDon.getId());
+        hd.get().setHoTen(hoaDon.getHoTen());
+        hd.get().setDiaChi(hoaDon.getDiaChi());
+        hd.get().setSdt(hoaDon.getSdt());
+        hd.get().setTongTien(hoaDon.getTongTien());
+        return hoaDonRepository.save(hd.get());
     }
 }
