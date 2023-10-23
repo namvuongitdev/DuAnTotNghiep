@@ -16,150 +16,143 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
-    <link rel="stylesheet" href="/css/ban-hang-tai-quay.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="../../../../css/banHangTaiQuay/hoaDon/chiTietHoaDon.css">
+<style>
+    #info span {
+        font-weight: 600;
+        padding-left: 5px;
+    }
+    table  {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        font-weight: 600;
+    }
+</style>
 </head>
 <body>
 <%--navbar--%>
-<jsp:include page="../sidebar/navbar.jsp"/>
+<jsp:include page="../../sidebar/navbar.jsp"/>
 <%--sidebar--%>
 <div class="container-fluid">
     <div class="row flex-nowrap">
-        <jsp:include page="../sidebar/sidebar.jsp"/>
+        <jsp:include page="../../sidebar/sidebar.jsp"/>
         <div class="col py-3">
             <div class="pagetitle">
                 <h3>Thông tin hóa đơn</h3>
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
-                        <li class="breadcrumb-item"><a href="/hoa-don/hien-thi" style="text-decoration: none; color: black">Quản lý hóa đơn</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/trang-chu" style="text-decoration: none; color: black">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/hoa-don/hien-thi" style="text-decoration: none; color: black">Đơn tại quầy</a></li>
                         <li class="breadcrumb-item active">Thông tin hóa đơn</li>
                     </ol>
                 </nav>
             </div><!-- End Page Title -->
-            <section class="section">
+            <div class="container-fluid" >
                 <%--@elvariable id="hoaDon" type=""--%>
                 <form:form action="/admin/hoa-don/update-hoa-don/${hd.id}" method="post" modelAttribute="hoaDon">
                     <div class="col">
                         <div class="card">
                             <div class="card-body row">
-                                <h5 class="card-title">Thông tin chi tiết</h5>
+                                <h4 class="card-title">Chi tiết hóa đơn tại quầy</h4>
                                 <br><br>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.ma}" readonly="true" path="ma"/>
-                                            <label class="form-label" path="">Mã hóa đơn</label>
-                                        </div>
-                                        <div class="form-floating mb-3 mt-3">
-                                            <input class="form-control" value="${hd.ngayTao}" readonly />
-                                            <label class="form-label" path="">Ngày tạo</label>
-                                        </div>
+                                <div id="info">
+                                    <p><b>Mã đơn:</b>  <span  value="${hd.ma}">${hd.ma}</span></p>
+                                    <p><b>Ngày thanh tạo:</b>  <span value="${hd.ngayTao}">${hd.ngayTao}</span></p>
+                                    <p><b>Ngày thanh toán:</b>  <span value="${hd.ngayThanhToan}">${hd.ngayThanhToan}</span></p>
+                                    <p><b>Khách hàng:</b>  <span value="${hd.hoTen==null?'Khách bán lẻ':hd.hoTen}">${hd.hoTen==null?'Khách bán lẻ':hd.hoTen}</span></p>
+                                    <p><b>Nhân viên bán hàng:</b>  <span value="${hd.nhanVien.hoTen}">${hd.nhanVien.hoTen}</span></p>
+                                    <p><b>Trạng thái:</b>  <span value="${hd.trangThai}">${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==5)?'Hủy đơn hàng':''}</span></p>
+                                    <br>
+                                    <div class="table-wrapper">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th data-field="state" data-checkbox="true"></th>
+                                                <th scope="col">Tên sản phẩm</th>
+                                                <th scope="col">Đơn giá</th>
+                                                <th scope="col">Số lượng</th>
+                                                <th scope="col">Thành tiền</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach items="${lst}" var="hdct" varStatus="i">
+                                                <tr>
+                                                    <td></td>
+                                                    <td>
+                                                        <div style="display: flex; align-items: center;">
+                                                            <img src="/image/${hdct.chiTietSanPham.sanPham.img}" alt=""
+                                                                  style="margin-right: 10px;" width="100px" height="100px">
+                                                            <div>
+                                                                <h6>
+                                                                    <strong>
+                                                                        <p style="text-transform: uppercase" class="TenSP">${hdct.chiTietSanPham.sanPham.ten}</p>
+                                                                    </strong>
+                                                                </h6>
+                                                                <div class="ThongTinSP">
+                                                                    <span>${hdct.chiTietSanPham.mauSac.ten}</span>
+                                                                    <span>/</span>
+                                                                    <span>${hdct.chiTietSanPham.size.ten}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><fmt:formatNumber pattern="#,###"  value="${hdct.chiTietSanPham.sanPham.giaBan}"/> VNĐ</td>
+                                                    <td>${hdct.soLuong}</td>
+                                                    <td><fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/> VNĐ</td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <div class="col-6">
-                                        <div class="form-floating mb-3 mt-3">
-                                            <input class="form-control" value="${hd.ngayThanhToan}" readonly />
-                                            <label class="form-label" path="">Ngày thanh toán</label>
+                                    <br>
+                                    <p><b>Tổng giá trị sản phẩm:</b>  <span></span></p>
+                                    <p><b>Giảm giá:</b>  <span >0 VNĐ</span></p>
+                                    <p><b>Tổng tiền thanh toán:</b>  <span><fmt:formatNumber pattern="#,###"  value="${hd.tongTien}"/> VNĐ</span></p>
+                                </div>
+
+                                <button style="margin-left: 15px" class="action-button inHoaDonChiTiet">In hóa đơn
+                                    <i class="bi bi-printer-fill"></i>
+                                </button>
+                                <input type="hidden" id="idChiTietHoaDon">
+                                <div class="modal fade inHoaDonModal" tabindex="-1" aria-labelledby="inHoaDonModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="inHoaDonModalLabel">In hóa đơn</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Bạn muốn in hóa đơn?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-primary btn-dong-y">Đồng ý</button>
+                                                <button type="button" class="btn btn-secondary btn-khong"
+                                                        data-bs-dismiss="modal">Không
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                <button class="action-button" onclick="quayLai()">Quay lại
+                                    <i class="bi bi-arrow-left"></i>
+                                </button>
                             </div>
+                            <br>
                         </div>
-                    </div>
-                    <div class="col mt-5">
-                        <div class="card">
-                            <div class="card-body row">
-                                <h5 class="card-title">Thông tin khách hàng</h5>
-                                <br><br>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.hoTen}" path="hoTen"/>
-                                            <label class="form-label" path="">Tên khách hàng</label>
-                                        </div>
-                                        <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.sdt}" path="sdt"/>
-                                            <label class="form-label" path="">SĐT</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-floating mb-3 mt-3">
-                                            <form:input class="form-control" value="${hd.diaChi}" path="diaChi"/>
-                                            <label class="form-label" path="">Địa chỉ</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; margin-top: 20px">
-                        <button type="submit" ${hd.loaiHoaDon==false?'disabled':''} class="btn btn-outline-dark" >Cập nhật</button>
                     </div>
                 </form:form>
-                <br><br>
-                <%--sản phẩm trong hóa đơn--%>
-                <div class="card">
-                    <div class="card-body row">
-                        <div class="col-6">
-                            <h5 class="card-title">Danh sách sản phẩm trong hóa đơn</h5>
-                        </div>
-                        <div class="col-6">
-                            <button style="float: right;display: ${hd.loaiHoaDon==false?'none':'block'}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
-                                    name="1"  onclick="getSanPham(this.name)">
-                                Thêm sản phẩm
-                            </button>
-                        </div>
-                        <br><br>
-                        <!-- Table with stripped rows -->
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">STT</th>
-                                <th scope="col">Tên sản phẩm</th>
-                                <th scope="col">Hình ảnh</th>
-                                <th scope="col">Số lượng</th>
-                                <th scope="col">Gía bán</th>
-                                <th scope="col">Trạng thái</th>
-                                <th scope="col">Thành tiền</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${lst}" var="hdct" varStatus="i">
-                                <tr>
-                                    <td>${i.index+1}</td>
-                                    <td>${hdct.chiTietSanPham.sanPham.ten}, ${hdct.chiTietSanPham.mauSac.ten}, ${hdct.chiTietSanPham.size.ten}</td>
-                                    <td>
-                                        <img src="/image/${hdct.chiTietSanPham.sanPham.img}">
-                                    </td>
-                                    <td><input type="number" class="form-control" id="soLuongSp"  ${hd.loaiHoaDon==false?'disabled':''} onchange="myFunction({idhdct:`${hdct.id}`,soLuong:this.value})" value="${hdct.soLuong}" min="1" style="width: 40%"></td>
-                                    <td>
-                                        <input type="text" class="form-control" id="giaBan" readonly value="<fmt:formatNumber pattern="#,###"  value="${hdct.chiTietSanPham.sanPham.giaBan}"/>"/>
-                                    </td>
-                                    <td>${hdct.trangThai==0?'Đã mua':'Hủy'}</td>
-                                    <td><input type="text" class="form-control" readonly name="thanhTien" id="thanhTien" value="<fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/>"></td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                        <div class="row mt-3" style="padding-left: 750px">
-                            <label style="font-weight: bold">Phí vận chuyển: <fmt:formatNumber pattern="#,###"  value="${hd.phiVanChuyen}"/> VND</label>
-                            <label style="font-weight: bold">Tổng tiền: <fmt:formatNumber pattern="#,###"  value="${hd.phiVanChuyen + hd.tongTien}"/> VND</label>
-                        </div>
-                        <!-- End Table with stripped rows -->
-                        <%--                phân trang --%>
-                        <div class="container-fluid mt-5">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item ${currentPage<=0?"disabled":""}"><a class="page-link" href="/admin/hoa-don/view-update/${hd.id}/${currentPage-1}"><</a></li>
-                                    <c:forEach begin="1" end="${totalPage}" var="i">
-                                        <li class="page-item"><a class="page-link ${lst1+1==i?'active':''}" href="/admin/hoa-don/view-update/${hd.id}/${i-1}" >${i}</a></li>
-                                    </c:forEach>
-                                    <li class="page-item ${currentPage>=totalPage-1?"disabled":""}"><a class="page-link" href="/admin/hoa-don/view-update/${hd.id}/${currentPage+1}">></a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            </div>
         </div>
     </div>
 </div>
@@ -486,16 +479,20 @@
     }
     // --------------------------------------------
     function myFunction(data){
-        var slSp = document.getElementById("soLuongSp");
-        var giaSp = Number.parseFloat(document.getElementById("giaBan").value)
-        console.log(giaSp)
-        if (confirm("Bạn có muốn thay đổi số lượng không")==true){
+        if (confirm("Bạn có muốn thay đổi số lượng không")===true){
             window.location.href = "/admin/hoa-don/update-so-luong?hdct=" + data.idhdct + "&soLuong=" + data.soLuong;
         }else {
             window.location.reload();
             return;
         }
     }
-
+function quayLai() {
+    if (confirm("Bạn có muốn quay lại trang trước không?")===true){
+       return window.location.href="/admin/hoa-don/hien-thi";
+    }else {
+        window.location.reload();
+        return false;
+    }
+}
 </script>
 </html>

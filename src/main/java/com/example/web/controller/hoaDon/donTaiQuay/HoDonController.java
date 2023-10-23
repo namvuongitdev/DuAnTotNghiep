@@ -1,5 +1,6 @@
-package com.example.web.controller;
+package com.example.web.controller.hoaDon.donTaiQuay;
 
+import com.example.web.controller.SanPhamController;
 import com.example.web.model.HoaDon;
 import com.example.web.model.KhachHang;
 import com.example.web.model.TrangThaiHoaDon;
@@ -149,16 +150,15 @@ public class HoDonController {
         model.addAttribute("lst1",hoaDonService.pagination(page,10).getNumber());
         model.addAttribute("currentPage",page);
         model.addAttribute("totalPage",hoaDonService.pagination(page,10).getTotalPages());
-        return "quanLyHoaDon/hoa-don";
+        return "quanLyHoaDon/hoaDonTaiQuay/hoa-don";
     }
-
     @GetMapping("/hien-thi/{page}")
     public String phanTrang(Model model, @PathVariable("page") Integer page) {
         model.addAttribute("hoaDonFillter", new HoaDonFilter());
         model.addAttribute("lst", hoaDonService.pagination(page, 10).getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPage", hoaDonService.pagination(page, 10).getTotalPages());
-        return "quanLyHoaDon/hoa-don";
+        return "quanLyHoaDon/hoaDonTaiQuay/hoa-don";
     }
 
     @GetMapping("/filter")
@@ -169,8 +169,7 @@ public class HoDonController {
         String url = "/admin/hoa-don/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
         model.addAttribute("lst", hoaDonService.hoaDonFillter(filter, pageable).getContent());
         model.addAttribute("fillter", filter);
-        System.out.println(filter.getDateBegin());
-        return "quanLyHoaDon/hoa-don";
+        return "quanLyHoaDon/hoaDonTaiQuay/hoa-don";
     }
     @GetMapping("/view-update/{id}")
     public String viewUpdate(Model model,
@@ -183,7 +182,7 @@ public class HoDonController {
         model.addAttribute("khachHang",new KhachHang());
         model.addAttribute("currentPage",page);
         model.addAttribute("totalPage",lst.getTotalPages());
-        return "quanLyHoaDon/update-hoa-don";
+        return "quanLyHoaDon/hoaDonTaiQuay/update-hoa-don";
     }
     @GetMapping("/update")
     public String updateHoaDonChiTiet(@RequestParam("ctsp") String idCTSP, @RequestParam("soLuong") String soLuong, @RequestParam("idHD") String idHD) {

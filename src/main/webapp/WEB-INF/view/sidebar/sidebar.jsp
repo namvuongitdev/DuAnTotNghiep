@@ -45,16 +45,6 @@
             </sec:authorize>
             <sec:authorize access="hasAnyAuthority('STAFF' , 'ADMIN')">
                 <li class="nav-item">
-                    <a href="/admin/hoa-don/hien-thi" class="nav-link align-middle px-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                             class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
-                            <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zM11.5 4a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
-                            <path d="M2.354.646a.5.5 0 0 0-.801.13l-.5 1A.5.5 0 0 0 1 2v13H.5a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1H15V2a.5.5 0 0 0-.053-.224l-.5-1a.5.5 0 0 0-.8-.13L13 1.293l-.646-.647a.5.5 0 0 0-.708 0L11 1.293l-.646-.647a.5.5 0 0 0-.708 0L9 1.293 8.354.646a.5.5 0 0 0-.708 0L7 1.293 6.354.646a.5.5 0 0 0-.708 0L5 1.293 4.354.646a.5.5 0 0 0-.708 0L3 1.293 2.354.646zm-.217 1.198.51.51a.5.5 0 0 0 .707 0L4 1.707l.646.647a.5.5 0 0 0 .708 0L6 1.707l.646.647a.5.5 0 0 0 .708 0L8 1.707l.646.647a.5.5 0 0 0 .708 0L10 1.707l.646.647a.5.5 0 0 0 .708 0L12 1.707l.646.647a.5.5 0 0 0 .708 0l.509-.51.137.274V15H2V2.118l.137-.274z"/>
-                        </svg>
-                        <span class="ms-1 d-none d-sm-inline"><font color="black">Quản Lý Hóa Đơn</font></span>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="/admin/hoa-don/hien-thi-hoa-cho" class="nav-link align-middle px-0">
                             <%--                    icon--%>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -64,6 +54,35 @@
                         <span class="ms-1 d-none d-sm-inline" <%=request.getRequestURI().contains("banHangTaiQuay") ? "style=\"background-color: #29B5D4\"" : ""  %>><font
                                 color="black">Bán Hàng Tại Quầy</font></span>
                     </a>
+                </li>
+                <li>
+                    <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-person" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                        </svg>
+                        <span class="ms-1 d-none d-sm-inline"><font color="black">Quản Lý Hóa Đơn</font></span></a>
+                    <ul class="collapse nav flex-column ms-1 col <%= request.getRequestURI().contains("quanLyHoaDon") ? "collapsed show" : ""  %>" id="submenu3" data-bs-parent="#menu">
+                        <li class="w-100" style="margin-left: 15px">
+                            <a href="/admin/hoa-don/hien-thi" class="nav-link px-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-caret-right" viewBox="0 0 16 16">
+                                    <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
+                                </svg>
+                                <span class="d-none d-sm-inline"<%= request.getRequestURI().contains("hoaDonTaiQuay") ? "style=\"background-color: #29B5D4\"" : ""  %>><font
+                                        color="black">Đơn Tại Quầy</font></span>
+                            </a>
+                        </li>
+                        <li style="margin-left: 15px">
+                            <a href="/admin/hoa-don-onl/cho-xac-nhan/hien-thi" class="nav-link px-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-caret-right" viewBox="0 0 16 16">
+                                    <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
+                                </svg>
+                                <span class="d-none d-sm-inline" <%= request.getRequestURI().contains("hoaDonOnline") ? "style=\"background-color: #29B5D4\"" : ""  %>><font color="black">Đơn Đặt Hàng</font></span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </sec:authorize>
             <sec:authorize access="hasAuthority('ADMIN')">
