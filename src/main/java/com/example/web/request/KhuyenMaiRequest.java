@@ -5,11 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class KhuyenMaiRequest {
+
+    private UUID id;
 
     @NotBlank(message = "không để trống tên khuyến mại")
     private String ten;

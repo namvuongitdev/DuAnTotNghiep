@@ -4,11 +4,8 @@ import com.example.web.model.DanhMuc;
 import com.example.web.model.KieuDang;
 import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
-import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.model.Size;
 import com.example.web.repository.ISanPhamRepository;
-import com.example.web.repository.SanPhamKhuyenMaiRepository;
-import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.response.SanPhamFilter;
 import com.example.web.service.ISanPhamService;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -32,9 +29,6 @@ public class SanPhamServiceImpl implements ISanPhamService {
 
     @Autowired
     private ISanPhamRepository iSanPhamRepository;
-
-    @Autowired
-    private SanPhamKhuyenMaiRepository sanPhamKhuyenMaiRepository;
 
     @Override
     public Page<SanPham> findAll(Pageable pageable) {

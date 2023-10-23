@@ -82,27 +82,33 @@ function getCTSP(id) {
         }
     }
     if (mauSac != undefined && kichCo != undefined) {
-        console.log('trang thai : ' + dataCTSP.trangThai);
+
         const sp = document.getElementById("sp");
         const themVaoGioHang = document.getElementById("themVaoGioHang");
         for (let i = 0; i < dataCTSP.length; i++) {
             if (dataCTSP[i].mauSac.id == mauSac && dataCTSP[i].size.id == kichCo && dataCTSP[i].sanPham.id == sanPham) {
-                if (dataCTSP[i].soLuong == 0 || dataCTSP[i].soLuong < 0 ) {
-                    console.log("null")
+                if (dataCTSP[i].trangThai != 1) {
+                    sp.innerHTML += `<h5 id="message" style="color: #e43535">Sản phẩm ngừng kinh doanh</h5>`
                     themVaoGioHang.setAttribute("disabled", "");
-                    sp.innerHTML += `<h5 id="message" style="color: #e43535">Sản phẩm hết hàng</h5>`
-                    return;
                 } else {
-                    themVaoGioHang.removeAttribute('disabled');
-                    document.getElementById("soLuong").innerText = `số lượng sản phẩm còn ` + dataCTSP[i].soLuong
-                    themVaoGioHang.name = dataCTSP[i].id;
-                    document.getElementById("soLuongTon").max = dataCTSP[i].soLuong;
-                    return;
+                    if (dataCTSP[i].soLuong == 0 || dataCTSP[i].soLuong < 0) {
+                        themVaoGioHang.setAttribute("disabled", "");
+                        sp.innerHTML += `<h5 id="messageChiTietSanPham" style="color: #e43535">Sản phẩm hết hàng</h5>`
+                        return;
+                    } else {
+                        document.getElementById("messageChiTietSanPham").remove();
+                        themVaoGioHang.removeAttribute('disabled');
+                        document.getElementById("soLuong").innerText = `số lượng sản phẩm còn ` + dataCTSP[i].soLuong
+                        themVaoGioHang.name = dataCTSP[i].id;
+                        document.getElementById("soLuongTon").max = dataCTSP[i].soLuong;
+                        return;
+                    }
                 }
             }
         }
     }
 }
+
 function themSanPhamVaoGioHang(data) {
     let soLuong = document.getElementById("soLuongTon").value;
     let idHD = document.getElementById("soLuongTon").name;

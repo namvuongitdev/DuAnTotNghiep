@@ -74,11 +74,11 @@ function api(page, data) {
             let phanTrang = "";
             for (let i = 0; i < data.content.length; i++) {
                 sanPham += `<tr><td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img}"></td>
-               <td>${data.content[i].ma}</td>
-               <td>${data.content[i].ten}</td>
-               <td>${VND.format(data.content[i].giaBan)}</td>
-               <td><input type="checkbox" name="sanPhams" value="${data.content[i].id}"></td>
-                </tr>`
+                  <td>${data.content[i].ma}</td>
+                  <td>${data.content[i].ten}</td>
+                  <td>${VND.format(data.content[i].giaBan)}</td>
+                 ${data.content[i].sanPhamKhuyenMais.length > 0 ? `<td style="color: #03AA28"> Đã được áp dụng</td>` : `<td><input type="checkbox" name="sanPhams" value="${data.content[i].id}"></td>`}
+                   </tr>`
             }
 
             for (let i = 1; i <= data.totalPages; i++) {

@@ -30,4 +30,6 @@ public interface IKhuyenMaiService {
     SanPhamKhuyenMai updateSanPhamKhuyenMai(SanPhamKhuyenMai sanPhamKhuyenMai);
 
     SanPhamKhuyenMai getSanPhamKhuyenMaiById(UUID id);
+
+    KhuyenMai updateKhuyenMai(KhuyenMai khuyenMai);
 }

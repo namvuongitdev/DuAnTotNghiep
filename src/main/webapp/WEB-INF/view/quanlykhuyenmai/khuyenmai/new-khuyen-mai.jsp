@@ -75,7 +75,7 @@
     <jsp:include page="../../sidebar/sidebar.jsp"/>
     <div class="col py-3">
         <div class="container">
-            <form class="row" action="/admin/khuyen-mai/create" method="post" modelAttribute="${khuyenMai}">
+            <form class="row" action="${url}" method="post" modelAttribute="${khuyenMai}">
                    <div class="col-sm-3">
                    </div>
                     <div class="col-sm-6">
@@ -98,6 +98,9 @@
                                     <input type="date" class="form-control" name="ngayBatDau" id="ngayBatDau" value="${dataKhuyenMai.ngayBatDau}">
                                     <label for="ngayBatDau">Ngày bắt đầu</label>
                                     <form:errors path="ngayBatDau" cssStyle="color: red"/>
+                                    <c:if test="${errorNgay != null}">
+                                        <p style="color: #E43535">${errorNgay}</p>
+                                    </c:if>
                                 </div>
                             </div>
                             <div class="col l-3">

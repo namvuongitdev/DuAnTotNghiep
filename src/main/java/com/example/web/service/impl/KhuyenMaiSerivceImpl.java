@@ -12,14 +12,12 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +33,16 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     @Autowired
     private SanPhamKhuyenMaiRepository sanPhamKhuyenMaiRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     @Override
     public KhuyenMai addKhuyenMai(KhuyenMai khuyenMai) {
         Integer maKhuyenMai = repository.findAll().size() + 1;
         khuyenMai.setMa("KM" + maKhuyenMai);
         khuyenMai.setTrangThai(1);
+        return repository.save(khuyenMai);
+    }
+
+    @Override
+    public KhuyenMai updateKhuyenMai(KhuyenMai khuyenMai) {
         return repository.save(khuyenMai);
     }
 

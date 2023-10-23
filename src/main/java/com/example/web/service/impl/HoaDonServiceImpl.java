@@ -199,7 +199,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
                     predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai"), filter.getTrangThai())));
                 }
                 if (!filter.getDateBegin().isBlank() && !filter.getDateEnd().isBlank()) {
-                    System.out.println("ngày" + filter.getDateBegin());
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date date1 = dateFormat.parse(filter.getDateBegin());
                     Date date2 = dateFormat.parse(filter.getDateEnd());
