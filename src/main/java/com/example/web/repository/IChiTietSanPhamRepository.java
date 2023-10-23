@@ -4,6 +4,7 @@ import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
 import com.example.web.model.Size;
 import com.example.web.response.ChiTietOnllineResponse;
+import com.example.web.response.ChiTietResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -28,4 +29,8 @@ public interface IChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,
             "select  new com.example.web.response.ChiTietOnllineResponse(ctsp.id,ctsp.soLuong) from ChiTietSanPham ctsp where ctsp.mauSac.id=?1 and ctsp.size.id = ?2 and ctsp.sanPham.id = ?3" +
             "")
     ChiTietOnllineResponse getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id1(UUID mauSac_Id, String size, UUID sanPham_Id);
+
+    @Query(value = "select new com.example.web.response.ChiTietResponse(ctsp.soLuong,ctsp.trangThai,ctsp.id,ctsp.mauSac,ctsp.sanPham,ctsp.size,ctsp.qrCode) from ChiTietSanPham ctsp where ctsp.mauSac.id=?1 and ctsp.size.id = ?2 and ctsp.sanPham.id = ?3" )
+    ChiTietResponse getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID mauSac_Id, String size, UUID sanPham_Id);
+
 }

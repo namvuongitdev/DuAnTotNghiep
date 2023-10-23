@@ -1,6 +1,7 @@
 package com.example.web.controller;
 import com.example.web.model.*;
 import com.example.web.response.ChiTietOnllineResponse;
+import com.example.web.response.ChiTietResponse;
 import com.example.web.response.ChiTietSanPhamResponse;
 import com.example.web.response.SanPhamFilter;
 import com.example.web.service.*;
@@ -44,6 +45,9 @@ public class TrangChuController {
     private IAnhService iAnhService;
 
     @Autowired IChiTietSanPhamService iChiTietSanPhamService;
+
+    @Autowired
+    IGioHangOnllineService iGioHangOnllineService;
 
 
     private Page<SanPham> sanPhamPage = null;
@@ -139,10 +143,22 @@ public class TrangChuController {
     public ChiTietOnllineResponse getSoLuong(@PathVariable (name = "idSP") String idSP,
                           @PathVariable (name = "idSize") String idSize,
                           @RequestParam(name = "color") String idMau ){
-        System.out.println(idSize + "helo");
         ChiTietOnllineResponse listCT = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id1(UUID.fromString(idMau),idSize,UUID.fromString(idSP));
         return listCT;
     }
 
+    @GetMapping("/them-moi-gio-hang/{idSP}")
+    public String themGioHang(
+                              @PathVariable(name = "idSP") String idSP,
+                              @RequestParam(value = "color") String idMau,
+                              @RequestParam(value = "size") String idSize,
+                              @RequestParam(name = "quantity") String soLuongThem){
+    ChiTietResponse chiTietSanPham = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID.fromString(idMau),idSize,UUID.fromString(idSP));
+    ChiTietSanPham sanPham = new ChiTietSanPham(chiTietSanPham.getId(),chiTietSanPham.getSanPham(),chiTietSanPham.getSoLuong(),chiTietSanPham.getTrangThai(),chiTietSanPham.getQrCode(),
+    chiTietSanPham.getMauSac(),chiTietSanPham.getSize());
+    String kh = "E1B9D3F3-A802-4E18-B36D-A338CC2366A2";
+    iGioHangOnllineService.addGioHang(UUID.fromString(kh),sanPham,Integer.parseInt(soLuongThem));
+    return "banHangOnlline/index";
+    }
 
 }

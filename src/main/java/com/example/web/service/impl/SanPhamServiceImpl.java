@@ -121,4 +121,10 @@ public class SanPhamServiceImpl implements ISanPhamService {
         return iSanPhamRepository.findAllGender(pageable,gioi_tinh);
     }
 
+    @Override
+    public SanPham getSanPhamTheoCTSP(UUID idCTSP) {
+        return iSanPhamRepository.getSanPhamTheoCTSP(idCTSP);
+    }
+
+
 }

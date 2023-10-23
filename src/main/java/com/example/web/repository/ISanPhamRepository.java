@@ -28,4 +28,7 @@ public interface ISanPhamRepository extends JpaRepository<SanPham, UUID>  , JpaS
     @Query(value = "Select * from san_pham where gioi_tinh = ?1", nativeQuery = true)
     Page<SanPham> findAllGender(Pageable pageable,boolean gioi_tinh);
 
+    @Query(value = "\n" +
+            "select san_pham.* from chi_tiet_san_pham,san_pham where chi_tiet_san_pham.id=?1 and chi_tiet_san_pham.idsanpham=san_pham.id",nativeQuery = true)
+    SanPham getSanPhamTheoCTSP(UUID idCTSP);
 }

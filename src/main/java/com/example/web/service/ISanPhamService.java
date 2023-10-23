@@ -24,4 +24,7 @@ public interface ISanPhamService {
 
     Page<SanPham> findAllGender(Pageable pageable,boolean gioi_tinh);
 
+    SanPham getSanPhamTheoCTSP(UUID idCTSP);
+
+
 }

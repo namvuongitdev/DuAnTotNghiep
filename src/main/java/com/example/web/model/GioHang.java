@@ -58,4 +58,15 @@ public class GioHang {
 
     @OneToMany(mappedBy = "gioHang")
     private List<GioHangChiTiet> gioHangChiTiets;
+
+    public GioHang(UUID id, KhachHang khachHang, Date ngayTao, Date ngayThanhToan, String tenNguoiNhan, String diaChi, String sdt, Integer trangThai) {
+        this.id = id;
+        this.khachHang = khachHang;
+        this.ngayTao = ngayTao;
+        this.ngayThanhToan = ngayThanhToan;
+        this.tenNguoiNhan = tenNguoiNhan;
+        this.diaChi = diaChi;
+        this.sdt = sdt;
+        this.trangThai = trangThai;
+    }
 }

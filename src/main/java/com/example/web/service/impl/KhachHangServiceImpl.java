@@ -37,4 +37,9 @@ public class KhachHangServiceImpl implements IKhachHangService {
     public KhachHang themMoiKhachHang(KhachHang khachHang) {
         return khachHangRepository.save(khachHang);
     }
+
+    @Override
+    public KhachHang getKH(UUID idKH) {
+        return khachHangRepository.getKH(idKH);
+    }
 }
