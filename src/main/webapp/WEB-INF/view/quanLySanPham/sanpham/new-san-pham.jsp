@@ -36,7 +36,7 @@
                 <h3>Sản phẩm</h3>
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/admin/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/trang-chu" style="text-decoration: none; color: black">Trang chủ</a></li>
                         <li class="breadcrumb-item">Quản lý sản phẩm</li>
                         <li class="breadcrumb-item"><a href="/admin/san-pham/hien-thi" style="text-decoration: none; color: black" onclick="clearLocalStorage()">Sản phẩm</a></li>
                         <li class="breadcrumb-item active" >${title}</li>
@@ -147,7 +147,7 @@
                     </div>
                 </div><br><br>
                 <%-- chi tiết  sản phẩm--%>
-                <div class="card">
+                <div class="card" style="display: ${sp.id==null?'none' : 'block'}">
                     <div class="card-body row">
                         <h5 class="card-title col-9">Thông tin chi tiết sản phẩm</h5>
                         <div class="col l-3">
@@ -228,16 +228,14 @@
                                                     <input type="number" class="form-control" value="${ctsp.soLuong}" min="1" name="soLuong">
                                                 </td>
                                                 <td>
-                                                    <button  style="--bs-btn-padding-y: .56rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" type="button"
-                                                             onclick="if(confirm('Bạn có chắc chắn muốn ngừng kinh doanh không?')){window.location.href = '/admin/san-pham/stop-ctsp/${ctsp.id}?idSP=${ctsp.sanPham.id}';}
-                                                                     else{alert('Ngừng kinh doanh thất bại!')}"
+                                                    <button style="--bs-btn-padding-y: .56rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" type="button" value="${ctsp.trangThai}"
+                                                             onclick="myfunction({trangThai:`${ctsp.trangThai}`,idctsp:`${ctsp.id}`,idsp:`${ctsp.sanPham.id}`})"
                                                              class="${ctsp.trangThai == 0 ? 'btn btn-danger' : 'btn btn-success'}">
-                                                            ${ctsp.trangThai == 0 ? 'Ngừng kinh doanh' : 'Kinh doanh'
-                                                                    }
+                                                            ${ctsp.trangThai == 0 ? 'Ngừng kinh doanh' : 'Kinh doanh'}
                                                     </button>
                                                 </td>
                                                 <td style="text-align: center">
-                                                    <button class="btn btn-secondary" onclick="if(confirm('Bạn có muốn update không')){alert('update thành công')
+                                                    <button class="btn btn-secondary" onclick="if(confirm('Bạn có muốn sửa không')){alert('Sửa thành công')
                                                         return true;
                                                         }else{
                                                         return false;}">Sửa
@@ -529,6 +527,14 @@
         });
 
     });
+    function myfunction(data){
+        if (confirm("Bạn có muốn cập nhật trạng thái không ?")==true){
+            window.location.href='/admin/san-pham/stop-ctsp/'+data.idctsp+"?idSP="+data.idsp+"&tt="+data.trangThai;
+        }else{
+            alert('Cập nhật thất bại!')
+            return fasle;
+        }
+    }
 </script>
 </body>
 </html>

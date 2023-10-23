@@ -58,6 +58,7 @@ public class ChiTietSanPhamController {
         SanPham sanPham = sanPhamService.getOne(UUID.fromString(idSanPham));
         chiTietSanPham.setSanPham(sanPham);
         chiTietSanPham.setQrCode(String.valueOf(random.nextInt(1000000000)));
+        chiTietSanPham.setTrangThai(1);
         List<ChiTietSanPham> listChiTietSanPham = chiTietSanPhamService.getChiTietSanPham(idSanPham);
         chiTietSanPhamService.save(chiTietSanPham);
         redirectAttributes.addFlashAttribute("listChiTietSanPhamBySP", listChiTietSanPham);
@@ -87,8 +88,11 @@ public class ChiTietSanPhamController {
 
     @PostMapping(value = "/update-chi-tiet-san-pham")
     public String updateCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, @RequestParam String idCTSP, @RequestParam String idSP) {
+        ChiTietSanPham ctsp= chiTietSanPhamService.getOne(UUID.fromString(idCTSP));
         chiTietSanPham.setId(UUID.fromString(idCTSP));
         chiTietSanPham.setSanPham(sanPhamService.getOne(UUID.fromString(idSP)));
+        chiTietSanPham.setTrangThai(ctsp.getTrangThai());
+        chiTietSanPham.setQrCode(ctsp.getQrCode());
         chiTietSanPhamService.save(chiTietSanPham);
         return "redirect:/admin/san-pham/hien-thi/" + chiTietSanPham.getSanPham().getId();
     }
