@@ -26,7 +26,7 @@
                 <h3>Chất liệu</h3>
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/admin/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/trang-chu" style="text-decoration: none; color: black">Trang chủ</a></li>
                         <li class="breadcrumb-item ">Quản lý sản phẩm</li>
                         <li class="breadcrumb-item active">Chất liệu</li>
                     </ol>

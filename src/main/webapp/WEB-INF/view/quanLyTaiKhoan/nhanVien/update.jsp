@@ -33,7 +33,7 @@
                 <h3>Nhân viên</h3>
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/admin/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/trang-chu" style="text-decoration: none; color: black">Trang chủ</a></li>
                         <li class="breadcrumb-item ">Quản lý tài khoản</li>
                         <li class="breadcrumb-item "><a href="/admin/nhan-vien/hien-thi" style="text-decoration: none; color: black">Nhân viên</a></li>
                         <li class="breadcrumb-item active">Sửa dữ liệu</li>

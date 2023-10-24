@@ -1,4 +1,5 @@
 package com.example.web.controller;
+import com.beust.jcommander.Parameter;
 import com.example.web.model.ChatLieu;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.DanhMuc;
@@ -72,7 +73,7 @@ public class SanPhamController {
         model.addAttribute("listSanPham", sanPhamPage);
         danhSachThuocTinhSanPham(model);
         model.addAttribute("filterSanPham", new SanPhamFilter());
-        model.addAttribute("url", "/san-pham/hien-thi?page=");
+        model.addAttribute("url", "/admin/san-pham/hien-thi?page=");
         return "quanLySanPham/sanpham/san-pham";
     }
 
@@ -139,6 +140,7 @@ public class SanPhamController {
                 sanPham.setId(sp.getId());
                 sanPham.setMa(sp.getMa());
                 sanPham.setNgayTao(sp.getNgayTao());
+                sanPham.setImg(sp.getImg());
                 sanPham.setNgaySua(date);
                 iSanPhamService.save(sanPham);
             } else {
@@ -247,17 +249,16 @@ public class SanPhamController {
     public String stop(@PathVariable("id") UUID id){
         SanPham sp = iSanPhamService.getOne(id);
         sp.setTrangThai(1);
+        chiTietSanPhamService.updateTT_0(id);
         sp.setNgaySua(java.util.Calendar.getInstance().getTime());
         iSanPhamService.save(sp);
         return "redirect:/admin/san-pham/hien-thi";
     }
 
     @GetMapping("/stop-ctsp/{id}")
-    public String stopCTSP(@PathVariable("id") UUID id, @RequestParam String idSP){
-        ChiTietSanPham ctsp = chiTietSanPhamService.getOne(id);
-        ctsp.setTrangThai(0);
-        chiTietSanPhamService.save(ctsp);
-        return "redirect:/admin/san-pham/hien-thi/" + idSP;
+    public String stopCTSP(@PathVariable("id") String idCt, @RequestParam String idSP, @RequestParam("tt") Integer tt){
+        String url= chiTietSanPhamService.save2(idCt,idSP,tt);
+        return url;
     }
 
 }
