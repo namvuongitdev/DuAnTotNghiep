@@ -13,4 +13,6 @@ public class ChiTietOnllineResponse {
     private UUID id;
 
     private Integer soLuong;
+
+    private  Integer trangThai;
 }

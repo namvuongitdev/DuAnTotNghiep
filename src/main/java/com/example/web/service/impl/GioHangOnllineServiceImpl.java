@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -71,10 +73,11 @@ public class GioHangOnllineServiceImpl implements IGioHangOnllineService {
     }
 
     @Override
-    public void addGioHang(UUID idKhachHang, ChiTietSanPham chiTietSanPham,Integer soLuongThem) {
-        GioHang gioHang = iGioHangRepository.getTheoIdKH(idKhachHang); // tìm giỏ hàng của khách hàng
-        KhachHang khachHang =iKhachHangService.getKH(idKhachHang);  // tìm kiếm khách hàng
-        List<GioHangChiTiet> listGHCT = iGioHangCTService.getListGHCTTheoKhachHang(idKhachHang); // lấy danh sách sản phẩm trong giỏ của kh
+    public void addGioHang( ChiTietSanPham chiTietSanPham,Integer soLuongThem) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        KhachHang khachHang = iKhachHangService.findByEmailOrAndTaiKhoan(authentication.getName());
+        GioHang gioHang = iGioHangRepository.getTheoIdKH(khachHang.getId()); // tìm giỏ hàng của khách hàng
+        List<GioHangChiTiet> listGHCT = iGioHangCTService.getListGHCTTheoKhachHang(khachHang.getId()); // lấy danh sách sản phẩm trong giỏ của kh
         // nếu chưa có thì tạo mới 1 giỏ hàng cho kh
         if(gioHang==null){
             // tạo mới giỏ hàng

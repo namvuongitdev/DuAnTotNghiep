@@ -1,5 +1,8 @@
 package com.example.web.controller;
+import com.example.web.model.ChiTietSanPham;
+import com.example.web.response.ChiTietResponse;
 import com.example.web.response.GioHangOnllineResponse;
+import com.example.web.service.IChiTietSanPhamService;
 import com.example.web.service.IGioHangOnllineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +18,9 @@ import java.util.UUID;
 public class GioHangOnllineController {
     @Autowired
     IGioHangOnllineService iGioHangOnllineService;
+
+    @Autowired
+    IChiTietSanPhamService iChiTietSanPhamService;
 
     @GetMapping()
     public String hienThi(Model model,@RequestParam(defaultValue = "1") Integer page){
@@ -41,5 +47,18 @@ public class GioHangOnllineController {
     public String xoa(@PathVariable(name = "idGioHangCT") String idGioHangCT){
         iGioHangOnllineService.delete(UUID.fromString(idGioHangCT));
         return "redirect:/gio-hang-onl";
+    }
+
+    @GetMapping("/them-moi-gio-hang/{idSP}")
+    public String themGioHang(
+            @PathVariable(name = "idSP") String idSP,
+            @RequestParam(value = "color") String idMau,
+            @RequestParam(value = "size") String idSize,
+            @RequestParam(name = "quantity") String soLuongThem){
+        ChiTietResponse chiTietSanPham = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID.fromString(idMau),idSize,UUID.fromString(idSP));
+        ChiTietSanPham sanPham = new ChiTietSanPham(chiTietSanPham.getId(),chiTietSanPham.getSanPham(),chiTietSanPham.getSoLuong(),chiTietSanPham.getTrangThai(),chiTietSanPham.getQrCode(),
+                chiTietSanPham.getMauSac(),chiTietSanPham.getSize());
+        iGioHangOnllineService.addGioHang(sanPham,Integer.parseInt(soLuongThem));
+        return "forward:/index/chi-tiet-san-pham-onl?id="+idSP;
     }
 }

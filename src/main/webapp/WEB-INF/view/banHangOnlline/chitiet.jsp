@@ -465,7 +465,7 @@
                     <p>${sanPham.moTa}</p>
                     <font color="green">${tong}</font>
                     <div id="tongSanPham"></div>
-                    <form method="get" action="/index/them-moi-gio-hang/${sanPham.id}">
+                    <form method="get" action="/gio-hang-onl/them-moi-gio-hang/${sanPham.id}">
                         <div class="row" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label>Color</label>
@@ -480,7 +480,7 @@
                             <div class="col-md-6">
                                 <label>Size</label>
                                 <br>
-                                <select name="size" class="form-control" id="colorSelector1">
+                                <select name="size" class="form-control" id="colorSelector1" >
                                     <c:forEach items="${listSize}" var="size">
                                         <option value="${size.id}">${size.ten}</option>
                                     </c:forEach>
@@ -488,19 +488,18 @@
                                 </ul>
                             </div>
                         </div>
-<%--                    </form>--%>
+                        <div id="ten" style="color: cadetblue"></div>
                     <div class="product-count" >
                         <label>Quantity</label>
-<%--                        <form  class="display-flex" method="get" action="/index/them-moi-gio-hang">--%>
-                            <div class="qtyminus">-</div>
+                        <div class="display-flex">
+                            <div class="qtyminus" style="">-</div>
                             <input type="text" style="height: 35px" name="quantity" value="1" class="qty">
                             <div class="qtyplus">+</div>
 
                             <button type="submit"
-                               class="round-black-btn" style="margin-top: 60px;margin-left: 20px;
+                                    class="round-black-btn" style="margin-top: 60px;margin-left: 20px;
                                     ">Add to Cart</button>
-<%--                        </form>--%>
-<%--                    </form>--%>
+                        </div>
                     </div>
                     </form>
                 </div>
@@ -579,7 +578,6 @@
         </div>
     </div>
 </div>
-
 <%--body end--%>
 <%-- sản phẩm liên quan begin--%>
 <div class="container-fluid bg-3 text-center">
@@ -786,14 +784,6 @@
         });
     });
 
-    function getTen(idSize) {
-        console.log("ddd");
-        // fetch('/index/so-luong/' + idSP +'/'+ idSize)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         document.getElementById("ten").innerHTML = "Còn" + data.soLuong + "sản phẩm";
-        //     });
-    }
 </script>
 </body>
 </html>

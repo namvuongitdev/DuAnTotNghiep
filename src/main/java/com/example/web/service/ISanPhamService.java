@@ -1,6 +1,7 @@
 package com.example.web.service;
 import com.example.web.model.SanPham;
 import com.example.web.model.SanPhamKhuyenMai;
+import com.example.web.response.SanPhamAndKhuyenMai;
 import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.response.SanPhamFilter;
 import org.springframework.data.domain.Page;
@@ -20,13 +21,20 @@ public interface ISanPhamService {
 
     Page<SanPham> sanPhamFilter(SanPhamFilter filter , Pageable pageable);
 
+    Page<SanPhamAndKhuyenMai> sanPhamAndKhuyenMaiFilter(SanPhamFilter filter , Pageable pageable);
+
     Page<SanPham> getAllByTenOrMa(String value  , Integer page);
 
     List<SanPham> theoTen(UUID chatLieu,UUID kieuDang,String danhMuc );
 
     Page<SanPham> findAllGender(Pageable pageable,boolean gioi_tinh);
 
+    Page<SanPhamAndKhuyenMai> findAllSanPhamKhuyenMaiGender( boolean gioi_tinh,Integer page);
+
     SanPham getSanPhamTheoCTSP(UUID idCTSP);
 
+    Page<SanPhamAndKhuyenMai> getALL(Pageable pageable);
+
+    Page<SanPhamAndKhuyenMai> getAllSanPhamAndKhuyenMaiByTenOrMa(String value,  Integer page);
 
 }

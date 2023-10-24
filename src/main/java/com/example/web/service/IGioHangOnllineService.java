@@ -23,7 +23,7 @@ public interface IGioHangOnllineService {
 
     String getTongTienTrongGio(UUID idKhachHang);
 
-    void addGioHang(UUID idKhachHang, ChiTietSanPham chiTietSanPham, Integer soLuongThem);
+    void addGioHang( ChiTietSanPham chiTietSanPham, Integer soLuongThem);
 
 
 }

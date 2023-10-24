@@ -26,7 +26,7 @@ public interface IChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,
     Optional<ChiTietSanPham> getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id(String mauSac_Id, String size, String sanPham_Id);
 
     @Query(value = "" +
-            "select  new com.example.web.response.ChiTietOnllineResponse(ctsp.id,ctsp.soLuong) from ChiTietSanPham ctsp where ctsp.mauSac.id=?1 and ctsp.size.id = ?2 and ctsp.sanPham.id = ?3" +
+            "select  new com.example.web.response.ChiTietOnllineResponse(ctsp.id,ctsp.soLuong,ctsp.trangThai) from ChiTietSanPham ctsp where ctsp.mauSac.id=?1 and ctsp.size.id = ?2 and ctsp.sanPham.id = ?3" +
             "")
     ChiTietOnllineResponse getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id1(UUID mauSac_Id, String size, UUID sanPham_Id);
 
