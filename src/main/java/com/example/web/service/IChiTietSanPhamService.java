@@ -28,6 +28,12 @@ public interface IChiTietSanPhamService {
 
     ChiTietOnllineResponse getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id1(UUID mauSac_Id, String size, UUID sanPham_Id);
 
+    void updateTT_0(UUID idSP);
+
+    void updateTT_1(UUID idSP);
+
+    String save2(String idCt,String idSp,Integer trangThai);
+
     ChiTietResponse getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID mauSac_Id, String size, UUID sanPham_Id);
 
 }

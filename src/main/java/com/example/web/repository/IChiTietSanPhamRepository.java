@@ -1,6 +1,10 @@
 package com.example.web.repository;
 import com.example.web.model.ChiTietSanPham;
+import com.example.web.model.MauSac;
+import com.example.web.model.SanPham;
+import com.example.web.model.Size;
 import com.example.web.response.ChiTietOnllineResponse;
+import jakarta.transaction.Transactional;
 import com.example.web.response.ChiTietResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -28,7 +32,20 @@ public interface IChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,
             "")
     ChiTietOnllineResponse getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id1(UUID mauSac_Id, String size, UUID sanPham_Id);
 
+    //update lại toàn bộ các trường có trạng thái 0, vì là câu native query nên tên bảng sẽ lấy theo tên trong sql
+    @Transactional
+    @Modifying
+    @Query(value = "update chi_tiet_san_pham set trangthai=0 where idsanpham = ?1", nativeQuery = true)
+    void updateTT_0(UUID idSP);
+
+    //update lại toàn bộ các trường có trạng thái 0, vì là câu native query nên tên bảng sẽ lấy theo tên trong sql
+    @Transactional
+    @Modifying
+    @Query(value = "update chi_tiet_san_pham set trangthai=1 where idsanpham = ?1", nativeQuery = true)
+    void updateTT_1(UUID idSP);
+
     @Query(value = "select new com.example.web.response.ChiTietResponse(ctsp.soLuong,ctsp.trangThai,ctsp.id,ctsp.mauSac,ctsp.sanPham,ctsp.size,ctsp.qrCode) from ChiTietSanPham ctsp where ctsp.mauSac.id=?1 and ctsp.size.id = ?2 and ctsp.sanPham.id = ?3" )
     ChiTietResponse getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID mauSac_Id, String size, UUID sanPham_Id);
+
 
 }
