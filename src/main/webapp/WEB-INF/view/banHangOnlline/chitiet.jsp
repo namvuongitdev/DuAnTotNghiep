@@ -465,9 +465,8 @@
                     <p>${sanPham.moTa}</p>
                     <font color="green">${tong}</font>
                     <div id="tongSanPham"></div>
-                    <form>
+                    <form method="get" action="/gio-hang-onl/them-moi-gio-hang/${sanPham.id}">
                         <div class="row" style="margin-top: 10px">
-
                             <div class="col-md-6">
                                 <label>Color</label>
                                 <br>
@@ -480,33 +479,29 @@
 
                             <div class="col-md-6">
                                 <label>Size</label>
-
-                                <ul>
+                                <br>
+                                <select name="size" class="form-control" id="colorSelector1" >
                                     <c:forEach items="${listSize}" var="size">
-                                        <button type="submit"
-                                                onclick="alert(anamdd)"
-                                                style="width: 40px;height: 40px;margin-top: 3px;background-color:
-                                                 white;color: black">${size.ten}</button>
+                                        <option value="${size.id}">${size.ten}</option>
                                     </c:forEach>
-<%--                                    HELLL0--%>
-<%--                                    <div id="ten" style="color: cadetblue"></div>--%>
+                                </select>
                                 </ul>
                             </div>
                         </div>
-                    </form>
-                    <div class="product-count">
+                        <div id="ten" style="color: cadetblue"></div>
+                    <div class="product-count" >
                         <label>Quantity</label>
-                        <form  class="display-flex">
-                            <div class="qtyminus">-</div>
+                        <div class="display-flex">
+                            <div class="qtyminus" style="">-</div>
                             <input type="text" style="height: 35px" name="quantity" value="1" class="qty">
                             <div class="qtyplus">+</div>
 
-                            <button formmethod="get" formaction=""
-                               class="round-black-btn" style="margin-top: 60px;margin-left: 20px;
-                                    pointer-events: ${idMau == null ? 'none' : 'auto'};">Add to Cart</button>
-
-                        </form>
+                            <button type="submit"
+                                    class="round-black-btn" style="margin-top: 60px;margin-left: 20px;
+                                    ">Add to Cart</button>
+                        </div>
                     </div>
+                    </form>
                 </div>
 
             </div>
@@ -583,7 +578,6 @@
         </div>
     </div>
 </div>
-
 <%--body end--%>
 <%-- sản phẩm liên quan begin--%>
 <div class="container-fluid bg-3 text-center">
@@ -611,26 +605,6 @@
 
     </div>
 </div><br>
-
-<%--<c:forEach items="${listSanPham}" var="sp">--%>
-
-
-<%--    <div class="product__item" style="margin-left: 30px">--%>
-<%--        <div class="product__item__pic">--%>
-<%--            <img src="/anh/${sp.img}" style="swidth:265px;height: 270px" >--%>
-<%--            <ul class="product__hover">--%>
-<%--                <form method="get" action="/index/chi-tiet-san-pham/${sp.id}">--%>
-<%--                    <li><a href="/index/chi-tiet-san-pham-onl?id=${sp.id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>--%>
-<%--                </form>--%>
-<%--            </ul>--%>
-<%--        </div>--%>
-<%--        <div class="product__item__text">--%>
-<%--            <h6>${sp.ten}</h6>--%>
-<%--                &lt;%&ndash;                    <a href="#" class="add-cart">+ Add To Cart</a>&ndash;%&gt;--%>
-<%--            <h5>${sp.giaFormat} đ</h5>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</c:forEach>--%>
 
 <%-- sản phẩm liên quan end--%>
 <!-- Footer Section begin -->
@@ -810,14 +784,6 @@
         });
     });
 
-    function getTen(idSize) {
-        console.log("ddd");
-        // fetch('/index/so-luong/' + idSP +'/'+ idSize)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         document.getElementById("ten").innerHTML = "Còn" + data.soLuong + "sản phẩm";
-        //     });
-    }
 </script>
 </body>
 </html>

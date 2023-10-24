@@ -1,4 +1,5 @@
 package com.example.web.repository;
+import com.example.web.model.GioHang;
 import com.example.web.model.GioHangChiTiet;
 import com.example.web.response.GioHangOnllineResponse;
 import org.springframework.data.domain.Page;
@@ -43,4 +44,6 @@ public interface IGioHangOnllineRepository extends JpaRepository<GioHangChiTiet,
     @Modifying
     @Query(value = "delete gio_hang_chi_tiet  where Id = ?1",nativeQuery = true)
     void delete (UUID idGioHangCT);
+
+    GioHang save(GioHang gioHang);
 }

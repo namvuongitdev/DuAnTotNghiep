@@ -182,7 +182,7 @@
                     </div>
                     <div class="banner__item__text">
                         <h2>Men</h2>
-                        <a href="/index/thoi-trang-nam/vi">Shop now</a>
+                        <a onclick="getSanPhamThoiTrangNam(1)">Shop now</a>
                     </div>
                 </div>
             </div>
@@ -193,7 +193,7 @@
                     </div>
                     <div class="banner__item__text">
                         <h2>Woman</h2>
-                        <a href="/index/thoi-trang-nu">Shop now</a>
+                        <a onclick="getSanPhamThoiTrangNu(1)">Shop now</a>
                     </div>
                 </div>
             </div>

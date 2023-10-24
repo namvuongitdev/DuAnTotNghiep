@@ -2,6 +2,7 @@ package com.example.web.service.impl;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.repository.IChiTietSanPhamRepository;
 import com.example.web.response.ChiTietOnllineResponse;
+import com.example.web.response.ChiTietResponse;
 import com.example.web.response.ChiTietSanPhamResponse;
 import com.example.web.service.IChiTietSanPhamService;
 import org.modelmapper.ModelMapper;
@@ -75,24 +76,8 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
     }
 
     @Override
-    public void updateTT_0(UUID idSP) {
-        iChiTietSanPhamRepository.updateTT_0(idSP);
-    }
 
-    @Override
-    public void updateTT_1(UUID idSP) {
-        iChiTietSanPhamRepository.updateTT_1(idSP);
-    }
-
-    @Override
-    public String save2(String idCt,String idSp,Integer trangThai) {
-        ChiTietSanPham ctsp = iChiTietSanPhamRepository.getOne(UUID.fromString(idCt));
-        if(trangThai == 1){
-            ctsp.setTrangThai(0);
-        }else{
-            ctsp.setTrangThai(1);
-        }
-        iChiTietSanPhamRepository.save(ctsp);
-        return "redirect:/admin/san-pham/hien-thi/" + ctsp.getSanPham().getId();
+    public ChiTietResponse getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID mauSac_Id, String size, UUID sanPham_Id) {
+        return iChiTietSanPhamRepository.getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(mauSac_Id,size,sanPham_Id);
     }
 }

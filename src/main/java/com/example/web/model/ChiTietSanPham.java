@@ -59,4 +59,13 @@ public class ChiTietSanPham {
     @OneToMany(mappedBy = "chiTietSanPham")
     private List<GioHangChiTiet> gioHangChiTiets;
 
+    public ChiTietSanPham(UUID id, SanPham sanPham, Integer soLuong, Integer trangThai, String qrCode, MauSac mauSac, Size size) {
+        this.id = id;
+        this.sanPham = sanPham;
+        this.soLuong = soLuong;
+        this.trangThai = trangThai;
+        this.qrCode = qrCode;
+        this.mauSac = mauSac;
+        this.size = size;
+    }
 }

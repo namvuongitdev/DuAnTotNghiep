@@ -1,6 +1,9 @@
 package com.example.web.service;
 
 import com.example.web.model.ChatLieu;
+import com.example.web.model.ChiTietSanPham;
+import com.example.web.model.GioHang;
+import com.example.web.response.ChiTietResponse;
 import com.example.web.response.GioHangOnllineResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,5 +22,8 @@ public interface IGioHangOnllineService {
     void delete (UUID idGioHangCT);
 
     String getTongTienTrongGio(UUID idKhachHang);
+
+    void addGioHang( ChiTietSanPham chiTietSanPham, Integer soLuongThem);
+
 
 }
