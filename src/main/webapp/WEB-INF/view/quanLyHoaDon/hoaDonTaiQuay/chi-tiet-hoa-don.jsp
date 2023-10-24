@@ -16,11 +16,11 @@
 </head>
 <body>
 <%--navbar--%>
-<jsp:include page="../sidebar/navbar.jsp"/>
+<jsp:include page="../../sidebar/navbar.jsp"/>
 <%--sidebar--%>
 <div class="container-fluid">
     <div class="row flex-nowrap">
-        <jsp:include page="../sidebar/sidebar.jsp"/>
+        <jsp:include page="../../sidebar/sidebar.jsp"/>
         <div class="col py-3">
             <div class="pagetitle">
                 <h3>Thông tin hóa đơn</h3>

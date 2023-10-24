@@ -157,13 +157,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
     @Override
     public List<HoaDon> getAll() {
-        List<HoaDon> lst = new ArrayList<>();
-        for (int i = 0; i <= hoaDonRepository.findAll().size()-1; i++) {
-            if (hoaDonRepository.findAll().get(i).getTrangThai()!=0){
-                lst.add(hoaDonRepository.findAll().get(i));
-            }
-        }
-        return lst;
+        return hoaDonRepository.findAll();
     }
 
     @Override

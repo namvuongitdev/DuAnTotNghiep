@@ -5,7 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div class="col l-3"></div>
 <div class="col l-3">
-    <h2>Thông tin thanh toán</h2>
+    <h4>Thông tin thanh toán</h4>
     <div class="form-check form-switch">
         <input class="form-check-input" type="checkbox" id="mySwitch"
                name="${khachHang.id}" ${hoaDon.loaiHoaDon == false ? '' : 'checked'}>

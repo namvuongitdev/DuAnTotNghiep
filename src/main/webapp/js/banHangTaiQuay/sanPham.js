@@ -43,7 +43,7 @@ function getSanPham(page) {
                    <td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img} "></td>
                     <td>${data.content[i].ma}</td>
                     <td>${data.content[i].ten}</td>
-                    <td>${VND.format(giaBanSanPham)}</td>
+                    <td style="color: #03AA28">${VND.format(giaBanSanPham)}</td>
                     ${data.content[i].trangThai != 0 ? `<td style="color: #E43535">ngừng kinh doanh</td>` : `<td>
                    <button  id="myBtn"  onclick="getModal({idSanPham:'${data.content[i].id}' , 
                     tenSanPham:'${data.content[i].ten}' , giaSanPham:${giaBanSanPham} , img:'${data.content[i].img}'})" class="btn btn-warning" >Chọn</button>

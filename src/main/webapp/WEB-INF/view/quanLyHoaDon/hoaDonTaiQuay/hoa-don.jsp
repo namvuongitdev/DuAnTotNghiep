@@ -11,24 +11,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 </head>
 <body>
 <%--navbar--%>
-<jsp:include page="../sidebar/navbar.jsp"/>
+<jsp:include page="../../sidebar/navbar.jsp"/>
 <%--sidebar--%>
 <div class="container-fluid">
     <div class="row flex-nowrap">
-        <jsp:include page="../sidebar/sidebar.jsp"/>
+        <jsp:include page="../../sidebar/sidebar.jsp"/>
         <div class="col py-3">
             <div class="pagetitle">
                 <h3>Quản lý hóa đơn</h3>
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/trangchu" style="text-decoration: none; color: black">Trang
+                        <li class="breadcrumb-item"><a href="/admin/trang-chu" style="text-decoration: none; color: black">Trang
                             chủ</a></li>
-                        <li class="breadcrumb-item active">Quản lý hóa đơn</li>
+                        <li class="breadcrumb-item active">Đơn tại quầy</li>
                     </ol>
                 </nav>
             </div><!-- End Page Title -->
@@ -37,23 +39,13 @@
                     <div class="card-body row">
                         <h5 class="card-title">Danh sách đơn hàng</h5>
                         <br><br>
-
-                        <!-- Bordered Tabs -->
-                        <ul class="nav nav-tabs nav-tabs-bordered" id="borderedTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-                                        data-bs-target="#bordered-home" type="button" role="tab" aria-controls="home"
-                                        aria-selected="true">Tìm kiếm
-                                </button>
-                            </li>
-                        </ul>
                         <div class="tab-content pt-2" id="borderedTabContent">
                             <br>
                             <%--tìm kiếm--%>
                             <div class="tab-pane fade show active" id="bordered-home" role="tabpanel"
                                  aria-labelledby="home-tab">
                                 <%--@elvariable id="hoaDonFillter" type=""--%>
-                                <form:form action="/hoa-don/filter" method="get" modelAttribute="hoaDonFillter">
+                                <form:form action="/admin/hoa-don/filter" method="get" modelAttribute="hoaDonFillter">
                                     <div class="input-group" style="width: 500px">
                                         <input type="text" class="form-control" name="search" value="${fillter.search}"
                                                placeholder="Tìm theo mã hóa đơn" aria-label="Tìm theo mã hóa đơn"
@@ -116,19 +108,19 @@
                         </thead>
                         <tbody>
                         <c:forEach items="${lst}" var="hd" varStatus="i">
-                            <tr>
+                            <tr style="font-weight: 600">
                                 <td>${i.index+1}</td>
                                 <td>${hd.ma}</td>
                                 <td>${hd.loaiHoaDon==false?'Đơn tại quầy':'Đơn giao'}</td>
                                 <td><fmt:formatDate value="${hd.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                <td>${hd.khachHang.hoTen}</td>
+                                <td>${hd.hoTen==null?'Khách bán lẻ':hd.hoTen}</td>
                                 <td><fmt:formatNumber pattern="#,###" value="${hd.tongTien}"/></td>
-                                <td>${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Đã tiếp nhận':(hd.trangThai==6)?'Giao hàng thành công':(hd.trangThai==5)?'Hủy đơn hàng':''}</td>
+                                <td class="${hd.trangThai==4?'text-success':'text-warning'}">${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Đã tiếp nhận':(hd.trangThai==6)?'Giao hàng thành công':(hd.trangThai==5)?'Hủy đơn hàng':''}</td>
                                 <td>
-                                    <button type="button" class="btn btn-success" title="Cập nhật"
+                                    <button type="button" class="btn btn-success rounded-5" title="Cập nhật"
                                             onclick="myFunction()">
                                         <a class="text-white" style="text-decoration: none"
-                                           href="/admin/hoa-don/view-update/${hd.id}"><i class="bi bi-floppy2-fill"></i></a>
+                                           href="/admin/hoa-don/view-update/${hd.id}"><i class="bi bi-info-circle"></i></a>
                                     </button>
                                 </td>
                             </tr>

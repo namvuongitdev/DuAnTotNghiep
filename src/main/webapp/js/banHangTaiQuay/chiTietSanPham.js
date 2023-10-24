@@ -96,7 +96,10 @@ function getCTSP(id) {
                         sp.innerHTML += `<h5 id="messageChiTietSanPham" style="color: #e43535">Sản phẩm hết hàng</h5>`
                         return;
                     } else {
-                        document.getElementById("messageChiTietSanPham").remove();
+                        const messageChiTietSanPham =  document.getElementById("messageChiTietSanPham");
+                        if(messageChiTietSanPham != null){
+                            messageChiTietSanPham.remove();
+                        }
                         themVaoGioHang.removeAttribute('disabled');
                         document.getElementById("soLuong").innerText = `số lượng sản phẩm còn ` + dataCTSP[i].soLuong
                         themVaoGioHang.name = dataCTSP[i].id;
