@@ -30,7 +30,7 @@ public class AnhServiceImpl implements IAnhService {
                 chiTietSanPham(chiTietSanPham).
                 build();
         anhRepository.save(anh);
-        File newFile = new File("C:/Users/Admin/Pictures/img/" + fileName + anh.getId());
+        File newFile = new File("D:/anh/" + fileName + anh.getId());
         anh.setTen(fileName + anh.getId());
         anhRepository.save(anh);
         try {

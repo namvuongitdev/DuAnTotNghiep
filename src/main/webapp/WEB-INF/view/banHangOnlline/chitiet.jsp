@@ -472,23 +472,26 @@
                                 <br>
                                 <select name="color" class="form-control" id="colorSelector">
                                     <c:forEach items="${listMau}" var="mau">
-                                        <option value="${mau.id}" ${idMau==mau.id?"selected":""}>${mau.ten}</option>
+                                        <option value="${mau.id}">${mau.ten}</option>
                                     </c:forEach>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
+
                                 <label>Size</label>
                                 <br>
-                                <select name="size" class="form-control" id="colorSelector1" >
+                                <select name="size" class="form-control" onchange="getCTSP(this.value)">
                                     <c:forEach items="${listSize}" var="size">
                                         <option value="${size.id}">${size.ten}</option>
                                     </c:forEach>
                                 </select>
-                                </ul>
                             </div>
                         </div>
-                        <div id="ten" style="color: cadetblue"></div>
+                        <br><br>
+                        <div id="soLuong" style="color: cadetblue">
+                        </div>
+                <br>
                     <div class="product-count" >
                         <label>Quantity</label>
                         <div class="display-flex">
@@ -520,7 +523,6 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="description" role="tabpanel"
                      aria-labelledby="description-tab">
-
                     <li>Miễn phí đổi hàng cho khách mua ở Shop trong trường hợp bị lỗi từ nhà sản xuất, giao nhầm
                         hàng,
                         nhầm size.
@@ -535,7 +537,6 @@
                     <li>Sản phẩm còn mới nguyên tem, tags, sản phẩm chưa giặt và không dơ bẩn, hư hỏng bởi những tác
                         nhân bên ngoài cửa hàng sau khi mua hàng.
                     </li>
-
                 </div>
                 <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                     Để lấy số đo cỡ áo thun , các bạn cần một cái thước mềm (thường gọi là thước dây, thước vải) để
@@ -696,6 +697,19 @@
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/main.js"></script>
 <script>
+    let mauSacSP = document.getElementById("colorSelector");
+    var myVariable = new MyCustomType('${sanPham.id}');
+    function MyCustomType(data) {
+        this.data = data;
+    }
+    function getCTSP(id) {
+        fetch('/index/so-luong/' + id + '/' + mauSacSP.value + '?id='+ myVariable.data )
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.soLuong)
+                document.getElementById("soLuong").innerHTML = `số lượng sản phẩm còn ` + data.soLuong;
+            });
+    }
 
     $(document).ready(function () {
         var slider = $("#slider");

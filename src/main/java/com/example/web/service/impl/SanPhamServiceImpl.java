@@ -49,12 +49,7 @@ public class SanPhamServiceImpl implements ISanPhamService {
 
     @Override
     public SanPham getOne(UUID id) {
-        Optional<SanPham> sanPham =  iSanPhamRepository.findById(id);
-        if(sanPham.isPresent()){
-            return sanPham.get();
-        }else{
-            return null;
-        }
+        return iSanPhamRepository.getOne(id);
     }
 
     @Override

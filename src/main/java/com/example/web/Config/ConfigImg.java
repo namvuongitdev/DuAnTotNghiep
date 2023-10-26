@@ -8,6 +8,6 @@ public class ConfigImg implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/image/**").addResourceLocations("file:///C:/Users/Admin/Pictures/img/");
+        registry.addResourceHandler("/image/**").addResourceLocations("file:///D:/anh/");
     }
 }

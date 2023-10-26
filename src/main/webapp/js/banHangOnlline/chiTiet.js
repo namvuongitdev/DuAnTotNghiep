@@ -1,26 +1,16 @@
-let sizeSP = document.getElementById("kichCo");
-let colorSP = document.getElementById("mauSac");
+
 let kichCo;
 let mauSac;
 let sanPham;
 let dataCTSP;
-
-function getModal(dataSanPham) {
-    sanPham = dataSanPham.idSanPham;
-    modal.style.display = "block";
-    fetch("/admin/chi-tiet-san-pham/" + dataSanPham.idSanPham)
-        .then(response => response.json())
-        .then(data => {
-            dataCTSP = data;
-            for (let i = 0; i < data.length; i++) {
-                document.getElementById("img").innerHTML = `<img src="/image/${dataSanPham.img}">`
-                document.getElementById("sp").innerHTML = `<div><h3>${dataSanPham.tenSanPham}</h3></div> <div><h5 style="color: #03AA28"> ${VND.format(dataSanPham.giaSanPham)} </h5></div>`
-                break;
-            }
-            getMauSac(data);
-            getSize(data);
-        });
-}
+fetch("/index/chi-tiet" )
+    .then(response => response.json())
+    .then(data => {
+        alert("lựa chon các thuộc tính sản phẩm")
+        dataCTSP = data;
+        getMauSac(data);
+        getSize(data);
+    });
 
 function getMauSac(data) {
     for (let i = 0; i < data.length; i++) {
@@ -78,6 +68,7 @@ function getCTSP(id) {
             if (dataCTSP[i].mauSac.id == mauSac && dataCTSP[i].sanPham.id == sanPham) {
                 dataSize(dataCTSP[i].size)
             }
+
         }
     }
     if (mauSac != undefined && kichCo != undefined) {
@@ -86,7 +77,7 @@ function getCTSP(id) {
         const themVaoGioHang = document.getElementById("themVaoGioHang");
         for (let i = 0; i < dataCTSP.length; i++) {
             if (dataCTSP[i].mauSac.id == mauSac && dataCTSP[i].size.id == kichCo && dataCTSP[i].sanPham.id == sanPham) {
-                if (dataCTSP[i].soLuong == 0 || dataCTSP[i].soLuong < 0 ) {
+                if (dataCTSP[i].soLuong == 0 || dataCTSP[i].soLuong < 0) {
                     console.log("null")
                     themVaoGioHang.setAttribute("disabled", "");
                     sp.innerHTML += `<h5 id="message" style="color: #e43535">Sản phẩm hết hàng</h5>`
@@ -101,21 +92,5 @@ function getCTSP(id) {
             }
         }
     }
-}
-function themSanPhamVaoGioHang(data) {
-    let soLuong = document.getElementById("soLuongTon").value;
-    let idHD = document.getElementById("soLuongTon").name;
-    if (data.idCTSP == "") {
-        alert("lựa chon các thuộc tính sản phẩm")
-    } else {
-        for (let i = 0; i < dataCTSP.length; i++) {
-            if (data.idCTSP == dataCTSP[i].soLuong) {
-                if (soLuong > dataCTSP[i].soLuong) {
-                    alert("số lượng sản phẩm không đủ");
-                    return;
-                }
-            }
-        }
-        window.location.href = "/admin/hoa-don/add-san-pham?ctsp=" + data.idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD + "&idKhachHang=" + data.idKhachHang;
-    }
+
 }
