@@ -124,10 +124,8 @@ public class TrangChuController {
                 .stream()
                 .collect(Collectors.toList());
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(idSanPham));
-        System.out.println(sanPham);
         List<SanPham> listSanPham = iSanPhamService.theoTen(sanPham.getChatLieu().getId(),sanPham.getKieuDang().getId(),sanPham.getDanhMuc().getId());
         List<ChiTietSanPham> listCT = iChiTietSanPhamService.listCTSPTheoIdSP(UUID.fromString(idSanPham));
-        System.out.println("idsp" + idSanPham);
         List<MauSac> listMS = mauSacService.getTheoCTSP(UUID.fromString(idSanPham));
         List<Size> listSize = sizeService.getTheoCT(UUID.fromString(idSanPham));
         model.addAttribute("listMau",listMS);
@@ -143,9 +141,6 @@ public class TrangChuController {
     public ChiTietOnllineResponse getSoLuong(@RequestParam (name = "id") String idSP,
                           @PathVariable (name = "idSize") String idSize,
                           @PathVariable(name = "color") String idMau ){
-        System.out.println(idMau);
-        System.out.println(idSP);
-        System.out.println(idSize);
         ChiTietOnllineResponse listCT = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id1(UUID.fromString(idMau),idSize,UUID.fromString(idSP));
         return listCT;
     }

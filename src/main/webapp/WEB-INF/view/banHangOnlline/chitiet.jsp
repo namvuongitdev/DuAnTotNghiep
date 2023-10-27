@@ -442,21 +442,6 @@
                 <div class="product-dtl">
                     <div class="product-info">
                         <div class="product-name">${sanPham.ten}</div>
-                        <div class="reviews-counter">
-                            <div class="rate">
-                                <input type="radio" id="star5" name="rate" value="5" checked/>
-                                <label for="star5" title="text">5 stars</label>
-                                <input type="radio" id="star4" name="rate" value="4" checked/>
-                                <label for="star4" title="text">4 stars</label>
-                                <input type="radio" id="star3" name="rate" value="3" checked/>
-                                <label for="star3" title="text">3 stars</label>
-                                <input type="radio" id="star2" name="rate" value="2"/>
-                                <label for="star2" title="text">2 stars</label>
-                                <input type="radio" id="star1" name="rate" value="1"/>
-                                <label for="star1" title="text">1 star</label>
-                            </div>
-                            <span>3 Reviews</span>
-                        </div>
                         <div class="product-price-discount"><span>${sanPham.giaFormat} đ</span></div>
                     </div>
                     <p>Form dáng : <span>${sanPham.kieuDang.ten}</span></p>
@@ -488,8 +473,10 @@
                                 </select>
                             </div>
                         </div>
-                        <br><br>
+                        <br>
                         <div id="soLuong" style="color: cadetblue">
+                        </div>
+                        <div id="trangThai" style="color: cadetblue">
                         </div>
                 <br>
                     <div class="product-count" >
@@ -499,7 +486,7 @@
                             <input type="text" style="height: 35px" name="quantity" value="1" class="qty">
                             <div class="qtyplus">+</div>
 
-                            <button type="submit"
+                            <button type="submit" id="themVaoGioHang"
                                     class="round-black-btn" style="margin-top: 60px;margin-left: 20px;
                                     ">Add to Cart</button>
                         </div>
@@ -699,6 +686,7 @@
 <script>
     let mauSacSP = document.getElementById("colorSelector");
     var myVariable = new MyCustomType('${sanPham.id}');
+    const themVaoGioHang = document.getElementById("themVaoGioHang");
     function MyCustomType(data) {
         this.data = data;
     }
@@ -706,8 +694,17 @@
         fetch('/index/so-luong/' + id + '/' + mauSacSP.value + '?id='+ myVariable.data )
             .then(response => response.json())
             .then(data => {
-                console.log(data.soLuong)
-                document.getElementById("soLuong").innerHTML = `số lượng sản phẩm còn ` + data.soLuong;
+
+                document.getElementById("soLuong").innerHTML = `Số Lượng :` + data.soLuong +`.`;
+                if(data.trangThai==1){
+                    themVaoGioHang.removeAttribute('disabled');
+                    document.getElementById("trangThai").innerHTML = `Đang Kinh Doanh.`;
+                    themVaoGioHang.style.backgroundColor = "black";
+                }else {
+                    themVaoGioHang.setAttribute("disabled", "");
+                    document.getElementById("trangThai").innerHTML = `Ngừng Kinh Doanh.`;
+                    themVaoGioHang.style.backgroundColor = "#CCCCCC";
+                }
             });
     }
 
