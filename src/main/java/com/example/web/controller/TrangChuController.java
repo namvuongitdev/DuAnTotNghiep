@@ -114,7 +114,7 @@ public class TrangChuController {
 
     @GetMapping("/chi-tiet-san-pham-onl")
     public String chiTiet(Model model,@RequestParam (name = "id") String
-                          idSanPham){
+            idSanPham){
         List<Anh> listAnh = iAnhService.getTenAnh(UUID.fromString(idSanPham));
         List<Anh> distinctListAnh = listAnh.stream()
                 .collect(Collectors.toMap(Anh::getTen, anh -> anh, (existing, replacement) -> existing))
@@ -137,8 +137,8 @@ public class TrangChuController {
     @GetMapping("/so-luong/{idSP}/{idSize}")
     @ResponseBody
     public ChiTietOnllineResponse getSoLuong(@PathVariable (name = "idSP") String idSP,
-                          @PathVariable (name = "idSize") String idSize,
-                          @RequestParam(name = "color") String idMau ){
+                                             @PathVariable (name = "idSize") String idSize,
+                                             @RequestParam(name = "color") String idMau ){
         ChiTietOnllineResponse listCT = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id1(UUID.fromString(idMau),idSize,UUID.fromString(idSP));
         return listCT;
     }

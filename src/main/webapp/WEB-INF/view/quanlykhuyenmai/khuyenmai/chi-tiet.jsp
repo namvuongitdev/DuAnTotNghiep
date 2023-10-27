@@ -2,57 +2,106 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<div class="row">
-    <div style="float: left">
-        <button style="float: right" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
-                name="1" onclick="getSanPham(this.name)">
-            Thêm sản phẩm
-        </button>
-    </div>
-    <div>
-        <table>
-            <thead>
-            <tr>
-                <th scope="col">Tên sản phẩm</th>
-                <th scope="col">Mã sản phẩm</th>
-                <th scope="col">Giảm giá</th>
-                <th scope="col">Giá ban đầu</th>
-                <th scope="col">Sau khi giảm</th>
-                <th scope="col">Trạng thái</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${listChiTietKhuyenMai.content}" var="km">
-                <tr onclick="getSanPhamKhuyenMai(`${km.id}`)">
-                    <td>${km.tenSanPham}</td>
-                    <td>${km.maSanPham}</td>
-                    <c:choose>
-                        <c:when test="${km.loaiGiamGia}">
-                            <td>${km.mucGiam.intValue()} %</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td><fmt:formatNumber pattern="#,###" value="${km.mucGiam}"/> VND</td>
-                        </c:otherwise>
-                    </c:choose>
-                    <td><fmt:formatNumber pattern="#,###" value="${km.giaBanDau}"/></td>
-                    <td><fmt:formatNumber pattern="#,###" value="${km.donGiaKhiGiam}"/></td>
-                    <td style="${km.trangThai == 1 ? 'color: #03AA28' : 'color:red'}">${km.trangThai == 1 ? 'kích hoạt' : 'ngừng hoạt động'}</td>
-                    <td><c:choose>
-                        <c:when test="${km.trangThai == 1}">
-                            <a href="/admin/khuyen-mai/update-trang-thai-san-pham?idSPKM=${km.id}&trangThai=${km.trangThai == 1 ? 0 : 1}"
-                               class="btn btn-danger">huỷ</a>
-                        </c:when>
-                        <c:otherwise>
-                            <a href="/admin/khuyen-mai/update-trang-thai-san-pham?idSPKM=${km.id}&trangThai=${km.trangThai == 1 ? 0 : 1}"
-                               class="btn btn-success">Kích hoạt</a>
-                        </c:otherwise>
-                    </c:choose></td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
 
+<div class="row">
+    <hr>
+    <div class="container">
+        <div class="row" style="margin-bottom: 25px">
+            <div class="col-sm-3" style="margin-top: 25px">
+                <input type="text" class="form-control" name="tenSanPham" id="tenSanPhamKhuyenMai" PLACEHOLDER="tên sản phẩm , mã"/>
+            </div>
+            <div class="col-sm-2">
+                <label for="loaiGiamGiaSanPhamKhuyenMai">Loại giảm giá</label>
+                <select class="form-select" name="loaiGiamGia" id="loaiGiamGiaSanPhamKhuyenMai">
+                    <option value="">
+                        Tất cả
+                    </option>
+                    <option value="true">
+                        %
+                    </option>
+                    <option value="flase">
+                        VND
+                    </option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <label for="trangThaiSanPhamKhuyenMai">Trạng thái</label>
+                <select class="form-select" name="trangThai" id="trangThaiSanPhamKhuyenMai">
+                    <option value="">
+                        Tất cả
+                    </option>
+                    <option value="1">
+                        Kích hoạt
+                    </option>
+                    <option value="0">
+                        Ngừng kích hoạt
+                    </option>
+                </select>
+            </div>
+            <div class="col-sm-2" style="margin-top: 25px" >
+                  <button class="btn btn-primary">Tìm kiếm</button>
+            </div>
+            <div class="col-sm-2" style="margin-top: 25px">
+                <a class="btn btn-warning">Làm mới</a>
+            </div>
+            <div class="col-sm-2" style="margin-top: 25px ;float: left">
+                <button style="float: right" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#extraLargeModal"
+                        name="1" onclick="getSanPham(this.name)">
+                    Thêm sản phẩm
+                </button>
+            </div>
+        </div>
+        <div>
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Mã sản phẩm</th>
+                    <th scope="col">Giảm giá</th>
+                    <th scope="col">Giá ban đầu</th>
+                    <th scope="col">Sau khi giảm</th>
+                    <th scope="col">Trạng thái</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${listChiTietKhuyenMai.content}" var="km">
+                    <tr>
+                        <td>${km.tenSanPham}</td>
+                        <td>${km.maSanPham}</td>
+                        <c:choose>
+                            <c:when test="${km.loaiGiamGia}">
+                                <td>${km.mucGiam.intValue()} %</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td><fmt:formatNumber pattern="#,###" value="${km.mucGiam}"/> VND</td>
+                            </c:otherwise>
+                        </c:choose>
+                        <td><fmt:formatNumber pattern="#,###" value="${km.giaBanDau}"/></td>
+                        <td><fmt:formatNumber pattern="#,###" value="${km.donGiaKhiGiam}"/></td>
+                        <td style="${km.trangThai == 1 ? 'color: #03AA28' : 'color:red'}">${km.trangThai == 1 ? 'kích hoạt' : 'ngừng hoạt động'}</td>
+                        <td><c:choose>
+                            <c:when test="${km.trangThai == 1}">
+                                <a href="/admin/khuyen-mai/update-trang-thai-san-pham?idSPKM=${km.id}&trangThai=${km.trangThai == 1 ? 0 : 1}"
+                                   class="btn btn-danger">huỷ</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="/admin/khuyen-mai/update-trang-thai-san-pham?idSPKM=${km.id}&trangThai=${km.trangThai == 1 ? 0 : 1}"
+                                   class="btn btn-success">Kích hoạt</a>
+                            </c:otherwise>
+                        </c:choose></td>
+                        <td>
+                            <button type="button" class="btn btn-success" title="chi tiết"  onclick="getSanPhamKhuyenMai(`${km.id}`)">
+                               <i class="bi bi-pencil"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
     </div>
+
 </div>
 <div class="row">
     <div class="container-fluid mt-5">

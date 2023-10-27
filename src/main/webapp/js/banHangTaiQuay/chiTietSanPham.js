@@ -78,11 +78,9 @@ function getCTSP(id) {
             if (dataCTSP[i].mauSac.id == mauSac && dataCTSP[i].sanPham.id == sanPham) {
                 dataSize(dataCTSP[i].size)
             }
-
         }
     }
     if (mauSac != undefined && kichCo != undefined) {
-
         const sp = document.getElementById("sp");
         const themVaoGioHang = document.getElementById("themVaoGioHang");
         for (let i = 0; i < dataCTSP.length; i++) {

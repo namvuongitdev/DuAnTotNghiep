@@ -17,5 +17,6 @@ public class SanPhamAsKhuyenMai {
     private String maSanPham;
     private Boolean loaiGiamGia;
     private BigDecimal mucGiam;
+    private Integer trangThai;
 
 }

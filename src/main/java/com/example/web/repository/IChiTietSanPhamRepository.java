@@ -1,8 +1,5 @@
 package com.example.web.repository;
 import com.example.web.model.ChiTietSanPham;
-import com.example.web.model.MauSac;
-import com.example.web.model.SanPham;
-import com.example.web.model.Size;
 import com.example.web.response.ChiTietOnllineResponse;
 import jakarta.transaction.Transactional;
 import com.example.web.response.ChiTietResponse;

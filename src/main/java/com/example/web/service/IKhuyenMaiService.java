@@ -5,6 +5,7 @@ import com.example.web.response.FilterKhuyenMai;
 import com.example.web.response.KhuyenMaiReponse;
 import com.example.web.response.SanPhamAsKhuyenMai;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.UUID;
 
 public interface IKhuyenMaiService {
@@ -32,4 +33,6 @@ public interface IKhuyenMaiService {
     SanPhamKhuyenMai getSanPhamKhuyenMaiById(UUID id);
 
     KhuyenMai updateKhuyenMai(KhuyenMai khuyenMai);
+
+    Page<SanPhamKhuyenMai> filterSanPhamKhuyeMai(SanPhamAsKhuyenMai filter , Pageable pageable);
 }

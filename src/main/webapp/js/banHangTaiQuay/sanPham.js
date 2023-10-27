@@ -14,9 +14,9 @@ let data = {
 function getSanPham(page) {
     const value = document.querySelector("#search-input").value;
     data.search = value;
-    let url = `/admin/san-pham/api-hien-thi?page=` + page + `&value=` + value;
+    let url = "/admin/san-pham/api-hien-thi?page=" + page +"&value=" + value;
     if (value == null) {
-        url = `/admin/san-pham/api-hien-thi?page=` + page;
+        url = "/admin/san-pham/api-hien-thi?page=" + page;
     }
     fetch(url)
         .then(response => response.json())
@@ -30,7 +30,7 @@ function getSanPham(page) {
             for (let i = 0; i < data.content.length; i++) {
                 if (data.content[i].sanPhamKhuyenMais.length > 0) {
                     data.content[i].sanPhamKhuyenMais.map(function (e) {
-                        if (e.trangThai == 1 && e.trangThai == 1) {
+                        if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
                             giaBanSanPham = e.donGiaSauKhiGiam;
                         } else {
                             giaBanSanPham = data.content[i].giaBan;
@@ -76,7 +76,6 @@ function api(page, data) {
     fetch('/admin/san-pham/api-filter?page=' + page, options)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             let pageNo = page <= 1 ? "disabled" : "";
             let active;
             let pageSize = page >= data.totalPages ? "disabled" : "";
@@ -86,7 +85,7 @@ function api(page, data) {
             for (let i = 0; i < data.content.length; i++) {
                 if (data.content[i].sanPhamKhuyenMais.length > 0) {
                     data.content[i].sanPhamKhuyenMais.map(function (e) {
-                        if (e.trangThai == 1 && e.trangThai == 1) {
+                        if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
                             giaBanSanPham = e.donGiaSauKhiGiam;
                         } else {
                             giaBanSanPham = data.content[i].giaBan;
@@ -100,14 +99,13 @@ function api(page, data) {
                    <td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img} "></td>
                     <td>${data.content[i].ma}</td>
                     <td>${data.content[i].ten}</td>
-                    <td>${VND.format(giaBanSanPham)}</td>
+                    <td style="color: #03AA28">${VND.format(giaBanSanPham)}</td>
                     <td> <button  id="myBtn"  onclick="getModal({idSanPham:'${data.content[i].id}' , 
                     tenSanPham:'${data.content[i].ten}' , giaSanPham:${giaBanSanPham} , img:'${data.content[i].img}'})" class="btn btn-warning" >Chọn</button></td>
                     </tr>`
             }
 
             for (let i = 1; i <= data.totalPages; i++) {
-                console.log(i);
                 active = page == i ? "active" : ""
                 phanTrang +=
                     `<li class="page-item" >

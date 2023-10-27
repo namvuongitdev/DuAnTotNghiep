@@ -1,6 +1,7 @@
 package com.example.web.service.impl;
 
 import com.example.web.model.KhuyenMai;
+import com.example.web.model.SanPham;
 import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.repository.IKhuyenMaiRepository;
 import com.example.web.repository.SanPhamKhuyenMaiRepository;
@@ -10,6 +11,7 @@ import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.service.IKhuyenMaiService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,28 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     @Override
     public KhuyenMai updateKhuyenMai(KhuyenMai khuyenMai) {
         return repository.save(khuyenMai);
+    }
+
+    @Override
+    public Page<SanPhamKhuyenMai> filterSanPhamKhuyeMai(SanPhamAsKhuyenMai filter , Pageable pageable) {
+        return sanPhamKhuyenMaiRepository.findAll(new Specification<SanPhamKhuyenMai>() {
+            @Override
+            public Predicate toPredicate(Root<SanPhamKhuyenMai> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicateList = new ArrayList<>();
+               Join<SanPham , SanPhamKhuyenMai> sanPhamSanPhamKhuyenMaiJoin =  root.join("sanPhamKM");
+                if (!filter.getTenSanPham().isEmpty() && filter.getTenSanPham() != null) {
+                    predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(sanPhamSanPhamKhuyenMaiJoin.get("ten"), filter.getTenSanPham()),
+                            criteriaBuilder.equal(sanPhamSanPhamKhuyenMaiJoin.get("ma"), filter.getTenSanPham())));
+                }
+                if (filter.getTrangThai() != null) {
+                    predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai"), filter.getTrangThai())));
+                }
+                if(filter.getLoaiGiamGia() != null){
+                    predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("loaiGiamGia"), filter.getLoaiGiamGia())));
+                }
+                return criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()]));
+            }
+        }, pageable);
     }
 
     @Override

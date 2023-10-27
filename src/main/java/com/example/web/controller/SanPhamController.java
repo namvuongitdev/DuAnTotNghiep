@@ -93,7 +93,7 @@ public class SanPhamController {
 
     @GetMapping({"/api-hien-thi"})
     @ResponseBody
-    public Page<SanPhamKhuyenMai> apiSanPham(@RequestParam Integer page , @RequestParam(required = false) String value) {
+    public Page<SanPham> apiSanPham(@RequestParam Integer page , @RequestParam(required = false) String value) {
         Page listSanPham = null;
         Pageable pageable = PageRequest.of(page - 1, 10);
         if(value.isEmpty()){

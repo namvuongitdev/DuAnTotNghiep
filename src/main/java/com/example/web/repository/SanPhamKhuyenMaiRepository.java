@@ -14,6 +14,6 @@ public interface SanPhamKhuyenMaiRepository extends JpaRepository<SanPhamKhuyenM
     @Query(value = "select smpk from SanPhamKhuyenMai smpk where smpk.sanPhamKM.id = ?1 and smpk.khuyenMai.id = ?2")
     SanPhamKhuyenMai kiemTraDaTonTai(UUID idSPKM , UUID idKM);
 
-    @Query(value = "select new com.example.web.response.SanPhamAsKhuyenMai(smpk.id , smpk.sanPhamKM.ten , smpk.sanPhamKM.ma , smpk.loaiGiamGia , smpk.mucGiam)  from SanPhamKhuyenMai smpk where smpk.id = ?1")
+    @Query(value = "select new com.example.web.response.SanPhamAsKhuyenMai(smpk.id , smpk.sanPhamKM.ten , smpk.sanPhamKM.ma , smpk.loaiGiamGia , smpk.mucGiam , smpk.trangThai)  from SanPhamKhuyenMai smpk where smpk.id = ?1")
     SanPhamAsKhuyenMai findSanPhamKhuyenMaiById(UUID id);
 }

@@ -1,15 +1,10 @@
 package com.example.web.controller;
 import com.example.web.model.KhachHang;
 import com.example.web.service.IKhachHangService;
-import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +23,7 @@ public class KhachHangController {
     public String getKhachHangs(@RequestParam String id , @RequestParam String idHD , RedirectAttributes attributes){
          KhachHang khachHang =  khachHangService.getKhachHangById(id);
          attributes.addFlashAttribute("khachHang" , khachHang);
-         return "redirect:/hoa-don/detail?idHD="+idHD ;
+         return "redirect:/admin/hoa-don/detail?idHD="+idHD ;
     }
 
     @GetMapping("/api-hien-thi")
