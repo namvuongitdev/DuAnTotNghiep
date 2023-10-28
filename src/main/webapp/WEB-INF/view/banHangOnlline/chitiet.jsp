@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
@@ -442,7 +443,10 @@
                 <div class="product-dtl">
                     <div class="product-info">
                         <div class="product-name">${sanPham.ten}</div>
-                        <div class="product-price-discount"><span>${sanPham.giaFormat} đ</span></div>
+                        <div class="product-price-discount"><span>
+                            <c:forEach items="${sanPham.sanPhamKhuyenMais}" var="sanPhamKhuyenMai">
+                                    <fmt:formatNumber pattern="#,###" value="${sanPhamKhuyenMai.donGiaSauKhiGiam}"></fmt:formatNumber> đ
+                                </c:forEach>
                     </div>
                     <p>Form dáng : <span>${sanPham.kieuDang.ten}</span></p>
                     <p>Chất liệu : <span>${sanPham.chatLieu.ten}</span></p>
@@ -585,7 +589,14 @@
                             <div class="product__item__text">
                                 <h6>${sp.ten}</h6>
                                     <%--                    <a href="#" class="add-cart">+ Add To Cart</a>--%>
-                                <h5>${sp.giaFormat} đ</h5>
+
+                                <c:forEach items="${sp.sanPhamKhuyenMais}" var="sanPhamKhuyenMai">
+                                    <strike><fmt:formatNumber pattern="#,###"
+                                                              value="${sanPhamKhuyenMai.donGiaSauKhiGiam == null || sanPhamKhuyenMai.donGiaSauKhiGiam==0 ? '' : sp.giaBan }"></fmt:formatNumber></strike>
+                                    <fmt:formatNumber pattern="#,###"
+                                                      value="${sanPhamKhuyenMai.donGiaSauKhiGiam != null  || sanPhamKhuyenMai.donGiaSauKhiGiam!=0 ? sp.giaBan : '' }"></fmt:formatNumber>
+                                    <p>  <fmt:formatNumber pattern="#,###" value="${sanPhamKhuyenMai.donGiaSauKhiGiam}"></fmt:formatNumber> đ </p>
+                                </c:forEach>
                             </div>
                         </div>
             </div>
@@ -796,5 +807,7 @@
     });
 
 </script>
+
+<script src="/js/banHangOnlline/sanPham.js"></script>
 </body>
 </html>

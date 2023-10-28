@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,5 +56,7 @@ public class SanPhamKhuyenMai {
 
     @Transient
     private List<SanPham> sanPhams;
+
+
 
 }

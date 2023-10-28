@@ -96,9 +96,4 @@ public class SanPham {
     @OneToMany(mappedBy = "sanPhamKM")
     private List<SanPhamKhuyenMai> sanPhamKhuyenMais;
 
-    public String getGiaFormat() {
-        DecimalFormat formatter = new DecimalFormat("###,###,###");
-        String formatted = formatter.format(this.giaBan);
-        return formatted;
-    }
 }
