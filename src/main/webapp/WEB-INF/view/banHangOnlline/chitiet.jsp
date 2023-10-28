@@ -442,21 +442,6 @@
                 <div class="product-dtl">
                     <div class="product-info">
                         <div class="product-name">${sanPham.ten}</div>
-                        <div class="reviews-counter">
-                            <div class="rate">
-                                <input type="radio" id="star5" name="rate" value="5" checked/>
-                                <label for="star5" title="text">5 stars</label>
-                                <input type="radio" id="star4" name="rate" value="4" checked/>
-                                <label for="star4" title="text">4 stars</label>
-                                <input type="radio" id="star3" name="rate" value="3" checked/>
-                                <label for="star3" title="text">3 stars</label>
-                                <input type="radio" id="star2" name="rate" value="2"/>
-                                <label for="star2" title="text">2 stars</label>
-                                <input type="radio" id="star1" name="rate" value="1"/>
-                                <label for="star1" title="text">1 star</label>
-                            </div>
-                            <span>3 Reviews</span>
-                        </div>
                         <div class="product-price-discount"><span>${sanPham.giaFormat} đ</span></div>
                     </div>
                     <p>Form dáng : <span>${sanPham.kieuDang.ten}</span></p>
@@ -472,23 +457,28 @@
                                 <br>
                                 <select name="color" class="form-control" id="colorSelector">
                                     <c:forEach items="${listMau}" var="mau">
-                                        <option value="${mau.id}" ${idMau==mau.id?"selected":""}>${mau.ten}</option>
+                                        <option value="${mau.id}">${mau.ten}</option>
                                     </c:forEach>
                                 </select>
                             </div>
 
                             <div class="col-md-6">
+
                                 <label>Size</label>
                                 <br>
-                                <select name="size" class="form-control" id="colorSelector1" >
+                                <select name="size" class="form-control" onchange="getCTSP(this.value)">
                                     <c:forEach items="${listSize}" var="size">
                                         <option value="${size.id}">${size.ten}</option>
                                     </c:forEach>
                                 </select>
-                                </ul>
                             </div>
                         </div>
-                        <div id="ten" style="color: cadetblue"></div>
+                        <br>
+                        <div id="soLuong" style="color: cadetblue">
+                        </div>
+                        <div id="trangThai" style="color: cadetblue">
+                        </div>
+                <br>
                     <div class="product-count" >
                         <label>Quantity</label>
                         <div class="display-flex">
@@ -496,7 +486,7 @@
                             <input type="text" style="height: 35px" name="quantity" value="1" class="qty">
                             <div class="qtyplus">+</div>
 
-                            <button type="submit"
+                            <button type="submit" id="themVaoGioHang"
                                     class="round-black-btn" style="margin-top: 60px;margin-left: 20px;
                                     ">Add to Cart</button>
                         </div>
@@ -520,7 +510,6 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="description" role="tabpanel"
                      aria-labelledby="description-tab">
-
                     <li>Miễn phí đổi hàng cho khách mua ở Shop trong trường hợp bị lỗi từ nhà sản xuất, giao nhầm
                         hàng,
                         nhầm size.
@@ -535,7 +524,6 @@
                     <li>Sản phẩm còn mới nguyên tem, tags, sản phẩm chưa giặt và không dơ bẩn, hư hỏng bởi những tác
                         nhân bên ngoài cửa hàng sau khi mua hàng.
                     </li>
-
                 </div>
                 <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                     Để lấy số đo cỡ áo thun , các bạn cần một cái thước mềm (thường gọi là thước dây, thước vải) để
@@ -696,6 +684,29 @@
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/main.js"></script>
 <script>
+    let mauSacSP = document.getElementById("colorSelector");
+    var myVariable = new MyCustomType('${sanPham.id}');
+    const themVaoGioHang = document.getElementById("themVaoGioHang");
+    function MyCustomType(data) {
+        this.data = data;
+    }
+    function getCTSP(id) {
+        fetch('/index/so-luong/' + id + '/' + mauSacSP.value + '?id='+ myVariable.data )
+            .then(response => response.json())
+            .then(data => {
+
+                document.getElementById("soLuong").innerHTML = `Số Lượng :` + data.soLuong +`.`;
+                if(data.trangThai==1){
+                    themVaoGioHang.removeAttribute('disabled');
+                    document.getElementById("trangThai").innerHTML = `Đang Kinh Doanh.`;
+                    themVaoGioHang.style.backgroundColor = "black";
+                }else {
+                    themVaoGioHang.setAttribute("disabled", "");
+                    document.getElementById("trangThai").innerHTML = `Ngừng Kinh Doanh.`;
+                    themVaoGioHang.style.backgroundColor = "#CCCCCC";
+                }
+            });
+    }
 
     $(document).ready(function () {
         var slider = $("#slider");

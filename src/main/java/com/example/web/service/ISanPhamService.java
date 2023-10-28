@@ -21,8 +21,6 @@ public interface ISanPhamService {
 
     Page<SanPham> sanPhamFilter(SanPhamFilter filter , Pageable pageable);
 
-    Page<SanPhamAndKhuyenMai> sanPhamAndKhuyenMaiFilter(SanPhamFilter filter , Pageable pageable);
-
     Page<SanPham> getAllByTenOrMa(String value  , Integer page);
 
     List<SanPham> theoTen(UUID chatLieu,UUID kieuDang,String danhMuc );

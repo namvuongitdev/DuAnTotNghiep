@@ -1,4 +1,5 @@
 function getSanPham(page) {
+    console.log("san pham");
     const value = document.querySelector("#search-input").value;
     let url = `/index/api-hien-thi?page=` + page + `&value=` + value;
     if (value == null) {
@@ -28,7 +29,7 @@ function getSanPham(page) {
                                 <div class="product__item__pic">
                                     <img src="/anh/${data.content[i].img}" style="width:265px;height: 270px" >
                                     <ul class="product__hover">
-                                    <form method="get" action="/index/chi-tiet-san-pham/${data.content[i].id}">
+                                    <form method="get" action="/index/chi-tiet-san-pham-onl?id=${data.content[i].id}">
                                         <li><a href="/index/chi-tiet-san-pham-onl?id=${data.content[i].id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>
                                     </form>
                                     </ul>
@@ -45,7 +46,7 @@ function getSanPham(page) {
                                 <div class="product__item__pic">
                                     <img src="/anh/${data.content[i].img}" style="width:265px;height: 270px" >
                                     <ul class="product__hover">
-                                    <form method="get" action="/index/chi-tiet-san-pham/${data.content[i].id}">
+                                    <form method="get" action="/index/chi-tiet-san-pham-onl?${data.content[i].id}">
                                         <li><a href="/index/chi-tiet-san-pham-onl?id=${data.content[i].id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>
                                     </form>
                                     </ul>
@@ -183,7 +184,7 @@ function getSanPhamThoiTrangNu(page) {
             const productDiv = document.createElement("div");
             productDiv.className = "row product__filter"; // Thêm lớp Bootstrap cho div chứa danh sách sản phẩm
             // Lặp qua danh sách sản phẩm và thêm từng sản phẩm vào div sản phẩm
-            for (let i = 0; i < data.content.length; i++) {
+            for (let i = 0; i < data.length; i++) {
                 const sanPhamDiv = document.createElement("div");
                 // sanPhamDiv.className = "col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals"; // Thêm lớp Bootstrap cho sản phẩm
                 // Tạo nội dung sản phẩm và thêm lớp Bootstrap
@@ -278,29 +279,23 @@ function api(page, data) {
             const productDiv = document.createElement("div");
             productDiv.className = "row product__filter"; // Thêm lớp Bootstrap cho div chứa danh sách sản phẩm
             // Lặp qua danh sách sản phẩm và thêm từng sản phẩm vào div sản phẩm
+            let giaBanSanPham =null;
             for (let i = 0; i < data.content.length; i++) {
                 const sanPhamDiv = document.createElement("div");
                 // sanPhamDiv.className = "col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals"; // Thêm lớp Bootstrap cho sản phẩm
                 // Tạo nội dung sản phẩm và thêm lớp Bootstrap
-                sanPhamDiv.innerHTML = null;
-                if(data.content[i].donGiaSauKhiGiam == null){
-                    sanPhamDiv.innerHTML =  `
-                        <div class="product__item" style="margin-left: 30px">
-                                <div class="product__item__pic">
-                                    <img src="/anh/${data.content[i].img}" style="width:265px;height: 270px" >
-                                    <ul class="product__hover">
-                                    <form method="get" action="/index/chi-tiet-san-pham/${data.content[i].id}">
-                                        <li><a href="/index/chi-tiet-san-pham-onl?id=${data.content[i].id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>
-                                    </form>
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6>${data.content[i].ten}</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a> 
-                                    <h5>${data.content[i].giaFormat} đ</h5> 
-                                </div> 
-                        </div>`;
+                if(data.content[i].sanPhamKhuyenMais.length>0){
+                    data.content[i].sanPhamKhuyenMais.map(function (e){
+                        if(e.khuyenMai.trangThai==1 && e.trangThai==1){
+                            giaBanSanPham=e.donGiaSauKhiGiam;
+
+                        }else {
+                            giaBanSanPham=data.content[i].giaBan;
+                        }
+                    })
                 }else {
+                    giaBanSanPham=data.content[i].giaBan;
+                }
                     sanPhamDiv.innerHTML =  `
                         <div class="product__item" style="margin-left: 30px">
                                 <div class="product__item__pic">
@@ -314,11 +309,10 @@ function api(page, data) {
                                 <div class="product__item__text">
                                     <h6>${data.content[i].ten}</h6>
                                     <a href="#" class="add-cart">+ Add To Cart</a> 
-                                    <h5><strike>${data.content[i].giaFormat} đ</strike></h5> 
-                                    <h5 style="color: #E43535">${data.content[i].donGiaSauKhiGiam1}</h5>
+                                    <h5>${giaBanSanPham} đ</h5> 
                                 </div> 
                         </div>`;
-                }
+
                 // Thêm sản phẩm vào div chứa danh sách sản phẩm
                 productDiv.appendChild(sanPhamDiv);
             }

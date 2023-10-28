@@ -20,8 +20,6 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
 public class SanPhamAndKhuyenMai {
     private UUID id;
@@ -69,5 +67,21 @@ public class SanPhamAndKhuyenMai {
         }
     }
 
-
+    public SanPhamAndKhuyenMai(UUID id, String ma, String ten, String img, Integer trangThai, Date ngayTao, Date ngaySua, BigDecimal giaNhap, BigDecimal giaBan, String moTa, Boolean gioiTinh, KieuDang kieuDang, ChatLieu chatLieu, DanhMuc danhMuc, BigDecimal donGiaSauKhiGiam) {
+        this.id = id;
+        this.ma = ma;
+        this.ten = ten;
+        this.img = img;
+        this.trangThai = trangThai;
+        this.ngayTao = ngayTao;
+        this.ngaySua = ngaySua;
+        this.giaNhap = giaNhap;
+        this.giaBan = giaBan;
+        this.moTa = moTa;
+        this.gioiTinh = gioiTinh;
+        this.kieuDang = kieuDang;
+        this.chatLieu = chatLieu;
+        this.danhMuc = danhMuc;
+        this.donGiaSauKhiGiam = donGiaSauKhiGiam;
+    }
 }

@@ -28,7 +28,7 @@ function getSanPhamKhuyenMai(id) {
     fetch('/admin/khuyen-mai/api-san-pham-khuyen-mai/' + id)
         .then(response => response.json())
         .then(data => {
-            const loaiGiamGiaSanPham = document.getElementsByName("loaiGiamGia");
+            const loaiGiamGiaSanPham = document.getElementsByClassName("btn-check loaiGiamGia");
             if (data.loaiGiamGia) {
                 loaiGiamGiaSanPham[0].checked = "checked";
             } else {

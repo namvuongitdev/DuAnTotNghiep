@@ -132,55 +132,6 @@ public class SanPhamServiceImpl implements ISanPhamService {
     }
 
     @Override
-    public Page<SanPhamAndKhuyenMai> sanPhamAndKhuyenMaiFilter(SanPhamFilter filter, Pageable pageable) {
-        String sapXep = filter.getSapXep();
-        return iSanPhamRepository.getALL(new Specification<SanPhamAndKhuyenMai>() {
-            @Override
-            public Predicate toPredicate(Root<SanPhamAndKhuyenMai> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> predicates = new ArrayList<>();
-                if (!filter.getSearch().isEmpty() && filter.getSearch() != null) {
-                    predicates.add(criteriaBuilder.or(criteriaBuilder.equal(root.get("ma"), filter.getSearch()),
-                            criteriaBuilder.equal(root.get("ten"), filter.getSearch())));
-                }
-                if (!filter.getDanhMuc().isEmpty() && filter.getDanhMuc() != null) {
-                    DanhMuc danhMuc = DanhMuc.builder().id(String.valueOf(filter.getDanhMuc())).build();
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("danhMuc"), danhMuc)));
-                }
-                if (!filter.getChatLieu().isEmpty() && filter.getChatLieu() != null) {
-                    ChatLieu chatLieu = ChatLieu.builder().id(UUID.fromString(filter.getChatLieu())).build();
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("chatLieu"), chatLieu)));
-                }
-                if (!filter.getMauSac().isEmpty() && filter.getMauSac() != null) {
-                    MauSac mauSac = MauSac.builder().id(UUID.fromString(filter.getMauSac())).build();
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.join("chiTietSanPhams", JoinType.LEFT).get("mauSac"), mauSac)));
-                }
-                if (!filter.getKichCo().isEmpty() && filter.getKichCo() != null) {
-                    Size size = Size.builder().id(filter.getKichCo()).build();
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.join("chiTietSanPhams", JoinType.LEFT).get("size"), size)));
-                }
-                if (!filter.getKieuDang().isEmpty() && filter.getKieuDang() != null) {
-                    KieuDang kieuDang = KieuDang.builder().id(UUID.fromString(filter.getKieuDang())).build();
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("kieuDang"), kieuDang)));
-                }
-                if (filter.getTrangThai() != null) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai"), filter.getTrangThai())));
-                }
-                if (filter.getGioiTinh() != null) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("gioiTinh"), filter.getGioiTinh())));
-                }
-                if (!sapXep.isEmpty() && sapXep != null && sapXep.equalsIgnoreCase("ngayTao")) {
-                    query.orderBy(criteriaBuilder.desc(root.get(filter.getSapXep())));
-                } else if (!sapXep.isEmpty() && sapXep != null && sapXep.equalsIgnoreCase("price-asc")) {
-                    query.orderBy(criteriaBuilder.asc(root.get("giaBan")));
-                } else {
-                    query.orderBy(criteriaBuilder.desc(root.get("giaBan")));
-                }
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-            }
-        }, pageable);
-    }
-
-    @Override
     public Page<SanPham> getAllByTenOrMa(String value, Integer page) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         Page<SanPham> sanPhams = iSanPhamRepository.getAllSanPhamByTenOrMa("%" + value + "%", pageable);

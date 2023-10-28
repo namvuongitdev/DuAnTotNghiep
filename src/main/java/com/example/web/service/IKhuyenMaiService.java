@@ -16,7 +16,7 @@ public interface IKhuyenMaiService {
 
     Page<KhuyenMai> filterKhuyenMai(Integer page , FilterKhuyenMai filter);
 
-    Page<KhuyenMaiReponse> getKhuyenMaiById(UUID id , Integer page);
+    Page<SanPhamKhuyenMai> getKhuyenMaiById(UUID id , Integer page);
 
     Boolean addSanPhamKhuyenMai(SanPhamKhuyenMai sanPhamKhuyenMai , String idKM);
 
@@ -34,5 +34,5 @@ public interface IKhuyenMaiService {
 
     KhuyenMai updateKhuyenMai(KhuyenMai khuyenMai);
 
-    Page<SanPhamKhuyenMai> filterSanPhamKhuyeMai(SanPhamAsKhuyenMai filter , Pageable pageable);
+    Page<SanPhamKhuyenMai> filterSanPhamKhuyeMai(SanPhamAsKhuyenMai filter , Pageable pageable , UUID idKM);
 }

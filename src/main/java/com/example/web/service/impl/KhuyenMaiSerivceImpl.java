@@ -49,7 +49,7 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     }
 
     @Override
-    public Page<SanPhamKhuyenMai> filterSanPhamKhuyeMai(SanPhamAsKhuyenMai filter , Pageable pageable) {
+    public Page<SanPhamKhuyenMai> filterSanPhamKhuyeMai(SanPhamAsKhuyenMai filter , Pageable pageable ,UUID idKM) {
         return sanPhamKhuyenMaiRepository.findAll(new Specification<SanPhamKhuyenMai>() {
             @Override
             public Predicate toPredicate(Root<SanPhamKhuyenMai> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
@@ -65,9 +65,10 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
                 if(filter.getLoaiGiamGia() != null){
                     predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("loaiGiamGia"), filter.getLoaiGiamGia())));
                 }
+                predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(root.join("khuyenMai").get("id"),idKM)));
                 return criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()]));
             }
-        }, pageable);
+        }, pageable );
     }
 
     @Override
@@ -101,7 +102,7 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     }
 
     @Override
-    public Page<KhuyenMaiReponse> getKhuyenMaiById(UUID id, Integer page) {
+    public Page<SanPhamKhuyenMai> getKhuyenMaiById(UUID id, Integer page) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         return repository.chiTietKhuyenMaiById(id, pageable);
     }

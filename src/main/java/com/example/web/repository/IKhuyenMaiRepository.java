@@ -19,7 +19,7 @@ public interface IKhuyenMaiRepository extends JpaRepository<KhuyenMai , UUID>  ,
     @Override
     Page<KhuyenMai> findAll(Pageable pageable);
 
-    @Query(value = "select new com.example.web.response.KhuyenMaiReponse(spkm.id  ,sp.ten , sp.ma , spkm.loaiGiamGia ,spkm.mucGiam , spkm.sanPhamKM.giaBan ,spkm.donGiaSauKhiGiam ,spkm.trangThai) from KhuyenMai km inner join km.sanPhamKhuyenMais spkm inner join spkm.sanPhamKM sp where km.id = ?1")
-    Page<KhuyenMaiReponse> chiTietKhuyenMaiById(UUID id, Pageable pageable);
+    @Query(value = "select spkm from SanPhamKhuyenMai spkm inner join spkm.khuyenMai km where km.id = ?1")
+    Page<SanPhamKhuyenMai> chiTietKhuyenMaiById(UUID id, Pageable pageable);
 
 }

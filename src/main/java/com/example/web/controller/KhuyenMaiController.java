@@ -4,7 +4,6 @@ import com.example.web.model.KhuyenMai;
 import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.request.KhuyenMaiRequest;
 import com.example.web.response.FilterKhuyenMai;
-import com.example.web.response.KhuyenMaiReponse;
 import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.service.IKhuyenMaiService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +11,8 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -65,6 +66,22 @@ public class KhuyenMaiController {
         return "quanlykhuyenmai/khuyenmai/khuyen-mai";
     }
 
+    @GetMapping("/filter-san-pham-khuyen-mai/{idKM}")
+    public String filterSanPhamKhuyenMai(Model model, @PathVariable String idKM, @RequestParam(defaultValue = "1") Integer page, @ModelAttribute("sanPhamAsKhuyenMai") SanPhamAsKhuyenMai filter) {
+
+        String url = request.getRequestURI() + "/" + idKM + "?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        Page<SanPhamKhuyenMai> sanPhamKhuyenMai = khuyenMaiService.filterSanPhamKhuyeMai(filter, pageable, UUID.fromString(idKM));
+        KhuyenMai km = khuyenMaiService.getById(UUID.fromString(idKM));
+        sanPhamController.danhSachThuocTinhSanPham(model);
+        model.addAttribute("dataKhuyenMai", km);
+        model.addAttribute("uri", url);
+        model.addAttribute("url", "/admin/khuyen-mai/update?idKM=" + km.getId());
+        model.addAttribute("listChiTietKhuyenMai", sanPhamKhuyenMai);
+        model.addAttribute("sanPhamKhuyenMaiFilter" , filter);
+        return "quanlykhuyenmai/khuyenmai/new-khuyen-mai";
+    }
+
     @GetMapping("/new")
     public String newCreate(Model model) {
         model.addAttribute("khuyenMai", new KhuyenMaiRequest());
@@ -78,7 +95,7 @@ public class KhuyenMaiController {
             model.addAttribute("dataKhuyenMai", khuyenMaiRequest);
             return "quanlykhuyenmai/khuyenmai/new-khuyen-mai";
         }
-        if (khuyenMaiRequest.getNgayBatDau().compareTo(khuyenMaiRequest.getNgayKetThuc()) >= 0 ) {
+        if (khuyenMaiRequest.getNgayBatDau().compareTo(khuyenMaiRequest.getNgayKetThuc()) >= 0) {
             model.addAttribute("dataKhuyenMai", khuyenMaiRequest);
             model.addAttribute("errorNgay", "ngày không hợp lệ");
             return "quanlykhuyenmai/khuyenmai/new-khuyen-mai";
@@ -96,7 +113,7 @@ public class KhuyenMaiController {
         }
         if (khuyenMaiRequest.getNgayBatDau().compareTo(khuyenMaiRequest.getNgayKetThuc()) >= 0) {
             attributes.addFlashAttribute("errorNgay", "ngày không hợp lệ");
-            return "redirect:/admin/khuyen-mai/detail?id=" +idKM;
+            return "redirect:/admin/khuyen-mai/detail?id=" + idKM;
         } else {
             KhuyenMai khuyenMai = khuyenMaiService.getById(UUID.fromString(idKM));
             khuyenMai.setMoTa(khuyenMaiRequest.getMoTa());
@@ -111,7 +128,7 @@ public class KhuyenMaiController {
 
     @GetMapping("/detail")
     public String getChiTietKhuuyenMai(@RequestParam String id, @RequestParam(defaultValue = "1") Integer page, Model model) {
-        Page<KhuyenMaiReponse> list = khuyenMaiService.getKhuyenMaiById(UUID.fromString(id), page);
+        Page<SanPhamKhuyenMai> list = khuyenMaiService.getKhuyenMaiById(UUID.fromString(id), page);
         KhuyenMai km = khuyenMaiService.getById(UUID.fromString(id));
         sanPhamController.danhSachThuocTinhSanPham(model);
         model.addAttribute("dataKhuyenMai", km);
@@ -119,6 +136,7 @@ public class KhuyenMaiController {
         model.addAttribute("url", "/admin/khuyen-mai/update?idKM=" + km.getId());
         model.addAttribute("listChiTietKhuyenMai", list);
         model.addAttribute("sanPhamKhuyenMai", new SanPhamKhuyenMai());
+        model.addAttribute("sanPhamAsKhuyeMai", new SanPhamAsKhuyenMai());
         return "quanlykhuyenmai/khuyenmai/new-khuyen-mai";
     }
 

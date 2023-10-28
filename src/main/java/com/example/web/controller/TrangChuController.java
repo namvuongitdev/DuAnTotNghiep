@@ -9,10 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -55,11 +52,13 @@ public class TrangChuController {
     public String hienThi(Model model, @RequestParam(defaultValue = "1") int page) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         sanPhamPage = iSanPhamService.findAll(pageable);
+      //  System.out.println("1t"+sanPhamPage.toList().get(6));
         sanPhamKhuyenMaiPage = iSanPhamService.getALL(pageable);
+        //System.out.println("222t"+sanPhamKhuyenMaiPage.toList().get(6));
         model.addAttribute("listSanPham", sanPhamKhuyenMaiPage);
         danhSachThuocTinhSanPham(model);
         model.addAttribute("filterSanPham", new SanPhamFilter());
-        model.addAttribute("url", "/san-pham/hien-thi?page=");
+        model.addAttribute("url", "/api-hien-thi?page=");
         return "banHangOnlline/index";
     }
 
@@ -74,7 +73,7 @@ public class TrangChuController {
     @GetMapping({"/api-hien-thi"})
     @ResponseBody
     public Page<SanPhamAndKhuyenMai> apiSanPham(@RequestParam Integer page ,@RequestParam(required = false) String value) {
-        Page listSanPham = null;
+        Page<SanPhamAndKhuyenMai> listSanPham = null;
         Pageable pageable = PageRequest.of(page - 1, 20);
         if(value.isEmpty()){
             listSanPham = iSanPhamService.getALL(pageable);
@@ -86,9 +85,9 @@ public class TrangChuController {
 
     @PostMapping("/api-filter")
     @ResponseBody
-    public Page<SanPhamAndKhuyenMai> filterSanPham(@RequestParam Integer page , @RequestBody SanPhamFilter filter) {
+    public Page<SanPham> filterSanPham(@RequestParam Integer page , @RequestBody SanPhamFilter filter) {
         Pageable pageable = PageRequest.of(page - 1, 20);
-        Page listSanPham = iSanPhamService.sanPhamAndKhuyenMaiFilter(filter ,pageable);
+        Page listSanPham = iSanPhamService.sanPhamFilter(filter ,pageable);
         return listSanPham;
     }
 
@@ -134,11 +133,11 @@ public class TrangChuController {
         return "banHangOnlline/chitiet";
     }
 
-    @GetMapping("/so-luong/{idSP}/{idSize}")
+    @GetMapping("/so-luong/{idSize}/{color}")
     @ResponseBody
-    public ChiTietOnllineResponse getSoLuong(@PathVariable (name = "idSP") String idSP,
-                                             @PathVariable (name = "idSize") String idSize,
-                                             @RequestParam(name = "color") String idMau ){
+    public ChiTietOnllineResponse getSoLuong(@RequestParam (name = "id") String idSP,
+                          @PathVariable (name = "idSize") String idSize,
+                          @PathVariable(name = "color") String idMau ){
         ChiTietOnllineResponse listCT = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id1(UUID.fromString(idMau),idSize,UUID.fromString(idSP));
         return listCT;
     }
@@ -148,6 +147,13 @@ public class TrangChuController {
     public String getTinhTrang(@RequestParam(name ="size") String size,@RequestParam(name ="color") String color,@PathVariable (name = "idSP") String idSP){
         ChiTietOnllineResponse chiTiet = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id1(UUID.fromString(color),size,UUID.fromString(idSP));
         return chiTiet.getTrangThai()==1 ? "Kinh Doanh" :"Ngừng Kinh Doanh";
+    }
+
+    @GetMapping(value = "/chi-tiet")
+    @ResponseBody
+    public List<ChiTietSanPhamResponse> getChiTietSanPham(@RequestParam("id") String id) {
+        List<ChiTietSanPhamResponse> chiTietSanPhams = iChiTietSanPhamService.getCTSP(id);
+        return chiTietSanPhams;
     }
 
 

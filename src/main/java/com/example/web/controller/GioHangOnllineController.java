@@ -1,13 +1,17 @@
 package com.example.web.controller;
 import com.example.web.model.ChiTietSanPham;
+import com.example.web.model.KhachHang;
 import com.example.web.response.ChiTietResponse;
 import com.example.web.response.GioHangOnllineResponse;
 import com.example.web.service.IChiTietSanPhamService;
 import com.example.web.service.IGioHangOnllineService;
+import com.example.web.service.IKhachHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +26,17 @@ public class GioHangOnllineController {
     @Autowired
     IChiTietSanPhamService iChiTietSanPhamService;
 
+    @Autowired
+    IKhachHangService iKhachHangService;
+
     @GetMapping()
     public String hienThi(Model model,@RequestParam(defaultValue = "1") Integer page){
         if (page < 1) page = 1;
         Pageable pageable = PageRequest.of(page - 1, 3);
-        String idKH= "E1B9D3F3-A802-4E18-B36D-A338CC2366A2";
-        Page<GioHangOnllineResponse> list = iGioHangOnllineService.findAll(pageable,UUID.fromString(idKH));
-        String tong = iGioHangOnllineService.getTongTienTrongGio(UUID.fromString(idKH));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        KhachHang khachHang = iKhachHangService.findByEmailOrAndTaiKhoan(authentication.getName());
+        Page<GioHangOnllineResponse> list = iGioHangOnllineService.findAll(pageable,khachHang.getId());
+        String tong = iGioHangOnllineService.getTongTienTrongGio(khachHang.getId());
         model.addAttribute("tongTien",tong);
         model.addAttribute("list", list);
         model.addAttribute("pageNo", page);
