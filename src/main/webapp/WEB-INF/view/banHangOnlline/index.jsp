@@ -12,9 +12,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title> Sports Clothing </title>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+            crossorigin="anonymous"></script>
+
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
           rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
@@ -113,7 +119,20 @@
             </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
-                    <a href="/gio-hang-onl"><img src="/img/icon/cart.png" alt=""> <span></span></a>
+                    <a href="/gio-hang-onl"><img src="../../../img/icon/cart.png" alt=""> <span></span></a>
+                    <div class="dropdown-center">
+                        <a href="#" class="dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="../../../img/icon/person.svg" alt="">
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Thông tin của tôi</a></li>
+                            <li><a class="dropdown-item" href="/index/hoa-don-cua-toi">Đơn hàng của tôi</a></li>
+                            <li><a  class="dropdown-item" href="/logout"
+                                    onclick="if(confirm('Bạn có muốn đăng xuất không ?')==true){return true;}else{return false;}">
+                                Đăng xuất</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

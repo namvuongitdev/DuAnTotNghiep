@@ -535,6 +535,10 @@ ol {
 	position: relative;
 	top: 3px;
 }
+.header__nav__option .dropdown-center{
+	position: relative;
+	display: inline-block;
+}
 
 .offcanvas-menu-wrapper {
 	display: none;
