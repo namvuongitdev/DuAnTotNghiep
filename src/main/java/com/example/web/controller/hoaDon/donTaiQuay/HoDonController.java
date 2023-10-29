@@ -184,27 +184,5 @@ public class HoDonController {
         model.addAttribute("totalPage",lst.getTotalPages());
         return "quanLyHoaDon/hoaDonTaiQuay/update-hoa-don";
     }
-    @GetMapping("/update")
-    public String updateHoaDonChiTiet(@RequestParam("ctsp") String idCTSP, @RequestParam("soLuong") String soLuong, @RequestParam("idHD") String idHD) {
-        url = hoaDonChiTietService.addSanPhamHoaDonChiTietKhiUpdate(idCTSP,idHD,Integer.parseInt(soLuong));
-        return url;
-    }
-    @GetMapping("/update-so-luong")
-    public String updateSoLuongSanPhamHoaDonChiTiet2(@RequestParam("hdct") String idHdct, @RequestParam("soLuong") String soLuong) {
-        url = hoaDonChiTietService.updateSoLuongSanPhamHoaDonChiTietKhiUpdate(idHdct,soLuong);
-        return url;
-    }
-    @PostMapping("/update-hoa-don/{id}")
-    public String capNhatHoaDonChiTiet(@RequestParam(defaultValue = "0") Integer page,@Valid @ModelAttribute("hoaDon")HoaDon hoaDon,@PathVariable("id") String id) {
-        Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
-        Integer tongTien = 0;
-        for (int i = 0; i <= lst.getContent().size()-1; i++) {
-            tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getChiTietSanPham().getSanPham().getGiaBan().intValue();
-        }
-        hoaDon.setId(UUID.fromString(id));
-        hoaDon.setTongTien(BigDecimal.valueOf(tongTien));
-        hoaDonService.updateHoaDonById(hoaDon);
-        return  "redirect:/admin/hoa-don/view-update/"+id;
-    }
 
 }
