@@ -64,7 +64,20 @@
             </tr>
             </thead>
             <tbody>
-
+                <tr>
+                    <c:forEach items="${lst}" var="dg" varStatus="i">
+                        <td>${i.index+1}</td>
+                        <td>${dg.ma}</td>
+                        <td>${dg.hoTen}</td>
+                        <td>${dg.sdt}</td>
+                        <td>${dg.ngayTao}</td>
+                        <td><fmt:formatNumber pattern="#,###"  value="${dg.tongTien+dg.phiVanChuyen}"/> VNĐ</td>
+                        <td>${dg.moTa}</td>
+                        <td>
+                            <a href="/admin/hoa-don-onl/detail/${dg.id}" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
+                        </td>
+                    </c:forEach>
+                </tr>
             </tbody>
         </table>
     </div>

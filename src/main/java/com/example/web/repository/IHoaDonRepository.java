@@ -35,12 +35,12 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
     Page<HoaDon> findAll(Specification<HoaDon> hoaDonSpecification, Pageable pageable);
 
     @Query(value = "select hdct from HoaDon hd left join hd.hoaDonChiTiets hdct " +
-            "left join hdct.chiTietSanPham ctsp where hd.id = ?1")
+            "left join hdct.chiTietSanPham ctsp where hd.id = ?1 and hdct.trangThai=0")
     Page<HoaDonChiTiet> getHoaDonChiTiet(UUID id ,Pageable pageable);
 
-    @Query(value = "update hoa_don set ho_ten =?1,dia_chi=?2,sdt=?3,tong_tien=?4 where id=?5",nativeQuery = true)
-    String updateHoaDonById(String hoTen,String diaChi,String sdt,String tongTien,String idHd);
-
-    @Query(value = "select hd from HoaDon hd where hd.trangThai<>0")
+    @Query(value = "select hd from HoaDon hd where hd.trangThai<>0 and hd.loaiHoaDon=false")
     Page<HoaDon> findAll3(Pageable pageable);
+
+    @Query("select hd from HoaDon hd where hd.loaiHoaDon=true and hd.id=?1")
+    HoaDon getHoaDonOnl(UUID id);
 }

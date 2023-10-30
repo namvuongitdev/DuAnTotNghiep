@@ -64,10 +64,34 @@
             </tr>
             </thead>
             <tbody>
-
+                <tr>
+                    <c:forEach items="${lst}" var="xn" varStatus="i">
+                        <td>${i.index+1}</td>
+                        <td>${xn.ma}</td>
+                        <td>${xn.hoTen}</td>
+                        <td>${xn.sdt}</td>
+                        <td>${xn.ngayTao}</td>
+                        <td><fmt:formatNumber pattern="#,###"  value="${xn.tongTien+xn.phiVanChuyen}"/> VNĐ</td>
+                        <td>${xn.moTa}</td>
+                        <td>
+                            <a name="2" id="trangThai" onclick="xacNhan({idhd:`${xn.id}`})" style="text-decoration: none" class="badge text-bg-info text-white" ><i class="bi bi-check2"></i></a>
+                            <a href="/admin/hoa-don-onl/detail/${xn.id}" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
+                        </td>
+                    </c:forEach>
+                </tr>
             </tbody>
         </table>
     </div>
 </div>
 </body>
+<script>
+    function xacNhan(data) {
+        let trangThai = document.getElementById('trangThai').name;
+        if (confirm("Bạn có chắc chắn xác nhận đơn không ?")===true){
+            window.location.href="/admin/hoa-don-onl/xac-nhan/"+data.idhd+"?trangThai="+trangThai;
+        }else {
+            return;
+        }
+    }
+</script>
 </html>

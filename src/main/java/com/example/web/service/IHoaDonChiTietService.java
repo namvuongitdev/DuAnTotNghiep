@@ -7,6 +7,8 @@ public interface IHoaDonChiTietService {
 
     String deleteSanPhamHoaDon(String idHDCT , String idKhacHang);
 
+    String deleteSanPhamHoaDon2(String idHDCT);
+
     HoaDonChiTiet getHoaDonChiTiet(String id);
 
     String updateHoaDonChiTiet(String idHDCT , String soLuong  ,String idKhachHang);

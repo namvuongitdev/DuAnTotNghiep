@@ -118,7 +118,7 @@
                                     <p><b>Tổng tiền thanh toán:</b>  <span><fmt:formatNumber pattern="#,###"  value="${hd.tongTien}"/> VNĐ</span></p>
                                 </div>
 
-                                <button style="margin-left: 15px" class="action-button inHoaDonChiTiet">In hóa đơn
+                                <button style="margin-left: 15px" type="button" class="action-button inHoaDonChiTiet">In hóa đơn
                                     <i class="bi bi-printer-fill"></i>
                                 </button>
                                 <input type="hidden" id="idChiTietHoaDon">
@@ -144,7 +144,7 @@
                                     </div>
                                 </div>
 
-                                <button class="action-button" onclick="quayLai()">Quay lại
+                                <button class="action-button" type="button" onclick="quayLai()">Quay lại
                                     <i class="bi bi-arrow-left"></i>
                                 </button>
                             </div>
@@ -488,10 +488,9 @@
     }
 function quayLai() {
     if (confirm("Bạn có muốn quay lại trang trước không?")===true){
-       return window.location.href="/admin/hoa-don/hien-thi";
+        window.location.href="/admin/hoa-don/hien-thi"
     }else {
         window.location.reload();
-        return false;
     }
 }
 </script>

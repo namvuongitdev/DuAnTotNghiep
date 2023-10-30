@@ -209,12 +209,29 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public HoaDon updateHoaDonById(HoaDon hoaDon) {
+    public String updateHoaDonById(HoaDon hoaDon) {
         Optional<HoaDon> hd =hoaDonRepository.findById(hoaDon.getId());
-        hd.get().setHoTen(hoaDon.getHoTen());
-        hd.get().setDiaChi(hoaDon.getDiaChi());
-        hd.get().setSdt(hoaDon.getSdt());
+//        hd.get().setHoTen(hoaDon.getHoTen());
+//        hd.get().setDiaChi(hoaDon.getDiaChi());
+//        hd.get().setSdt(hoaDon.getSdt());
         hd.get().setTongTien(hoaDon.getTongTien());
-        return hoaDonRepository.save(hd.get());
+        hoaDonRepository.save(hd.get());
+        return "redirect:/admin/hoa-don-onl/detail/"+hoaDon.getId();
     }
+
+    @Override
+    public String updateStatusHoaDonById(HoaDon hoaDon,String trangThai) {
+        hoaDonRepository.save(hoaDon);
+        if (Integer.parseInt(trangThai)==1){
+            return "redirect:/admin/hoa-don-onl/cho-giao-hang/hien-thi";
+        }else if (Integer.parseInt(trangThai)==2){
+            return "redirect:/admin/hoa-don-onl/dang-giao/hien-thi";
+        }else if (Integer.parseInt(trangThai)==3){
+            return "redirect:/admin/hoa-don-onl/da-giao/hien-thi";
+        }else {
+            return null;
+        }
+    }
+
+
 }

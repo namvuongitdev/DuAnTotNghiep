@@ -35,5 +35,7 @@ public interface IHoaDonService {
 
     HoaDon add(HoaDon hoaDon);
 
-    HoaDon updateHoaDonById(HoaDon hoaDon);
+    String updateHoaDonById(HoaDon hoaDon);
+
+    String updateStatusHoaDonById(HoaDon hoaDon,String trangThai);
 }

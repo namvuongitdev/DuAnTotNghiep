@@ -7,7 +7,6 @@ let spanKhuyenMai = document.getElementById("close_khuyenMai");
 
 let modalSanPhamKhuyenMai = document.getElementById("modalSanPhamKhuyenMai");
 
-let btnSanPhamKhuyenMai = document.getElementById("btnSanPhamKhuyenMai");
 
 let spanSanPhamKhuyenMai = document.getElementById("close_sanPhamKhuyenMai");
 
