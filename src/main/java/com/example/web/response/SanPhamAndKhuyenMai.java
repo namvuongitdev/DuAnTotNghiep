@@ -52,21 +52,6 @@ public class SanPhamAndKhuyenMai {
 
     private BigDecimal donGiaSauKhiGiam;
 
-    public String getGiaFormat() {
-        DecimalFormat formatter = new DecimalFormat("###,###,###");
-        String formatted = formatter.format(this.giaBan);
-        return formatted;
-    }
-    public String getDonGiaSauKhiGiam1() {
-        if(donGiaSauKhiGiam==null){
-            return "";
-        }else {
-            DecimalFormat formatter = new DecimalFormat("###,###,###");
-            String formatted = formatter.format(this.donGiaSauKhiGiam);
-            return formatted +" đ";
-        }
-    }
-
     public SanPhamAndKhuyenMai(UUID id, String ma, String ten, String img, Integer trangThai, Date ngayTao, Date ngaySua, BigDecimal giaNhap, BigDecimal giaBan, String moTa, Boolean gioiTinh, KieuDang kieuDang, ChatLieu chatLieu, DanhMuc danhMuc, BigDecimal donGiaSauKhiGiam) {
         this.id = id;
         this.ma = ma;

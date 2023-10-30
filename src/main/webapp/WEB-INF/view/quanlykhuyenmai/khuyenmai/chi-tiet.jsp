@@ -7,41 +7,43 @@
     <hr>
     <div class="container">
         <div class="row" style="margin-bottom: 25px">
-            <form class="row" action="/admin/khuyen-mai/filter-san-pham-khuyen-mai/${dataKhuyenMai.id}" method="get"  modelAttribute="${sanPhamAsKhuyeMai}">
-            <div class="col-sm-3" style="margin-top: 25px">
-                <input type="text" class="form-control" name="tenSanPham" id="tenSanPhamKhuyenMai" placeholder="tên sản phẩm , mã" value="${sanPhamKhuyenMaiFilter.tenSanPham}"/>
-            </div>
-            <div class="col-sm-2">
-                <label for="loaiGiamGiaSanPhamKhuyenMai">Loại giảm giá</label>
-                <select class="form-select" name="loaiGiamGia" id="loaiGiamGiaSanPhamKhuyenMai">
-                    <option value="">
-                        Tất cả
-                    </option>
-                    <option value="true" ${sanPhamKhuyenMaiFilter.loaiGiamGia == true ? "selected" : ""}>
-                        %
-                    </option>
-                    <option value="false" ${sanPhamKhuyenMaiFilter.loaiGiamGia == false ? "selected" : ""}>
-                        VND
-                    </option>
-                </select>
-            </div>
-            <div class="col-sm-2">
-                <label for="trangThaiSanPhamKhuyenMai">Trạng thái</label>
-                <select class="form-select" name="trangThai" id="trangThaiSanPhamKhuyenMai">
-                    <option value="">
-                        Tất cả
-                    </option>
-                    <option value="1"  ${sanPhamKhuyenMaiFilter.trangThai == 1 ? "selected" : ""}>
-                        Kích hoạt
-                    </option>
-                    <option value="0"  ${sanPhamKhuyenMaiFilter.trangThai == 0 ? "selected" : ""}>
-                        Ngừng kích hoạt
-                    </option>
-                </select>
-            </div>
-            <div class="col-sm-2" style="margin-top: 25px" >
-                  <button class="btn btn-primary">Tìm kiếm</button>
-            </div>
+            <form class="row" action="/admin/khuyen-mai/filter-san-pham-khuyen-mai/${dataKhuyenMai.id}" method="get"
+                  modelAttribute="${sanPhamAsKhuyeMai}">
+                <div class="col-sm-3" style="margin-top: 25px">
+                    <input type="text" class="form-control" name="tenSanPham" id="tenSanPhamKhuyenMai"
+                           placeholder="tên sản phẩm , mã" value="${sanPhamKhuyenMaiFilter.tenSanPham}"/>
+                </div>
+                <div class="col-sm-2">
+                    <label for="loaiGiamGiaSanPhamKhuyenMai">Loại giảm giá</label>
+                    <select class="form-select" name="loaiGiamGia" id="loaiGiamGiaSanPhamKhuyenMai">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        <option value="true" ${sanPhamKhuyenMaiFilter.loaiGiamGia == true ? "selected" : ""}>
+                            %
+                        </option>
+                        <option value="false" ${sanPhamKhuyenMaiFilter.loaiGiamGia == false ? "selected" : ""}>
+                            VND
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <label for="trangThaiSanPhamKhuyenMai">Trạng thái</label>
+                    <select class="form-select" name="trangThai" id="trangThaiSanPhamKhuyenMai">
+                        <option value="">
+                            Tất cả
+                        </option>
+                        <option value="1"  ${sanPhamKhuyenMaiFilter.trangThai == 1 ? "selected" : ""}>
+                            Kích hoạt
+                        </option>
+                        <option value="0"  ${sanPhamKhuyenMaiFilter.trangThai == 0 ? "selected" : ""}>
+                            Ngừng kích hoạt
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm-2" style="margin-top: 25px">
+                    <button class="btn btn-primary">Tìm kiếm</button>
+                </div>
                 <div class="col-sm-2" style="margin-top: 25px">
                     <a href="/admin/khuyen-mai/detail?id=${dataKhuyenMai.id}" class="btn btn-warning">Làm mới</a>
                 </div>
@@ -93,8 +95,9 @@
                             </c:otherwise>
                         </c:choose></td>
                         <td>
-                            <button type="button" class="btn btn-success" title="chi tiết"  onclick="getSanPhamKhuyenMai(`${km.id}`)">
-                               <i class="bi bi-pencil"></i>
+                            <button type="button" class="btn btn-success" title="chi tiết"
+                                    onclick="getSanPhamKhuyenMai(`${km.id}`)">
+                                <i class="bi bi-pencil"></i>
                             </button>
                         </td>
                     </tr>

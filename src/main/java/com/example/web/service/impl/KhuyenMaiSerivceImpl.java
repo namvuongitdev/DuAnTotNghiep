@@ -56,8 +56,8 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
                 List<Predicate> predicateList = new ArrayList<>();
                Join<SanPham , SanPhamKhuyenMai> sanPhamSanPhamKhuyenMaiJoin =  root.join("sanPhamKM");
                 if (!filter.getTenSanPham().isEmpty() && filter.getTenSanPham() != null) {
-                    predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(sanPhamSanPhamKhuyenMaiJoin.get("ten"), filter.getTenSanPham()),
-                            criteriaBuilder.equal(sanPhamSanPhamKhuyenMaiJoin.get("ma"), filter.getTenSanPham())));
+                    predicateList.add(criteriaBuilder.or(criteriaBuilder.like(sanPhamSanPhamKhuyenMaiJoin.get("ten"), "%"+filter.getTenSanPham()+"%"),
+                            criteriaBuilder.like(sanPhamSanPhamKhuyenMaiJoin.get("ma"), "%"+filter.getTenSanPham()+"%")));
                 }
                 if (filter.getTrangThai() != null) {
                     predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai"), filter.getTrangThai())));
@@ -90,8 +90,8 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
             public Predicate toPredicate(Root<KhuyenMai> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicateList = new ArrayList<>();
                 if (!filter.getSearch().isEmpty() && filter.getSearch() != null) {
-                    predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("ten"), filter.getSearch()),
-                            criteriaBuilder.equal(root.get("ma"), filter.getSearch())));
+                    predicateList.add(criteriaBuilder.or(criteriaBuilder.like(root.get("ten"),"%"+ filter.getSearch()+"%"),
+                            criteriaBuilder.like(root.get("ma"), "%"+filter.getSearch()+"%")));
                 }
                 if (!filter.getTrangThai().isEmpty() && filter.getTrangThai() != null) {
                     predicateList.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai"), filter.getTrangThai())));

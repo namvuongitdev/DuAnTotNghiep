@@ -52,9 +52,7 @@ public class TrangChuController {
     public String hienThi(Model model, @RequestParam(defaultValue = "1") int page) {
         Pageable pageable = PageRequest.of(page - 1, 10);
         sanPhamPage = iSanPhamService.findAll(pageable);
-      //  System.out.println("1t"+sanPhamPage.toList().get(6));
         sanPhamKhuyenMaiPage = iSanPhamService.getALL(pageable);
-        //System.out.println("222t"+sanPhamKhuyenMaiPage.toList().get(6));
         model.addAttribute("listSanPham", sanPhamKhuyenMaiPage);
         danhSachThuocTinhSanPham(model);
         model.addAttribute("filterSanPham", new SanPhamFilter());
@@ -72,13 +70,13 @@ public class TrangChuController {
 
     @GetMapping({"/api-hien-thi"})
     @ResponseBody
-    public Page<SanPhamAndKhuyenMai> apiSanPham(@RequestParam Integer page ,@RequestParam(required = false) String value) {
-        Page<SanPhamAndKhuyenMai> listSanPham = null;
+    public Page<SanPham> apiSanPham(@RequestParam Integer page , @RequestParam(required = false) String value) {
+        Page listSanPham = null;
         Pageable pageable = PageRequest.of(page - 1, 20);
         if(value.isEmpty()){
-            listSanPham = iSanPhamService.getALL(pageable);
+            listSanPham = iSanPhamService.findAll(pageable);
         }else{
-            listSanPham =  iSanPhamService.getAllSanPhamAndKhuyenMaiByTenOrMa(value, page);
+            listSanPham =  iSanPhamService.getAllByTenOrMa(value, page);
         }
         return listSanPham;
     }
@@ -93,11 +91,11 @@ public class TrangChuController {
 
     @GetMapping("/thoi-trang-nam")
     @ResponseBody
-    public Page<SanPhamAndKhuyenMai> thoiTrangNam(Model model, @RequestParam(defaultValue = "1") int page) {
+    public Page<SanPham> thoiTrangNam(Model model, @RequestParam(defaultValue = "1") int page) {
         boolean gioiTinh = true;
         Page listSanPham = null;
         Pageable pageable = PageRequest.of(page - 1, 5);
-        listSanPham= iSanPhamService.findAllSanPhamKhuyenMaiGender(gioiTinh,page);
+        listSanPham= iSanPhamService.findAllGender(pageable,gioiTinh);
         return listSanPham;
     }
 
@@ -107,7 +105,7 @@ public class TrangChuController {
         boolean gioiTinh = false;
         Page listSanPham = null;
         Pageable pageable = PageRequest.of(page - 1, 5);
-        listSanPham = iSanPhamService.findAllSanPhamKhuyenMaiGender(gioiTinh,page);
+        listSanPham= iSanPhamService.findAllGender(pageable,gioiTinh);
         return listSanPham;
     }
 

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.UUID;
@@ -46,6 +47,10 @@ public class KhuyenMaiController {
     @Autowired
     private SanPhamController sanPhamController;
 
+    private String urlUpdate = null;
+
+    private Integer pager = null;
+
 
     @GetMapping("/")
     public String hienThi(Model model, @RequestParam(defaultValue = "1") Integer page) {
@@ -67,18 +72,18 @@ public class KhuyenMaiController {
     }
 
     @GetMapping("/filter-san-pham-khuyen-mai/{idKM}")
-    public String filterSanPhamKhuyenMai(Model model, @PathVariable String idKM, @RequestParam(defaultValue = "1") Integer page, @ModelAttribute("sanPhamAsKhuyenMai") SanPhamAsKhuyenMai filter) {
-
-        String url = request.getRequestURI() + "/" + idKM + "?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
+    public String filterSanPhamKhuyenMai(Model model, @PathVariable String idKM, @RequestParam(defaultValue = "1", required = false) Integer page, @ModelAttribute("sanPhamAsKhuyenMai") SanPhamAsKhuyenMai filter) {
+        pager = page;
+        urlUpdate = request.getRequestURI() + "?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
         Pageable pageable = PageRequest.of(page - 1, 10);
         Page<SanPhamKhuyenMai> sanPhamKhuyenMai = khuyenMaiService.filterSanPhamKhuyeMai(filter, pageable, UUID.fromString(idKM));
         KhuyenMai km = khuyenMaiService.getById(UUID.fromString(idKM));
         sanPhamController.danhSachThuocTinhSanPham(model);
         model.addAttribute("dataKhuyenMai", km);
-        model.addAttribute("uri", url);
+        model.addAttribute("uri", urlUpdate);
         model.addAttribute("url", "/admin/khuyen-mai/update?idKM=" + km.getId());
         model.addAttribute("listChiTietKhuyenMai", sanPhamKhuyenMai);
-        model.addAttribute("sanPhamKhuyenMaiFilter" , filter);
+        model.addAttribute("sanPhamKhuyenMaiFilter", filter);
         return "quanlykhuyenmai/khuyenmai/new-khuyen-mai";
     }
 
@@ -128,16 +133,23 @@ public class KhuyenMaiController {
 
     @GetMapping("/detail")
     public String getChiTietKhuuyenMai(@RequestParam String id, @RequestParam(defaultValue = "1") Integer page, Model model) {
-        Page<SanPhamKhuyenMai> list = khuyenMaiService.getKhuyenMaiById(UUID.fromString(id), page);
         KhuyenMai km = khuyenMaiService.getById(UUID.fromString(id));
+        Page<SanPhamKhuyenMai> list = khuyenMaiService.getKhuyenMaiById(UUID.fromString(id), page);
         sanPhamController.danhSachThuocTinhSanPham(model);
+        model.addAttribute("listChiTietKhuyenMai", list);
         model.addAttribute("dataKhuyenMai", km);
         model.addAttribute("khuyenMai", new KhuyenMaiRequest());
         model.addAttribute("url", "/admin/khuyen-mai/update?idKM=" + km.getId());
-        model.addAttribute("listChiTietKhuyenMai", list);
         model.addAttribute("sanPhamKhuyenMai", new SanPhamKhuyenMai());
         model.addAttribute("sanPhamAsKhuyeMai", new SanPhamAsKhuyenMai());
         return "quanlykhuyenmai/khuyenmai/new-khuyen-mai";
+    }
+
+    @GetMapping("/api-san-pham-khuyen-mai/{id}")
+    @ResponseBody
+    public SanPhamAsKhuyenMai sanPhamKhuyenMai(@PathVariable String id) {
+        SanPhamAsKhuyenMai sanPhamKhuyenMai = khuyenMaiService.getSanPhamAsKhuyenMai(UUID.fromString(id));
+        return sanPhamKhuyenMai;
     }
 
     @PostMapping("/khuyen-mai-san-pham")
@@ -149,8 +161,13 @@ public class KhuyenMaiController {
     @GetMapping("/update-trang-thai-san-pham")
     public String updateTrangThaiSanPhamKhuyenMai(@RequestParam String idSPKM, @RequestParam Integer trangThai) {
         SanPhamKhuyenMai sanPhamKhuyenMai = khuyenMaiService.updateTrangThaiKhuyenMaiChiTiet(trangThai, UUID.fromString(idSPKM));
-        return "redirect:/admin/khuyen-mai/detail?id=" + sanPhamKhuyenMai.getKhuyenMai().getId();
+        if (urlUpdate == null) {
+            return "redirect:/admin/khuyen-mai/detail?id=" + sanPhamKhuyenMai.getKhuyenMai().getId();
+        } else {
+            return "redirect:" + urlUpdate + pager;
+        }
     }
+
 
     @GetMapping("/update-trang-thai")
     public String updateTrangThaiKhuyenMai(@RequestParam String idKM, @RequestParam Integer trangThai) {
@@ -158,12 +175,6 @@ public class KhuyenMaiController {
         return "redirect:/admin/khuyen-mai/";
     }
 
-    @GetMapping("/api-san-pham-khuyen-mai/{id}")
-    @ResponseBody
-    public SanPhamAsKhuyenMai sanPhamKhuyenMai(@PathVariable String id) {
-        SanPhamAsKhuyenMai sanPhamKhuyenMai = khuyenMaiService.getSanPhamAsKhuyenMai(UUID.fromString(id));
-        return sanPhamKhuyenMai;
-    }
 
     @PostMapping("/update-san-pham-khuyen-mai")
     public String updateSanPhamKhuyenMai(@RequestParam String idSPKM, @ModelAttribute("sanPhamKhuyenMai") SanPhamKhuyenMai sanPhamKhuyenMai) {
@@ -178,6 +189,10 @@ public class KhuyenMaiController {
         spkm.setLoaiGiamGia(sanPhamKhuyenMai.getLoaiGiamGia());
         spkm.setMucGiam(sanPhamKhuyenMai.getMucGiam());
         khuyenMaiService.updateSanPhamKhuyenMai(spkm);
-        return "redirect:/admin/khuyen-mai/detail?id=" + spkm.getKhuyenMai().getId();
+        if (urlUpdate == null) {
+            return "redirect:/admin/khuyen-mai/detail?id=" + spkm.getKhuyenMai().getId();
+        } else {
+         return "redirect:"+urlUpdate+pager;
+        }
     }
 }

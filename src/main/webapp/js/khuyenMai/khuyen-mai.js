@@ -5,6 +5,7 @@ const VND = new Intl.NumberFormat('vi-VN', {
 let url_string = window.location.href;
 let url = new URL(url_string);
 let paramValue = url.searchParams.get("id");
+
 let data = {
     search: "",
     danhMuc: "",
@@ -82,7 +83,6 @@ function api(page, data) {
             }
 
             for (let i = 1; i <= data.totalPages; i++) {
-                console.log(i);
                 active = page == i ? "active" : ""
                 phanTrang +=
                     `<li class="page-item" >
