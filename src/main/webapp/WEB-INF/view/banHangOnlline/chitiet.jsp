@@ -487,17 +487,17 @@
                         <label>Quantity</label>
                         <div class="display-flex">
                             <div class="qtyminus" style="">-</div>
-                            <input type="text" style="height: 35px" name="quantity" value="1" class="qty">
+                            <input type="text" style="height: 35px" id="quantity" name="quantity" value="1" class="qty">
                             <div class="qtyplus">+</div>
-
+                            <p style="color: red">${checkQuantity}</p>
                             <button type="submit" id="themVaoGioHang"
-                                    class="round-black-btn" style="margin-top: 60px;margin-left: 20px;
+                                    class="round-black-btn" style="
+                                    margin-top: 60px;margin-left: 20px;
                                     ">Add to Cart</button>
                         </div>
                     </div>
                     </form>
                 </div>
-
             </div>
         </div>
         <div class="product-info-tabs">
@@ -698,9 +698,11 @@
     let mauSacSP = document.getElementById("colorSelector");
     var myVariable = new MyCustomType('${sanPham.id}');
     const themVaoGioHang = document.getElementById("themVaoGioHang");
+    const quantity = document.getElementById("quantity");
     function MyCustomType(data) {
         this.data = data;
     }
+
     function getCTSP(id) {
         fetch('/index/so-luong/' + id + '/' + mauSacSP.value + '?id='+ myVariable.data )
             .then(response => response.json())
@@ -711,11 +713,16 @@
                     themVaoGioHang.removeAttribute('disabled');
                     document.getElementById("trangThai").innerHTML = `Đang Kinh Doanh.`;
                     themVaoGioHang.style.backgroundColor = "black";
-                }else {
-                    themVaoGioHang.setAttribute("disabled", "");
+                    }else if(data.trangThai == 0 ){
                     document.getElementById("trangThai").innerHTML = `Ngừng Kinh Doanh.`;
+                    themVaoGioHang.setAttribute("disabled", "");
                     themVaoGioHang.style.backgroundColor = "#CCCCCC";
                 }
+                if(data.soLuong == 0 ){
+                    themVaoGioHang.setAttribute("disabled", "");
+                    themVaoGioHang.style.backgroundColor = "#CCCCCC";
+                }
+
             });
     }
 
