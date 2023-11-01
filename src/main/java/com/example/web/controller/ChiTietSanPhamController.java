@@ -1,10 +1,13 @@
 package com.example.web.controller;
+
 import com.example.web.model.Anh;
 import com.example.web.model.ChiTietSanPham;
+import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
 import com.example.web.response.ChiTietSanPhamResponse;
 import com.example.web.service.IAnhService;
 import com.example.web.service.IChiTietSanPhamService;
+import com.example.web.service.IMauSacService;
 import com.example.web.service.ISanPhamService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -48,7 +52,11 @@ public class ChiTietSanPhamController {
     private ISanPhamService sanPhamService;
 
     @Autowired
+    private IMauSacService mauSacService;
+
+    @Autowired
     private IAnhService anhService;
+
 
     @PostMapping(value = "/add")
     public String addCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham
@@ -79,16 +87,17 @@ public class ChiTietSanPhamController {
         return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
     }
 
-    @PostMapping(value = "/add-anh")
-    public String addAnhChiTietSanPham(@RequestParam("file") MultipartFile file, HttpServletRequest request, @RequestParam String idCTSP) throws IOException {
-        ChiTietSanPham chiTietSanPham = chiTietSanPhamService.getOne(UUID.fromString(idCTSP));
-        anhService.addAnhCtsp(file, request, chiTietSanPham);
-        return "redirect:/admin/chi-tiet-san-pham/anh/" + chiTietSanPham.getId() + "?idSP=" + chiTietSanPham.getSanPham().getId();
+    @PostMapping(value = "/add-anh", consumes = "multipart/form-data")
+    @ResponseBody
+    public void addAnhChiTietSanPham(@RequestParam MultipartFile file, @RequestParam String idSP, @RequestParam String idMS) throws IOException {
+        SanPham sanPham = sanPhamService.getOne(UUID.fromString(idSP));
+        MauSac mauSac = mauSacService.getOne(idMS);
+        anhService.addAnhMauSac(file, sanPham, mauSac);
     }
 
     @PostMapping(value = "/update-chi-tiet-san-pham")
     public String updateCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, @RequestParam String idCTSP, @RequestParam String idSP) {
-        ChiTietSanPham ctsp= chiTietSanPhamService.getOne(UUID.fromString(idCTSP));
+        ChiTietSanPham ctsp = chiTietSanPhamService.getOne(UUID.fromString(idCTSP));
         chiTietSanPham.setId(UUID.fromString(idCTSP));
         chiTietSanPham.setSanPham(sanPhamService.getOne(UUID.fromString(idSP)));
         chiTietSanPham.setTrangThai(ctsp.getTrangThai());
@@ -97,18 +106,18 @@ public class ChiTietSanPhamController {
         return "redirect:/admin/san-pham/hien-thi/" + chiTietSanPham.getSanPham().getId();
     }
 
-    @GetMapping(value = "/anh/{id}")
-    public String getAnhByChiTietSanPham_id(RedirectAttributes redirectAttributes, @PathVariable("id") String idCTSP, @RequestParam String idSP) {
-        List<Anh> anhs = anhService.getAnh(idCTSP);
-        redirectAttributes.addFlashAttribute("listAnhChiTietSanPham_id", anhs);
-        return "redirect:/admin/san-pham/hien-thi/" + idSP;
-    }
+//    @GetMapping(value = "/anh/{id}")
+//    public String getAnhByChiTietSanPham_id(RedirectAttributes redirectAttributes, @PathVariable("id") String idCTSP, @RequestParam String idSP) {
+//        List<Anh> anhs = anhService.getAnh(idCTSP);
+//        redirectAttributes.addFlashAttribute("listAnhChiTietSanPham_id", anhs);
+//        return "redirect:/admin/san-pham/hien-thi/" + idSP;
+//    }
 
-    @GetMapping(value = "/remove-anh")
-    public String removeAnhById(@RequestParam String idAnh, @RequestParam String idCTSP, @RequestParam String idSP) {
-        anhService.reomveAnhById(idAnh);
-        return "redirect:/admin/chi-tiet-san-pham/anh/" + idCTSP + "?idSP=" + idSP;
-    }
+//    @GetMapping(value = "/remove-anh")
+//    public String removeAnhById(@RequestParam String idAnh, @RequestParam String idCTSP, @RequestParam String idSP) {
+//        anhService.reomveAnhById(idAnh);
+//        return "redirect:/admin/chi-tiet-san-pham/anh/" + idCTSP + "?idSP=" + idSP;
+//    }
 
     @GetMapping(value = "/{id}")
     @ResponseBody

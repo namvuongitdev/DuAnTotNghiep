@@ -1,5 +1,6 @@
 package com.example.web.service.impl;
 
+import com.example.web.Config.status.KhuyenMaiStatus;
 import com.example.web.model.KhuyenMai;
 import com.example.web.model.SanPham;
 import com.example.web.model.SanPhamKhuyenMai;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     public KhuyenMai addKhuyenMai(KhuyenMai khuyenMai) {
         Integer maKhuyenMai = repository.findAll().size() + 1;
         khuyenMai.setMa("KM" + maKhuyenMai);
-        khuyenMai.setTrangThai(1);
+        khuyenMai.setTrangThai(KhuyenMaiStatus.KICH_HOAT);
         return repository.save(khuyenMai);
     }
 
@@ -118,7 +120,7 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
                 SanPhamKhuyenMai spkm = SanPhamKhuyenMai.builder()
                         .khuyenMai(khuyenMai.get())
                         .sanPhamKM(o)
-                        .trangThai(1)
+                        .trangThai(KhuyenMaiStatus.KICH_HOAT)
                         .mucGiam(sanPhamKhuyenMai.getMucGiam())
                         .loaiGiamGia(sanPhamKhuyenMai.getLoaiGiamGia())
                         .build();
@@ -182,5 +184,10 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
             return sanPhamKhuyenMai.get();
         }
         return null;
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void updateNgayHetHan(){
+        System.out.println("run...");
     }
 }

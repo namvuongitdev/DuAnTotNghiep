@@ -34,34 +34,11 @@ public class Anh {
     private String ten;
 
     @ManyToOne
-    @JoinColumn(name = "idctsp")
-    private ChiTietSanPham chiTietSanPham;
+    @JoinColumn(name = "id_san_pham")
+    private SanPham sanPham;
 
-    public Anh(String ten) {
-        this.ten = ten;
-    }
+    @ManyToOne
+    @JoinColumn(name = "id_mau_sac")
+    private MauSac mauSac;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getTen() {
-        return ten;
-    }
-
-    public void setTen(String ten) {
-        this.ten = ten;
-    }
-
-    public ChiTietSanPham getChiTietSanPham() {
-        return chiTietSanPham;
-    }
-
-    public void setChiTietSanPham(ChiTietSanPham chiTietSanPham) {
-        this.chiTietSanPham = chiTietSanPham;
-    }
 }

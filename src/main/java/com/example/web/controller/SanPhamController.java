@@ -165,6 +165,7 @@ public class SanPhamController {
         model.addAttribute("sanPham", new SanPham());
         model.addAttribute("chiTietSanPham", new ChiTietSanPham());
         model.addAttribute("sp", sanPham);
+        model.addAttribute("listMauSacCTSP" , mauSacService.getTheoCTSP(UUID.fromString(id)));
         return "quanLySanPham/sanpham/new-san-pham";
     }
 

@@ -1,4 +1,6 @@
 package com.example.web.service.impl;
+import com.example.web.Config.status.HoaDonChiTietStatus;
+import com.example.web.Config.status.HoaDonStatus;
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
 import com.example.web.model.KhachHang;
@@ -52,7 +54,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
         Date date = java.util.Calendar.getInstance().getTime();
         HoaDon hoaDon = HoaDon.builder()
-                .trangThai(TrangThaiHoaDon.HOA_DON_CHO.getValue())
+                .trangThai(HoaDonStatus.HOA_DON_CHO)
                 .ngayTao(date)
                 .ma("HD" + (hoaDonRepository.findAll().size() + 1))
                 .loaiHoaDon(false)
@@ -88,12 +90,12 @@ public class HoaDonServiceImpl implements IHoaDonService {
         if (hoaDon.isPresent()) {
 
             HoaDon hd = hoaDon.get();
-            hd.setTrangThai(TrangThaiHoaDon.HUY_HOA_DON.getValue());
+            hd.setTrangThai(HoaDonStatus.HUY);
 
             hd.getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() == 0).forEach(hoaDonChiTiet -> {
                 Integer soLuong = hoaDonChiTiet.getSoLuong() + hoaDonChiTiet.getChiTietSanPham().getSoLuong();
                 hoaDonChiTiet.getChiTietSanPham().setSoLuong(soLuong);
-                hoaDonChiTiet.setTrangThai(1);
+                hoaDonChiTiet.setTrangThai(HoaDonChiTietStatus.XOA);
                 hoaDonRepository.save(hd);
             });
             return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
@@ -119,7 +121,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 hd.setNhanVien(nhanVien);
                 if (hd.getLoaiHoaDon()) {
                         Double tongTienDonDatHang = tongTienHoaDon.doubleValue() + request.getPhiVanChuyen().doubleValue();
-                        hd.setTrangThai(TrangThaiHoaDon.Cho_xac_nhan.getValue());
+                        hd.setTrangThai(HoaDonStatus.CHO_XAC_NHAN);
                         hd.setPhiVanChuyen(request.getPhiVanChuyen());
                         hd.setTongTien(BigDecimal.valueOf(tongTienDonDatHang));
                         hd.setDiaChi(request.getDiaChi());
@@ -137,7 +139,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                     } else {
                         Date date = java.util.Calendar.getInstance().getTime();
                         hd.setMoTa(request.getMoTa());
-                        hd.setTrangThai(TrangThaiHoaDon.DA_HOAN_THANH.getValue());
+                        hd.setTrangThai(HoaDonStatus.DA_THANH_TOAN);
                         hd.setTongTien(tongTienHoaDon);
                         hd.setNgayThanhToan(date);
                         hd.setPhuongThucThanhToan(request.getHinhThucThanhToan());

@@ -16,11 +16,13 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- Styles -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"/>
     <!-- Or for RTL support -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css"/>
 
 </head>
 <body>
@@ -35,10 +37,13 @@
                 <h3>Sản phẩm</h3>
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/admin/trang-chu" style="text-decoration: none; color: black">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/trang-chu"
+                                                       style="text-decoration: none; color: black">Trang chủ</a></li>
                         <li class="breadcrumb-item">Quản lý sản phẩm</li>
-                        <li class="breadcrumb-item"><a href="/admin/san-pham/hien-thi" style="text-decoration: none; color: black" onclick="clearLocalStorage()">Sản phẩm</a></li>
-                        <li class="breadcrumb-item active" >${title}</li>
+                        <li class="breadcrumb-item"><a href="/admin/san-pham/hien-thi"
+                                                       style="text-decoration: none; color: black"
+                                                       onclick="clearLocalStorage()">Sản phẩm</a></li>
+                        <li class="breadcrumb-item active">${title}</li>
                     </ol>
                 </nav>
             </div><!-- End Page Title -->
@@ -68,7 +73,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="giaBan" class="form-label">Giá bán</label>
-                                        <input type="text" class="form-control" name="giaBan" id="giaBan" value="${sp.giaBan}">
+                                        <input type="text" class="form-control" name="giaBan" id="giaBan"
+                                               value="${sp.giaBan}">
                                         <form:errors path="giaBan" cssStyle="color: red"/>
                                     </div>
                                     <div class="mb-3">
@@ -140,12 +146,14 @@
                             <div style="text-align: center">
                                 <button class="btn btn-primary" onclick="clearLocalStorage()">Xác nhận
                                 </button>
-                                <a href="/admin/san-pham/new" class="btn btn-warning" onclick="clearLocalStorage()">Làm Mới</a>
+                                <a href="/admin/san-pham/new" class="btn btn-warning" onclick="clearLocalStorage()">Làm
+                                    Mới</a>
                             </div>
                         </form:form>
                     </div>
-                </div><br><br>
-                <%-- chi tiết  sản phẩm--%>
+                </div>
+                <br><br>
+                <%--                 chi tiết  sản phẩm--%>
                 <div class="card" style="display: ${sp.id==null?'none' : 'block'}">
                     <div class="card-body row">
                         <h5 class="card-title col-9">Thông tin chi tiết sản phẩm</h5>
@@ -157,50 +165,45 @@
                         <br><br>
                         <div class="row">
 
-                            <%--                    Hiển thị ảnh chi tiết sản phẩm--%>
-                            <div class="col l-5" style="margin-bottom: 30px">
-                                <p class="text-center"><b>Ảnh</b></p>
-                                <div class="row">
-                                    <c:forEach items="${listAnhChiTietSanPham_id}" var="anh">
-                                        <div class="col-6" >
-                                            <div>
-                                                <img src="/image/${anh.ten}" alt="..." style="width: 200px ; height: 200px">
-                                            </div>
-
-                                            <div>
-                                                <a href="/admin/chi-tiet-san-pham/remove-anh?idAnh=${anh.id}&idCTSP=${anh.chiTietSanPham.id}&idSP=${anh.chiTietSanPham.sanPham.id} "
-                                                   style="margin-right: 10px"> Xoá
-                                                </a>
-                                                <a href="/admin/san-pham/add-anh-mac-dinh?img=${anh.ten}&idSP=${sp.id}"> Mặc định
-                                                </a>
-                                            </div>
-
-                                        </div>
-                                    </c:forEach>
+                            <%--                         Hiển thị ảnh chi tiết sản phẩm--%>
+                            <c:if test="${listChiTietSanPhamBySP != null}">
+                                <div class="col l-5" style="margin-bottom: 30px">
+                                    <p class="text-center"><b>Ảnh</b></p>
+                                    <div class="row">
+                                        <select name="mauSacAnh" class="form-select"
+                                                style="width: 50%;margin-left: 90px"
+                                                onchange="findAnhMauSac(`${sp.id}` , this.value)">
+                                            <option value="">Thêm ảnh màu sắc</option>
+                                            <c:forEach items="${listMauSacCTSP}" var="mauSacCTSP">
+                                                <option value="${mauSacCTSP.id}">
+                                                        ${mauSacCTSP.ten}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            </c:if>
                             <%--table--%>
                             <div class="col-8" style="padding-left: 50px">
                                 <table class="table">
                                     <thead>
                                     <tr style="text-align: center">
-                                        <th scope="col" >Kích cỡ
+                                        <th scope="col">Kích cỡ
                                             <a data-bs-toggle="modal" data-bs-target="#exampleModalKichCo">
                                                 <i class="bi bi-plus-circle"></i>
                                             </a>
                                         </th>
-                                        <th scope="col" >Màu sắc
+                                        <th scope="col">Màu sắc
                                             <a data-bs-toggle="modal" data-bs-target="#exampleModalMauSac">
                                                 <i class="bi bi-plus-circle"></i>
                                             </a>
                                         </th>
-                                        <th scope="col" >Số lượng</th>
-                                        <th scope="col" >Trạng thái</th>
-                                        <th scope="col" >Thao tác</th>
+                                        <th scope="col">Số lượng</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Thao tác</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-
                                     <c:forEach items="${listChiTietSanPhamBySP}" var="ctsp">
                                         <form action="/admin/chi-tiet-san-pham/update-chi-tiet-san-pham?idCTSP=${ctsp.id}&idSP=${sp.id}"
                                               method="post" modelAttribute="${chiTietSanPham}">
@@ -224,12 +227,14 @@
                                                     </select>
                                                 </td>
                                                 <td style="width: 110px ;">
-                                                    <input type="number" class="form-control" value="${ctsp.soLuong}" min="1" name="soLuong">
+                                                    <input type="number" class="form-control" value="${ctsp.soLuong}"
+                                                           min="1" name="soLuong">
                                                 </td>
                                                 <td>
-                                                    <button style="--bs-btn-padding-y: .56rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" type="button" value="${ctsp.trangThai}"
-                                                             onclick="myfunction({trangThai:`${ctsp.trangThai}`,idctsp:`${ctsp.id}`,idsp:`${ctsp.sanPham.id}`})"
-                                                             class="${ctsp.trangThai == 0 ? 'btn btn-danger' : 'btn btn-success'}">
+                                                    <button style="--bs-btn-padding-y: .56rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                                            type="button" value="${ctsp.trangThai}"
+                                                            onclick="myfunction({trangThai:`${ctsp.trangThai}`,idctsp:`${ctsp.id}`,idsp:`${ctsp.sanPham.id}`})"
+                                                            class="${ctsp.trangThai == 0 ? 'btn btn-danger' : 'btn btn-success'}">
                                                             ${ctsp.trangThai == 0 ? 'Ngừng kinh doanh' : 'Kinh doanh'}
                                                     </button>
                                                 </td>
@@ -239,41 +244,24 @@
                                                         }else{
                                                         return false;}">Sửa
                                                     </button>
-                                                    <a name="/admin/chi-tiet-san-pham/add-anh?idCTSP=${ctsp.id}" type="button"
-                                                       class="btn btn-secondary"
-                                                       data-bs-toggle="modal"
-                                                       data-bs-target="#exampleModalAnh" onclick="addAnhCTSP(this.name)">
-                                                        Thêm ảnh
-                                                    </a>
-                                                    <a href="/admin/chi-tiet-san-pham/anh/${ctsp.id}?idSP=${ctsp.sanPham.id}"
-                                                       class="btn btn-secondary">
-                                                        Xem
-                                                    </a>
                                                 </td>
                                             </tr>
                                         </form>
                                     </c:forEach>
-
                                     </tbody>
                                 </table>
                             </div>
+                            <%--hiển thị ảnh theo màu sắc--%>
+                            <div class="row" id="hienThiAnhMauSac">
 
-                            <%--                    thêm ảnh mặc đinh cho sản phẩm--%>
-                            <div class="row text-center">
-                                <p>Ảnh mặc định của sản phẩm</p>
-                                <div class="col l-3">
-                                    <c:if test="${sp.img != null}">
-                                        <img src="/image/${sp.img}" alt="..." style="width: 200px ; height: 200px">
-                                    </c:if>
-
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            <%--thêm chi tiết sản phẩm--%>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <%--            thêm chi tiết sản phẩm--%>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -312,7 +300,8 @@
                                             <div class="row">
                                                 <div class="mb-3">
                                                     <label>Số lượng :</label>
-                                                    <input type="number" class="form-control" value="1" min="1" name="soLuong" style="width: 20%">
+                                                    <input type="number" class="form-control" value="1" min="1"
+                                                           name="soLuong" style="width: 20%">
                                                 </div>
                                             </div>
                                         </div>
@@ -326,7 +315,7 @@
                     </div>
                 </div>
             </div>
-            <%--    thêm ảnh sản phẩm --%>
+            <%--                thêm ảnh sản phẩm --%>
             <div class="modal fade" id="exampleModalAnh" tabindex="-1" aria-labelledby="exampleModalLabelAnh"
                  aria-hidden="true">
                 <div class="modal-dialog">
@@ -336,12 +325,13 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body" id="themAnh">
-
+                            <input type='file' name='file' id="fileAnh">
+                            <button class='btn btn-primary' onclick="themAnhMauSac()">Xác Nhận</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <%--thêm nhanh chất liệu--%>
+            <%-- thêm nhanh chất liệu--%>
             <div class="modal fade" id="exampleModalChatLieu" tabindex="-1">
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
@@ -349,24 +339,27 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/admin/san-pham/modal-add-chat-lieu" modelAttribute="chatLieu" class="row g-3">
+                        <form:form method="post" action="/admin/san-pham/modal-add-chat-lieu" modelAttribute="chatLieu"
+                                   class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Chất liệu"/>
+                                    <form:input type="text" path="ten" class="form-control" id="floatingName"
+                                                placeholder="Chất liệu"/>
                                     <form:label for="floatingName" path="ten">Chất liệu</form:label>
                                     <form:errors path="ten" cssStyle="color: red"/>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; } saveInputValues()">
+                                <form:button type="submit" class="btn btn-primary"
+                                             onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; } saveInputValues()">
                                     Xác nhận
                                 </form:button>
                             </div>
-                        </form:form><!-- End floating Labels Form -->
+                        </form:form>
                     </div>
                 </div>
-            </div><!-- End Modal Dialog Scrollable-->
+            </div>
             <%--thêm nhanh danh mục--%>
             <div class="modal fade" id="exampleModalDanhMuc" tabindex="-1">
                 <div class="modal-dialog modal-dialog-scrollable">
@@ -375,24 +368,27 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/admin/san-pham/modal-add-danh-muc" modelAttribute="danhMuc" class="row g-3">
+                        <form:form method="post" action="/admin/san-pham/modal-add-danh-muc" modelAttribute="danhMuc"
+                                   class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Tên danh mục"/>
+                                    <form:input type="text" path="ten" class="form-control" id="floatingName"
+                                                placeholder="Tên danh mục"/>
                                     <form:label for="floatingName" path="ten">Tên danh mục</form:label>
                                     <form:errors path="ten" cssStyle="color: red"/>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; } saveInputValues()">
+                                <form:button type="submit" class="btn btn-primary"
+                                             onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; } saveInputValues()">
                                     Xác nhận
                                 </form:button>
                             </div>
-                        </form:form><!-- End floating Labels Form -->
+                        </form:form>
                     </div>
                 </div>
-            </div><!-- End Modal Dialog Scrollable-->
+            </div>
             <%--thêm nhanh kiểu dáng--%>
             <div class="modal fade" id="exampleModalKieuDang" tabindex="-1">
                 <div class="modal-dialog modal-dialog-scrollable">
@@ -401,24 +397,27 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/admin/san-pham/modal-add-kieu-dang" modelAttribute="kieuDang" class="row g-3">
+                        <form:form method="post" action="/admin/san-pham/modal-add-kieu-dang" modelAttribute="kieuDang"
+                                   class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Kiểu dáng"/>
+                                    <form:input type="text" path="ten" class="form-control" id="floatingName"
+                                                placeholder="Kiểu dáng"/>
                                     <form:label for="floatingName" path="ten">Kiểu dáng</form:label>
                                     <form:errors path="ten" cssStyle="color: red"/>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; } saveInputValues()">
+                                <form:button type="submit" class="btn btn-primary"
+                                             onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; } saveInputValues()">
                                     Xác nhận
                                 </form:button>
                             </div>
-                        </form:form><!-- End floating Labels Form -->
+                        </form:form>
                     </div>
                 </div>
-            </div><!-- End Modal Dialog Scrollable-->
+            </div>
             <%--thêm nhanh kích cỡ--%>
             <div class="modal fade" id="exampleModalKichCo" tabindex="-1">
                 <div class="modal-dialog modal-dialog-scrollable">
@@ -427,24 +426,28 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/admin/san-pham/modal-add-size" modelAttribute="size" class="row g-3">
+                        <form:form method="post" action="/admin/san-pham/modal-add-size" modelAttribute="size"
+                                   class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Kích cỡ"/>
+                                    <form:input type="text" path="ten" class="form-control" id="floatingName"
+                                                placeholder="Kích cỡ"/>
                                     <form:label for="floatingName" path="ten">Kích cỡ</form:label>
                                     <form:errors path="ten" cssStyle="color: red"/>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; }">
+                                <form:button type="submit" class="btn btn-primary"
+                                             onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; }">
                                     Xác nhận
                                 </form:button>
                             </div>
-                        </form:form><!-- End floating Labels Form -->
+                        </form:form>
+                        <!-- End floating Labels Form -->
                     </div>
                 </div>
-            </div><!-- End Modal Dialog Scrollable-->
+            </div>
             <%--thêm nhanh màu sắc--%>
             <div class="modal fade" id="exampleModalMauSac" tabindex="-1">
                 <div class="modal-dialog modal-dialog-scrollable">
@@ -453,37 +456,36 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/admin/san-pham/modal-add-mau-sac" modelAttribute="mauSac" class="row g-3">
+                        <form:form method="post" action="/admin/san-pham/modal-add-mau-sac" modelAttribute="mauSac"
+                                   class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Tên màu"/>
+                                    <form:input type="text" path="ten" class="form-control" id="floatingName"
+                                                placeholder="Tên màu"/>
                                     <form:label for="floatingName" path="ten">Tên màu</form:label>
                                     <form:errors path="ten" cssStyle="color: red"/>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary"  onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; }">
+                                <form:button type="submit" class="btn btn-primary"
+                                             onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; }">
                                     Xác nhận
                                 </form:button>
                             </div>
-                        </form:form><!-- End floating Labels Form -->
+                        </form:form>
                     </div>
                 </div>
-            </div><!-- End Modal Dialog Scrollable-->
+            </div>
         </div>
     </div>
 </div>
-<!-- Scripts -->
+
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="/js/sanPham/quanLySanPham.js"></script>
 <script type="text/javascript">
-    function addAnhCTSP(id) {
-        document.getElementById("themAnh").innerHTML = `<form action=` + id + ` method="post" enctype="multipart/form-data">`
-            + `<input type='file' name='file'>` + `  <button class='btn btn-primary'>Xác Nhận</button>` + `</form>`
-    }
-
     // Lấy giá trị từ tất cả các ô input và textarea, và lưu chúng vào localStorage
     function saveInputValues() {
         var allInputs = document.querySelectorAll('input, textarea');
@@ -497,7 +499,7 @@
     }
 
     // Khôi phục giá trị từ localStorage vào các ô input và textarea
-    window.onload = function() {
+    window.onload = function () {
         var allInputs = document.querySelectorAll('input, textarea');
 
         for (var i = 0; i < allInputs.length; i++) {
@@ -526,10 +528,11 @@
         });
 
     });
-    function myfunction(data){
-        if (confirm("Bạn có muốn cập nhật trạng thái không ?")==true){
-            window.location.href='/admin/san-pham/stop-ctsp/'+data.idctsp+"?idSP="+data.idsp+"&tt="+data.trangThai;
-        }else{
+
+    function myfunction(data) {
+        if (confirm("Bạn có muốn cập nhật trạng thái không ?") == true) {
+            window.location.href = '/admin/san-pham/stop-ctsp/' + data.idctsp + "?idSP=" + data.idsp + "&tt=" + data.trangThai;
+        } else {
             alert('Cập nhật thất bại!')
             return fasle;
         }

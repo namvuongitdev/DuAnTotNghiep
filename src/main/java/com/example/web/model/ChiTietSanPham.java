@@ -51,9 +51,6 @@ public class ChiTietSanPham {
     private Size size;
 
     @OneToMany(mappedBy = "chiTietSanPham")
-    private List<Anh> anhs;
-
-    @OneToMany(mappedBy = "chiTietSanPham")
     private List<HoaDonChiTiet> hoaDonChiTiets;
 
     @OneToMany(mappedBy = "chiTietSanPham")

@@ -1,9 +1,6 @@
 package com.example.web.repository;
 import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.response.SanPhamAsKhuyenMai;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

@@ -91,6 +91,10 @@ public class SanPham {
 
     @OneToMany(mappedBy = "sanPham")
     @JsonIgnore
+    private List<Anh> anhs;
+
+    @OneToMany(mappedBy = "sanPham")
+    @JsonIgnore
     private List<ChiTietSanPham> chiTietSanPhams;
 
     @OneToMany(mappedBy = "sanPhamKM")

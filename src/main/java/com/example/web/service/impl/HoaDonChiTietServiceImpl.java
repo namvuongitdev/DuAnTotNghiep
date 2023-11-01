@@ -1,5 +1,6 @@
 package com.example.web.service.impl;
 
+import com.example.web.Config.status.HoaDonChiTietStatus;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
@@ -49,7 +50,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                             .hoaDon(hoaDon.get())
                             .soLuong(soLuong)
                             .chiTietSanPham(chiTietSanPham)
-                            .trangThai(0)
+                            .trangThai(HoaDonChiTietStatus.KICH_HOAT)
                             .build();
                     if (!chiTietSanPham.getSanPham().getSanPhamKhuyenMais().isEmpty()) {
                         for (SanPhamKhuyenMai o : chiTietSanPham.getSanPham().getSanPhamKhuyenMais()) {
@@ -77,7 +78,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
             Integer result = ctsp.getSoLuong() + hdct.getSoLuong();
             ctsp.setSoLuong(result);
             hdct.setChiTietSanPham(ctsp);
-            hdct.setTrangThai(1);
+            hdct.setTrangThai(HoaDonChiTietStatus.XOA);
             hoaDonChiTietRepository.save(hdct);
             if (idKhachHang != null && !idKhachHang.isEmpty()) {
                 return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId() + "&idKhachHang=" + idKhachHang;

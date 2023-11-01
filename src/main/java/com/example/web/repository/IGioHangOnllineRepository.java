@@ -18,7 +18,7 @@ public interface IGioHangOnllineRepository extends JpaRepository<GioHangChiTiet,
             select new com.example.web.response.GioHangOnllineResponse( gc.id,s.ten,a.ten,gc.donGia,gc.soLuong,m.ten,k.ten)
             from ChiTietSanPham c,Anh a,GioHang g,SanPham s,MauSac m,Size k,GioHangChiTiet gc,KhachHang kh
             where c.sanPham.id=s.id and c.mauSac.id=m.id
-            and c.size.id=k.id and c.id=a.chiTietSanPham.id
+            and c.size.id=k.id 
             and gc.chiTietSanPham.id=c.id and g.id=gc.gioHang.id
             and g.khachHang.id=kh.id and g.khachHang.id = ?1
             """)
@@ -28,7 +28,7 @@ public interface IGioHangOnllineRepository extends JpaRepository<GioHangChiTiet,
             select new com.example.web.response.GioHangOnllineResponse( gc.id,s.ten,a.ten,gc.donGia,gc.soLuong,m.ten,k.ten)
             from ChiTietSanPham c,Anh a,GioHang g,SanPham s,MauSac m,Size k,GioHangChiTiet gc,KhachHang kh
             where c.sanPham.id=s.id and c.mauSac.id=m.id
-            and c.size.id=k.id and c.id=a.chiTietSanPham.id
+            and c.size.id=k.id 
             and gc.chiTietSanPham.id=c.id and g.id=gc.gioHang.id
             and g.khachHang.id=kh.id and g.khachHang.id = ?1
             """)

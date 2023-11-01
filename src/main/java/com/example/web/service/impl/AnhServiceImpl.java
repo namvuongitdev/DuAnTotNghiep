@@ -1,6 +1,8 @@
 package com.example.web.service.impl;
 import com.example.web.model.Anh;
 import com.example.web.model.ChiTietSanPham;
+import com.example.web.model.MauSac;
+import com.example.web.model.SanPham;
 import com.example.web.repository.IAnhRepository;
 import com.example.web.response.AnhResponse;
 import com.example.web.service.IAnhService;
@@ -22,15 +24,21 @@ public class AnhServiceImpl implements IAnhService {
     private IAnhRepository anhRepository;
 
     @Override
-    public void addAnhCtsp(MultipartFile file , HttpServletRequest request , ChiTietSanPham chiTietSanPham) {
+    public List<Anh> findAnhBySanPham_idAndMauSac_id(UUID idSP, UUID idMS) {
+        return anhRepository.getAnhBySanPham_idAndMauSac_id(idSP , idMS);
+    }
+
+    @Override
+    public void addAnhMauSac(MultipartFile file , SanPham sanPham , MauSac mauSac) {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         String fileName = file.getOriginalFilename();
         Anh anh = Anh.builder().
-                chiTietSanPham(chiTietSanPham).
-                build();
+                sanPham(sanPham)
+                .mauSac(mauSac)
+                .build();
         anhRepository.save(anh);
-        File newFile = new File("D:C:/Users/Admin/Pictures/img/" + fileName + anh.getId());
+        File newFile = new File("C:/Users/Admin/Pictures/img/" + fileName + anh.getId());
         anh.setTen(fileName + anh.getId());
         anhRepository.save(anh);
         try {
@@ -51,21 +59,21 @@ public class AnhServiceImpl implements IAnhService {
             System.out.println("ErrorAddGrammar:" + e);
         }
     }
-
-    @Override
-    public List<Anh> getAnh(String id) {
-        List<Anh> anhs = anhRepository.findByChiTietSanPham_Id(UUID.fromString(id));
-        return anhs;
-    }
-
-    @Override
-    public void reomveAnhById(String id) {
-        anhRepository.deleteById(UUID.fromString(id));
-    }
-
-    @Override
-    public List<Anh> getTenAnh(UUID idSanPham) {
-        return anhRepository.getTenAnh(idSanPham);
-    }
+//
+//    @Override
+//    public List<Anh> getAnh(String id) {
+//        List<Anh> anhs = anhRepository.findByChiTietSanPham_Id(UUID.fromString(id));
+//        return anhs;
+//    }
+//
+//    @Override
+//    public void reomveAnhById(String id) {
+//        anhRepository.deleteById(UUID.fromString(id));
+//    }
+//
+//    @Override
+//    public List<Anh> getTenAnh(UUID idSanPham) {
+//        return anhRepository.getTenAnh(idSanPham);
+//    }
 
 }

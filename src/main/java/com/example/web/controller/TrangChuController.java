@@ -35,9 +35,6 @@ public class TrangChuController {
     @Autowired
     private ISanPhamService iSanPhamService;
 
-    @Autowired
-    private IAnhService iAnhService;
-
     @Autowired IChiTietSanPhamService iChiTietSanPhamService;
 
     @Autowired
@@ -112,12 +109,12 @@ public class TrangChuController {
     @GetMapping("/chi-tiet-san-pham-onl")
     public String chiTiet(Model model,@RequestParam (name = "id") String
             idSanPham){
-        List<Anh> listAnh = iAnhService.getTenAnh(UUID.fromString(idSanPham));
-        List<Anh> distinctListAnh = listAnh.stream()
-                .collect(Collectors.toMap(Anh::getTen, anh -> anh, (existing, replacement) -> existing))
-                .values()
-                .stream()
-                .collect(Collectors.toList());
+     //   List<Anh> listAnh = iAnhService.getTenAnh(UUID.fromString(idSanPham));
+//        List<Anh> distinctListAnh = listAnh.stream()
+//                .collect(Collectors.toMap(Anh::getTen, anh -> anh, (existing, replacement) -> existing))
+//                .values()
+//                .stream()
+//                .collect(Collectors.toList());
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(idSanPham));
         List<SanPham> listSanPham = iSanPhamService.theoTen(sanPham.getChatLieu().getId(),sanPham.getKieuDang().getId(),sanPham.getDanhMuc().getId());
         List<ChiTietSanPham> listCT = iChiTietSanPhamService.listCTSPTheoIdSP(UUID.fromString(idSanPham));
@@ -126,7 +123,7 @@ public class TrangChuController {
         model.addAttribute("listMau",listMS);
         model.addAttribute("listSize",listSize);
         model.addAttribute("sanPham",sanPham);
-        model.addAttribute("listAnh",distinctListAnh);
+//        model.addAttribute("listAnh",distinctListAnh);
         model.addAttribute("listSanPham",listSanPham);
         return "banHangOnlline/chitiet";
     }
