@@ -64,19 +64,20 @@
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <c:forEach items="${lst}" var="xn">
-                        <td>${xn.ma}</td>
-                        <td>${xn.hoTen}</td>
-                        <td>${xn.sdt}</td>
-                        <td>${xn.ngayTao}</td>
-                        <td><fmt:formatNumber pattern="#,###"  value="${xn.tongTien+xn.phiVanChuyen}"/> VNĐ</td>
-                        <td>${xn.moTa}</td>
-                        <td>
-                            <a href="/admin/hoa-don-onl/detail/${xn.id}">Detail</a>
-                        </td>
+                    <c:forEach items="${lst}" var="xn" varStatus="i">
+                        <tr>
+                            <td>${i.index+1}</td>
+                            <td>${xn.ma}</td>
+                            <td>${xn.hoTen}</td>
+                            <td>${xn.sdt}</td>
+                            <td><fmt:formatDate value="${xn.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                            <td><fmt:formatNumber pattern="#,###"  value="${xn.tongTien+xn.phiVanChuyen}"/> VNĐ</td>
+                            <td>${xn.moTa}</td>
+                            <td>
+                                <a href="/admin/hoa-don-onl/detail/${xn.id}" style="font-size: 15px" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
+                            </td>
+                        </tr>
                     </c:forEach>
-                </tr>
             </tbody>
         </table>
     </div>

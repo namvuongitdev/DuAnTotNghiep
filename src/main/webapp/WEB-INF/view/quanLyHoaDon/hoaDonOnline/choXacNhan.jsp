@@ -64,21 +64,22 @@
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <c:forEach items="${lst}" var="xn" varStatus="i">
+                <c:forEach items="${lst}" var="xn" varStatus="i">
+                    <tr>
                         <td>${i.index+1}</td>
                         <td>${xn.ma}</td>
                         <td>${xn.hoTen}</td>
                         <td>${xn.sdt}</td>
-                        <td>${xn.ngayTao}</td>
+                        <td><fmt:formatDate value="${xn.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td><fmt:formatNumber pattern="#,###"  value="${xn.tongTien+xn.phiVanChuyen}"/> VNĐ</td>
                         <td>${xn.moTa}</td>
                         <td>
-                            <a name="2" id="trangThai" onclick="xacNhan({idhd:`${xn.id}`})" style="text-decoration: none" class="badge text-bg-info text-white" ><i class="bi bi-check2"></i></a>
-                            <a href="/admin/hoa-don-onl/detail/${xn.id}" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
+                            <a name="2" id="trangThai" onclick="xacNhan({idhd:`${xn.id}`})" style="text-decoration: none;font-size: 15px" class="badge text-bg-info text-white" ><i class="bi bi-check2"></i></a>
+                            <a onclick="huyDonHang({idhd:`${xn.id}`})" style="text-decoration: none;font-size: 15px" class="badge text-bg-info text-white" ><i class="bi bi-x-square"></i></a>
+                            <a href="/admin/hoa-don-onl/detail/${xn.id}" style="font-size: 15px" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
                         </td>
-                    </c:forEach>
-                </tr>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
     </div>
@@ -92,6 +93,14 @@
         }else {
             return;
         }
+    }
+    function huyDonHang(data) {
+        if (confirm("Bạn có chắc chắn muốn xóa đơn không ?")===true){
+            window.location.href="/admin/hoa-don-onl/huy-don/"+data.idhd;
+        }else {
+            return;
+        }
+
     }
 </script>
 </html>

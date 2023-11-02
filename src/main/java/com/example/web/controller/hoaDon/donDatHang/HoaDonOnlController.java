@@ -2,24 +2,28 @@ package com.example.web.controller.hoaDon.donDatHang;
 
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
+import com.example.web.model.LichSuHoaDon;
+import com.example.web.model.NhanVien;
+import com.example.web.repository.INhanVienRepository;
 import com.example.web.response.HoaDonFilter;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
-import com.oracle.wls.shaded.org.apache.xpath.operations.Number;
-import jakarta.validation.Valid;
+import com.example.web.service.ILichSuHoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +39,12 @@ public class HoaDonOnlController {
 
     private String url;
 
+    @Autowired
+    private INhanVienRepository nhanVienRepository;
+
+    @Autowired
+    private ILichSuHoaDonService lichSuHoaDonService;
+
     @GetMapping("/cho-xac-nhan/hien-thi")
     public String choXacNhan(Model model,@ModelAttribute("hoaDonFillter") HoaDonFilter filter){
         List<HoaDon> lstHd =new ArrayList<>();
@@ -44,6 +54,8 @@ public class HoaDonOnlController {
                 lstHd.add(hoaDonService.getAll().get(i));
             }
         }
+        url ="/admin/hoa-don-onl/cho-xac-nhan/hien-thi";
+        model.addAttribute("url",url);
         model.addAttribute("lst", lstHd);
         model.addAttribute("fillter", filter);
         model.addAttribute("contentPage", "choXacNhan.jsp");
@@ -59,6 +71,8 @@ public class HoaDonOnlController {
                 lstHd.add(hoaDonService.getAll().get(i));
             }
         }
+        url ="/admin/hoa-don-onl/cho-giao-hang/hien-thi";
+        model.addAttribute("url",url);
         model.addAttribute("lst", lstHd);
         model.addAttribute("fillter", filter);
         model.addAttribute("contentPage", "choGiaoHang.jsp");
@@ -74,6 +88,8 @@ public class HoaDonOnlController {
                 lstHd.add(hoaDonService.getAll().get(i));
             }
         }
+        url ="/admin/hoa-don-onl/dang-giao/hien-thi";
+        model.addAttribute("url",url);
         model.addAttribute("lst", lstHd);
         model.addAttribute("fillter", filter);
         model.addAttribute("contentPage", "dangGiao.jsp");
@@ -89,6 +105,8 @@ public class HoaDonOnlController {
                 lstHd.add(hoaDonService.getAll().get(i));
             }
         }
+        url ="/admin/hoa-don-onl/da-giao/hien-thi";
+        model.addAttribute("url",url);
         model.addAttribute("lst", lstHd);
         model.addAttribute("fillter", filter);
         model.addAttribute("contentPage", "daGiao.jsp");
@@ -104,6 +122,8 @@ public class HoaDonOnlController {
                 lstHd.add(hoaDonService.getAll().get(i));
             }
         }
+        url ="/admin/hoa-don-onl/da-huy/hien-thi";
+        model.addAttribute("url",url);
         model.addAttribute("lst", lstHd);
         model.addAttribute("fillter", filter);
         model.addAttribute("contentPage", "daHuy.jsp");
@@ -114,13 +134,28 @@ public class HoaDonOnlController {
                          @RequestParam(defaultValue = "0") Integer page,
                          @PathVariable("id") String id){
         Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
+        Page<HoaDonChiTiet> lst2 = hoaDonService.getHoaDonHuyChiTiet(UUID.fromString(id),page,5);
         Integer tongTien = 0;
-        for (int i = 0; i <= lst.getContent().size()-1; i++) {
-            tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getChiTietSanPham().getSanPham().getGiaBan().intValue();
-        }
-        model.addAttribute("hdc",tongTien);
+        List<LichSuHoaDon> lshd =lichSuHoaDonService.getListById(UUID.fromString(id));
         model.addAttribute("hd",hoaDonService.getOne(id));
-        model.addAttribute("lst1",lst.getContent());
+        if (hoaDonService.getOne(id).getTrangThai()==5){
+            for (int i = 0; i <= lst2.getContent().size()-1; i++) {
+                tongTien+=lst2.getContent().get(i).getSoLuong()*lst2.getContent().get(i).getChiTietSanPham().getSanPham().getGiaBan().intValue();
+            }
+            model.addAttribute("hdc",tongTien);
+            model.addAttribute("lst1",lst2.getContent());
+        }else {
+            for (int i = 0; i <= lst.getContent().size()-1; i++) {
+                tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getChiTietSanPham().getSanPham().getGiaBan().intValue();
+            }
+            model.addAttribute("hdc",tongTien);
+            model.addAttribute("lst1",lst.getContent());
+        }
+        model.addAttribute("xacNhan",lichSuHoaDonService.getOne(id,"xác"));
+        model.addAttribute("choGiao",lichSuHoaDonService.getOne(id,"v"));
+        model.addAttribute("daGiao",lichSuHoaDonService.getOne(id,"ô"));
+        model.addAttribute("taoDon",lichSuHoaDonService.getOneTao(id));
+        model.addAttribute("lshd",lshd);
         return "quanLyHoaDon/chiTietHoaDonOnline/CTChoXacNhan";
     }
 
@@ -145,6 +180,8 @@ public class HoaDonOnlController {
     public String updateSoLuongSanPhamHoaDonChiTiet2(@RequestParam("hdct") String idHdct, @RequestParam("soLuong") String soLuong,
                                                      @PathVariable("id") String id,
                                                      @RequestParam(defaultValue = "0") Integer page) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         url = hoaDonChiTietService.updateSoLuongSanPhamHoaDonChiTietKhiUpdate(idHdct,soLuong);
         Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
         Integer tongTien = 0;
@@ -155,6 +192,14 @@ public class HoaDonOnlController {
         hoaDon.setId(UUID.fromString(id));
         hoaDon.setTongTien(BigDecimal.valueOf(tongTien));
         hoaDonService.updateHoaDonById(hoaDon);
+        Date date = java.util.Calendar.getInstance().getTime();
+        LichSuHoaDon lshd = LichSuHoaDon.builder()
+                .hoaDon(hoaDon)
+                .nguoiThaoTac(nhanVien.getHoTen()+" ("+nhanVien.getChucVu().getTen()+")")
+                .thaoTac("Chỉnh sửa số lượng sản phẩm trong hóa đơn")
+                .ngayThaoTac(date)
+                .build();
+        lichSuHoaDonService.add(lshd);
         return url;
     }
 
@@ -163,6 +208,8 @@ public class HoaDonOnlController {
                                                 @RequestParam("idHdct")String idHdct,
                                                 @RequestParam(defaultValue = "0") Integer page) {
         url = hoaDonChiTietService.deleteSanPhamHoaDon2(idHdct);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
         Integer tongTien = 0;
         for (int i = 0; i <= lst.getContent().size()-1; i++) {
@@ -172,20 +219,34 @@ public class HoaDonOnlController {
         hoaDon.setId(UUID.fromString(id));
         hoaDon.setTongTien(BigDecimal.valueOf(tongTien));
         hoaDonService.updateHoaDonById(hoaDon);
+        Date date = java.util.Calendar.getInstance().getTime();
+        LichSuHoaDon lshd = LichSuHoaDon.builder()
+                .hoaDon(hoaDon)
+                .nguoiThaoTac(nhanVien.getHoTen()+" ("+nhanVien.getChucVu().getTen()+")")
+                .thaoTac("Xóa sản phẩm khỏi hóa đơn")
+                .ngayThaoTac(date)
+                .build();
+        lichSuHoaDonService.add(lshd);
         return url;
     }
     @GetMapping("xac-nhan/{id}")
-    public String xacNhan(Model model,
+    public String xacNhan(
                           @PathVariable("id")String id,
                           @RequestParam("trangThai")String tt){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         Integer status=0;
+        String thaoThac = null;
         HoaDon hoaDon=hoaDonService.getOne(id);
         if (hoaDon.getTrangThai()==1){
             status=1;
+            thaoThac="Đơn hàng đã được xác nhận";
         }else if (hoaDon.getTrangThai()==2){
             status=2;
+            thaoThac="Đơn hàng đã được giao cho đơn vị vận chuyển";
         }else if (hoaDon.getTrangThai()==3){
             status=3;
+            thaoThac="Đơn hàng đã được giao thành công";
         }else if (hoaDon.getTrangThai()==6){
             status=6;
         }else {
@@ -193,6 +254,56 @@ public class HoaDonOnlController {
         }
         hoaDon.setTrangThai(Integer.parseInt(tt));
         url=hoaDonService.updateStatusHoaDonById(hoaDon,String.valueOf(status));
+        Date date = java.util.Calendar.getInstance().getTime();
+        LichSuHoaDon lshd = LichSuHoaDon.builder()
+                .hoaDon(hoaDon)
+                .nguoiThaoTac(nhanVien.getHoTen()+" ("+nhanVien.getChucVu().getTen()+")")
+                .thaoTac(thaoThac)
+                .ngayThaoTac(date)
+                .build();
+        lichSuHoaDonService.add(lshd);
+        return url;
+    }
+    @GetMapping("huy-don/{id}")
+    public String huyDon(@RequestParam(defaultValue = "0") Integer page,
+                          @PathVariable("id")String id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
+        Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
+        for (int i = 0; i <= lst.getContent().size()-1; i++) {
+            hoaDonChiTietService.deleteSanPhamHoaDon2(String.valueOf(lst.getContent().get(i).getId()));
+        }
+        HoaDon hoaDon=hoaDonService.getOne(id);
+        hoaDon.setTrangThai(5);
+        url=hoaDonService.updateStatusHoaDonById(hoaDon,"5");
+        Date date = java.util.Calendar.getInstance().getTime();
+        LichSuHoaDon lshd = LichSuHoaDon.builder()
+                .hoaDon(hoaDon)
+                .nguoiThaoTac(nhanVien.getHoTen()+" ("+nhanVien.getChucVu().getTen()+")")
+                .thaoTac("Hủy hóa đơn")
+                .ngayThaoTac(date)
+                .build();
+        lichSuHoaDonService.add(lshd);
+        return url;
+    }
+    @GetMapping("/update-thong-tin/{id}")
+    public String updateThongTin(@PathVariable("id") String idHD,
+                                 @RequestParam("hoTenKhach")String hoTen,
+                                 @RequestParam("sdtKhach")String sdt,
+                                 @RequestParam("diaChiMoi")String diaChi) {
+        HoaDon hoaDon = hoaDonService.getOne(idHD);
+        hoaDon.setSdt(sdt);
+        hoaDon.setHoTen(hoTen);
+        hoaDon.setDiaChi(diaChi);
+        url=hoaDonService.updateThongTin(hoaDon);
+        return url;
+    }
+    @GetMapping("/update-phi-ship/{id}")
+    public String updatePVC(@PathVariable("id") String idHD,
+                                 @RequestParam("phiVanChuyen")String Pvc) {
+        HoaDon hoaDon = hoaDonService.getOne(idHD);
+        hoaDon.setPhiVanChuyen(BigDecimal.valueOf(Long.parseLong(Pvc)));
+        url=hoaDonService.updatePVC(hoaDon);
         return url;
     }
 }
