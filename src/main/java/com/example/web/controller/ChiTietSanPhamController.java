@@ -103,7 +103,7 @@ public class ChiTietSanPhamController {
         chiTietSanPham.setTrangThai(ctsp.getTrangThai());
         chiTietSanPham.setQrCode(ctsp.getQrCode());
         chiTietSanPhamService.save(chiTietSanPham);
-        return "redirect:/admin/san-pham/hien-thi/" + chiTietSanPham.getSanPham().getId();
+        return "redirect:/admin/san-pham/hien-thi/" + idSP;
     }
 
 //    @GetMapping(value = "/anh/{id}")
@@ -113,11 +113,11 @@ public class ChiTietSanPhamController {
 //        return "redirect:/admin/san-pham/hien-thi/" + idSP;
 //    }
 
-//    @GetMapping(value = "/remove-anh")
-//    public String removeAnhById(@RequestParam String idAnh, @RequestParam String idCTSP, @RequestParam String idSP) {
-//        anhService.reomveAnhById(idAnh);
-//        return "redirect:/admin/chi-tiet-san-pham/anh/" + idCTSP + "?idSP=" + idSP;
-//    }
+    @GetMapping(value = "/remove-anh")
+    @ResponseBody
+    public void removeAnhById(@RequestParam String idAnh) {
+        anhService.reomveAnhById(idAnh);
+    }
 
     @GetMapping(value = "/{id}")
     @ResponseBody

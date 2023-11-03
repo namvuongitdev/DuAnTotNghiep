@@ -16,10 +16,12 @@ public interface IAnhService {
 //
 //    List<Anh> getAnh(String id);
 //
-//    void reomveAnhById(String id);
+    void reomveAnhById(String id);
 //
 //    List<Anh> getTenAnh(UUID idSanPham);
 
     List<Anh> findAnhBySanPham_idAndMauSac_id(UUID idSP , UUID idMS);
+
+    List<Anh> getAllAnhBySanPham_id(UUID idSP);
 
 }

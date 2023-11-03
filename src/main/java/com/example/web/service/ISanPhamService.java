@@ -23,8 +23,6 @@ public interface ISanPhamService {
 
     Page<SanPham> getAllByTenOrMa(String value  , Integer page);
 
-    List<SanPham> theoTen(UUID chatLieu,UUID kieuDang,String danhMuc );
-
     Page<SanPham> findAllGender(Pageable pageable,boolean gioi_tinh);
 
     Page<SanPhamAndKhuyenMai> findAllSanPhamKhuyenMaiGender( boolean gioi_tinh,Integer page);

@@ -1,5 +1,6 @@
 package com.example.web.service;
 import com.example.web.model.ChiTietSanPham;
+import com.example.web.model.Size;
 import com.example.web.response.ChiTietOnllineResponse;
 import com.example.web.response.ChiTietResponse;
 import com.example.web.response.ChiTietSanPhamResponse;
@@ -36,4 +37,5 @@ public interface IChiTietSanPhamService {
 
     ChiTietResponse getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID mauSac_Id, String size, UUID sanPham_Id);
 
+    List<Size> getSizeBySanPham_idAndMauSac_id(UUID idSP , UUID idMS);
 }

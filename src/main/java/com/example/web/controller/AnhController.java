@@ -28,7 +28,7 @@ public class AnhController {
 
     @GetMapping("/anh-mau-sac")
     @ResponseBody
-    public List<Anh> getAnhsBySanPham_idAndMauSac_id(@RequestParam String idSP , @RequestParam String idMS , Model model){
+    public List<Anh> getAnhsBySanPham_idAndMauSac_id(@RequestParam String idSP , @RequestParam String idMS){
        List<Anh> anhs = anhService.findAnhBySanPham_idAndMauSac_id(UUID.fromString(idSP) , UUID.fromString(idMS));
        return anhs;
     }

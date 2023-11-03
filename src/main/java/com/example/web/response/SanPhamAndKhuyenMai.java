@@ -52,7 +52,8 @@ public class SanPhamAndKhuyenMai {
 
     private BigDecimal donGiaSauKhiGiam;
 
-    public SanPhamAndKhuyenMai(UUID id, String ma, String ten, String img, Integer trangThai, Date ngayTao, Date ngaySua, BigDecimal giaNhap, BigDecimal giaBan, String moTa, Boolean gioiTinh, KieuDang kieuDang, ChatLieu chatLieu, DanhMuc danhMuc, BigDecimal donGiaSauKhiGiam) {
+
+    public SanPhamAndKhuyenMai(UUID id, String ma, String ten, String img, Integer trangThai, Date ngayTao, Date ngaySua, BigDecimal giaNhap, BigDecimal giaBan, String moTa, Boolean gioiTinh, KieuDang kieuDang, ChatLieu chatLieu, DanhMuc danhMuc , BigDecimal donGiaSauKhiGiam) {
         this.id = id;
         this.ma = ma;
         this.ten = ten;

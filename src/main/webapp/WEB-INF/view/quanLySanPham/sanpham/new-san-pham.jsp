@@ -23,6 +23,7 @@
     <!-- Or for RTL support -->
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css"/>
+    <link rel="stylesheet" href="/css/modal.css">
 
 </head>
 <body>
@@ -226,9 +227,10 @@
                                                         </c:forEach>
                                                     </select>
                                                 </td>
-                                                <td style="width: 110px ;">
-                                                    <input type="number" class="form-control" value="${ctsp.soLuong}"
-                                                           min="1" name="soLuong">
+                                                <td style="width: 110px">
+                                                    <label for="soLuongCTSP"></label>
+                                                    <input type="text" class="form-control" value="${ctsp.soLuong}"
+                                                         id="soLuongCTSP" name="soLuong" />
                                                 </td>
                                                 <td>
                                                     <button style="--bs-btn-padding-y: .56rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"

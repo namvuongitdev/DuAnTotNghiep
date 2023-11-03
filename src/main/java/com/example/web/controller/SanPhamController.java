@@ -3,6 +3,7 @@ import com.beust.jcommander.Parameter;
 import com.example.web.model.ChatLieu;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.DanhMuc;
+import com.example.web.model.KhuyenMai;
 import com.example.web.model.KieuDang;
 import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
@@ -13,6 +14,7 @@ import com.example.web.service.DanhMucService;
 import com.example.web.service.IChatLieuService;
 import com.example.web.service.IChiTietSanPhamService;
 import com.example.web.service.IFormDangService;
+import com.example.web.service.IKhuyenMaiService;
 import com.example.web.service.IMauSacService;
 import com.example.web.service.ISanPhamService;
 import com.example.web.service.SizeService;
@@ -33,6 +35,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
@@ -60,6 +64,9 @@ public class SanPhamController {
 
     @Autowired
     private IChiTietSanPhamService chiTietSanPhamService;
+
+    @Autowired
+    private IKhuyenMaiService khuyenMaiService;
 
     @Autowired
     private HttpServletRequest request;
@@ -143,6 +150,7 @@ public class SanPhamController {
                 sanPham.setImg(sp.getImg());
                 sanPham.setNgaySua(date);
                 iSanPhamService.save(sanPham);
+                SanPhamKhuyenMai spkm = khuyenMaiService.getSanPhamById(sp.getId());
             } else {
                 String maKM = "SP" + (iSanPhamService.getAll().size() + 1);
                 sanPham.setMa(maKM);
@@ -170,11 +178,11 @@ public class SanPhamController {
     }
 
     @GetMapping(value = "/add-anh-mac-dinh")
-    public String addAnhMacDinhSanPham(@RequestParam String img, @RequestParam String idSP) {
+    @ResponseBody
+    public void addAnhMacDinhSanPham(@RequestParam String img, @RequestParam String idSP) {
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(idSP));
         sanPham.setImg(img);
         iSanPhamService.save(sanPham);
-        return "redirect:/admin/san-pham/hien-thi/" + sanPham.getId();
     }
 
 

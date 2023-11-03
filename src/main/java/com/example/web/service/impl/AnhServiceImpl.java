@@ -29,6 +29,11 @@ public class AnhServiceImpl implements IAnhService {
     }
 
     @Override
+    public List<Anh> getAllAnhBySanPham_id(UUID idSP) {
+        return anhRepository.findAnhBySanPham_id(idSP);
+    }
+
+    @Override
     public void addAnhMauSac(MultipartFile file , SanPham sanPham , MauSac mauSac) {
         InputStream inputStream = null;
         OutputStream outputStream = null;
@@ -66,10 +71,10 @@ public class AnhServiceImpl implements IAnhService {
 //        return anhs;
 //    }
 //
-//    @Override
-//    public void reomveAnhById(String id) {
-//        anhRepository.deleteById(UUID.fromString(id));
-//    }
+    @Override
+    public void reomveAnhById(String id) {
+        anhRepository.deleteById(UUID.fromString(id));
+    }
 //
 //    @Override
 //    public List<Anh> getTenAnh(UUID idSanPham) {

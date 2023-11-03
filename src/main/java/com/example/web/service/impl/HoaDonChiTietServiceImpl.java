@@ -11,6 +11,8 @@ import com.example.web.repository.IHoaDonRepository;
 import com.example.web.service.IHoaDonChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -55,7 +57,8 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                     if (!chiTietSanPham.getSanPham().getSanPhamKhuyenMais().isEmpty()) {
                         for (SanPhamKhuyenMai o : chiTietSanPham.getSanPham().getSanPhamKhuyenMais()) {
                             if (o.getKhuyenMai().getTrangThai() == 1 && o.getTrangThai() == 1) {
-                                hdct.setDonGia(o.getDonGiaSauKhiGiam());
+                                Integer donGiaSauKhiGiam = o.getSanPhamKM().getGiaBan().intValue() - (o.getSanPhamKM().getGiaBan().intValue() / 100) * o.getMucGiam().intValue();
+                                hdct.setDonGia(BigDecimal.valueOf(donGiaSauKhiGiam));
                             } else {
                                 hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
                             }

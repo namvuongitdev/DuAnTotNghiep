@@ -1,5 +1,7 @@
 package com.example.web.repository;
+import com.example.web.model.Anh;
 import com.example.web.model.ChiTietSanPham;
+import com.example.web.model.Size;
 import com.example.web.response.ChiTietOnllineResponse;
 import jakarta.transaction.Transactional;
 import com.example.web.response.ChiTietResponse;
@@ -44,5 +46,6 @@ public interface IChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,
     @Query(value = "select new com.example.web.response.ChiTietResponse(ctsp.soLuong,ctsp.trangThai,ctsp.id,ctsp.mauSac,ctsp.sanPham,ctsp.size,ctsp.qrCode) from ChiTietSanPham ctsp where ctsp.mauSac.id=?1 and ctsp.size.id = ?2 and ctsp.sanPham.id = ?3" )
     ChiTietResponse getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID mauSac_Id, String size, UUID sanPham_Id);
 
-
+    @Query(value = "select ctsp.size from ChiTietSanPham ctsp join ctsp.sanPham sp join ctsp.mauSac ms  where sp.id = ?1 and ms.id = ?2")
+    List<Size> findSizeBySanPham_idAndMauSac_id(UUID idSP , UUID idMS);
 }

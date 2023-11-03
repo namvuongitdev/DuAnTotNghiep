@@ -139,11 +139,6 @@ public class SanPhamServiceImpl implements ISanPhamService {
     }
 
     @Override
-    public List<SanPham> theoTen(UUID chatLieu, UUID kieuDang, String danhMuc) {
-        return iSanPhamRepository.theoTen(chatLieu, kieuDang, danhMuc);
-    }
-
-    @Override
     public Page<SanPham> findAllGender(Pageable pageable, boolean gioi_tinh) {
         return iSanPhamRepository.findAllGender(pageable, gioi_tinh);
     }

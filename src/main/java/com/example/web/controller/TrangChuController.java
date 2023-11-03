@@ -40,6 +40,9 @@ public class TrangChuController {
     @Autowired
     IGioHangOnllineService iGioHangOnllineService;
 
+    @Autowired
+    private IAnhService anhService;
+
 
     private Page<SanPham> sanPhamPage = null;
 
@@ -109,22 +112,15 @@ public class TrangChuController {
     @GetMapping("/chi-tiet-san-pham-onl")
     public String chiTiet(Model model,@RequestParam (name = "id") String
             idSanPham){
-     //   List<Anh> listAnh = iAnhService.getTenAnh(UUID.fromString(idSanPham));
-//        List<Anh> distinctListAnh = listAnh.stream()
-//                .collect(Collectors.toMap(Anh::getTen, anh -> anh, (existing, replacement) -> existing))
-//                .values()
-//                .stream()
-//                .collect(Collectors.toList());
+       List<Anh> anhs = anhService.getAllAnhBySanPham_id(UUID.fromString(idSanPham));
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(idSanPham));
-        List<SanPham> listSanPham = iSanPhamService.theoTen(sanPham.getChatLieu().getId(),sanPham.getKieuDang().getId(),sanPham.getDanhMuc().getId());
         List<ChiTietSanPham> listCT = iChiTietSanPhamService.listCTSPTheoIdSP(UUID.fromString(idSanPham));
         List<MauSac> listMS = mauSacService.getTheoCTSP(UUID.fromString(idSanPham));
         List<Size> listSize = sizeService.getTheoCT(UUID.fromString(idSanPham));
         model.addAttribute("listMau",listMS);
         model.addAttribute("listSize",listSize);
         model.addAttribute("sanPham",sanPham);
-//        model.addAttribute("listAnh",distinctListAnh);
-        model.addAttribute("listSanPham",listSanPham);
+        model.addAttribute("listAnh",anhs);
         return "banHangOnlline/chitiet";
     }
 
@@ -136,6 +132,22 @@ public class TrangChuController {
         ChiTietOnllineResponse listCT = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndSanPham_Id1(UUID.fromString(idMau),idSize,UUID.fromString(idSP));
         return listCT;
     }
+
+    @GetMapping("/anh-mau-sac")
+    @ResponseBody
+    public List<Anh> getAnhByMauSac_idAndSanPham_id(@RequestParam String idSP , @RequestParam String idMS){
+        List<Anh> listAnh = anhService.findAnhBySanPham_idAndMauSac_id(UUID.fromString(idSP) , UUID.fromString(idMS));
+        return listAnh;
+    }
+
+    @GetMapping("/kich-co")
+    @ResponseBody
+    public List<Size> getSizeBySanPham_idAndMauSac_id(@RequestParam String idSP , @RequestParam String idMS){
+        List<Size> listSize = iChiTietSanPhamService.getSizeBySanPham_idAndMauSac_id(UUID.fromString(idSP) , UUID.fromString(idMS));
+        return listSize;
+    }
+
+
 
     @GetMapping("/tinh-trang/{idSP}")
     @ResponseBody

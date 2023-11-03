@@ -13,8 +13,9 @@ function findAnhMauSac(idSP, idMS) {
                 document.getElementById("hienThiAnhMauSac").innerHTML =
                     `<div class="card" style="display: block">
                     <div class="card-body row">
-                          <div class="row" id="anhs">
+                          <div class="row" id="anhs" style="margin-bottom: 20px">
                           </div>
+                         
                           <div class="row">
                           <div class="col-sm-2">
                             <a type="button"
@@ -32,6 +33,10 @@ function findAnhMauSac(idSP, idMS) {
                                             <div>
                                                 <img src="/image/${data[i].ten}" alt="..." style="width: 150px ; height: 150px">
                                             </div>
+                                            <div>
+                                               <a type="button" class="btn btn-secondary" onclick="anhMacDinhSanPham('${idSP}','${data[i].ten}')">Mặc định</a>
+                                               <a type="button" class="btn btn-danger" onclick="xoaAnh('${data[i].id}')">Xoá</a>                                           
+                                            </div>         
                                         </div>
                       `
                 }
@@ -48,6 +53,16 @@ async function themAnhMauSac() {
         body: fileAnh
     };
     const api = await fetch(`/admin/chi-tiet-san-pham/add-anh?idSP=${idSanPham}&idMS=${idMauSac}`, options)
+    findAnhMauSac(idSanPham, idMauSac);
+}
+
+async function anhMacDinhSanPham(idSP , tenAnh){
+    const api = await fetch(`/admin/san-pham/add-anh-mac-dinh?img=${tenAnh}&idSP=${idSP}`);
+    findAnhMauSac(idSanPham, idMauSac);
+}
+
+async function xoaAnh(idAnh){
+    const api = await fetch(`/admin/chi-tiet-san-pham/remove-anh?idAnh=${idAnh}`);
     findAnhMauSac(idSanPham, idMauSac);
 }
 

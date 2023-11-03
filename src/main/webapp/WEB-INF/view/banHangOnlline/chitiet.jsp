@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -24,6 +25,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="	sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous">
     <style>
         .pd-wrap {
             padding: 40px 0;
@@ -418,396 +422,422 @@
 <%--body begin--%>
 <div class="pd-wrap">
     <div class="container">
-        <div class="heading-section">
-            <h2>${sanPham.ten}</h2>
-        </div>
         <div class="row">
-            <div class="col-md-6">
+
+            <div class="col-md-6" id="anhMauSac">
                 <div id="slider" class="owl-carousel product-slider">
                     <c:forEach items="${listAnh}" var="anh">
                         <div class="item">
-                            <img src="/anh/${anh.ten}"/>
+                            <img src="/image/${anh.ten}"/>
                         </div>
                     </c:forEach>
                 </div>
                 <div id="thumb" class="owl-carousel product-thumb">
                     <c:forEach items="${listAnh}" var="anh">
                         <div class="item">
-                            <img src="/anh/${anh.ten}"/>
+                            <img src="/image/${anh.ten}"/>
                         </div>
 
                     </c:forEach>
                 </div>
             </div>
+
             <div class="col-md-6">
                 <div class="product-dtl">
                     <div class="product-info">
                         <div class="product-name">${sanPham.ten}</div>
                         <div class="product-price-discount"><span>
                             <c:forEach items="${sanPham.sanPhamKhuyenMais}" var="sanPhamKhuyenMai">
-                                    <fmt:formatNumber pattern="#,###" value="${sanPhamKhuyenMai.donGiaSauKhiGiam}"></fmt:formatNumber> đ
-                                </c:forEach>
-                    </div>
-                    <p>Form dáng : <span>${sanPham.kieuDang.ten}</span></p>
-                    <p>Chất liệu : <span>${sanPham.chatLieu.ten}</span></p>
-                    <span>Đặc tính nổi bật</span>
-                    <p>${sanPham.moTa}</p>
-                    <font color="green">${tong}</font>
-                    <div id="tongSanPham"></div>
-                    <form method="get" action="/gio-hang-onl/them-moi-gio-hang/${sanPham.id}">
-                        <div class="row" style="margin-top: 10px">
-                            <div class="col-md-6">
-                                <label>Color</label>
-                                <br>
-                                <select name="color" class="form-control" id="colorSelector">
-                                    <c:forEach items="${listMau}" var="mau">
-                                        <option value="${mau.id}">${mau.ten}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-
-                            <div class="col-md-6">
-
-                                <label>Size</label>
-                                <br>
-                                <select name="size" class="form-control" onchange="getCTSP(this.value)">
-                                    <c:forEach items="${listSize}" var="size">
-                                        <option value="${size.id}">${size.ten}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
-                        <br>
-                        <div id="soLuong" style="color: cadetblue">
-                        </div>
-                        <div id="trangThai" style="color: cadetblue">
-                        </div>
-                <br>
-                    <div class="product-count" >
-                        <label>Quantity</label>
-                        <div class="display-flex">
-                            <div class="qtyminus" style="">-</div>
-                            <input type="text" style="height: 35px" name="quantity" value="1" class="qty">
-                            <div class="qtyplus">+</div>
-
-                            <button type="submit" id="themVaoGioHang"
-                                    class="round-black-btn" style="margin-top: 60px;margin-left: 20px;
-                                    ">Add to Cart</button>
-                        </div>
-                    </div>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-        <div class="product-info-tabs">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab"
-                       aria-controls="description" aria-selected="true">Chính sách đổi hàng</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab"
-                       aria-controls="review" aria-selected="false">Hướng dẫn chọn size</a>
-                </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="description" role="tabpanel"
-                     aria-labelledby="description-tab">
-                    <li>Miễn phí đổi hàng cho khách mua ở Shop trong trường hợp bị lỗi từ nhà sản xuất, giao nhầm
-                        hàng,
-                        nhầm size.
-                    </li>
-                    <li>Quay video mở sản phẩm khi nhận hàng, nếu không có video unbox, khi phát hiện lỗi phải báo
-                        ngay
-                        cho Shop trong 1 ngày tính từ ngày giao hàng thành công. Qua 1 ngày chúng mình không giải
-                        quyết
-                        khi không có video unbox.
-                    </li>
-                    <li>Sản phẩm đổi trong thời gian 3 ngày kể từ ngày nhận hàng.</li>
-                    <li>Sản phẩm còn mới nguyên tem, tags, sản phẩm chưa giặt và không dơ bẩn, hư hỏng bởi những tác
-                        nhân bên ngoài cửa hàng sau khi mua hàng.
-                    </li>
-                </div>
-                <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-                    Để lấy số đo cỡ áo thun , các bạn cần một cái thước mềm (thường gọi là thước dây, thước vải) để
-                    đo.
-                    <li>Đo vòng cổ: quấn thước dây vòng quanh cổ, đo vòng quanh thân cổ, chèn thêm 1 ngón tay vào
-                        phía
-                        trong giữa cổ và thước khi đo.
-                    </li>
-                    <li>Đo vòng ngực: quấn thước dây vòng qua ngực, đo chỗ kích thước lớn nhất.</li>
-                    <li>Đo vòng eo: quấn thước dây qua eo, đo quanh vòng eo, chèn thêm 2 ngón tay vào phía trong
-                        giữa eo
-                        và thước khi đo.
-                    </li>
-                    <li>Vòng mông: quấn thước dây vòng ngang mông, đo chỗ kích thước lớn nhất.</li>
-                    <li>Chiều cao: đo từ bàn chân đến đỉnh đầu ở tư thế đứng thẳng.</li>
-                    <p>Lưu ý khi đo vòng ngực: hãy mặc chiếc áo ngực mà mình cảm thấy thoải mái nhất khi đo vòng
-                        ngực,
-                        đừng mặc quá chật, đừng mặc quá rộng, cũng đừng đo khi không mặc gì, trừ khi bạn chắc chắn
-                        rằng
-                        bạn sẽ mặc chiếc áo bạn sắp mua mà không cần áo ngực.</p>
-                    <p>Lưu ý khi đo vòng mông: hãy đứng thẳng khi đo, chắc chắn rằng bạn không gập người hay cúi ra
-                        phía
-                        trước khi đo, nếu bạn không chắc chắn, hãy nhờ người khác đo giùm mình trong khi mình đứng
-                        thẳng
-                        nhé. Đừng đo vòng eo lúc vừa ăn no hay lúc bụng đang đói, đo vòng eo lúc sắp đi ngủ là tốt
-                        nhất.</p>
-                    <p>Sau khi bạn đã lấy được số đo của mình, xin mời bạn đối chiếu với bảng dưới đây để biết được
-                        size
-                        vừa với mình nhất.</p>
-                    <img src="/anh/hdsz.png" style="width: 1100px">
-
-                </div>
-
-                <div style="text-align:center;font-size:14px;padding-bottom:20px;">Get free icon packs for your next
-                    project at
-                    <a href="http://iiicons.in/" target="_blank"
-                       style="color:#ff5e63;font-weight:bold;">www.iiicons.in</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<%--body end--%>
-<%-- sản phẩm liên quan begin--%>
-<div class="container-fluid bg-3 text-center">
-    <h2>Sản Phẩm Liên Quan </h2><br>
-    <div class="row">
-        <c:forEach items="${listSanPham}" var="sp">
-            <div class="col-sm-3">
-                        <div class="product__item" style="margin-left: 30px">
-                            <div class="product__item__pic">
-                                <img src="/anh/${sp.img}" style="swidth:265px;height: 270px" >
-                                <ul class="product__hover">
-                                    <form method="get" action="/index/chi-tiet-san-pham/${sp.id}">
-                                        <li><a href="/index/chi-tiet-san-pham-onl?id=${sp.id}"><img src="/anh/eye.png"style="margin-right: 20px;width:40px" alt=""></a></li>
-                                    </form>
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6>${sp.ten}</h6>
-                                    <%--                    <a href="#" class="add-cart">+ Add To Cart</a>--%>
-
-                                <c:forEach items="${sp.sanPhamKhuyenMais}" var="sanPhamKhuyenMai">
-                                    <strike><fmt:formatNumber pattern="#,###"
-                                                              value="${sanPhamKhuyenMai.donGiaSauKhiGiam == null || sanPhamKhuyenMai.donGiaSauKhiGiam==0 ? '' : sp.giaBan }"></fmt:formatNumber></strike>
                                     <fmt:formatNumber pattern="#,###"
-                                                      value="${sanPhamKhuyenMai.donGiaSauKhiGiam != null  || sanPhamKhuyenMai.donGiaSauKhiGiam!=0 ? sp.giaBan : '' }"></fmt:formatNumber>
-                                    <p>  <fmt:formatNumber pattern="#,###" value="${sanPhamKhuyenMai.donGiaSauKhiGiam}"></fmt:formatNumber> đ </p>
+                                                      value="${sanPhamKhuyenMai.donGiaSauKhiGiam}"></fmt:formatNumber> đ
                                 </c:forEach>
-                            </div>
                         </div>
-            </div>
-        </c:forEach>
+                        <p>Form dáng : <span>${sanPham.kieuDang.ten}</span></p>
+                        <p>Chất liệu : <span>${sanPham.chatLieu.ten}</span></p>
+                        <span>Đặc tính nổi bật</span>
+                        <p>${sanPham.moTa}</p>
+                        <font color="green">${tong}</font>
+                        <div id="tongSanPham"></div>
+                        <form method="get" action="/gio-hang-onl/them-moi-gio-hang/${sanPham.id}">
+                            <div class="row" style="margin-top: 10px">
+                                <div class="row">
+                                    <div class="form-check">
+                                        <label>Color</label>
+                                        <br>
+                                        <c:forEach items="${listMau}" var="mau">
+                                            <input type="radio" class="btn-check" onclick="getCTSP({
+                                       id:this.value,
+                                        type:'mauSac'
+                                                 })"
+                                                   value="${mau.id}" name="success-outlined-1" id="${mau.id}"
+                                                   autocomplete="off">
+                                            <label class="btn btn-outline-secondary" for="${mau.id}">${mau.ten}
+                                            </label>
+                                        </c:forEach>
+                                    </div>
 
-    </div>
-</div><br>
+                                </div>
 
-<%-- sản phẩm liên quan end--%>
-<!-- Footer Section begin -->
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="footer__about">
-                    <div class="footer__logo">
-                        <a href="#"><img src="img/footer-logo.png" alt=""></a>
-                    </div>
-                    <p>The customer is at the heart of our unique business model, which includes design.</p>
-                    <a href="#"><img src="img/payment.png" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
-                <div class="footer__widget">
-                    <h6>Shopping</h6>
-                    <ul>
-                        <li><a href="#">Clothing Store</a></li>
-                        <li><a href="#">Trending Shoes</a></li>
-                        <li><a href="#">Accessories</a></li>
-                        <li><a href="#">Sale</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-3 col-sm-6">
-                <div class="footer__widget">
-                    <h6>Shopping</h6>
-                    <ul>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Payment Methods</a></li>
-                        <li><a href="#">Delivary</a></li>
-                        <li><a href="#">Return & Exchanges</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
-                <div class="footer__widget">
-                    <h6>NewLetter</h6>
-                    <div class="footer__newslatter">
-                        <p>Be the first to know about new arrivals, look books, sales & promos!</p>
-                        <form action="#">
-                            <input type="text" placeholder="Your email">
-                            <button type="submit"><span class="icon_mail_alt"></span></button>
+                                <div class="row">
+
+                                    <label>Size</label>
+                                    <br>
+                                    <div class="form-check" id="kichCo">
+                                        <c:forEach items="${listSize}" var="size">
+                                            <input type="radio" class="btn-check" onclick="getCTSP({
+                                       id:this.value,
+                                        type:'size'
+                                                 })"
+                                                   value="${size.id}" name="success-outlined" id="${size.id}"
+                                                   autocomplete="off">
+                                            <label class="btn btn-outline-secondary" for="${size.id}">${size.ten}
+                                            </label>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div id="soLuong" style="color: cadetblue">
+                            </div>
+                            <div id="trangThai" style="color: cadetblue">
+                            </div>
+                            <br>
+                            <div class="product-count">
+                                <label>Quantity</label>
+                                <div class="display-flex">
+                                    <div class="qtyminus" style="">-</div>
+                                    <input type="text" style="height: 35px" id="quantity" name="quantity" value="1"
+                                           class="qty">
+                                    <div class="qtyplus">+</div>
+                                    <p style="color: red">${checkQuantity}</p>
+                                    <button type="submit" id="themVaoGioHang"
+                                            class="round-black-btn" style="
+                                    margin-top: 60px;margin-left: 20px;
+                                    ">Add to Cart
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="footer__copyright__text">
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    <p>Copyright ©
-                        <script>
-                            document.write(new Date().getFullYear());
-                        </script>2020
-                        All rights reserved | This template is made with <i class="fa fa-heart-o"
-                                                                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                    </p>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            <div class="product-info-tabs">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab"
+                           aria-controls="description" aria-selected="true">Chính sách đổi hàng</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab"
+                           aria-controls="review" aria-selected="false">Hướng dẫn chọn size</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="description" role="tabpanel"
+                         aria-labelledby="description-tab">
+                        <li>Miễn phí đổi hàng cho khách mua ở Shop trong trường hợp bị lỗi từ nhà sản xuất, giao nhầm
+                            hàng,
+                            nhầm size.
+                        </li>
+                        <li>Quay video mở sản phẩm khi nhận hàng, nếu không có video unbox, khi phát hiện lỗi phải báo
+                            ngay
+                            cho Shop trong 1 ngày tính từ ngày giao hàng thành công. Qua 1 ngày chúng mình không giải
+                            quyết
+                            khi không có video unbox.
+                        </li>
+                        <li>Sản phẩm đổi trong thời gian 3 ngày kể từ ngày nhận hàng.</li>
+                        <li>Sản phẩm còn mới nguyên tem, tags, sản phẩm chưa giặt và không dơ bẩn, hư hỏng bởi những tác
+                            nhân bên ngoài cửa hàng sau khi mua hàng.
+                        </li>
+                    </div>
+                    <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                        Để lấy số đo cỡ áo thun , các bạn cần một cái thước mềm (thường gọi là thước dây, thước vải) để
+                        đo.
+                        <li>Đo vòng cổ: quấn thước dây vòng quanh cổ, đo vòng quanh thân cổ, chèn thêm 1 ngón tay vào
+                            phía
+                            trong giữa cổ và thước khi đo.
+                        </li>
+                        <li>Đo vòng ngực: quấn thước dây vòng qua ngực, đo chỗ kích thước lớn nhất.</li>
+                        <li>Đo vòng eo: quấn thước dây qua eo, đo quanh vòng eo, chèn thêm 2 ngón tay vào phía trong
+                            giữa eo
+                            và thước khi đo.
+                        </li>
+                        <li>Vòng mông: quấn thước dây vòng ngang mông, đo chỗ kích thước lớn nhất.</li>
+                        <li>Chiều cao: đo từ bàn chân đến đỉnh đầu ở tư thế đứng thẳng.</li>
+                        <p>Lưu ý khi đo vòng ngực: hãy mặc chiếc áo ngực mà mình cảm thấy thoải mái nhất khi đo vòng
+                            ngực,
+                            đừng mặc quá chật, đừng mặc quá rộng, cũng đừng đo khi không mặc gì, trừ khi bạn chắc chắn
+                            rằng
+                            bạn sẽ mặc chiếc áo bạn sắp mua mà không cần áo ngực.</p>
+                        <p>Lưu ý khi đo vòng mông: hãy đứng thẳng khi đo, chắc chắn rằng bạn không gập người hay cúi ra
+                            phía
+                            trước khi đo, nếu bạn không chắc chắn, hãy nhờ người khác đo giùm mình trong khi mình đứng
+                            thẳng
+                            nhé. Đừng đo vòng eo lúc vừa ăn no hay lúc bụng đang đói, đo vòng eo lúc sắp đi ngủ là tốt
+                            nhất.</p>
+                        <p>Sau khi bạn đã lấy được số đo của mình, xin mời bạn đối chiếu với bảng dưới đây để biết được
+                            size
+                            vừa với mình nhất.</p>
+                        <img src="/anh/hdsz.png" style="width: 1100px">
+
+                    </div>
+
+                    <div style="text-align:center;font-size:14px;padding-bottom:20px;">Get free icon packs for your next
+                        project at
+                        <a href="http://iiicons.in/" target="_blank"
+                           style="color:#ff5e63;font-weight:bold;">www.iiicons.in</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</footer>
-<!-- Footer Section End -->
+    <%--body end--%>
+    <%-- sản phẩm liên quan end--%>
+    <%--    <!-- Footer Section begin -->--%>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#"><img src="/img/footer-logo.png" alt=""></a>
+                        </div>
+                        <p>The customer is at the heart of our unique business model, which includes design.</p>
+                        <a href="#"><img src="/img/payment.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Clothing Store</a></li>
+                            <li><a href="#">Trending Shoes</a></li>
+                            <li><a href="#">Accessories</a></li>
+                            <li><a href="#">Sale</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Delivary</a></li>
+                            <li><a href="#">Return & Exchanges</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>NewLetter</h6>
+                        <div class="footer__newslatter">
+                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                            <form action="#">
+                                <input type="text" placeholder="Your email">
+                                <button type="submit"><span class="icon_mail_alt"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p>Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>
+                            2020
+                            All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                                                                aria-hidden="true"></i> by <a
+                                    href="https://colorlib.com" target="_blank">Colorlib</a>
+                        </p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <%--    <!-- Footer Section End -->--%>
 
-<!-- Search Begin -->
-<div class="search-model">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-switch">+</div>
-        <form class="search-model-form">
-            <input type="text" id="search-input1" placeholder="Search here.....">
-        </form>
+    <%--    <!-- Search Begin -->--%>
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input1" placeholder="Search here.....">
+            </form>
+        </div>
     </div>
-</div>
-<!-- Search End -->
-<!-- Js Plugins -->
-<script src="/js/jquery-3.3.1.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.nice-select.min.js"></script>
-<script src="/js/jquery.nicescroll.min.js"></script>
-<script src="/js/jquery.magnific-popup.min.js"></script>
-<script src="/js/jquery.countdown.min.js"></script>
-<script src="/js/jquery.slicknav.js"></script>
-<script src="/js/mixitup.min.js"></script>
-<script src="/js/owl.carousel.min.js"></script>
-<script src="/js/main.js"></script>
-<script>
-    let mauSacSP = document.getElementById("colorSelector");
-    var myVariable = new MyCustomType('${sanPham.id}');
-    const themVaoGioHang = document.getElementById("themVaoGioHang");
-    function MyCustomType(data) {
-        this.data = data;
-    }
-    function getCTSP(id) {
-        fetch('/index/so-luong/' + id + '/' + mauSacSP.value + '?id='+ myVariable.data )
-            .then(response => response.json())
-            .then(data => {
+    <%--    <!-- Search End -->--%>
+    <%--    <!-- Js Plugins -->--%>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.nice-select.min.js"></script>
+    <script src="/js/jquery.nicescroll.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.countdown.min.js"></script>
+    <script src="/js/jquery.slicknav.js"></script>
+    <script src="/js/mixitup.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        let mauSacSP = undefined;
+        let kichCoSP = undefined;
+        let myVariable = new MyCustomType('${sanPham.id}');
+        const themVaoGioHang = document.getElementById("themVaoGioHang");
+        const quantity = document.getElementById("quantity");
+        const anhMauSac = document.getElementById("anhMauSac");
+        const kichCo = document.getElementById("kichCo");
 
-                document.getElementById("soLuong").innerHTML = `Số Lượng :` + data.soLuong +`.`;
-                if(data.trangThai==1){
-                    themVaoGioHang.removeAttribute('disabled');
-                    document.getElementById("trangThai").innerHTML = `Đang Kinh Doanh.`;
-                    themVaoGioHang.style.backgroundColor = "black";
-                }else {
-                    themVaoGioHang.setAttribute("disabled", "");
-                    document.getElementById("trangThai").innerHTML = `Ngừng Kinh Doanh.`;
-                    themVaoGioHang.style.backgroundColor = "#CCCCCC";
-                }
-            });
-    }
+        function MyCustomType(data) {
+            this.data = data;
+        }
 
-    $(document).ready(function () {
-        var slider = $("#slider");
-        var thumb = $("#thumb");
-        var colorSelector = $("#colorSelector");
-        var slidesPerPage = 4; //globaly define number of elements per page
-        var syncedSecondary = true;
-        slider.owlCarousel({
-            items: 1,
-            slideSpeed: 2000,
-            nav: false,
-            autoplay: false,
-            dots: false,
-            loop: true,
-            responsiveRefreshRate: 200
-        }).on('changed.owl.carousel', syncPosition);
+        async function getCTSP(value) {
+            if (value.type == 'size') {
+                kichCoSP = value.id;
+            }
+            if (value.type == 'mauSac') {
+                mauSacSP = value.id;
+                kichCoSP = undefined;
+                kichCo.replaceChildren();
+                const responseSize = await fetch('/index/kich-co?idSP='+myVariable.data+'&idMS='+mauSacSP)
+                const data = await responseSize.json();
+                 data.map(function (size) {
+                    kichCo.innerHTML += ` <input type="radio" class="btn-check" onclick="getCTSP({
+                                                id:this.value,
+                                                 type:'size'
+                                                         })"
+                              value="`+size.id+`" name="success-outlined" id="`+size.id+`"
+                             autoComplete="off">
+                          <label class="btn btn-outline-secondary" for="`+size.id+`">`+size.ten+`
+                          </label>`
+                })
+               const responseAnh = await fetch('/index/anh-mau-sac?idSP=' + myVariable.data + '&idMS=' + mauSacSP)
+                const dataAnh =  await responseAnh.json()
+                        anhMauSac.replaceChildren();
+                        anhMauSac.innerHTML = `<div class="row" id='anhs'></div>`
+                        dataAnh.map(function (anh){
+                            document.getElementById("anhs").innerHTML += `
+                             <div class="col l-3">
+                                <img src="/image/` + anh.ten + `">
+                             </div>
+                        `
+                        })
+            }
+            if (mauSacSP != undefined && kichCoSP != undefined) {
+                fetch('/index/so-luong/' + kichCoSP + '/' + mauSacSP + '?id=' + myVariable.data)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("soLuong").innerHTML = `Số Lượng :` + data.soLuong + `.`;
+                        if (data.trangThai == 1) {
+                            themVaoGioHang.removeAttribute('disabled');
+                            document.getElementById("trangThai").innerHTML = `Đang Kinh Doanh.`;
+                            themVaoGioHang.style.backgroundColor = "black";
+                        } else if (data.trangThai == 0) {
+                            document.getElementById("trangThai").innerHTML = `Ngừng Kinh Doanh.`;
+                            themVaoGioHang.setAttribute("disabled", "");
+                            themVaoGioHang.style.backgroundColor = "#CCCCCC";
+                        }
+                        if (data.soLuong == 0) {
+                            themVaoGioHang.setAttribute("disabled", "");
+                            themVaoGioHang.style.backgroundColor = "#CCCCCC";
+                        }
 
-        thumb.on('initialized.owl.carousel', function () {
+                    });
+            }
+
+        }
+
+        $(document).ready(function () {
+            var slider = $("#slider");
+            var thumb = $("#thumb");
+            var colorSelector = $("#colorSelector");
+            var slidesPerPage = 4; //globaly define number of elements per page
+            var syncedSecondary = true;
+            slider.owlCarousel({
+                items: 1,
+                slideSpeed: 2000,
+                nav: false,
+                autoplay: false,
+                dots: false,
+                loop: true,
+                responsiveRefreshRate: 200
+            }).on('changed.owl.carousel', syncPosition);
+
+            thumb.on('initialized.owl.carousel', function () {
                 thumb.find(".owl-item").eq(0).addClass("current");
             })
-            .owlCarousel({
-                items: slidesPerPage,
-                dots: false,
-                nav: true,
-                item: 4,
-                smartSpeed: 200,
-                slideSpeed: 500,
-                slideBy: slidesPerPage,
-                navText: ['<svg width="18px" height="18px" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>', '<svg width="25px" height="25px" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'],
-                responsiveRefreshRate: 100
-            }).on('changed.owl.carousel', syncPosition2);
+                .owlCarousel({
+                    items: slidesPerPage,
+                    dots: false,
+                    nav: true,
+                    item: 4,
+                    smartSpeed: 200,
+                    slideSpeed: 500,
+                    slideBy: slidesPerPage,
+                    navText: ['<svg width="18px" height="18px" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>', '<svg width="25px" height="25px" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>'],
+                    responsiveRefreshRate: 100
+                }).on('changed.owl.carousel', syncPosition2);
 
-        function syncPosition(el) {
-            var count = el.item.count - 1;
-            var current = Math.round(el.item.index - (el.item.count / 2) - .5);
-            if (current < 0) {
-                current = count;
-            }
-            if (current > count) {
-                current = 0;
-            }
-            thumb
-                .find(".owl-item")
-                .removeClass("current")
-                .eq(current)
-                .addClass("current");
-            var onscreen = thumb.find('.owl-item.active').length - 1;
-            var start = thumb.find('.owl-item.active').first().index();
-            var end = thumb.find('.owl-item.active').last().index();
-            if (current > end) {
-                thumb.data('owl.carousel').to(current, 100, true);
-            }
-            if (current < start) {
-                thumb.data('owl.carousel').to(current - onscreen, 100, true);
-            }
-        }
-
-        function syncPosition2(el) {
-            if (syncedSecondary) {
-                var number = el.item.index;
-                slider.data('owl.carousel').to(number, 100, true);
-            }
-        }
-
-        thumb.on("click", ".owl-item", function (e) {
-            e.preventDefault();
-            var number = $(this).index();
-            slider.data('owl.carousel').to(number, 300, true);
-        });
-
-
-        $(".qtyminus").on("click", function () {
-            var now = $(".qty").val();
-            if ($.isNumeric(now)) {
-                if (parseInt(now) - 1 > 0) {
-                    now--;
+            function syncPosition(el) {
+                var count = el.item.count - 1;
+                var current = Math.round(el.item.index - (el.item.count / 2) - .5);
+                if (current < 0) {
+                    current = count;
                 }
-                $(".qty").val(now);
+                if (current > count) {
+                    current = 0;
+                }
+                thumb
+                    .find(".owl-item")
+                    .removeClass("current")
+                    .eq(current)
+                    .addClass("current");
+                var onscreen = thumb.find('.owl-item.active').length - 1;
+                var start = thumb.find('.owl-item.active').first().index();
+                var end = thumb.find('.owl-item.active').last().index();
+                if (current > end) {
+                    thumb.data('owl.carousel').to(current, 100, true);
+                }
+                if (current < start) {
+                    thumb.data('owl.carousel').to(current - onscreen, 100, true);
+                }
             }
-        })
-        $(".qtyplus").on("click", function () {
-            var now = $(".qty").val();
-            if ($.isNumeric(now)) {
-                $(".qty").val(parseInt(now) + 1);
+
+            function syncPosition2(el) {
+                if (syncedSecondary) {
+                    var number = el.item.index;
+                    slider.data('owl.carousel').to(number, 100, true);
+                }
             }
+
+            thumb.on("click", ".owl-item", function (e) {
+                e.preventDefault();
+                var number = $(this).index();
+                slider.data('owl.carousel').to(number, 300, true);
+            });
+
+
+            $(".qtyminus").on("click", function () {
+                var now = $(".qty").val();
+                if ($.isNumeric(now)) {
+                    if (parseInt(now) - 1 > 0) {
+                        now--;
+                    }
+                    $(".qty").val(now);
+                }
+            })
+            $(".qtyplus").on("click", function () {
+                var now = $(".qty").val();
+                if ($.isNumeric(now)) {
+                    $(".qty").val(parseInt(now) + 1);
+                }
+            });
         });
-    });
-
-</script>
-
-<script src="/js/banHangOnlline/sanPham.js"></script>
+    </script>
 </body>
 </html>

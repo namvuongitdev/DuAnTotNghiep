@@ -32,8 +32,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
-@ToString
 @Table(name = "san_pham")
+
 public class SanPham {
 
     @Id

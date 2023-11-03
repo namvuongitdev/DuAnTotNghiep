@@ -62,11 +62,16 @@ public class GioHangOnllineController {
             @PathVariable(name = "idSP") String idSP,
             @RequestParam(value = "color") String idMau,
             @RequestParam(value = "size") String idSize,
-            @RequestParam(name = "quantity") String soLuongThem){
-        ChiTietResponse chiTietSanPham = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID.fromString(idMau),idSize,UUID.fromString(idSP));
-        ChiTietSanPham sanPham = new ChiTietSanPham(chiTietSanPham.getId(),chiTietSanPham.getSanPham(),chiTietSanPham.getSoLuong(),chiTietSanPham.getTrangThai(),chiTietSanPham.getQrCode(),
-                chiTietSanPham.getMauSac(),chiTietSanPham.getSize());
-        iGioHangOnllineService.addGioHang(sanPham,Integer.parseInt(soLuongThem));
+            @RequestParam(name = "quantity") String soLuongThem,Model model){
+        if(Integer.parseInt((soLuongThem))<=0){
+            model.addAttribute("checkQuantity","Số lượng không hợp lệ.");
+        }else {
+            ChiTietResponse chiTietSanPham = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID.fromString(idMau),idSize,UUID.fromString(idSP));
+            ChiTietSanPham sanPham = new ChiTietSanPham(chiTietSanPham.getId(),chiTietSanPham.getSanPham(),chiTietSanPham.getSoLuong(),chiTietSanPham.getTrangThai(),chiTietSanPham.getQrCode(),
+                    chiTietSanPham.getMauSac(),chiTietSanPham.getSize());
+            iGioHangOnllineService.addGioHang(sanPham,Integer.parseInt(soLuongThem));
+        }
+
         return "forward:/index/chi-tiet-san-pham-onl?id="+idSP;
     }
 }

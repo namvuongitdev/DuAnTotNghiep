@@ -123,7 +123,7 @@ function getSanPhamThoiTrangNam(page) {
                 sanPhamDiv.innerHTML =  `
                         <div class="product__item" style="margin-left: 30px">
                                 <div class="product__item__pic">
-                                    <img src="/anh/${data.content[i].img}" style="width:265px;height: 270px" >
+                                    <img src="/image/${data.content[i].img}" style="width:265px;height: 270px" >
                                     <ul class="product__hover">
                                     <form method="get" action="/index/chi-tiet-san-pham/${data.content[i].id}">
                                         <li><a href="/index/chi-tiet-san-pham-onl?id=${data.content[i].id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>
@@ -297,7 +297,7 @@ function api(page, data) {
                 sanPhamDiv.innerHTML =  `
                         <div class="product__item" style="margin-left: 30px">
                                 <div class="product__item__pic">
-                                    <img src="/anh/${data.content[i].img}" style="width:265px;height: 270px" >
+                                    <img src="/image/${data.content[i].img}" style="width:265px;height: 270px" >
                                     <ul class="product__hover">
                                     <form method="get" action="/index/chi-tiet-san-pham/${data.content[i].id}">
                                         <li><a href="/index/chi-tiet-san-pham-onl?id=${data.content[i].id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>

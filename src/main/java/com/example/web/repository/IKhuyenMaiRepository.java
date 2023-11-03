@@ -22,4 +22,7 @@ public interface IKhuyenMaiRepository extends JpaRepository<KhuyenMai , UUID>  ,
     @Query(value = "select spkm from SanPhamKhuyenMai spkm inner join spkm.khuyenMai km where km.id = ?1")
     Page<SanPhamKhuyenMai> chiTietKhuyenMaiById(UUID id, Pageable pageable);
 
+    @Query(value = "select spkm from KhuyenMai km join km.sanPhamKhuyenMais spkm join spkm.sanPhamKM sp where sp.id = ?1")
+    SanPhamKhuyenMai findBySanPham_id(UUID id);
+
 }

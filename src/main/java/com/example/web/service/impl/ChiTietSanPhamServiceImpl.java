@@ -1,5 +1,6 @@
 package com.example.web.service.impl;
 import com.example.web.model.ChiTietSanPham;
+import com.example.web.model.Size;
 import com.example.web.repository.IChiTietSanPhamRepository;
 import com.example.web.response.ChiTietOnllineResponse;
 import com.example.web.response.ChiTietResponse;
@@ -101,5 +102,10 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
     public ChiTietResponse getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID mauSac_Id, String size, UUID sanPham_Id) {
         return iChiTietSanPhamRepository.getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(mauSac_Id,size,sanPham_Id);
 
+    }
+
+    @Override
+    public List<Size> getSizeBySanPham_idAndMauSac_id(UUID idSP, UUID idMS) {
+        return iChiTietSanPhamRepository.findSizeBySanPham_idAndMauSac_id(idSP , idMS);
     }
 }

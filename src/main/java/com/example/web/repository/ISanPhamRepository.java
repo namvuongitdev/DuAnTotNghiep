@@ -17,11 +17,6 @@ public interface ISanPhamRepository extends JpaRepository<SanPham, UUID>, JpaSpe
     @Override
     Page<SanPham> findAll(Pageable pageable);
 
-    @Query(value = "\n" +
-            "select top 8 * from san_pham where id_chat_lieu like ?1 or id_kieu_dang like ?2 or id_danh_muc_san_pham like ?3", nativeQuery = true)
-    List<SanPham> theoTen(UUID chatLieu, UUID kieuDang, String danhMuc);
-
-
     @Query(value = "select sanPham from SanPham sanPham where sanPham.ten like ?1 or sanPham.ma like ?1 ")
     Page<SanPham> getAllSanPhamByTenOrMa(String value, Pageable pageable);
 

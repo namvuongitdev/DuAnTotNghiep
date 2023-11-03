@@ -35,4 +35,6 @@ public interface IKhuyenMaiService {
     KhuyenMai updateKhuyenMai(KhuyenMai khuyenMai);
 
     Page<SanPhamKhuyenMai> filterSanPhamKhuyeMai(SanPhamAsKhuyenMai filter , Pageable pageable , UUID idKM);
+
+    SanPhamKhuyenMai getSanPhamById(UUID idSP);
 }
