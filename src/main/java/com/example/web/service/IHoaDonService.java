@@ -36,4 +36,8 @@ public interface IHoaDonService {
     HoaDon add(HoaDon hoaDon);
 
     HoaDon updateHoaDonById(HoaDon hoaDon);
+
+    Page<Object[]> findHoaDonByTaiKhoan(String taiKhoan, Pageable pageable);
+
+    Page<Object[]> findHoaDonByTrangThai(String taiKhoan, Integer trangThai, Pageable pageable);
 }

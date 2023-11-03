@@ -1,6 +1,9 @@
 package com.example.web.service;
 import com.example.web.model.HoaDonChiTiet;
 
+import java.util.List;
+import java.util.UUID;
+
 public interface IHoaDonChiTietService {
 
     HoaDonChiTiet addHoaDonChiTiet(String idCTSP , String idHD , Integer soLuong);
@@ -16,5 +19,7 @@ public interface IHoaDonChiTietService {
     String addSanPhamHoaDonChiTietKhiUpdate(String idCTSP , String idHD ,Integer soLuong);
 
    String updateSoLuongSanPhamHoaDonChiTietKhiUpdate(String idHDCT, String soLuong);
+
+    List<HoaDonChiTiet> getAllByIdHoaDon(UUID idHD);
 
 }

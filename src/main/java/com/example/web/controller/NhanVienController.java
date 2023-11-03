@@ -52,23 +52,21 @@ public class NhanVienController {
     Page<NhanVien> nhanVienPage = null;
 
     @GetMapping("/hien-thi")
-    public String hienThi(Model model, @RequestParam("num") Optional<Integer> num,
-                          @RequestParam(name = "size", defaultValue = "10", required = false) Integer size){
+    public String hienThi(Model model, @RequestParam(defaultValue = "1") Integer page){
         Sort sort = Sort.by("ngayTao").descending();
-        Pageable pageable = PageRequest.of(num.orElse(0), size, sort);
+        Pageable pageable = PageRequest.of(page - 1, 10, sort);
         nhanVienPage = nhanVienService.getAll(pageable);
         model.addAttribute("listNhanVien", nhanVienPage);
         model.addAttribute("filterNhanVien", new SanPhamFilter());
-        model.addAttribute("url", "/nhan-vien/hien-thi?page=");
+        model.addAttribute("url", "/admin/nhan-vien/hien-thi?page=");
         return "quanLyTaiKhoan/nhanVien/hien-thi";
     }
 
     @GetMapping("/filter")
-    public String filterNhanVien(Model model, @RequestParam("num") Optional<Integer> num,
-                                 @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+    public String filterNhanVien(Model model, @RequestParam(defaultValue = "1") Integer page,
                                  @ModelAttribute("filterNhanVien") NhanVienFilter filter){
         Sort sort = Sort.by("ngayTao").descending();
-        Pageable pageable = PageRequest.of(num.orElse(0), size, sort);
+        Pageable pageable = PageRequest.of(page - 1, 10, sort);
         nhanVienPage = nhanVienService.nhanVienFilter(filter, pageable);
         String url = "/admin/nhan-vien/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
         model.addAttribute("filter", filter);
@@ -88,27 +86,40 @@ public class NhanVienController {
     @PostMapping("/add")
     public String add(@Valid @ModelAttribute("nhanVien") NhanVien nhanVien, BindingResult result, Model model){
         char[] password = RandomUntil.randomFull();
+        NhanVien checkEmail = nhanVienService.checkEmail(nhanVien.getEmail());
+        NhanVien checkTaiKhoan = nhanVienService.checkTaiKhoan(nhanVien.getTaiKhoan());
 
         if(result.hasErrors()){
             model.addAttribute("chucVu", new ChucVu());
             model.addAttribute("listChucVu", chucVuService.getAll1());
             return "quanLyTaiKhoan/nhanVien/add";
-        }else{
-            Date date = java.util.Calendar.getInstance().getTime();
-            nhanVien.setNgayTao(date);
-            System.out.println(password);
-            nhanVien.setMatKhau(passwordEncoder.encode(new String(password)));
-            mailService.sendMail("sportsclothing46@gmail.com",
-                    nhanVien.getEmail(),
-                    "Chúc mừng bạn đã ứng tuyển thành công.",
-                    "Tên đăng nhập: " + nhanVien.getTaiKhoan() + "\n"
-                            + "Mật khẩu : " + new String(password) + "\n\n"
-                            + "Họ tên  : " + nhanVien.getHoTen() + "\n"
-                            + "Số điện thoại  :" + nhanVien.getSdt() + "\n\n"
-                            + "Chúc bạn ngày đầu đi làm vui vẻ.");
-            nhanVienService.add(nhanVien);
-            return "redirect:/admin/nhan-vien/hien-thi";
         }
+        if (checkTaiKhoan != null) {
+            result.rejectValue("taiKhoan", "error.nhanVien", "Tài khoản đã tồn tại.");
+            model.addAttribute("chucVu", new ChucVu());
+            model.addAttribute("listChucVu", chucVuService.getAll1());
+            return "quanLyTaiKhoan/nhanVien/add";
+        }
+        if (checkEmail != null) {
+            result.rejectValue("email", "error.nhanVien", "Email này đã được sử dụng");
+            model.addAttribute("chucVu", new ChucVu());
+            model.addAttribute("listChucVu", chucVuService.getAll1());
+            return "quanLyTaiKhoan/nhanVien/add";
+        }
+        Date date = java.util.Calendar.getInstance().getTime();
+        nhanVien.setNgayTao(date);
+        System.out.println(password);
+        nhanVien.setMatKhau(passwordEncoder.encode(new String(password)));
+        mailService.sendMail("sportsclothing46@gmail.com",
+                nhanVien.getEmail(),
+                "Chúc mừng bạn đã ứng tuyển thành công.",
+                "Tên đăng nhập: " + nhanVien.getTaiKhoan() + "\n"
+                        + "Mật khẩu : " + new String(password) + "\n\n"
+                        + "Họ tên  : " + nhanVien.getHoTen() + "\n"
+                        + "Số điện thoại  :" + nhanVien.getSdt() + "\n\n"
+                        + "Chúc bạn ngày đầu đi làm vui vẻ.");
+        nhanVienService.add(nhanVien);
+        return "redirect:/admin/nhan-vien/hien-thi";
     }
 
     @PostMapping("/update/{id}")

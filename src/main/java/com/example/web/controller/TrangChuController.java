@@ -4,6 +4,7 @@ import com.example.web.response.ChiTietOnllineResponse;
 import com.example.web.response.ChiTietSanPhamResponse;
 import com.example.web.response.SanPhamFilter;
 import com.example.web.service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +51,11 @@ public class TrangChuController {
     private Page<SanPham> sanPhamPage = null;
 
     @GetMapping("/home")
-    public String hienThi(Model model, @RequestParam(defaultValue = "1") int page) {
+    public String hienThi(Principal principal, HttpSession session, Model model, @RequestParam(defaultValue = "1") int page) {
+        if (principal != null){
+            String username = principal.getName();
+            session.setAttribute("username", username);
+        }
         Pageable pageable = PageRequest.of(page - 1, 10);
         sanPhamPage = iSanPhamService.findAll(pageable);
         model.addAttribute("listSanPham", sanPhamPage);

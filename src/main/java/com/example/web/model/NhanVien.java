@@ -8,6 +8,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -47,14 +48,14 @@ public class NhanVien {
 
     @NotBlank(message = "Vui lòng không để trống thông tin.")
     @Pattern(regexp = "^(.+)@(\\S+)$", message = "Email không đúng định dạng.")
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "trangThai")
     private Integer trangThai;
 
     @NotBlank(message = "Vui lòng không để trống thông tin.")
-    @Column(name = "taiKhoan")
+    @Column(name = "taiKhoan", unique = true)
     private String taiKhoan;
 
     @Column(name = "matKhau")

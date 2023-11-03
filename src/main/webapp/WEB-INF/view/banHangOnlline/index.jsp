@@ -120,19 +120,29 @@
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
                     <a href="/gio-hang-onl"><img src="../../../img/icon/cart.png" alt=""> <span></span></a>
-                    <div class="dropdown-center">
-                        <a href="#" class="dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="../../../img/icon/person.svg" alt="">
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Thông tin của tôi</a></li>
-                            <li><a class="dropdown-item" href="/index/hoa-don-cua-toi">Đơn hàng của tôi</a></li>
-                            <li><a  class="dropdown-item" href="/logout"
-                                    onclick="if(confirm('Bạn có muốn đăng xuất không ?')==true){return true;}else{return false;}">
-                                Đăng xuất</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <c:if test="${empty sessionScope.username}">
+                        <div class="dropdown-center">
+                            <a href="/login">
+                                <img src="../../../img/icon/person.svg" alt="">
+                            </a>
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty sessionScope.username}">
+                        <div class="dropdown-center">
+                            <a href="#" class="dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="../../../img/icon/person.svg" alt="">
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><b style="margin-left: 25px">${sessionScope.username}</b><hr></li>
+                                <li><a class="dropdown-item" href="#">Thông tin của tôi</a></li>
+                                <li><a class="dropdown-item" href="/cuaToi/donHangAll">Đơn hàng của tôi</a></li>
+                                <li><a  class="dropdown-item" href="/logout"
+                                        onclick="if(confirm('Bạn có muốn đăng xuất không ?')==true){return true;}else{return false;}">
+                                    Đăng xuất</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </div>
