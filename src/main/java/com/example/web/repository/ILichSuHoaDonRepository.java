@@ -16,6 +16,6 @@ public interface ILichSuHoaDonRepository extends JpaRepository<LichSuHoaDon, UUI
     @Query(value = "SELECT lshd from LichSuHoaDon lshd where lshd.hoaDon.id=?1 and lshd.thaoTac LIKE %?2%")
     LichSuHoaDon getOne(UUID idHd,String Thaotac);
 
-    @Query(value = "SELECT lshd from LichSuHoaDon lshd where lshd.hoaDon.id=?1 and lshd.thaoTac LIKE 't%'")
-    LichSuHoaDon getOneTao(UUID idHd);
+    @Query(value = "SELECT * from lich_su_hoa_don where id_hoa_don=?1 and thao_tac=?2",nativeQuery = true)
+    LichSuHoaDon getOneTao(UUID idHd,String thaoTac);
 }

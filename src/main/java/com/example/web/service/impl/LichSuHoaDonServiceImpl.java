@@ -28,8 +28,8 @@ public class LichSuHoaDonServiceImpl implements ILichSuHoaDonService {
     }
 
     @Override
-    public LichSuHoaDon getOneTao(String idHd) {
-        return iLichSuHoaDonRepository.getOneTao(UUID.fromString(idHd));
+    public LichSuHoaDon getOneTao(String idHd,String thaoTac) {
+        return iLichSuHoaDonRepository.getOneTao(UUID.fromString(idHd),thaoTac);
     }
 
     @Override

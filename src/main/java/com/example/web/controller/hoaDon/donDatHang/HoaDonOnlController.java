@@ -4,6 +4,7 @@ import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
 import com.example.web.model.LichSuHoaDon;
 import com.example.web.model.NhanVien;
+import com.example.web.model.TrangThaiHoaDon;
 import com.example.web.repository.INhanVienRepository;
 import com.example.web.response.HoaDonFilter;
 import com.example.web.service.IHoaDonChiTietService;
@@ -152,9 +153,9 @@ public class HoaDonOnlController {
             model.addAttribute("lst1",lst.getContent());
         }
         model.addAttribute("xacNhan",lichSuHoaDonService.getOne(id,"xác"));
-        model.addAttribute("choGiao",lichSuHoaDonService.getOne(id,"v"));
+        model.addAttribute("choGiao",lichSuHoaDonService.getOne(id,"ể"));
         model.addAttribute("daGiao",lichSuHoaDonService.getOne(id,"ô"));
-        model.addAttribute("taoDon",lichSuHoaDonService.getOneTao(id));
+        model.addAttribute("taoDon",lichSuHoaDonService.getOneTao(id,"Tạo đơn hàng"));
         model.addAttribute("lshd",lshd);
         return "quanLyHoaDon/chiTietHoaDonOnline/CTChoXacNhan";
     }
@@ -235,26 +236,28 @@ public class HoaDonOnlController {
                           @RequestParam("trangThai")String tt){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
-        Integer status=0;
+        Integer status;
+        Date date = java.util.Calendar.getInstance().getTime();
         String thaoThac = null;
         HoaDon hoaDon=hoaDonService.getOne(id);
         if (hoaDon.getTrangThai()==1){
-            status=1;
+            status= TrangThaiHoaDon.Cho_xac_nhan.getValue();
             thaoThac="Đơn hàng đã được xác nhận";
         }else if (hoaDon.getTrangThai()==2){
-            status=2;
+            status=TrangThaiHoaDon.DA_XAC_NHAN.getValue();
             thaoThac="Đơn hàng đã được giao cho đơn vị vận chuyển";
+            hoaDon.setNgayShip(date);
         }else if (hoaDon.getTrangThai()==3){
-            status=3;
+            status=TrangThaiHoaDon.DANG_VAN_CHUYEN.getValue();
             thaoThac="Đơn hàng đã được giao thành công";
+            hoaDon.setNgayThanhToan(date);
         }else if (hoaDon.getTrangThai()==6){
-            status=6;
+            status=TrangThaiHoaDon.GIAO_THANH_CONG.getValue();
         }else {
-            status=5;
+            status=TrangThaiHoaDon.HUY_HOA_DON.getValue();
         }
         hoaDon.setTrangThai(Integer.parseInt(tt));
         url=hoaDonService.updateStatusHoaDonById(hoaDon,String.valueOf(status));
-        Date date = java.util.Calendar.getInstance().getTime();
         LichSuHoaDon lshd = LichSuHoaDon.builder()
                 .hoaDon(hoaDon)
                 .nguoiThaoTac(nhanVien.getHoTen()+" ("+nhanVien.getChucVu().getTen()+")")

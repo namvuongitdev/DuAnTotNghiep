@@ -13,7 +13,7 @@ public interface ILichSuHoaDonService {
 
     LichSuHoaDon getOne(String idHd,String Thaotac);
 
-    LichSuHoaDon getOneTao(String idHd);
+    LichSuHoaDon getOneTao(String idHd,String thaoTac);
 
     void add(LichSuHoaDon lshd);
 

@@ -63,25 +63,9 @@
                                             <input type="date" value="${fillter.dateEnd}" name="dateEnd"
                                                    class="form-control"/>
                                         </div>
-                                        <div class="col-4">
-                                            <label class="col-form-label">Trạng thái đơn hàng</label>
-                                            <select class="form-select" name="trangThai"
-                                                    aria-label="Default select example">
-                                                <option value="" selected>Tất cả</option>
-                                                <option value="3" ${fillter.trangThai == 3? 'selected':''}
-                                                        class="text-warning">Đang giao hàng
-                                                </option>
-                                                <option value="4" ${fillter.trangThai == 4? 'selected':''}
-                                                        class="text-success">Đã thanh toán
-                                                </option>
-                                                <option value="5" ${fillter.trangThai == 5? 'selected':''}
-                                                        class="text-danger">Đã hủy
-                                                </option>
-                                            </select>
-                                        </div>
                                         <br>
                                             <%--button--%>
-                                        <div style="text-align: center">
+                                        <div style="text-align: center" class="mt-3">
                                             <button type="submit" class="btn btn-outline-dark">Tìm kiếm</button>
                                         </div>
                                     </div>
