@@ -157,11 +157,12 @@
                                                             <p class="small mb-0">${gh.tenMau}, ${gh.tenKichCo},   <font color="#5f9ea0">${gh.donGiaFormatter} đ</font></p>
                                                         </div>
                                                     </div>
-                                                    <form method="get" action="/gio-hang-onl/cap-nhat-gio-hang/${gh.idGioHangCT}">
+                                                    <form >
                                                     <div class="d-flex flex-row align-items-center">
                                                         <div style="margin-left: 15px">
-                                                            <input type="text" name="soLuong" value="${gh.soLuong}"
-                                                                   style="width: 40px;padding-left: 11px" required/>
+
+                                                            <input type="number" style="width: 60px;text-align: center" name="soLuong" min="1"  value="${gh.soLuong}" onclick="callYourApi(this.value,{idGioHangCT:`${gh.idGioHangCT}`})" />
+
                                                         </div>
                                                         <div style="margin-left:15px;width: 100px;color: #5f9ea0">
                                                             <h6 class="mb-0"><b>${gh.thanhTien} đ</b></h6>
@@ -170,15 +171,15 @@
                                                                 class="fas fa-trash-alt"></i></button>
                                                         </a>
 
-                                                        <a href="" style="color: #cecece;margin-left: 15px">
-                                                            <button style="background-color:white ;border: none">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                     height="16"
-                                                                     fill="currentColor"
-                                                                     viewBox="0 0 16 16">
-                                                                    <path d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192Zm3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"/>
-                                                                </svg></button>
-                                                        </a>
+<%--                                                        <a href="" style="color: #cecece;margin-left: 15px">--%>
+<%--                                                            <button style="background-color:white ;border: none">--%>
+<%--                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"--%>
+<%--                                                                     height="16"--%>
+<%--                                                                     fill="currentColor"--%>
+<%--                                                                     viewBox="0 0 16 16">--%>
+<%--                                                                    <path d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192Zm3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"/>--%>
+<%--                                                                </svg></button>--%>
+<%--                                                        </a>--%>
                                                     </div>
                                                     </form>
                                                 </div>
@@ -305,8 +306,7 @@
         </form>
     </div>
 </div>
-<!-- Search End -->
-<!-- Js Plugins -->
+
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/jquery.nice-select.min.js"></script>
@@ -318,5 +318,13 @@
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/main.js"></script>
 
+<script>
+    function callYourApi(newValue,gioHang) {
+        console.log(newValue);
+        console.log(gioHang.idGioHangCT)
+        window.location.href = "/gio-hang-onl/cap-nhat-gio-hang/" + newValue + "/" + gioHang.idGioHangCT;
+    }
+
+</script>
 </body>
 </html>

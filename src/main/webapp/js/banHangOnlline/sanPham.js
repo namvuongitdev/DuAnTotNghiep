@@ -21,6 +21,9 @@ function getSanPham(page) {
             // Lặp qua danh sách sản phẩm và thêm từng sản phẩm vào div sản phẩm
             let giaBanSanPham =null;
             let giaGoc = null;
+            let mucGiam = "";
+            let loaiGiamGia="";
+            let hienGiamGia = "";
             for (let i = 0; i < data.content.length; i++) {
                 const sanPhamDiv = document.createElement("div");
                 // sanPhamDiv.className = "col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals"; // Thêm lớp Bootstrap cho sản phẩm
@@ -30,15 +33,25 @@ function getSanPham(page) {
                         if(e.khuyenMai.trangThai==1 && e.trangThai==1){
                             giaGoc= data.content[i].giaBan;
                             giaBanSanPham=e.donGiaSauKhiGiam;
+                            e.loaiGiamGia==true ? (loaiGiamGia=" vnđ") : (loaiGiamGia=" %") ;
+                            mucGiam= "Giảm :" +  e.mucGiam  +  loaiGiamGia;
 
+                            hienGiamGia = " <h5 style='margin-left: 150px;margin-top: -50px '> " +
+                                "<img src='/anh/anhkhuyenmai.jpg' style='width: 100px;'/>" +  "<br> </h5>";
                         }else {
                             giaBanSanPham=data.content[i].giaBan;
                             giaGoc=null;
+                            mucGiam="";
+                            loaiGiamGia="";
+                            hienGiamGia="";
                         }
                     })
                 }else {
                     giaBanSanPham=data.content[i].giaBan;
                     giaGoc=null;
+                    mucGiam="";
+                    loaiGiamGia="";
+                    hienGiamGia="";
                 }
                 sanPhamDiv.innerHTML =  `
                         <div class="product__item" style="margin-left: 30px">
@@ -52,9 +65,13 @@ function getSanPham(page) {
                                 </div>
                                 <div class="product__item__text">
                                     <h6>${data.content[i].ten}</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
-                                        <h5><strike>${giaGoc==null ? "" : VND.format(giaGoc)}</strike></h5>
-                                    <h5>${VND.format(giaBanSanPham)}</h5>
+                                    <a href="#" class="add-cart" style="color:black;">${mucGiam}  </a>
+                                    <div class="price-container" style=" align-items: center; display: flex">
+                                        <h5 > ${VND.format(giaBanSanPham)}</h5>
+                                    </div>
+                                    <h5><strike>${giaGoc==null ? "" : VND.format(giaGoc)}</strike></h5>
+                                   ${hienGiamGia}
+                                    
                                 </div>
                         </div>`;
 
