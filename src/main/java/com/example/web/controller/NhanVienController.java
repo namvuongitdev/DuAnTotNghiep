@@ -57,7 +57,7 @@ public class NhanVienController {
         Pageable pageable = PageRequest.of(page - 1, 10, sort);
         nhanVienPage = nhanVienService.getAll(pageable);
         model.addAttribute("listNhanVien", nhanVienPage);
-        model.addAttribute("filterNhanVien", new SanPhamFilter());
+        model.addAttribute("filterNhanVien", new NhanVienFilter());
         model.addAttribute("url", "/admin/nhan-vien/hien-thi?page=");
         return "quanLyTaiKhoan/nhanVien/hien-thi";
     }
@@ -88,6 +88,7 @@ public class NhanVienController {
         char[] password = RandomUntil.randomFull();
         NhanVien checkEmail = nhanVienService.checkEmail(nhanVien.getEmail());
         NhanVien checkTaiKhoan = nhanVienService.checkTaiKhoan(nhanVien.getTaiKhoan());
+        NhanVien checkSDT = nhanVienService.findBySDT(nhanVien.getSdt());
 
         if(result.hasErrors()){
             model.addAttribute("chucVu", new ChucVu());
@@ -102,6 +103,12 @@ public class NhanVienController {
         }
         if (checkEmail != null) {
             result.rejectValue("email", "error.nhanVien", "Email này đã được sử dụng");
+            model.addAttribute("chucVu", new ChucVu());
+            model.addAttribute("listChucVu", chucVuService.getAll1());
+            return "quanLyTaiKhoan/nhanVien/add";
+        }
+        if (checkSDT != null) {
+            result.rejectValue("sdt", "error.nhanVien", "Số điện thoại này đã được sử dụng");
             model.addAttribute("chucVu", new ChucVu());
             model.addAttribute("listChucVu", chucVuService.getAll1());
             return "quanLyTaiKhoan/nhanVien/add";

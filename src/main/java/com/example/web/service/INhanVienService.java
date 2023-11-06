@@ -23,4 +23,10 @@ public interface INhanVienService {
     NhanVien checkTaiKhoan(String taiKhoan);
 
     NhanVien checkEmail(String email);
+
+    NhanVien findBySDT(String sdt);
+
+    UUID findIdByEmail(String email);
+
+    String findEmailToPass(String taiKhoan);
 }

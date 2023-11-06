@@ -24,7 +24,7 @@
                 </svg>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
-                <li><a class="bi bi-lock dropdown-item" style="font-size: 14px" href="#"> Đổi mật khẩu</a></li>
+                <li><a class="bi bi-lock dropdown-item" style="font-size: 14px" href="/admin/doiMatKhau"> Đổi mật khẩu</a></li>
                 <li><a class="bi bi-box-arrow-right dropdown-item" style="font-size: 14px" href="/logout"
                        onclick="if(confirm('Bạn có muốn đăng xuất không ?')==true){return true;}else{return false;}"> Đăng xuất</a></li>
             </ul>

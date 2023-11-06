@@ -32,13 +32,13 @@
 
             <sec:authorize access="hasAuthority('ADMIN')">
                 <li class="nav-item">
-                    <a href="#" class="nav-link align-middle px-0">
+                    <a href="/admin/thong-ke" class="nav-link align-middle px-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-map-fill" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
                                   d="M16 .5a.5.5 0 0 0-.598-.49L10.5.99 5.598.01a.5.5 0 0 0-.196 0l-5 1A.5.5 0 0 0 0 1.5v14a.5.5 0 0 0 .598.49l4.902-.98 4.902.98a.502.502 0 0 0 .196 0l5-1A.5.5 0 0 0 16 14.5V.5zM5 14.09V1.11l.5-.1.5.1v12.98l-.402-.08a.498.498 0 0 0-.196 0L5 14.09zm5 .8V1.91l.402.08a.5.5 0 0 0 .196 0L11 1.91v12.98l-.5.1-.5-.1z"/>
                         </svg>
-                        <span class="ms-1 d-none d-sm-inline"><font
+                        <span class="ms-1 d-none d-sm-inline" <%=request.getRequestURI().contains("thongKe") ? "style=\"background-color: #29B5D4\"" : ""  %>><font
                                 color="black">Thống Kê</font></span>
                     </a>
                 </li>

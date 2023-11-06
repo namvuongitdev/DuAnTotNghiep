@@ -92,4 +92,19 @@ public class NhanVienServiceImpl implements INhanVienService  {
         return iNhanVienRepository.findByEmail(email);
     }
 
+    @Override
+    public NhanVien findBySDT(String sdt) {
+        return iNhanVienRepository.findBySDT(sdt);
+    }
+
+    @Override
+    public UUID findIdByEmail(String email) {
+        return iNhanVienRepository.findIdByEmail(email);
+    }
+
+    @Override
+    public String findEmailToPass(String taiKhoan) {
+        return iNhanVienRepository.findEmailToPass(taiKhoan);
+    }
+
 }
