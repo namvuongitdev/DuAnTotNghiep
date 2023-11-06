@@ -430,5 +430,3 @@ document.getElementById('clear').addEventListener('click', () => {
 function timKiem() {
     getSanPham(1);
 }
-
-

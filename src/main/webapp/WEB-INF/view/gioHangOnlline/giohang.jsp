@@ -137,8 +137,7 @@
                         <div class="row g-0">
                             <div class="col-lg-8">
                                 <div class="p-2">
-                                    <h3 class="fw-bold mb-0 text-black" style="margin-left: 40px;margin-top: 20px">GIỎ
-                                        HÀNG</h3>
+                                    <h3 class="fw-bold mb-0 text-black" style="margin-left: 40px;margin-top: 20px">GIỎ HÀNG</h3>
                                     <br>
 
                                     <c:forEach items="${list}" var="gh" varStatus="i">
@@ -171,33 +170,29 @@
 
                                                         </div>
                                                     </div>
-                                                    <form method="get"
-                                                          action="/gio-hang-onl/cap-nhat-gio-hang/${gh.getId()}">
+                                                    <form >
                                                         <div class="d-flex flex-row align-items-center">
                                                             <div style="margin-left: 15px">
-                                                                <input type="text" name="soLuong" value="${gh.getSoLuong()}"
-                                                                       style="width: 40px;padding-left: 11px" required/>
+
+                                                                <input type="number" style="width: 60px;text-align: center" name="soLuong" min="1"  value="${gh.getSoLuong()}" onclick="callYourApi(this.value,{idGioHangCT:`${gh.getId()}`})" />
+
                                                             </div>
                                                             <div style="margin-left:15px;width: 100px;color: #5f9ea0">
-                                                                <h6 class="mb-0"><b><fmt:formatNumber pattern="#,###"
-                                                                                                      value="${gh.getThanhTien()}"></fmt:formatNumber> đ</b></h6>
+                                                                <h6 class="mb-0"><b>${gh.getThanhTien()} đ</b></h6>
                                                             </div>
-                                                            <a href="#!" style="color: #cecece;margin-left: 15px">
-                                                                <button formaction="/gio-hang-onl/xoa/${gh.getId()}"
-                                                                        style="background-color:white ;border: none"><i
-                                                                        class="fas fa-trash-alt"></i></button>
+                                                            <a href="#!" style="color: #cecece;margin-left: 15px"> <button formaction="/gio-hang-onl/xoa/${gh.getId()}" style="background-color:white ;border: none"><i
+                                                                    class="fas fa-trash-alt"></i></button>
                                                             </a>
 
-                                                            <a href="" style="color: #cecece;margin-left: 15px">
-                                                                <button style="background-color:white ;border: none">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                         height="16"
-                                                                         fill="currentColor"
-                                                                         viewBox="0 0 16 16">
-                                                                        <path d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192Zm3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"/>
-                                                                    </svg>
-                                                                </button>
-                                                            </a>
+                                                                <%--                                                        <a href="" style="color: #cecece;margin-left: 15px">--%>
+                                                                <%--                                                            <button style="background-color:white ;border: none">--%>
+                                                                <%--                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"--%>
+                                                                <%--                                                                     height="16"--%>
+                                                                <%--                                                                     fill="currentColor"--%>
+                                                                <%--                                                                     viewBox="0 0 16 16">--%>
+                                                                <%--                                                                    <path d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192Zm3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"/>--%>
+                                                                <%--                                                                </svg></button>--%>
+                                                                <%--                                                        </a>--%>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -206,17 +201,17 @@
 
                                     </c:forEach>
                                     <%--                phân trang --%>
-                                    <%--                                        <div class="container-fluid mt-5">--%>
-                                    <%--                                            <nav aria-label="Page navigation example">--%>
-                                    <%--                                                <ul class="pagination justify-content-center">--%>
-                                    <%--                                                    <li class="page-item ${pageNo<=1?"disabled":""}"><a class="page-link" href="/gio-hang-onl?page=${pageNo-1}"><</a></li>--%>
-                                    <%--                                                    <c:forEach begin="1" end="${list.getTotalPages()}" var="i">--%>
-                                    <%--                                                        <li class="page-item"><a class="page-link ${i == pageNo ? 'active ' : ''}" href="/gio-hang-onl?page=${i}">${i}</a></li>--%>
-                                    <%--                                                    </c:forEach>--%>
-                                    <%--                                                    <li class="page-item ${pageNo>=list.getTotalPages()?"disabled":""}"><a class="page-link" href="/gio-hang-onl?page=${pageNo+1}">></a></li>--%>
-                                    <%--                                                </ul>--%>
-                                    <%--                                            </nav>--%>
-                                    <%--                                        </div>--%>
+<%--                                    <div class="container-fluid mt-5">--%>
+<%--                                        <nav aria-label="Page navigation example">--%>
+<%--                                            <ul class="pagination justify-content-center">--%>
+<%--                                                <li class="page-item ${pageNo<=1?"disabled":""}"><a class="page-link" href="/gio-hang-onl?page=${pageNo-1}"><</a></li>--%>
+<%--                                                <c:forEach begin="1" end="${list.getTotalPages()}" var="i">--%>
+<%--                                                    <li class="page-item"><a class="page-link ${i == pageNo ? 'active ' : ''}" href="/gio-hang-onl?page=${i}">${i}</a></li>--%>
+<%--                                                </c:forEach>--%>
+<%--                                                <li class="page-item ${pageNo>=list.getTotalPages()?"disabled":""}"><a class="page-link" href="/gio-hang-onl?page=${pageNo+1}">></a></li>--%>
+<%--                                            </ul>--%>
+<%--                                        </nav>--%>
+<%--                                    </div>--%>
                                     <hr class="my-4">
                                 </div>
                             </div>
@@ -303,11 +298,9 @@
                     <p>Copyright ©
                         <script>
                             document.write(new Date().getFullYear());
-                        </script>
-                        2020
+                        </script>2020
                         All rights reserved | This template is made with <i class="fa fa-heart-o"
-                                                                            aria-hidden="true"></i> by <a
-                                href="https://colorlib.com" target="_blank">Colorlib</a>
+                                                                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
                     </p>
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </div>
@@ -326,8 +319,7 @@
         </form>
     </div>
 </div>
-<!-- Search End -->
-<!-- Js Plugins -->
+
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/jquery.nice-select.min.js"></script>
@@ -339,5 +331,13 @@
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/main.js"></script>
 
+<script>
+    function callYourApi(newValue,gioHang) {
+        console.log(newValue);
+        console.log(gioHang.idGioHangCT)
+        window.location.href = "/gio-hang-onl/cap-nhat-gio-hang/" + newValue + "/" + gioHang.idGioHangCT;
+    }
+
+</script>
 </body>
 </html>

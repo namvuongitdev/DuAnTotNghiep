@@ -44,10 +44,12 @@ public class GioHangOnllineController {
         return "gioHangOnlline/giohang";
     }
 
-    @GetMapping("/cap-nhat-gio-hang/{idGioHangCT}")
-    public String updateSoLuong(@RequestParam(name = "soLuong") String soLuong,
-                                @PathVariable(name = "idGioHangCT") String idGioHangCT) {
-        iGioHangOnllineService.updateSoLuong(Integer.parseInt(soLuong), UUID.fromString(idGioHangCT));
+
+    @GetMapping("/cap-nhat-gio-hang/{soLuong}/{idGioHangCT}")
+    public String updateSoLuong(@PathVariable(name = "soLuong") String soLuong,
+                                @PathVariable(name = "idGioHangCT") String idGioHangCT){
+        iGioHangOnllineService.updateSoLuong(Integer.parseInt(soLuong),UUID.fromString(idGioHangCT));
+
         return "redirect:/gio-hang-onl";
     }
 
