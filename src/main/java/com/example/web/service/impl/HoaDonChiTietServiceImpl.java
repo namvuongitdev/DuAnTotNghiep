@@ -4,15 +4,22 @@ import com.example.web.Config.status.HoaDonChiTietStatus;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
+import com.example.web.model.LichSuHoaDon;
+import com.example.web.model.NhanVien;
 import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.repository.IChiTietSanPhamRepository;
 import com.example.web.repository.IHoaDonChiTietRepository;
 import com.example.web.repository.IHoaDonRepository;
+import com.example.web.repository.ILichSuHoaDonRepository;
+import com.example.web.repository.INhanVienRepository;
 import com.example.web.service.IHoaDonChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,6 +34,12 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
 
     @Autowired
     private IChiTietSanPhamRepository chiTietSanPhamRepository;
+
+    @Autowired
+    private INhanVienRepository nhanVienRepository;
+
+    @Autowired
+    private ILichSuHoaDonRepository lichSuHoaDonRepository;
 
     @Override
     public HoaDonChiTiet addHoaDonChiTiet(String idCTSP, String idHD, Integer soLuong) {
@@ -140,6 +153,8 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
     public String addSanPhamHoaDonChiTietKhiUpdate(String idCTSP, String idHD, Integer soLuong) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(idHD));
         Optional<ChiTietSanPham> ctsp = chiTietSanPhamRepository.findById(UUID.fromString(idCTSP));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         HoaDonChiTiet hdct = null;
         if (hoaDon.isEmpty() || ctsp.isEmpty()) {
             return null;
@@ -164,6 +179,14 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                             .trangThai(0)
                             .build();
                 }
+                Date date = java.util.Calendar.getInstance().getTime();
+                LichSuHoaDon lshd = LichSuHoaDon.builder()
+                        .hoaDon(hoaDon.get())
+                        .nguoiThaoTac(nhanVien.getHoTen()+" ("+nhanVien.getChucVu().getTen()+")")
+                        .thaoTac("Thêm sản phẩm vào hóa đơn")
+                        .ngayThaoTac(date)
+                        .build();
+                lichSuHoaDonRepository.save(lshd);
                 hoaDonChiTietRepository.save(hdct);
                 return "redirect:/admin/hoa-don-onl/detail/" + idHD;
             }

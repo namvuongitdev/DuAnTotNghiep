@@ -29,6 +29,8 @@ public interface IHoaDonService {
 
     Page<HoaDonChiTiet> getHoaDonChiTiet(UUID id,Integer pageNo , Integer size);
 
+    Page<HoaDonChiTiet> getHoaDonHuyChiTiet(UUID id,Integer pageNo , Integer size);
+
     Page<HoaDon> pagination(Integer pageNo , Integer size);
 
     Page<HoaDon> hoaDonFillter(HoaDonFilter filter , Pageable pageable);
@@ -36,6 +38,10 @@ public interface IHoaDonService {
     HoaDon add(HoaDon hoaDon);
 
     String updateHoaDonById(HoaDon hoaDon);
+
+    String updateThongTin(HoaDon hoaDon);
+
+    String updatePVC(HoaDon hoaDon);
 
     String updateStatusHoaDonById(HoaDon hoaDon,String trangThai);
 }

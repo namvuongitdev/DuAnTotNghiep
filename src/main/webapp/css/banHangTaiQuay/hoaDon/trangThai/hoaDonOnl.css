@@ -48,12 +48,12 @@ body {
 }
 
 /* Style cho tab button được chọn */
-.tab-button.active {
-    background-color: #4c9aff;
-    color: #fff;
-    border-color: #4c9aff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
+/*.tab-button.active {*/
+/*    background-color: #4c9aff;*/
+/*    color: #fff;*/
+/*    border-color: #4c9aff;*/
+/*    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);*/
+/*}*/
 
 /* Hover effect */
 .tab-button:hover {

@@ -1,3 +1,7 @@
+const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+});
 
 function getSanPham(page) {
     console.log("san pham");
@@ -20,31 +24,37 @@ function getSanPham(page) {
             const productDiv = document.createElement("div");
             productDiv.className = "row product__filter"; // Thêm lớp Bootstrap cho div chứa danh sách sản phẩm
             // Lặp qua danh sách sản phẩm và thêm từng sản phẩm vào div sản phẩm
-            let giaBanSanPham =null;
+            let giaBanSanPham = null;
             let giaGoc = null;
+            let mucGiam = null;
+            let loaiGiamGia = null;
             for (let i = 0; i < data.content.length; i++) {
                 const sanPhamDiv = document.createElement("div");
                 // sanPhamDiv.className = "col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals"; // Thêm lớp Bootstrap cho sản phẩm
                 // Tạo nội dung sản phẩm và thêm lớp Bootstrap
-                if(data.content[i].sanPhamKhuyenMais.length>0){
-                    data.content[i].sanPhamKhuyenMais.map(function (e){
-                        if(e.khuyenMai.trangThai==1 && e.trangThai==1){
-                            giaGoc= data.content[i].giaBan;
-                            giaBanSanPham=e.donGiaSauKhiGiam;
+                if (data.content[i].sanPhamKhuyenMais.length > 0) {
+                    data.content[i].sanPhamKhuyenMais.map(function (e) {
+                        if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
+                            giaGoc = data.content[i].giaBan;
+                            giaBanSanPham = e.donGiaSauKhiGiam;
+                            mucGiam = e.mucGiam;
+                            loaiGiamGia = e.loaiGiamGia;
 
-                        }else {
-                            giaBanSanPham=data.content[i].giaBan;
-                            giaGoc=null;
+                        } else {
+                            giaBanSanPham = data.content[i].giaBan;
+                            giaGoc = null;
+                            mucGiam = null;
                         }
                     })
-                }else {
-                    giaBanSanPham=data.content[i].giaBan;
-                    giaGoc=null;
+                } else {
+                    giaBanSanPham = data.content[i].giaBan;
+                    giaGoc = null;
+                    mucGiam = null;
                 }
-                sanPhamDiv.innerHTML =  `
+                sanPhamDiv.innerHTML = `
                         <div class="product__item" style="margin-left: 30px">
                                 <div class="product__item__pic">
-                                    <img src="/image/${data.content[i].img}" style="width:265px;height: 270px" >
+                                    <img class="img-thumbnail" src="/image/${data.content[i].img}" style="width:265px;height: 270px" >
                                     <ul class="product__hover">
                                     <form method="get" action="/index/chi-tiet-san-pham/${data.content[i].id}">
                                         <li><a href="/index/chi-tiet-san-pham-onl?id=${data.content[i].id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>
@@ -53,9 +63,15 @@ function getSanPham(page) {
                                 </div>
                                 <div class="product__item__text">
                                     <h6>${data.content[i].ten}</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
-                                        <h5><strike>${giaGoc==null ? "" : VND.format(giaGoc)}</strike></h5>
-                                    <h5>${VND.format(giaBanSanPham)}</h5>
+                                    <div class="row">
+                                      <div class="col-sm-6"> <h5><strike>${giaGoc == null ? "" : VND.format(giaGoc)}</strike></h5></div>
+                                      <div class="col-sm-6"> <h5  
+                                      style="color: #E43535;
+                                      ">${mucGiam != null ? loaiGiamGia == true ? '-' + mucGiam + '%' : '-' + VND.format(mucGiam) : ""}</div>
+                                    </div>
+                                    <h5 style="color: #005cbf">${VND.format(giaBanSanPham)}</h5> 
+                                   </div>
+                                
                                 </div>
                         </div>`;
 
@@ -80,6 +96,7 @@ function getSanPham(page) {
                           <a class="page-link" name="` + (Number.parseInt(page) + Number.parseInt(1)) + `" onclick="getSanPham(this.name)" > > </a></li>`;
         });
 }
+
 function getSanPhamThoiTrangNam(page) {
     const value = document.querySelector("#search-input").value;
     let url = `/index/thoi-trang-nam?page=` + page + `&value=` + value;
@@ -99,31 +116,31 @@ function getSanPhamThoiTrangNam(page) {
             const productDiv = document.createElement("div");
             productDiv.className = "row product__filter"; // Thêm lớp Bootstrap cho div chứa danh sách sản phẩm
             // Lặp qua danh sách sản phẩm và thêm từng sản phẩm vào div sản phẩm
-            let giaBanSanPham =null;
+            let giaBanSanPham = null;
             let giaGoc = null;
             for (let i = 0; i < data.content.length; i++) {
                 const sanPhamDiv = document.createElement("div");
                 // sanPhamDiv.className = "col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals"; // Thêm lớp Bootstrap cho sản phẩm
                 // Tạo nội dung sản phẩm và thêm lớp Bootstrap
-                if(data.content[i].sanPhamKhuyenMais.length>0){
-                    data.content[i].sanPhamKhuyenMais.map(function (e){
-                        if(e.khuyenMai.trangThai==1 && e.trangThai==1){
-                            giaGoc= data.content[i].giaBan;
-                            giaBanSanPham=e.donGiaSauKhiGiam;
+                if (data.content[i].sanPhamKhuyenMais.length > 0) {
+                    data.content[i].sanPhamKhuyenMais.map(function (e) {
+                        if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
+                            giaGoc = data.content[i].giaBan;
+                            giaBanSanPham = e.donGiaSauKhiGiam;
 
-                        }else {
-                            giaBanSanPham=data.content[i].giaBan;
-                            giaGoc=null;
+                        } else {
+                            giaBanSanPham = data.content[i].giaBan;
+                            giaGoc = null;
                         }
                     })
-                }else {
-                    giaBanSanPham=data.content[i].giaBan;
-                    giaGoc=null;
+                } else {
+                    giaBanSanPham = data.content[i].giaBan;
+                    giaGoc = null;
                 }
-                sanPhamDiv.innerHTML =  `
+                sanPhamDiv.innerHTML = `
                         <div class="product__item" style="margin-left: 30px">
                                 <div class="product__item__pic">
-                                    <img src="/image/${data.content[i].img}" style="width:265px;height: 270px" >
+                                    <img class="img-thumbnail" src="/image/${data.content[i].img}" style="width:265px;height: 270px" >
                                     <ul class="product__hover">
                                     <form method="get" action="/index/chi-tiet-san-pham/${data.content[i].id}">
                                         <li><a href="/index/chi-tiet-san-pham-onl?id=${data.content[i].id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>
@@ -132,8 +149,7 @@ function getSanPhamThoiTrangNam(page) {
                                 </div>
                                 <div class="product__item__text">
                                     <h6>${data.content[i].ten}</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
-                                        <h5><strike>${giaGoc==null ? "" : VND.format(giaGoc)}</strike></h5>
+                                      <h5><strike>${giaGoc == null ? "" : VND.format(giaGoc)}</strike></h5>
                                     <h5>${VND.format(giaBanSanPham)}</h5>
                                 </div>
                         </div>`;
@@ -150,7 +166,7 @@ function getSanPhamThoiTrangNam(page) {
                 active = page == i ? "background-color:#4e555b" : ""
                 phanTrang +=
                     `<li class="page-item" >
-                                <a class="page-link" style="`+active+`" name="` + i + `" onclick="getSanPhamThoiTrangNam(this.name)" >` + i + `</a>
+                                <a class="page-link" style="` + active + `" name="` + i + `" onclick="getSanPhamThoiTrangNam(this.name)" >` + i + `</a>
                                 </li>`
             }
             // document.getElementById("body").innerHTML = sanPham;
@@ -180,31 +196,31 @@ function getSanPhamThoiTrangNu(page) {
             const productDiv = document.createElement("div");
             productDiv.className = "row product__filter"; // Thêm lớp Bootstrap cho div chứa danh sách sản phẩm
             // Lặp qua danh sách sản phẩm và thêm từng sản phẩm vào div sản phẩm
-            let giaBanSanPham =null;
+            let giaBanSanPham = null;
             let giaGoc = null;
             for (let i = 0; i < data.content.length; i++) {
                 const sanPhamDiv = document.createElement("div");
                 // sanPhamDiv.className = "col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals"; // Thêm lớp Bootstrap cho sản phẩm
                 // Tạo nội dung sản phẩm và thêm lớp Bootstrap
-                if(data.content[i].sanPhamKhuyenMais.length>0){
-                    data.content[i].sanPhamKhuyenMais.map(function (e){
-                        if(e.khuyenMai.trangThai==1 && e.trangThai==1){
-                            giaGoc= data.content[i].giaBan;
-                            giaBanSanPham=e.donGiaSauKhiGiam;
+                if (data.content[i].sanPhamKhuyenMais.length > 0) {
+                    data.content[i].sanPhamKhuyenMais.map(function (e) {
+                        if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
+                            giaGoc = data.content[i].giaBan;
+                            giaBanSanPham = e.donGiaSauKhiGiam;
 
-                        }else {
-                            giaBanSanPham=data.content[i].giaBan;
-                            giaGoc=null;
+                        } else {
+                            giaBanSanPham = data.content[i].giaBan;
+                            giaGoc = null;
                         }
                     })
-                }else {
-                    giaBanSanPham=data.content[i].giaBan;
-                    giaGoc=null;
+                } else {
+                    giaBanSanPham = data.content[i].giaBan;
+                    giaGoc = null;
                 }
-                sanPhamDiv.innerHTML =  `
+                sanPhamDiv.innerHTML = `
                         <div class="product__item" style="margin-left: 30px">
                                 <div class="product__item__pic">
-                                    <img src="/anh/${data.content[i].img}" style="width:265px;height: 270px" >
+                                    <img class="img-thumbnail" src="/image/${data.content[i].img}" style="width:265px;height: 270px" >
                                     <ul class="product__hover">
                                     <form method="get" action="/index/chi-tiet-san-pham/${data.content[i].id}">
                                         <li><a href="/index/chi-tiet-san-pham-onl?id=${data.content[i].id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>
@@ -213,8 +229,7 @@ function getSanPhamThoiTrangNu(page) {
                                 </div>
                                 <div class="product__item__text">
                                     <h6>${data.content[i].ten}</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
-                                        <h5><strike>${giaGoc==null ? "" : VND.format(giaGoc)}</strike></h5>
+                                      <h5><strike>${giaGoc == null ? "" : VND.format(giaGoc)}</strike></h5>
                                     <h5>${VND.format(giaBanSanPham)}</h5>
                                 </div>
                         </div>`;
@@ -231,7 +246,7 @@ function getSanPhamThoiTrangNu(page) {
                 active = page == i ? "background-color:#4e555b" : ""
                 phanTrang +=
                     `<li class="page-item" >
-                                <a class="page-link" style="`+active+`" name="` + i + `" onclick="getSanPhamThoiTrangNu(this.name)" >` + i + `</a>
+                                <a class="page-link" style="` + active + `" name="` + i + `" onclick="getSanPhamThoiTrangNu(this.name)" >` + i + `</a>
                                 </li>`
             }
             // document.getElementById("body").innerHTML = sanPham;
@@ -255,7 +270,7 @@ let data = {
 };
 
 function api(page, data) {
-        const options = {
+    const options = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
@@ -273,31 +288,37 @@ function api(page, data) {
             const productDiv = document.createElement("div");
             productDiv.className = "row product__filter"; // Thêm lớp Bootstrap cho div chứa danh sách sản phẩm
 // Lặp qua danh sách sản phẩm và thêm từng sản phẩm vào div sản phẩm
-            let giaBanSanPham =null;
+            let giaBanSanPham = null;
             let giaGoc = null;
+            let mucGiam = null;
+            let loaiGiamGia = null;
             for (let i = 0; i < data.content.length; i++) {
                 const sanPhamDiv = document.createElement("div");
                 // sanPhamDiv.className = "col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals"; // Thêm lớp Bootstrap cho sản phẩm
                 // Tạo nội dung sản phẩm và thêm lớp Bootstrap
-                if(data.content[i].sanPhamKhuyenMais.length>0){
-                    data.content[i].sanPhamKhuyenMais.map(function (e){
-                        if(e.khuyenMai.trangThai==1 && e.trangThai==1){
-                            giaGoc= data.content[i].giaBan;
-                            giaBanSanPham=e.donGiaSauKhiGiam;
+                if (data.content[i].sanPhamKhuyenMais.length > 0) {
+                    data.content[i].sanPhamKhuyenMais.map(function (e) {
+                        if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
+                            giaGoc = data.content[i].giaBan;
+                            giaBanSanPham = e.donGiaSauKhiGiam;
+                            mucGiam = e.mucGiam;
+                            loaiGiamGia = e.loaiGiamGia;
 
-                        }else {
-                            giaBanSanPham=data.content[i].giaBan;
-                            giaGoc=null;
+                        } else {
+                            giaBanSanPham = data.content[i].giaBan;
+                            giaGoc = null;
+                            mucGiam = null;
                         }
                     })
-                }else {
-                    giaBanSanPham=data.content[i].giaBan;
-                    giaGoc=null;
+                } else {
+                    giaBanSanPham = data.content[i].giaBan;
+                    giaGoc = null;
+                    mucGiam = null;
                 }
-                sanPhamDiv.innerHTML =  `
+                sanPhamDiv.innerHTML = `
                         <div class="product__item" style="margin-left: 30px">
                                 <div class="product__item__pic">
-                                    <img src="/image/${data.content[i].img}" style="width:265px;height: 270px" >
+                                    <img class="img-thumbnail" src="/image/${data.content[i].img}" style="width:265px;height: 270px" >
                                     <ul class="product__hover">
                                     <form method="get" action="/index/chi-tiet-san-pham/${data.content[i].id}">
                                         <li><a href="/index/chi-tiet-san-pham-onl?id=${data.content[i].id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>
@@ -306,9 +327,15 @@ function api(page, data) {
                                 </div>
                                 <div class="product__item__text">
                                     <h6>${data.content[i].ten}</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
-                                        <h5><strike>${giaGoc==null ? "" : VND.format(giaGoc)}</strike></h5>
-                                    <h5>${VND.format(giaBanSanPham)}</h5>
+                                    <div class="row">
+                                      <div class="col-sm-6"> <h5><strike>${giaGoc == null ? "" : VND.format(giaGoc)}</strike></h5></div>
+                                      <div class="col-sm-6"> <h5  
+                                      style="color: #E43535;
+                                      ">${mucGiam != null ? loaiGiamGia == true ? '-' + mucGiam + '%' : '-' + VND.format(mucGiam) : ""}</div>
+                                    </div>
+                                    <h5 style="color: #005cbf">${VND.format(giaBanSanPham)}</h5> 
+                                   </div>
+                                
                                 </div>
                         </div>`;
 
@@ -333,6 +360,7 @@ function api(page, data) {
                           <a class="page-link" name="` + (Number.parseInt(page) + Number.parseInt(1)) + `" onclick="nextFilter(this.name)" > > </a></li>`;
         });
 }
+
 function filterDanhMuc(id) {
     data.danhMuc = id;
     api(1, data);
@@ -395,7 +423,7 @@ function pageFilter(page) {
 }
 
 document.getElementById('clear').addEventListener('click', () => {
-   document.getElementById('search-input').value = "";
+    document.getElementById('search-input').value = "";
     getSanPham(1);
 })
 

@@ -179,10 +179,10 @@ public class SanPhamController {
 
     @GetMapping(value = "/add-anh-mac-dinh")
     @ResponseBody
-    public void addAnhMacDinhSanPham(@RequestParam String img, @RequestParam String idSP) {
+    public SanPham addAnhMacDinhSanPham(@RequestParam String img, @RequestParam String idSP) {
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(idSP));
         sanPham.setImg(img);
-        iSanPhamService.save(sanPham);
+      return  iSanPhamService.save(sanPham);
     }
 
 

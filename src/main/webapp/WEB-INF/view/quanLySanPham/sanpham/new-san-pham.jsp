@@ -229,7 +229,7 @@
                                                 </td>
                                                 <td style="width: 110px">
                                                     <label for="soLuongCTSP"></label>
-                                                    <input type="text" class="form-control" value="${ctsp.soLuong}"
+                                                    <input type="number" class="form-control" value="${ctsp.soLuong}"
                                                          id="soLuongCTSP" name="soLuong" />
                                                 </td>
                                                 <td>
@@ -255,7 +255,11 @@
                             </div>
                             <%--hiển thị ảnh theo màu sắc--%>
                             <div class="row" id="hienThiAnhMauSac">
-
+                            </div>
+                            <div class="row" id="anhMacDinhSanPham" style="margin-top: 20px">
+                                <div class="pagination justify-content-center">
+                                    <img src="/image/${sp.img}" alt="" class="img-thumbnail" style="width: 200px;height: 200px">
+                                </div>
                             </div>
                         </div>
                     </div>

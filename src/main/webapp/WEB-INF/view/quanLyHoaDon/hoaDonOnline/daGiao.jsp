@@ -64,20 +64,20 @@
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <c:forEach items="${lst}" var="dg" varStatus="i">
+                <c:forEach items="${lst}" var="dg" varStatus="i">
+                    <tr>
                         <td>${i.index+1}</td>
                         <td>${dg.ma}</td>
                         <td>${dg.hoTen}</td>
                         <td>${dg.sdt}</td>
-                        <td>${dg.ngayTao}</td>
+                        <td><fmt:formatDate value="${dg.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td><fmt:formatNumber pattern="#,###"  value="${dg.tongTien+dg.phiVanChuyen}"/> VNĐ</td>
                         <td>${dg.moTa}</td>
                         <td>
-                            <a href="/admin/hoa-don-onl/detail/${dg.id}" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
+                            <a href="/admin/hoa-don-onl/detail/${dg.id}" style="font-size: 15px" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
                         </td>
-                    </c:forEach>
-                </tr>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
     </div>

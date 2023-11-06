@@ -1,23 +1,16 @@
 package com.example.web.service.impl;
-
 import com.example.web.model.*;
 import com.example.web.repository.IGioHangOnllineRepository;
 import com.example.web.repository.IGioHangRepository;
-import com.example.web.response.GioHangOnllineResponse;
+import com.example.web.response.GioHangReponse;
 import com.example.web.service.IGioHangCTService;
 import com.example.web.service.IGioHangOnllineService;
 import com.example.web.service.IKhachHangService;
 import com.example.web.service.ISanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,15 +33,16 @@ public class GioHangOnllineServiceImpl implements IGioHangOnllineService {
 
 
     @Override
-    public Page<GioHangOnllineResponse> findAll(Pageable pageable, UUID idKhachHang) {
-        return iGioHangOnllineRepository.findAll(pageable,idKhachHang);
+    public List<GioHangReponse> findAll(UUID idKhachHang) {
+        List<GioHangReponse> listGioHangChiTiet = iGioHangOnllineRepository.findAll(idKhachHang);
+        return listGioHangChiTiet;
     }
 
-    @Override
-    public Page<GioHangOnllineResponse> page(Integer pageNo, Integer size, UUID idKhachHang) {
-        Pageable pageable = PageRequest.of(pageNo, size);
-        return iGioHangOnllineRepository.findAll(pageable,idKhachHang);
-    }
+//    @Override
+//    public Page<GioHangOnllineResponse> page(Integer pageNo, Integer size, UUID idKhachHang) {
+//        Pageable pageable = PageRequest.of(pageNo, size);
+//        return iGioHangOnllineRepository.findAll(pageable,idKhachHang);
+//    }
 
     @Override
     public void updateSoLuong(Integer soLuong, UUID idGioHangCT) {
@@ -60,17 +54,17 @@ public class GioHangOnllineServiceImpl implements IGioHangOnllineService {
         iGioHangOnllineRepository.delete(idGioHangCT);
     }
 
-    @Override
-    public String getTongTienTrongGio(UUID idKhachHang) {
-        DecimalFormat formatter = new DecimalFormat("###,###,###");
-        List<GioHangOnllineResponse> list = iGioHangOnllineRepository.findAll(idKhachHang);
-        BigDecimal tong = BigDecimal.valueOf(0);
-        for(int i=0;i<list.size();i++){
-            tong =tong.add( list.get(i).getDonGia().multiply(BigDecimal.valueOf(list.get(i).getSoLuong())));
-        }
-        String gia = formatter.format(tong);
-        return gia;
-    }
+//    @Override
+//    public String getTongTienTrongGio(UUID idKhachHang) {
+//        DecimalFormat formatter = new DecimalFormat("###,###,###");
+//        List<GioHangOnllineResponse> list = iGioHangOnllineRepository.findAll(idKhachHang);
+//        BigDecimal tong = BigDecimal.valueOf(0);
+//        for(int i=0;i<list.size();i++){
+//            tong =tong.add( list.get(i).getDonGia().multiply(BigDecimal.valueOf(list.get(i).getSoLuong())));
+//        }
+//        String gia = formatter.format(tong);
+//        return gia;
+//    }
 
     @Override
     public void addGioHang( ChiTietSanPham chiTietSanPham,Integer soLuongThem) {
@@ -91,7 +85,6 @@ public class GioHangOnllineServiceImpl implements IGioHangOnllineService {
             //thêm spham vào giỏ
             GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
             gioHangChiTiet.setGioHang(gioHangVuaTao);
-            gioHangChiTiet.setDonGia(sanPham.getGiaBan());
             gioHangChiTiet.setChiTietSanPham(chiTietSanPham);
             gioHangChiTiet.setSoLuong(soLuongThem);
             GioHangChiTiet  gioHangChiTiet1 = iGioHangCTService.save(gioHangChiTiet);
@@ -119,7 +112,6 @@ public class GioHangOnllineServiceImpl implements IGioHangOnllineService {
                 gioHangChiTiet.setSoLuong(soLuongThem);
                 gioHangChiTiet.setChiTietSanPham(chiTietSanPham);
                 gioHangChiTiet.setGioHang(gioHang);
-                gioHangChiTiet.setDonGia(sanPham.getGiaBan());
                 GioHangChiTiet chiTiet = iGioHangCTService.save(gioHangChiTiet);
             }
         }

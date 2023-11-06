@@ -1,8 +1,6 @@
 package com.example.web.service;
 import com.example.web.model.SanPham;
-import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.response.SanPhamAndKhuyenMai;
-import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.response.SanPhamFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

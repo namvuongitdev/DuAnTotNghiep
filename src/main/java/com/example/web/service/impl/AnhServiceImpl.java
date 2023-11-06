@@ -1,12 +1,9 @@
 package com.example.web.service.impl;
 import com.example.web.model.Anh;
-import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
 import com.example.web.repository.IAnhRepository;
-import com.example.web.response.AnhResponse;
 import com.example.web.service.IAnhService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,21 +61,10 @@ public class AnhServiceImpl implements IAnhService {
             System.out.println("ErrorAddGrammar:" + e);
         }
     }
-//
-//    @Override
-//    public List<Anh> getAnh(String id) {
-//        List<Anh> anhs = anhRepository.findByChiTietSanPham_Id(UUID.fromString(id));
-//        return anhs;
-//    }
-//
+
     @Override
     public void reomveAnhById(String id) {
         anhRepository.deleteById(UUID.fromString(id));
     }
-//
-//    @Override
-//    public List<Anh> getTenAnh(UUID idSanPham) {
-//        return anhRepository.getTenAnh(idSanPham);
-//    }
 
 }

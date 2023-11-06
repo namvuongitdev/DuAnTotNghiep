@@ -127,8 +127,8 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Thông tin của tôi</a></li>
                             <li><a class="dropdown-item" href="/index/hoa-don-cua-toi">Đơn hàng của tôi</a></li>
-                            <li><a  class="dropdown-item" href="/logout"
-                                    onclick="if(confirm('Bạn có muốn đăng xuất không ?')==true){return true;}else{return false;}">
+                            <li><a class="dropdown-item" href="/logout"
+                                   onclick="if(confirm('Bạn có muốn đăng xuất không ?')==true){return true;}else{return false;}">
                                 Đăng xuất</a>
                             </li>
                         </ul>
@@ -226,7 +226,8 @@
 <div class="modal-body">
     <div class="row">
         <div class="col-sm-3">
-            <input class="form-control" type="text" name="search" id="search-input" style="width: 915px;margin-left: 160px" placeholder="tìm kiếm tên , mã sản phẩm">
+            <input class="form-control" type="text" name="search" id="search-input"
+                   style="width: 915px;margin-left: 160px" placeholder="tìm kiếm tên , mã sản phẩm">
         </div>
         <div class="col-sm-2">
             <button style="margin-left: 740px;width: 100px" class="btn btn-light" onclick="timKiem()">Tìm kiếm</button>
@@ -254,7 +255,7 @@
                 <select name="mauSac" id="color" class="form-select" onchange="filterColor(this.value)">
                     <option value="">Tất cả</option>
                     <c:forEach items="${listMuaSac}" var="mauSac">
-                        <option value="${mauSac.id}" >
+                        <option value="${mauSac.id}">
                                 ${mauSac.ten}
                         </option>
                     </c:forEach>
@@ -286,7 +287,7 @@
                 <label for="kieuDang">Kiểu dáng</label><br>
                 <select name="kieuDang" id="kieuDang" class="form-select" onchange="filterKieuDang(this.value)">
                     <option value="">Tất cả</option>
-                    <c:forEach items="${listFormDang}" var="kieuDang" >
+                    <c:forEach items="${listFormDang}" var="kieuDang">
                         <option value="${kieuDang.id}">
                                 ${kieuDang.ten}
                         </option>
@@ -313,7 +314,7 @@
                     <option value="price-asc">
                         Thứ tự theo giá: thấp đến cao
                     </option>
-                    <option value="price-desc" >
+                    <option value="price-desc">
                         Thứ tự theo giá: cao xuống thấp
                     </option>
                 </select>
@@ -383,7 +384,8 @@
             <div class="col-lg-4">
                 <div class="instagram__text">
                     <h2>Greeting</h2>
-                    <p>Hopefully Sports Clothing will bring you the best experience.Please always love and support us.Thank you.</p>
+                    <p>Hopefully Sports Clothing will bring you the best experience.Please always love and support
+                        us.Thank you.</p>
                 </div>
             </div>
         </div>
@@ -394,43 +396,44 @@
 <!-- Latest Blog Section Begin -->
 <section class="latest spad">
     <div class="container">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-title">
-                    <span>Latest News</span>
-                    <h2>Fashion New Trends</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic set-bg" data-setbg="/anh/blog.png"></div>
-                    <div class="blog__item__text">
-                        <span><img src="/img/icon/calendar.png" alt=""> 16 February 2020</span>
-                        <h5>What Curling Irons Are The Best Ones</h5>
-                        <a href="#">Read More</a>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <span>Latest News</span>
+                        <h2>Fashion New Trends</h2>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic set-bg" data-setbg="/anh/blog1.png"></div>
-                    <div class="blog__item__text">
-                        <span><img src="/img/icon/calendar.png" alt=""> 21 February 2020</span>
-                        <h5>Eternity Bands Do Last Forever</h5>
-                        <a href="#">Read More</a>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic set-bg" data-setbg="/anh/blog.png"></div>
+                        <div class="blog__item__text">
+                            <span><img src="/img/icon/calendar.png" alt=""> 16 February 2020</span>
+                            <h5>What Curling Irons Are The Best Ones</h5>
+                            <a href="#">Read More</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic set-bg" data-setbg="/anh/blog2.png"></div>
-                    <div class="blog__item__text">
-                        <span><img src="/img/icon/calendar.png" alt=""> 28 February 2020</span>
-                        <h5>The Health Benefits Of Sunglasses</h5>
-                        <a href="#">Read More</a>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic set-bg" data-setbg="/anh/blog1.png"></div>
+                        <div class="blog__item__text">
+                            <span><img src="/img/icon/calendar.png" alt=""> 21 February 2020</span>
+                            <h5>Eternity Bands Do Last Forever</h5>
+                            <a href="#">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic set-bg" data-setbg="/anh/blog2.png"></div>
+                        <div class="blog__item__text">
+                            <span><img src="/img/icon/calendar.png" alt=""> 28 February 2020</span>
+                            <h5>The Health Benefits Of Sunglasses</h5>
+                            <a href="#">Read More</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -494,9 +497,11 @@
                     <p>Copyright ©
                         <script>
                             document.write(new Date().getFullYear());
-                        </script>2020
+                        </script>
+                        2020
                         All rights reserved | This template is made with <i class="fa fa-heart-o"
-                                                                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                                                            aria-hidden="true"></i> by <a
+                                href="https://colorlib.com" target="_blank">Colorlib</a>
                     </p>
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </div>
@@ -528,15 +533,12 @@
 <script src="/js/mixitup.min.js"></script>
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/main.js"></script>
-<script src="/js/banHangTaiQuay/modal.js">
-</script>
 
 <script src="/js/banHangOnlline/sanPham.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         // Gọi hàm getSanPham khi trang web được tải
         getSanPham(1); // Thay số 1 bằng trang mặc định mà bạn muốn hiển thị ban đầu.
-
         // Các xử lý khác nếu cần
     });
 </script>

@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/index")
@@ -112,11 +111,18 @@ public class TrangChuController {
     @GetMapping("/chi-tiet-san-pham-onl")
     public String chiTiet(Model model,@RequestParam (name = "id") String
             idSanPham){
-       List<Anh> anhs = anhService.getAllAnhBySanPham_id(UUID.fromString(idSanPham));
+        List<Anh> anhs = anhService.getAllAnhBySanPham_id(UUID.fromString(idSanPham));
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(idSanPham));
         List<ChiTietSanPham> listCT = iChiTietSanPhamService.listCTSPTheoIdSP(UUID.fromString(idSanPham));
         List<MauSac> listMS = mauSacService.getTheoCTSP(UUID.fromString(idSanPham));
         List<Size> listSize = sizeService.getTheoCT(UUID.fromString(idSanPham));
+        if(!sanPham.getSanPhamKhuyenMais().isEmpty()){
+            sanPham.getSanPhamKhuyenMais().forEach(o -> {
+                if(o.getTrangThai() == 1 && o.getKhuyenMai().getTrangThai() == 1){
+                     model.addAttribute("sanPhamKhuyenMai" , o);
+                }
+            });
+        }
         model.addAttribute("listMau",listMS);
         model.addAttribute("listSize",listSize);
         model.addAttribute("sanPham",sanPham);
@@ -162,7 +168,5 @@ public class TrangChuController {
         List<ChiTietSanPhamResponse> chiTietSanPhams = iChiTietSanPhamService.getCTSP(id);
         return chiTietSanPhams;
     }
-
-
 
 }

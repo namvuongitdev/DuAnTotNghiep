@@ -38,6 +38,10 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
             "left join hdct.chiTietSanPham ctsp where hd.id = ?1 and hdct.trangThai=0")
     Page<HoaDonChiTiet> getHoaDonChiTiet(UUID id ,Pageable pageable);
 
+    @Query(value = "select hdct from HoaDon hd left join hd.hoaDonChiTiets hdct " +
+            "left join hdct.chiTietSanPham ctsp where hd.id = ?1 and hdct.trangThai=1")
+    Page<HoaDonChiTiet> getHoaDonHuyChiTiet(UUID id ,Pageable pageable);
+
     @Query(value = "select hd from HoaDon hd where hd.trangThai<>0 and hd.loaiHoaDon=false")
     Page<HoaDon> findAll3(Pageable pageable);
 

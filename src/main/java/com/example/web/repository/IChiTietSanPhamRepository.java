@@ -1,5 +1,4 @@
 package com.example.web.repository;
-import com.example.web.model.Anh;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.Size;
 import com.example.web.response.ChiTietOnllineResponse;

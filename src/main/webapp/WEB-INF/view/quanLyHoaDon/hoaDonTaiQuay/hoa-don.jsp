@@ -117,9 +117,9 @@
                                 <td><fmt:formatNumber pattern="#,###" value="${hd.tongTien}"/></td>
                                 <td class="${hd.trangThai==4?'text-success':'text-warning'}">${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Đã tiếp nhận':(hd.trangThai==6)?'Giao hàng thành công':(hd.trangThai==5)?'Hủy đơn hàng':''}</td>
                                 <td>
-                                    <button type="button" class="btn btn-success rounded-5" title="Cập nhật"
+                                    <button type="button" class="btn btn-success rounded-5"
                                             onclick="myFunction()">
-                                        <a class="text-white" style="text-decoration: none"
+                                        <a class="text-white" style="text-decoration: none;font-size: 16px"
                                            href="/admin/hoa-don/view-update/${hd.id}"><i class="bi bi-info-circle"></i></a>
                                     </button>
                                 </td>

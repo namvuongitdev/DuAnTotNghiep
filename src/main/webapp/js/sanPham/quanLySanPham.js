@@ -31,7 +31,7 @@ function findAnhMauSac(idSP, idMS) {
                     document.getElementById("anhs").innerHTML += `
                           <div class="col l-3" >
                                             <div>
-                                                <img src="/image/${data[i].ten}" alt="..." style="width: 150px ; height: 150px">
+                                                <img class="img-thumbnail" src="/image/${data[i].ten}" alt="..." style="width: 150px ; height: 150px">
                                             </div>
                                             <div>
                                                <a type="button" class="btn btn-secondary" onclick="anhMacDinhSanPham('${idSP}','${data[i].ten}')">Mặc định</a>
@@ -57,8 +57,13 @@ async function themAnhMauSac() {
 }
 
 async function anhMacDinhSanPham(idSP , tenAnh){
+    const anhMacDinh = document.getElementById("anhMacDinhSanPham");
+    anhMacDinh.replaceChildren();
     const api = await fetch(`/admin/san-pham/add-anh-mac-dinh?img=${tenAnh}&idSP=${idSP}`);
-    findAnhMauSac(idSanPham, idMauSac);
+    const dataSanPham = await  api.json();
+    anhMacDinh.innerHTML = ` <div class="pagination justify-content-center">
+                                    <img src="/image/${dataSanPham.img}" alt="" class="img-thumbnail" style="width: 200px;height: 200px">
+                                </div>`
 }
 
 async function xoaAnh(idAnh){

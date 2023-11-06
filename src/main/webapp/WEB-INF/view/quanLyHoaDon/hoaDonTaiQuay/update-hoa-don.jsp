@@ -490,7 +490,7 @@ function quayLai() {
     if (confirm("Bạn có muốn quay lại trang trước không?")===true){
         window.location.href="/admin/hoa-don/hien-thi"
     }else {
-        window.location.reload();
+        return;
     }
 }
 </script>

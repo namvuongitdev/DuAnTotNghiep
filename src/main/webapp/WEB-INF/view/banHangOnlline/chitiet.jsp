@@ -441,16 +441,46 @@
                     </c:forEach>
                 </div>
             </div>
-
             <div class="col-md-6">
                 <div class="product-dtl">
                     <div class="product-info">
                         <div class="product-name">${sanPham.ten}</div>
-                        <div class="product-price-discount"><span>
-                            <c:forEach items="${sanPham.sanPhamKhuyenMais}" var="sanPhamKhuyenMai">
+                        <div class="product-price-discount">
+                            <div class="row">
+                                <c:choose>
+                                    <c:when test="${sanPhamKhuyenMai != null}">
+                                        <div class="col-sm-3">
+                                            <strike> <fmt:formatNumber pattern="#,###"
+                                                                       value="${sanPham.giaBan}"></fmt:formatNumber>đ</strike>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <c:choose>
+                                                <c:when test="${sanPhamKhuyenMai.loaiGiamGia}">
+                                                 <span style="color: #E43535">
+                                                   -${sanPhamKhuyenMai.mucGiam.intValue()}%
+                                                </span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                 <span style="color: #E43535">
+                                                   -<fmt:formatNumber pattern="#,###"
+                                                                      value="${sanPhamKhuyenMai.mucGiam.intValue()}"></fmt:formatNumber>đ
+                                                </span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                        <span style="color: #005cbf">
                                     <fmt:formatNumber pattern="#,###"
-                                                      value="${sanPhamKhuyenMai.donGiaSauKhiGiam}"></fmt:formatNumber> đ
-                                </c:forEach>
+                                                      value="${sanPhamKhuyenMai.donGiaSauKhiGiam}"></fmt:formatNumber>đ
+                                     </span>
+                                    </c:when>
+                                    <c:otherwise>
+                                          <span style="color: #005cbf">
+                                    <fmt:formatNumber pattern="#,###"
+                                                      value="${sanPham.giaBan}"></fmt:formatNumber>đ
+                                     </span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
                         </div>
                         <p>Form dáng : <span>${sanPham.kieuDang.ten}</span></p>
                         <p>Chất liệu : <span>${sanPham.chatLieu.ten}</span></p>
@@ -469,7 +499,7 @@
                                        id:this.value,
                                         type:'mauSac'
                                                  })"
-                                                   value="${mau.id}" name="success-outlined-1" id="${mau.id}"
+                                                   value="${mau.id}" name="color" id="${mau.id}"
                                                    autocomplete="off">
                                             <label class="btn btn-outline-secondary" for="${mau.id}">${mau.ten}
                                             </label>
@@ -488,7 +518,7 @@
                                        id:this.value,
                                         type:'size'
                                                  })"
-                                                   value="${size.id}" name="success-outlined" id="${size.id}"
+                                                   value="${size.id}" name="size" id="${size.id}"
                                                    autocomplete="off">
                                             <label class="btn btn-outline-secondary" for="${size.id}">${size.ten}
                                             </label>
@@ -503,7 +533,7 @@
                             </div>
                             <br>
                             <div class="product-count">
-                                <label>Quantity</label>
+                                <label for="quantity">Quantity</label>
                                 <div class="display-flex">
                                     <div class="qtyminus" style="">-</div>
                                     <input type="text" style="height: 35px" id="quantity" name="quantity" value="1"
@@ -704,29 +734,29 @@
                 mauSacSP = value.id;
                 kichCoSP = undefined;
                 kichCo.replaceChildren();
-                const responseSize = await fetch('/index/kich-co?idSP='+myVariable.data+'&idMS='+mauSacSP)
+                const responseSize = await fetch('/index/kich-co?idSP=' + myVariable.data + '&idMS=' + mauSacSP)
                 const data = await responseSize.json();
-                 data.map(function (size) {
+                data.map(function (size) {
                     kichCo.innerHTML += ` <input type="radio" class="btn-check" onclick="getCTSP({
                                                 id:this.value,
                                                  type:'size'
                                                          })"
-                              value="`+size.id+`" name="success-outlined" id="`+size.id+`"
+                              value="` + size.id + `" name="size" id="` + size.id + `"
                              autoComplete="off">
-                          <label class="btn btn-outline-secondary" for="`+size.id+`">`+size.ten+`
+                          <label class="btn btn-outline-secondary" for="` + size.id + `">` + size.ten + `
                           </label>`
                 })
-               const responseAnh = await fetch('/index/anh-mau-sac?idSP=' + myVariable.data + '&idMS=' + mauSacSP)
-                const dataAnh =  await responseAnh.json()
-                        anhMauSac.replaceChildren();
-                        anhMauSac.innerHTML = `<div class="row" id='anhs'></div>`
-                        dataAnh.map(function (anh){
-                            document.getElementById("anhs").innerHTML += `
-                             <div class="col l-3">
-                                <img src="/image/` + anh.ten + `">
+                const responseAnh = await fetch('/index/anh-mau-sac?idSP=' + myVariable.data + '&idMS=' + mauSacSP)
+                const dataAnh = await responseAnh.json()
+                anhMauSac.replaceChildren();
+                anhMauSac.innerHTML = `<div class="row" id='anhs'></div>`
+                dataAnh.map(function (anh) {
+                    document.getElementById("anhs").innerHTML += `
+                             <div class="col-sm-5">
+                                <img src="/image/` + anh.ten + `" alt="">
                              </div>
                         `
-                        })
+                })
             }
             if (mauSacSP != undefined && kichCoSP != undefined) {
                 fetch('/index/so-luong/' + kichCoSP + '/' + mauSacSP + '?id=' + myVariable.data)

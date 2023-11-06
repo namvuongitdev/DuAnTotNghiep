@@ -64,21 +64,21 @@
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <c:forEach items="${lst}" var="gh" varStatus="i">
+                <c:forEach items="${lst}" var="gh" varStatus="i">
+                    <tr>
                         <td>${i.index+1}</td>
                         <td>${gh.ma}</td>
                         <td>${gh.hoTen}</td>
                         <td>${gh.sdt}</td>
-                        <td>${gh.ngayTao}</td>
+                        <td><fmt:formatDate value="${gh.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td><fmt:formatNumber pattern="#,###"  value="${gh.tongTien+gh.phiVanChuyen}"/> VNĐ</td>
                         <td>${gh.moTa}</td>
                         <td>
-                            <a name="3" id="trangThai" style="text-decoration: none" onclick="xacNhan({idhd:`${gh.id}`})" class="badge text-bg-info text-white"><i class="bi bi-truck"></i></a>
-                            <a href="/admin/hoa-don-onl/detail/${gh.id}" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
+                            <a name="3" id="trangThai" style="text-decoration: none;font-size: 15px" onclick="xacNhan({idhd:`${gh.id}`})" class="badge text-bg-info text-white"><i class="bi bi-truck"></i></a>
+                            <a href="/admin/hoa-don-onl/detail/${gh.id}" style="font-size: 15px" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
                         </td>
-                    </c:forEach>
-                </tr>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
     </div>
@@ -87,7 +87,7 @@
 <script>
     function xacNhan(data) {
         let trangThai = document.getElementById('trangThai').name;
-        if (confirm("Bạn có chắc chắn xác nhận đơn không ?")===true){
+        if (confirm("Đơn hàng  đã được giao cho đơn vị vận chuyển?")===true){
             window.location.href="/admin/hoa-don-onl/xac-nhan/"+data.idhd+"?trangThai="+trangThai;
         }else {
             return;
