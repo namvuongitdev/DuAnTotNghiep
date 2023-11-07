@@ -21,20 +21,14 @@ public interface ISanPhamService {
 
     Page<SanPham> sanPhamFilter(SanPhamFilter filter , Pageable pageable);
 
-    Page<SanPhamAndKhuyenMai> sanPhamAndKhuyenMaiFilter(SanPhamFilter filter , Pageable pageable);
-
     Page<SanPham> getAllByTenOrMa(String value  , Integer page);
 
     List<SanPham> theoTen(UUID chatLieu,UUID kieuDang,String danhMuc );
 
     Page<SanPham> findAllGender(Pageable pageable,boolean gioi_tinh);
 
-    Page<SanPhamAndKhuyenMai> findAllSanPhamKhuyenMaiGender( boolean gioi_tinh,Integer page);
-
     SanPham getSanPhamTheoCTSP(UUID idCTSP);
 
     Page<SanPhamAndKhuyenMai> getALL(Pageable pageable);
-
-    Page<SanPhamAndKhuyenMai> getAllSanPhamAndKhuyenMaiByTenOrMa(String value,  Integer page);
 
 }

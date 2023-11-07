@@ -57,12 +57,12 @@ public class GioHangOnllineController {
         return "redirect:/gio-hang-onl";
     }
 
-    @GetMapping("/them-moi-gio-hang/{idSP}")
+    @GetMapping("/them-moi-gio-hang/{idSP}/{quantity}/{color}/{size}")
     public String themGioHang(
             @PathVariable(name = "idSP") String idSP,
-            @RequestParam(value = "color") String idMau,
-            @RequestParam(value = "size") String idSize,
-            @RequestParam(name = "quantity") String soLuongThem,Model model){
+            @PathVariable(value = "color") String idMau,
+            @PathVariable(value = "size") String idSize,
+            @PathVariable(name = "quantity") String soLuongThem,Model model){
         if(Integer.parseInt((soLuongThem))<=0){
             model.addAttribute("checkQuantity","Số lượng không hợp lệ.");
         }else {

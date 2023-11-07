@@ -454,7 +454,7 @@
                     <p>${sanPham.moTa}</p>
                     <font color="green">${tong}</font>
                     <div id="tongSanPham"></div>
-                    <form method="get" action="/gio-hang-onl/them-moi-gio-hang/${sanPham.id}">
+                    <form>
                         <div class="row" style="margin-top: 10px">
                             <div class="col-md-6">
                                 <label>Color</label>
@@ -470,7 +470,7 @@
 
                                 <label>Size</label>
                                 <br>
-                                <select name="size" class="form-control" onchange="getCTSP(this.value)">
+                                <select name="size" id="size" class="form-control" onchange="getCTSP(this.value)">
                                     <c:forEach items="${listSize}" var="size">
                                         <option value="${size.id}">${size.ten}</option>
                                     </c:forEach>
@@ -490,10 +490,10 @@
                             <input type="text" style="height: 35px" id="quantity" name="quantity" value="1" class="qty">
                             <div class="qtyplus">+</div>
                             <p style="color: red">${checkQuantity}</p>
-                            <button type="submit" id="themVaoGioHang"
+                            <button type="button" id="themVaoGioHang"
                                     class="round-black-btn" style="
                                     margin-top: 60px;margin-left: 20px;
-                                    ">Add to Cart</button>
+                                    " onclick="themVaoGiohang({idSP:`${sanPham.id}`})">Add to Cart</button>
                         </div>
                     </div>
                     </form>
@@ -696,11 +696,20 @@
 <script src="/js/main.js"></script>
 <script>
     let mauSacSP = document.getElementById("colorSelector");
+    let size = document.getElementById("size");
     var myVariable = new MyCustomType('${sanPham.id}');
     const themVaoGioHang = document.getElementById("themVaoGioHang");
     const quantity = document.getElementById("quantity");
     function MyCustomType(data) {
         this.data = data;
+    }
+    function themVaoGiohang(sanPham){
+        if(quantity.value <=0 ){
+            alert("Số lượng không hợp lệ.");
+            return;
+        }
+        window.location.href = "/gio-hang-onl/them-moi-gio-hang/" + sanPham.idSP + "/" + quantity.value +"/" + mauSacSP.value +"/" + size.value;
+        alert("Thêm vào giỏ thành công.");
     }
 
     function getCTSP(id) {

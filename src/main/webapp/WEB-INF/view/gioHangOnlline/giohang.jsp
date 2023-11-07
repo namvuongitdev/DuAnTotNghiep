@@ -219,7 +219,7 @@
 
                             </div>
                         </div>
-                        <h6 class="mb-0"><a href="/trang-chu" class="text-body"><i
+                        <h6 class="mb-0"><a href="/index/home" class="text-body"><i
                                 class="fas fa-long-arrow-alt-left me-2"></i>Quay lại</a></h6>
                     </div>
                 </div>
@@ -320,8 +320,6 @@
 
 <script>
     function callYourApi(newValue,gioHang) {
-        console.log(newValue);
-        console.log(gioHang.idGioHangCT)
         window.location.href = "/gio-hang-onl/cap-nhat-gio-hang/" + newValue + "/" + gioHang.idGioHangCT;
     }
 
