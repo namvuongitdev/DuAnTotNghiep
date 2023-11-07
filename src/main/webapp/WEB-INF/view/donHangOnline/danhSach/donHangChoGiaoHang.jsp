@@ -22,16 +22,16 @@
           rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="../../../css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="../../../css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="../../../css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="../../../css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="../../../css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="../../../css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="../../../css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="../../../css/style.css" type="text/css">
+    <link rel="stylesheet" href="../../../../css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../../../css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="../../../../css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="../../../../css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="../../../../css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="../../../../css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="../../../../css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="../../../../css/style.css" type="text/css">
 
-    <link rel="stylesheet" href="../../../css/banHangOnline/hoaDon/hoaDon.css" type="text/css">
+    <link rel="stylesheet" href="../../../../css/banHangOnline/hoaDon/hoaDon.css" type="text/css">
 
 </head>
 <body>
@@ -85,19 +85,29 @@
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
                     <a href="/gio-hang-onl"><img src="/img/icon/cart.png" alt=""> <span></span></a>
-                    <div class="dropdown-center">
-                        <a href="#" class="dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="../../../img/icon/person.svg" alt="">
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Thông tin của tôi</a></li>
-                            <li><a class="dropdown-item" href="/index/hoa-don-cua-toi">Đơn hàng của tôi</a></li>
-                            <li><a  class="dropdown-item" href="/logout"
-                                    onclick="if(confirm('Bạn có muốn đăng xuất không ?')==true){return true;}else{return false;}">
-                                Đăng xuất</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <c:if test="${empty sessionScope.username}">
+                        <div class="dropdown-center">
+                            <a href="/login">
+                                <img src="../../../img/icon/person.svg" alt="">
+                            </a>
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty sessionScope.username}">
+                        <div class="dropdown-center">
+                            <a href="#" class="dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="../../../img/icon/person.svg" alt="">
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><b style="margin-left: 25px">${sessionScope.username}</b><hr></li>
+                                <li><a class="dropdown-item" href="#">Thông tin của tôi</a></li>
+                                <li><a class="dropdown-item" href="/cuaToi/donHangAll">Đơn hàng của tôi</a></li>
+                                <li><a  class="dropdown-item" href="/logout"
+                                        onclick="if(confirm('Bạn có muốn đăng xuất không ?')==true){return true;}else{return false;}">
+                                    Đăng xuất</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -108,15 +118,18 @@
 <!-- Header Section End -->
 <section class="section">
     <div class="container">
-        <div class="row">
+        <div>
             <h3 class="h3-title">Đơn hàng của tôi</h3>
         </div>
-        <div class="row">
+        <div>
             <nav class="primary-navigation">
                 <ul>
-                    <li><a href="#">Tất cả đơn hàng</a></li>|
-                    <li><a href="#">Chưa thanh toán</a></li>|
-                    <li><a href="#">Xử lý</a></li>
+                    <li><a href="/cuaToi/donHangAll">Tất cả đơn hàng</a></li>|
+                    <li><a href="/cuaToi/donHangChoXacNhan">Chờ xác nhận</a></li>|
+                    <li class="active"><a href="/cuaToi/donHangChoGiaoHang">Chờ giao hàng</a></li>|
+                    <li><a href="/cuaToi/donHangDangGiao">Đang giao</a></li>|
+                    <li><a href="/cuaToi/donHangDaNhan">Đã nhận</a></li>|
+                    <li><a href="/cuaToi/donHangDaHuy">Đã hủy</a></li>
                 </ul>
             </nav>
         </div>
@@ -124,34 +137,28 @@
             <table class="table">
                 <thead class="thead">
                 <tr>
-                    <th scope="col">Sản phẩm</th>
-                    <th scope="col" style="padding-left: 40px">Tổng tiền</th>
-                    <th scope="col" >Hoạt động sản phẩm</th>
-                    <th scope="col" style="padding-right: 50px">Trạng thái</th>
+                    <th scope="col">Tổng sản phẩm</th>
+                    <th scope="col" >Tổng tiền</th>
+                    <th scope="col" style="padding-left: 40px; padding-right: 30px">Hoạt động sản phẩm</th>
+                    <th scope="col" style="padding-right: 90px">Trạng thái</th>
                     <th scope="col" style="padding-right: 25px">Thao tác</th>
                 </tr>
                 </thead>
             </table>
-            <%--c:forEach--%>
+            <c:forEach items="${listHd.content}" var="hd" >
                 <div class="span">
-                    27/10/2023 19:38:10; Mã đơn hàng: GHD576HJ6
+                    <fmt:formatDate value="${hd[2]}" pattern="dd-MM-yyyy HH:mm:ss"/> | Mã đơn hàng: ${hd[1]}
                 </div>
                 <table class="table">
                     <tbody>
                     <tr>
                         <td class="td-1">
                             <div>
-                                <h6>CC</h6>
-                            </div>
-                            <div class="div-1">
-                                <img src="../../../anh/ao1.jpg" alt="">
-                            </div>
-                            <div>
-                                <h6>1 sản phẩm</h6>
+                                <h6>${hd[4]} sản phẩm</h6>
                             </div>
                         </td>
-                        <td style="width: 220px">
-                            <p>450.000 đ</p>
+                        <td style="width: 210px">
+                            <p><b style="color: red"><fmt:formatNumber pattern="#,###" value="${hd[3]}"/> đ</b></p>
                         </td>
                         <td class="td-2">
                             <div>
@@ -165,66 +172,40 @@
                             </div>
                         </td>
                         <td>
-                            <div style="margin-top: 30px">Đã giao hàng</div>
+                            <div style="margin-top: 30px">${hd[5]==4?'Đã thanh toán':(hd[5]==3)?'Đang giao hàng':(hd[5]==0)?'Đang chờ':(hd[5]==1)?'Chờ xác nhận':(hd[5]==2)?'Chờ giao hàng':(hd[5]==6)?'Đã nhận hàng':(hd[5]==5)?'Hủy đơn hàng':''}</div>
                             <div style="margin-top: 10px">
-                                <a class="text-primary" href="#">Chi tiết đơn hàng</a>
+                                <a class="text-primary" href="/cuaToi/chiTietDonHang/${hd[0]}">Chi tiết đơn hàng</a>
                             </div>
                         </td>
                         <td>
                             <div style="margin-top: 40px">
-                                <button class="btn btn-secondary"><a href="#" style="color: white">Đã nhận</a></button>
+                                <button class="btn btn-secondary" style="visibility: ${hd[5]==3?'':'hidden'}"><a href="#" style="color: white">Đã nhận</a></button>
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-
-                <div class="span">
-                    27/10/2023 19:38:10 Mã đơn hàng: GHD576HJ6
-                </div>
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <td class="td-1">
-                            <div>
-                                <h6>CC</h6>
-                            </div>
-                            <div class="div-1">
-                                <img src="../../../anh/ao1.jpg" alt="">
-                            </div>
-                            <div>
-                                <h6>1 sản phẩm</h6>
-                            </div>
-                        </td>
-                        <td style="width: 220px">
-                            <p>450.000 đ</p>
-                        </td>
-                        <td class="td-2">
-                            <div>
-                                <button class="btn btn-outline-secondary"><a style="color: black" href="#">Sản phẩm trả lại</a></button>
-                            </div>
-                            <div>
-                                <a style="margin-top: 100px" class="text-primary" href="#">Mua lại</a>
-                            </div>
-                            <div>
-                                <a class="text-primary" href="#">Theo dõi</a>
-                            </div>
-                        </td>
-                        <td>
-                            <div style="margin-top: 30px">Đã giao hàng</div>
-                            <div style="margin-top: 10px">
-                                <a class="text-primary" href="#">Chi tiết đơn hàng</a>
-                            </div>
-                        </td>
-                        <td>
-                            <div style="margin-top: 40px">
-                                <button class="btn btn-secondary"><a href="#" style="color: white">Đã nhận</a></button>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            </c:forEach>
             <%--end--%>
+            <%--                  phân trang--%>
+            <div class="container-fluid mt-5">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item ${listHd.number + 1<=1?"disabled":""}"><a class="page-link"
+                                                                                       href="${url}${(listHd.number + 1) - 1}"><</a>
+                        </li>
+                        <c:forEach begin="1" end="${listHd.getTotalPages()}" var="i">
+                            <li class="page-item"><a class="page-link ${i == listHd.number + 1 ? 'active ' : ''}"
+                                                     href="${url}${i}">${i}</a></li>
+                        </c:forEach>
+                        <li class="page-item ${listHd.number + 1 >= listHd.getTotalPages() ? "disabled":  ""}">
+                            <a class="page-link"
+                               href="${url}${(listHd.number + 1) + 1}">></a>
+                        </li>
+                    </ul>
+                </nav>
+                <br><br>
+            </div>
         </div>
     </div>
 </section>
@@ -307,16 +288,16 @@
 </div>
 <!-- Search End -->
 <!-- Js Plugins -->
-<script src="../../../js/jquery-3.3.1.min.js"></script>
-<script src="../../../js/bootstrap.min.js"></script>
-<script src="../../../js/jquery.nice-select.min.js"></script>
-<script src="../../../js/jquery.nicescroll.min.js"></script>
-<script src="../../../js/jquery.magnific-popup.min.js"></script>
-<script src="../../../js/jquery.countdown.min.js"></script>
-<script src="../../../js/jquery.slicknav.js"></script>
-<script src="../../../js/mixitup.min.js"></script>
-<script src="../../../js/owl.carousel.min.js"></script>
-<script src="../../../js/main.js"></script>
+<script src="../../../../js/jquery-3.3.1.min.js"></script>
+<script src="../../../../js/bootstrap.min.js"></script>
+<script src="../../../../js/jquery.nice-select.min.js"></script>
+<script src="../../../../js/jquery.nicescroll.min.js"></script>
+<script src="../../../../js/jquery.magnific-popup.min.js"></script>
+<script src="../../../../js/jquery.countdown.min.js"></script>
+<script src="../../../../js/jquery.slicknav.js"></script>
+<script src="../../../../js/mixitup.min.js"></script>
+<script src="../../../../js/owl.carousel.min.js"></script>
+<script src="../../../../js/main.js"></script>
 
 </body>
 </html>

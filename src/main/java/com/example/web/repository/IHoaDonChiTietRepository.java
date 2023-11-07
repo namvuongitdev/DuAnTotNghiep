@@ -2,7 +2,7 @@ package com.example.web.repository;
 import com.example.web.model.HoaDonChiTiet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,6 +22,7 @@ public interface IHoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet , 
     @Query(value = "update hoa_don_chi_tiet set so_luong =?2 where id_hoa_don=?1",nativeQuery = true)
     String updateHoaDonChiTietByIdHoaDon(String idHd,String soLuong);
 
-
+    @Query(value = "Select hdct From HoaDonChiTiet hdct where hdct.hoaDon.id = ?1")
+    List<HoaDonChiTiet> getAllByIdHoaDon(UUID idHD);
 
 }

@@ -38,12 +38,18 @@ public interface IHoaDonService {
 
     HoaDon add(HoaDon hoaDon);
 
-    String updateHoaDonById(HoaDon hoaDon);
+   String updateHoaDonById(HoaDon hoaDon);
 
     String updateThongTin(HoaDon hoaDon);
 
     String updatePVC(HoaDon hoaDon);
 
     String updateStatusHoaDonById(HoaDon hoaDon,String trangThai);
+
+//    HoaDon updateHoaDonById(HoaDon hoaDon);
+
+    Page<Object[]> findHoaDonByTaiKhoan(String taiKhoan, Pageable pageable);
+
+    Page<Object[]> findHoaDonByTrangThai(String taiKhoan, Integer trangThai, Pageable pageable);
 
 }

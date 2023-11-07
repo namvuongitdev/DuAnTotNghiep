@@ -1,8 +1,8 @@
 package com.example.web.service;
 
 import com.example.web.model.HoaDonChiTiet;
-
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 public interface IHoaDonChiTietService {
@@ -24,5 +24,7 @@ public interface IHoaDonChiTietService {
     String updateSoLuongSanPhamHoaDonChiTietKhiUpdate(String idHDCT, String soLuong);
 
     BigDecimal tongTienHDCT(UUID idHD);
+
+    List<HoaDonChiTiet> getAllByIdHoaDon(UUID idHD);
 
 }

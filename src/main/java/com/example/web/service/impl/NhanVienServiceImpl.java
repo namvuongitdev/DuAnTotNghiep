@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -82,4 +81,30 @@ public class NhanVienServiceImpl implements INhanVienService  {
             }
         }, pageable);
     }
+
+    @Override
+    public NhanVien checkTaiKhoan(String taiKhoan) {
+        return iNhanVienRepository.findByTaiKhoan(taiKhoan);
+    }
+
+    @Override
+    public NhanVien checkEmail(String email) {
+        return iNhanVienRepository.findByEmail(email);
+    }
+
+    @Override
+    public NhanVien findBySDT(String sdt) {
+        return iNhanVienRepository.findBySDT(sdt);
+    }
+
+    @Override
+    public UUID findIdByEmail(String email) {
+        return iNhanVienRepository.findIdByEmail(email);
+    }
+
+    @Override
+    public String findEmailToPass(String taiKhoan) {
+        return iNhanVienRepository.findEmailToPass(taiKhoan);
+    }
+
 }

@@ -19,4 +19,14 @@ public interface INhanVienService {
     public NhanVien update(UUID id, NhanVien nhanVien);
 
     Page<NhanVien> nhanVienFilter(NhanVienFilter filter , Pageable pageable);
+
+    NhanVien checkTaiKhoan(String taiKhoan);
+
+    NhanVien checkEmail(String email);
+
+    NhanVien findBySDT(String sdt);
+
+    UUID findIdByEmail(String email);
+
+    String findEmailToPass(String taiKhoan);
 }

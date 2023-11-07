@@ -268,4 +268,12 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
 
+    public Page<Object[]> findHoaDonByTaiKhoan(String taiKhoan, Pageable pageable) {
+        return hoaDonRepository.findHoaDonByTaiKhoan(taiKhoan, pageable);
+    }
+
+    @Override
+    public Page<Object[]> findHoaDonByTrangThai(String taiKhoan, Integer trangThai, Pageable pageable) {
+        return hoaDonRepository.findHoaDonByTrangThai(taiKhoan, trangThai, pageable);
+    }
 }

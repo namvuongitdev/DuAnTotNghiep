@@ -13,5 +13,20 @@ public interface INhanVienRepository extends JpaRepository<NhanVien, UUID> {
     Page<NhanVien> findAll(Specification<NhanVien> nhanVienSpecification, Pageable pageable);
 
     @Query(value = "select nv from NhanVien nv where nv.email = ?1 or nv.taiKhoan = ?1")
-   NhanVien findByEmailOrTaiKhoan(String username);
+    NhanVien findByEmailOrTaiKhoan(String username);
+
+    @Query(value = "select * from nhan_vien where email = ?1",nativeQuery = true)
+    NhanVien findByEmail(String email);
+
+    @Query(value = "select * from nhan_vien where tai_khoan = ?1",nativeQuery = true)
+    NhanVien findByTaiKhoan(String taiKhoan);
+
+    @Query(value = "select * from nhan_vien where sdt = ?1",nativeQuery = true)
+    NhanVien findBySDT(String sdt);
+
+    @Query(value = "select nv.id from NhanVien nv Where nv.email = ?1")
+    UUID findIdByEmail(String email);
+
+    @Query(value = "select nv.email from NhanVien nv where nv.taiKhoan = ?1")
+    String findEmailToPass(String taiKhoan);
 }

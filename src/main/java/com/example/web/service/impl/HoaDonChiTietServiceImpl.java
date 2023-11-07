@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -227,5 +228,10 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<HoaDonChiTiet> getAllByIdHoaDon(UUID idHD) {
+        return hoaDonChiTietRepository.getAllByIdHoaDon(idHD);
     }
 }
