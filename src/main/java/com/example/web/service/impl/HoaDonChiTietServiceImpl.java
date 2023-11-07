@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Optional;
@@ -86,7 +85,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
     }
 
     @Override
-    public String deleteSanPhamHoaDon(String idHDCT, String idKhachHang) {
+    public HoaDonChiTiet deleteSanPhamHoaDon(String idHDCT) {
         Optional<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findById(UUID.fromString(idHDCT));
         if (hoaDonChiTiet.isPresent()) {
             HoaDonChiTiet hdct = hoaDonChiTiet.get();
@@ -95,11 +94,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
             ctsp.setSoLuong(result);
             hdct.setChiTietSanPham(ctsp);
             hdct.setTrangThai(HoaDonChiTietStatus.XOA);
-            hoaDonChiTietRepository.save(hdct);
-            if (idKhachHang != null && !idKhachHang.isEmpty()) {
-                return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId() + "&idKhachHang=" + idKhachHang;
-            }
-            return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId();
+            return hoaDonChiTietRepository.save(hdct);
         } else {
             return null;
         }
@@ -115,12 +110,12 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
     }
 
     @Override
-    public String updateHoaDonChiTiet(String idHDCT, String soLuong, String idKhachHang) {
+    public HoaDonChiTiet updateHoaDonChiTiet(String idHDCT, String soLuong) {
         Optional<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findById(UUID.fromString(idHDCT));
         if (hoaDonChiTiet.isPresent()) {
             HoaDonChiTiet hdct = hoaDonChiTiet.get();
             if (Integer.parseInt(soLuong) == 0 || soLuong.isEmpty()) {
-                return "redirect:/admin/hoa-don/delete?idHDCT=" + hdct.getId() + "&idHD=" + hdct.getHoaDon().getId();
+                return hoaDonChiTietRepository.save(deleteSanPhamHoaDon(idHDCT));
             } else {
                 ChiTietSanPham ctsp = hdct.getChiTietSanPham();
                 Integer soLuongTon = hdct.getSoLuong() + ctsp.getSoLuong();
@@ -131,11 +126,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                     ctsp.setSoLuong(soLuongTon - Integer.parseInt(soLuong));
                     hdct.setChiTietSanPham(ctsp);
                     hdct.setSoLuong(Integer.parseInt(soLuong));
-                    hoaDonChiTietRepository.save(hdct);
-                    if (idKhachHang != null && !idKhachHang.isEmpty()) {
-                        return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId() + "&idKhachHang=" + idKhachHang;
-                    }
-                    return "redirect:/admin/hoa-don/detail?idHD=" + hdct.getHoaDon().getId();
+                    return hoaDonChiTietRepository.save(hdct);
                 }
             }
         } else {
@@ -182,7 +173,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                 Date date = java.util.Calendar.getInstance().getTime();
                 LichSuHoaDon lshd = LichSuHoaDon.builder()
                         .hoaDon(hoaDon.get())
-                        .nguoiThaoTac(nhanVien.getHoTen()+" ("+nhanVien.getChucVu().getTen()+")")
+                        .nguoiThaoTac(nhanVien.getHoTen() + " (" + nhanVien.getChucVu().getTen() + ")")
                         .thaoTac("Thêm sản phẩm vào hóa đơn")
                         .ngayThaoTac(date)
                         .build();
@@ -201,9 +192,9 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
 
             ChiTietSanPham ctsp = hdct.getChiTietSanPham();
             Integer soLuongTon = hdct.getSoLuong() + ctsp.getSoLuong();
-            if(Integer.parseInt(soLuong) > soLuongTon){
+            if (Integer.parseInt(soLuong) > soLuongTon) {
                 return null;
-            }else{
+            } else {
                 ctsp.setSoLuong(soLuongTon - Integer.parseInt(soLuong));
                 hdct.setChiTietSanPham(ctsp);
                 hdct.setSoLuong(Integer.parseInt(soLuong));
@@ -213,6 +204,12 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public BigDecimal tongTienHDCT(UUID idHD) {
+        BigDecimal tongTien = hoaDonRepository.tongTien(idHD);
+        return tongTien;
     }
 
     @Override

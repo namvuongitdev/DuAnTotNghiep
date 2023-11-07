@@ -7,7 +7,6 @@ import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.repository.IKhuyenMaiRepository;
 import com.example.web.repository.SanPhamKhuyenMaiRepository;
 import com.example.web.response.FilterKhuyenMai;
-import com.example.web.response.KhuyenMaiReponse;
 import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.service.IKhuyenMaiService;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -202,6 +201,10 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
 
     @Scheduled(cron = "0 0 0 * * *")
     public void updateNgayHetHan(){
-        System.out.println("run...");
+        List<KhuyenMai> listKhuyenMai =  repository.updateNgayKetThuc();
+        listKhuyenMai.forEach(o -> {
+            o.setTrangThai(KhuyenMaiStatus.NGUNG_KICH_HOAT);
+            repository.save(o);
+        });
     }
 }

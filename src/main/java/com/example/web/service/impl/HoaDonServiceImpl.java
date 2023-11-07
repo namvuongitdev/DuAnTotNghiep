@@ -75,7 +75,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
     public String getHoaDonById(Model model, String id) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(id));
         if (hoaDon.isPresent()) {
-            List<HoaDonReponse> sanPhams = hoaDonRepository.getSanPhamHD(UUID.fromString(id), 0);
+            List<HoaDonReponse> sanPhams = hoaDonRepository.getSanPhamHD(UUID.fromString(id), HoaDonChiTietStatus.KICH_HOAT);
             model.addAttribute("sanPhamGioHang", sanPhams);
             BigDecimal tongTien = hoaDonRepository.tongTien(hoaDon.get().getId());
             model.addAttribute("tongTien", tongTien);

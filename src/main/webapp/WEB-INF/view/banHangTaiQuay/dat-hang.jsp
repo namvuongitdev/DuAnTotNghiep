@@ -51,7 +51,7 @@
         <label class="form-check-label" for="mySwitch">Đặt hàng</label>
     </div>
     <div>
-     <span>Tiền Hàng : <fmt:formatNumber pattern="#,###"
+     <span id="tienHang">Tiền Hàng : <fmt:formatNumber pattern="#,###"
       value="${tongTien}"></fmt:formatNumber></span>
     </div>
     <br>

@@ -1,4 +1,5 @@
 package com.example.web.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -79,6 +80,7 @@ public class HoaDon {
     private Boolean phuongThucThanhToan;
 
     @OneToMany(mappedBy = "hoaDon")
+    @JsonIgnore
     private List<HoaDonChiTiet> hoaDonChiTiets;
 
     @ManyToOne

@@ -69,58 +69,7 @@
                         </div>
                     </c:if>
                     <div class="row" style="margin-bottom: 50px">
-                        <div class="col l-3" style="background-color: white">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th scope="col">Sản phẩm</th>
-                                    <th scope="col">Số lượng</th>
-                                    <th scope="col">Thành tiền</th>
-                                    <th scope="col">Thao tác</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach items="${sanPhamGioHang}" var="sanPham">
-                                    <tr>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col l-3">
-                                                    <img src="/image/${sanPham.img}"
-                                                         style="width: 80px; height: 80px">
-                                                </div>
-                                                <div class="col l-3">
-                                                    <h5>${sanPham.tenSanPham}</h5>
-                                                    <p style="color: #03AA28"><fmt:formatNumber pattern="#,###"
-                                                                                                value="${sanPham.donGia}"></fmt:formatNumber></p>
-                                                    <p>size : ${sanPham.kichCo}</p>
-                                                    <p>màu sắc : ${sanPham.mauSac}</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="width: 110px ;"><input
-                                                onchange="updateSoLuong(this.value , {id:`${sanPham.id}`,
-                                                        soLuongHDCT:`${sanPham.soLuong}`,
-                                                        soLuongCTSP:`${sanPham.soLuongSanPham}`,
-                                                        idKhachHang: `${khachHang.id}`}
-                                                        )" type="number"
-                                                name="soLuong" class="form-control" value="${sanPham.soLuong}" min="1"
-                                        />
-                                        </td>
-                                        <td id="thanhTien"><fmt:formatNumber pattern="#,###"
-                                                                             value="${sanPham.soLuong * sanPham.donGia}"></fmt:formatNumber></td>
-                                        <td><a onclick="if(confirm('Bạn có muốn xoá không') == true){
-                                                window.location.href = '/admin/hoa-don/delete?idHD=${idHD}&idHDCT=${sanPham.id}&idKhachHang=${khachHang.id}';
-                                                }" class="btn btn-danger">Xoá khỏi giỏ</a></td>
-                                    </tr>
-                                </c:forEach>
-                                <tr>
-                                    <td style="color: #E43535">Tổng tiền :<fmt:formatNumber pattern="#,###"
-                                                                                            value="${tongTien}"></fmt:formatNumber></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
+                         <jsp:include page="hien-thi-gio-hang.jsp"></jsp:include>
                     </div>
                     <div class="row" style="margin-bottom: 20px">
                         <div class="col l-3" style="background-color: white">

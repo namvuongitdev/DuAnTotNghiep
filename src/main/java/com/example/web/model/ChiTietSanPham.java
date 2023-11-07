@@ -1,4 +1,5 @@
 package com.example.web.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,6 +52,7 @@ public class ChiTietSanPham {
     private Size size;
 
     @OneToMany(mappedBy = "chiTietSanPham")
+    @JsonIgnore
     private List<HoaDonChiTiet> hoaDonChiTiets;
 
     @OneToMany(mappedBy = "chiTietSanPham")

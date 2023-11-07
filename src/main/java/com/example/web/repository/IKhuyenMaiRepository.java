@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,5 +25,8 @@ public interface IKhuyenMaiRepository extends JpaRepository<KhuyenMai , UUID>  ,
 
     @Query(value = "select spkm from KhuyenMai km join km.sanPhamKhuyenMais spkm join spkm.sanPhamKM sp where sp.id = ?1")
     SanPhamKhuyenMai findBySanPham_id(UUID id);
+
+    @Query(value = "select km from KhuyenMai km where km.ngayKetThuc <= current_date ")
+    List<KhuyenMai> updateNgayKetThuc();
 
 }

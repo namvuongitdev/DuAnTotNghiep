@@ -12,11 +12,11 @@
         <label class="form-check-label" for="mySwitch">Đặt hàng</label>
     </div>
     <div>
-      <span>Tiền Hàng : <fmt:formatNumber pattern="#,###"
+      <span id="tienHang">Tiền Hàng : <fmt:formatNumber pattern="#,###"
                                                                     value="${tongTien}"></fmt:formatNumber></span>
     </div>
     <div>
-        <h6>Khách cần trả : <fmt:formatNumber pattern="#,###"
+        <h6 id="tienKhachCanTra">Khách cần trả : <fmt:formatNumber pattern="#,###"
                                               value="${tongTien}"></fmt:formatNumber></h6>
     </div>
     <div>

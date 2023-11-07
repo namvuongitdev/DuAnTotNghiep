@@ -22,12 +22,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
@@ -72,8 +75,8 @@ public class HoDonController {
     }
 
     @GetMapping(value = "/detail")
-    public String getHoaDon(Model model, @RequestParam("idHD") String id, @RequestParam(required = false) String idKhachHang, @RequestParam(defaultValue = "1") Integer page ,
-                            RedirectAttributes attributes) {
+    public String getHoaDon(Model model, @RequestParam("idHD") String id, @RequestParam(required = false) String idKhachHang
+                           ) {
         if (idKhachHang != null && !idKhachHang.isEmpty()) {
             KhachHang khachHang = khachHangService.getKhachHangById(idKhachHang);
             model.addAttribute("khachHang", khachHang);
@@ -97,17 +100,26 @@ public class HoDonController {
         return "redirect:/admin/hoa-don/detail?idHD="+idHD;
     }
 
-    @GetMapping("/delete")
-    public String deleteSanPhamHoaDonDonChiTiet(@RequestParam String idHDCT , @RequestParam String idKhachHang) {
-        url = hoaDonChiTietService.deleteSanPhamHoaDon(idHDCT , idKhachHang);
-        return url;
+    @DeleteMapping("/delete")
+    @ResponseBody
+    public HoaDonChiTiet deleteSanPhamHoaDonDonChiTiet(@RequestParam String idHDCT) {
+        HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietService.deleteSanPhamHoaDon(idHDCT);
+        return hoaDonChiTiet;
     }
 
-    @GetMapping("/update-san-pham")
-    public String updateSoLuongSanPhamHoaDonChiTiet(@RequestParam("idHD") String idHDCT, @RequestParam String soLuong , @RequestParam String idKhachHang) {
-        url = hoaDonChiTietService.updateHoaDonChiTiet(idHDCT, soLuong , idKhachHang);
-        return url;
+    @PutMapping("/update-san-pham")
+    @ResponseBody
+    public HoaDonChiTiet updateSoLuongSanPhamHoaDonChiTiet(@RequestParam("idHD") String idHDCT, @RequestParam String soLuong) {
+        HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietService.updateHoaDonChiTiet(idHDCT, soLuong);
+        return hoaDonChiTiet;
     }
+
+    @GetMapping("/tong-tien")
+    @ResponseBody
+    public BigDecimal getTongTien(@RequestParam String idHD){
+        return hoaDonChiTietService.tongTienHDCT(UUID.fromString(idHD));
+    }
+
 
     @GetMapping("/huy")
     public String huyHoaDon(@RequestParam String idHD) {

@@ -22,4 +22,6 @@ public interface IHoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet , 
     @Query(value = "update hoa_don_chi_tiet set so_luong =?2 where id_hoa_don=?1",nativeQuery = true)
     String updateHoaDonChiTietByIdHoaDon(String idHd,String soLuong);
 
+
+
 }
