@@ -74,7 +74,7 @@
                         <td><fmt:formatNumber pattern="#,###"  value="${dg.tongTien+dg.phiVanChuyen}"/> VNĐ</td>
                         <td>${dg.moTa}</td>
                         <td>
-                            <a href="/admin/hoa-don-onl/detail/${dg.id}" style="font-size: 15px" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
+                            <a title="Xem chi tiết" href="/admin/hoa-don-onl/detail/${dg.id}" style="font-size: 15px" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
                         </td>
                     </tr>
                 </c:forEach>

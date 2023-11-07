@@ -2,10 +2,9 @@ package com.example.web.repository;
 import com.example.web.model.KhachHang;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,4 +27,15 @@ public interface IKhachHangRepository extends JpaRepository<KhachHang , UUID> {
 
     @Query(value = "Select * from khach_hang where id=?1",nativeQuery = true)
     KhachHang getKH(UUID idKH);
+
+    Page<KhachHang> findAll(Specification<KhachHang> khachHangSpecification, Pageable pageable);
+
+    @Query(value = "select kh from KhachHang kh where kh.email = ?1")
+    KhachHang findByEmail(String email);
+
+    @Query(value = "select kh from KhachHang kh where kh.taiKhoan = ?1")
+    KhachHang findByTaiKhoan(String taiKhoan);
+
+    @Query(value = "select kh from KhachHang kh where kh.sdt = ?1")
+    KhachHang findBySdt(String sdt);
 }

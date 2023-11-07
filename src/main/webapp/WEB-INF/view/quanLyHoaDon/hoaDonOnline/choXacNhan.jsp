@@ -74,9 +74,9 @@
                         <td><fmt:formatNumber pattern="#,###"  value="${xn.tongTien+xn.phiVanChuyen}"/> VNĐ</td>
                         <td>${xn.moTa}</td>
                         <td>
-                            <a name="2" id="trangThai" onclick="xacNhan({idhd:`${xn.id}`})" style="text-decoration: none;font-size: 15px" class="badge text-bg-info text-white" ><i class="bi bi-check2"></i></a>
-                            <a onclick="huyDonHang({idhd:`${xn.id}`})" style="text-decoration: none;font-size: 15px" class="badge text-bg-info text-white" ><i class="bi bi-x-square"></i></a>
-                            <a href="/admin/hoa-don-onl/detail/${xn.id}" style="font-size: 15px" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
+                            <a title="Xác nhận đơn?" name="2" id="trangThai" onclick="xacNhan({idhd:`${xn.id}`})" style="text-decoration: none;font-size: 15px" class="badge text-bg-info text-white" ><i class="bi bi-check2"></i></a>
+                            <a title="Hủy đơn hàng" onclick="huyDonHang({idhd:`${xn.id}`})" style="text-decoration: none;font-size: 15px" class="badge text-bg-info text-white" ><i class="bi bi-x-square"></i></a>
+                            <a title="Xem chi tiết" href="/admin/hoa-don-onl/detail/${xn.id}" style="font-size: 15px" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
                         </td>
                     </tr>
                 </c:forEach>

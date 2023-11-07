@@ -124,7 +124,7 @@
                                                 <td><input type="text" class="form-control" id="giaBan" readonly value="<fmt:formatNumber pattern="#,###"  value="${hdct.chiTietSanPham.sanPham.giaBan}"/>"/></td>
                                                 <td><input type="number" class="form-control" id="soLuongSp" ${hd.trangThai==1?'':'disabled'}  onchange="myFunction({idhdct:`${hdct.id}`,soLuong:this.value,idhd:`${hd.id}`})" value="${hdct.soLuong}" min="1" style="width: 40%"></td>
                                                 <td><input type="text" class="form-control" readonly name="${hdct.id}" id="thanhTien" value="<fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/>"></td>
-                                                <td><a style="font-size: 20px;display: ${hd.trangThai==1?'block':'none'}" onclick="xoaSp({idhdct:`${hdct.id}`,idhd:`${hd.id}`})" type="button" class="badge text-bg-danger text-white"><i class="bi bi-trash3-fill"></i></a></td>
+                                                <td><a style="font-size: 20px;display: ${hd.trangThai==1?'block':'none'}" onclick="xoaSp({idhdct:`${hdct.id}`,idhd:`${hd.id}`})" title="Xóa sản phẩm" type="button" class="badge text-bg-danger text-white"><i class="bi bi-trash3-fill"></i></a></td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
@@ -132,7 +132,7 @@
                                 </div>
                                 <br>
                                 <p><b>Tổng giá trị sản phẩm:</b>  <span><fmt:formatNumber pattern="#,###"  value="${hdc}"/> VNĐ</span></p>
-                                <p><b>Phí vận chuyển:</b>  <input id="PVC" type="text" style="border: none;width: 150px" onblur="doiPhiShip({ship:this.value,idhd:`${hd.id}`})" value="<fmt:formatNumber pattern="#,###"  value="${hd.phiVanChuyen}"/>"/>VNĐ</p>
+                                <p><b>Phí vận chuyển:</b>  <input id="PVC" type="text" style="border: none;width: 150px;" ${hd.trangThai==1?'':hd.trangThai==2?'':'disabled'} onblur="doiPhiShip({ship:this.value,idhd:`${hd.id}`})" value="<fmt:formatNumber pattern="#,###"  value="${hd.phiVanChuyen}"/>"/>VNĐ</p>
                                 <%--                                                                <p><b>Giảm giá:</b>  <span >0 VNĐ</span></p>--%><hr>
                                 <p><b>Tổng tiền thanh toán:</b>  <span><fmt:formatNumber pattern="#,###"  value="${hd.tongTien}"/> VNĐ</span></p>
                             </div><br>
@@ -759,11 +759,20 @@
     }
     function doiPhiShip(data) {
         let Pvc = document.getElementById("PVC").value;
+        if (isNaN(Pvc)){
+            alert("Phí vận chuyển phải là số!");
+            return;
+        }else if (Number(Pvc)<0){
+            alert("Phí vận chuyển phải lớn hơn 0!")
+            return;;
+        }else {
             if (confirm("Bạn có muốn đổi phí vận chuyển?")===true){
                 window.location.href="/admin/hoa-don-onl/update-phi-ship/"+data.idhd+"?phiVanChuyen="+Pvc;
             }else {
                 return;
             }
+        }
+
     }
 </script>
 </html>
