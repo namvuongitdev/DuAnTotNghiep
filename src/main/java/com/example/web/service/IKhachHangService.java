@@ -16,8 +16,6 @@ public interface IKhachHangService {
 
     KhachHang themMoiKhachHang(KhachHang khachHang);
 
-    KhachHang getKH(UUID idKH);
-
     KhachHang findByEmailOrAndTaiKhoan(String username);
 
     List<KhachHang> findAll();

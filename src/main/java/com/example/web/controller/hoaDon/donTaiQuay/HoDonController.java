@@ -11,7 +11,6 @@ import com.example.web.request.HoaDonRequest;
 import com.example.web.response.HoaDonFilter;
 import com.example.web.response.SanPhamFilter;
 import com.example.web.service.IKhachHangService;
-import com.example.web.service.ISanPhamService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -116,8 +114,12 @@ public class HoDonController {
 
     @GetMapping("/tong-tien")
     @ResponseBody
-    public BigDecimal getTongTien(@RequestParam String idHD){
-        return hoaDonChiTietService.tongTienHDCT(UUID.fromString(idHD));
+    public Integer getTongTien(@RequestParam String idHD){
+      BigDecimal tongTien =  hoaDonChiTietService.tongTienHDCT(UUID.fromString(idHD));
+      if(tongTien == null){
+          return 0;
+      }
+      return tongTien.intValue();
     }
 
 

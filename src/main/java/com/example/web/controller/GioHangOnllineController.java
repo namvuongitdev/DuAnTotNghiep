@@ -8,6 +8,7 @@ import com.example.web.service.IChiTietSanPhamService;
 import com.example.web.service.IGioHangOnllineService;
 import com.example.web.service.IKhachHangService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -31,16 +32,15 @@ public class GioHangOnllineController {
 
     @GetMapping()
     public String hienThi(Model model) {
-//        if (page < 1) page = 1;
-//        Pageable pageable = PageRequest.of(page - 1, 3);
+        Integer tongTien = 0;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         KhachHang khachHang = iKhachHangService.findByEmailOrAndTaiKhoan(authentication.getName());
         List<GioHangReponse> list = iGioHangOnllineService.findAll(khachHang.getId());
-        // String tong = iGioHangOnllineService.getTongTienTrongGio(khachHang.getId());
-        ///  model.addAttribute("tongTien",tong);
         model.addAttribute("list", list);
-//        model.addAttribute("pageNo", page);
-//        model.addAttribute("page", page != 1 ? page * 5 - 4 : page);
+        for(GioHangReponse response : list){
+            tongTien += response.getThanhTien();
+        }
+        model.addAttribute("tongTien" , tongTien);
         return "gioHangOnlline/giohang";
     }
 
@@ -48,32 +48,27 @@ public class GioHangOnllineController {
     @GetMapping("/cap-nhat-gio-hang/{soLuong}/{idGioHangCT}")
     public String updateSoLuong(@PathVariable(name = "soLuong") String soLuong,
                                 @PathVariable(name = "idGioHangCT") String idGioHangCT){
-        iGioHangOnllineService.updateSoLuong(Integer.parseInt(soLuong),UUID.fromString(idGioHangCT));
-
+        iGioHangOnllineService.updateSoLuong(Integer.parseInt(soLuong),idGioHangCT);
         return "redirect:/gio-hang-onl";
     }
 
     @GetMapping("/xoa/{idGioHangCT}")
     public String xoa(@PathVariable(name = "idGioHangCT") String idGioHangCT) {
-        iGioHangOnllineService.delete(UUID.fromString(idGioHangCT));
+        iGioHangOnllineService.delete(idGioHangCT);
         return "redirect:/gio-hang-onl";
     }
 
-    @GetMapping("/them-moi-gio-hang/{idSP}")
-    public String themGioHang(
+    @PostMapping("/them-moi-gio-hang/{idSP}/{quantity}/{color}/{size}")
+    @ResponseBody
+    public void themGioHang(
             @PathVariable(name = "idSP") String idSP,
-            @RequestParam(value = "color") String idMau,
-            @RequestParam(value = "size") String idSize,
-            @RequestParam(name = "quantity") String soLuongThem, Model model) {
-        if (Integer.parseInt((soLuongThem)) <= 0) {
-            model.addAttribute("checkQuantity", "Số lượng không hợp lệ.");
-        } else {
-            ChiTietResponse chiTietSanPham = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID.fromString(idMau), idSize, UUID.fromString(idSP));
-            ChiTietSanPham sanPham = new ChiTietSanPham(chiTietSanPham.getId(), chiTietSanPham.getSanPham(), chiTietSanPham.getSoLuong(), chiTietSanPham.getTrangThai(), chiTietSanPham.getQrCode(),
-                    chiTietSanPham.getMauSac(), chiTietSanPham.getSize());
-            iGioHangOnllineService.addGioHang(sanPham, Integer.parseInt(soLuongThem));
-        }
+            @PathVariable(value = "color") String idMau,
+            @PathVariable(value = "size") String idSize,
+            @PathVariable(name = "quantity") String soLuongThem,Model model){
 
-        return "forward:/index/chi-tiet-san-pham-onl?id=" + idSP;
+            ChiTietResponse chiTietSanPham = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID.fromString(idMau),idSize,UUID.fromString(idSP));
+            ChiTietSanPham sanPham = new ChiTietSanPham(chiTietSanPham.getId(),chiTietSanPham.getSanPham(),chiTietSanPham.getSoLuong(),chiTietSanPham.getTrangThai(),chiTietSanPham.getQrCode(),
+                    chiTietSanPham.getMauSac(),chiTietSanPham.getSize());
+            iGioHangOnllineService.addGioHang(sanPham,Integer.parseInt(soLuongThem));
     }
 }

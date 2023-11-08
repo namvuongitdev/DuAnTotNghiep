@@ -48,11 +48,6 @@ public class KhachHangServiceImpl implements IKhachHangService {
     }
 
     @Override
-    public KhachHang getKH(UUID idKH) {
-        return khachHangRepository.getKH(idKH);
-    }
-
-    @Override
     public KhachHang findByEmailOrAndTaiKhoan(String username) {
         return khachHangRepository.findByEmailOrAndTaiKhoan(username);
     }

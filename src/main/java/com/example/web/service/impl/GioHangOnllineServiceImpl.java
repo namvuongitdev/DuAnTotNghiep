@@ -1,4 +1,5 @@
 package com.example.web.service.impl;
+
 import com.example.web.model.*;
 import com.example.web.repository.IGioHangOnllineRepository;
 import com.example.web.repository.IGioHangRepository;
@@ -45,12 +46,12 @@ public class GioHangOnllineServiceImpl implements IGioHangOnllineService {
 //    }
 
     @Override
-    public void updateSoLuong(Integer soLuong, UUID idGioHangCT) {
+    public void updateSoLuong(Integer soLuong, String idGioHangCT) {
         iGioHangOnllineRepository.updateSoLuong(soLuong,idGioHangCT);
     }
 
     @Override
-    public void delete(UUID idGioHangCT) {
+    public void delete(String idGioHangCT) {
         iGioHangOnllineRepository.delete(idGioHangCT);
     }
 
@@ -67,13 +68,13 @@ public class GioHangOnllineServiceImpl implements IGioHangOnllineService {
 //    }
 
     @Override
-    public void addGioHang( ChiTietSanPham chiTietSanPham,Integer soLuongThem) {
+    public void addGioHang(ChiTietSanPham chiTietSanPham, Integer soLuongThem) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         KhachHang khachHang = iKhachHangService.findByEmailOrAndTaiKhoan(authentication.getName());
         GioHang gioHang = iGioHangRepository.getTheoIdKH(khachHang.getId()); // tìm giỏ hàng của khách hàng
         List<GioHangChiTiet> listGHCT = iGioHangCTService.getListGHCTTheoKhachHang(khachHang.getId()); // lấy danh sách sản phẩm trong giỏ của kh
         // nếu chưa có thì tạo mới 1 giỏ hàng cho kh
-        if(gioHang==null){
+        if (gioHang == null) {
             // tạo mới giỏ hàng
             GioHang newGioHang = new GioHang();
             newGioHang.setKhachHang(khachHang);
@@ -87,28 +88,28 @@ public class GioHangOnllineServiceImpl implements IGioHangOnllineService {
             gioHangChiTiet.setGioHang(gioHangVuaTao);
             gioHangChiTiet.setChiTietSanPham(chiTietSanPham);
             gioHangChiTiet.setSoLuong(soLuongThem);
-            GioHangChiTiet  gioHangChiTiet1 = iGioHangCTService.save(gioHangChiTiet);
+            GioHangChiTiet gioHangChiTiet1 = iGioHangCTService.save(gioHangChiTiet);
         }
         // nếu có rồi thì thêm sp vào giỏ hàng ct
-        else if(gioHang!=null){
+        else if (gioHang != null) {
             int dem = 0;
             for (int i = 0; i < listGHCT.size(); i++) {
                 // nếu sản phẩm đã có trong giỏ hàng chi tiết
-                if(listGHCT.get(i).getChiTietSanPham().getId().equals(chiTietSanPham.getId())){
+                if (listGHCT.get(i).getChiTietSanPham().getId().equals(chiTietSanPham.getId())) {
                     Integer soLuongHienTai = listGHCT.get(i).getSoLuong();
                     Integer soLuongMoi = soLuongHienTai + soLuongThem;
-                    GioHangChiTiet hangChiTiet=iGioHangCTService.getTheoIdGioHangAndIdCTSP(gioHang.getId(),listGHCT.get(i).getChiTietSanPham().getId());
+                    GioHangChiTiet hangChiTiet = iGioHangCTService.getTheoIdGioHangAndIdCTSP(gioHang.getId(), listGHCT.get(i).getChiTietSanPham().getId());
                     //cập nhật lại số lượng
                     hangChiTiet.setSoLuong(soLuongMoi);
                     GioHangChiTiet gioHangChiTiet = iGioHangCTService.save(hangChiTiet);
-                    dem=1;
+                    dem = 1;
 
                 }
             }
             if (dem == 0) {// nếu chưa có thì thêm mới vào giỏ hàng chi tiết
                 //Lấy Sản phẩm theo chi tiết spham
                 SanPham sanPham = iSanPhamService.getSanPhamTheoCTSP(chiTietSanPham.getId());
-                GioHangChiTiet gioHangChiTiet =  new GioHangChiTiet();
+                GioHangChiTiet gioHangChiTiet = new GioHangChiTiet();
                 gioHangChiTiet.setSoLuong(soLuongThem);
                 gioHangChiTiet.setChiTietSanPham(chiTietSanPham);
                 gioHangChiTiet.setGioHang(gioHang);

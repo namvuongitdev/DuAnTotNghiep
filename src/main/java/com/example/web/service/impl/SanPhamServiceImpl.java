@@ -128,8 +128,10 @@ public class SanPhamServiceImpl implements ISanPhamService {
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
+
         }, pageable);
     }
+
 
     @Override
     public Page<SanPham> getAllByTenOrMa(String value, Integer page) {
@@ -144,13 +146,6 @@ public class SanPhamServiceImpl implements ISanPhamService {
     }
 
     @Override
-    public Page<SanPhamAndKhuyenMai> findAllSanPhamKhuyenMaiGender(boolean gioi_tinh, Integer page) {
-        Pageable pageable = PageRequest.of(page - 1, 8);
-        Page<SanPhamAndKhuyenMai> sanPhams = iSanPhamRepository.findAllSanPhamKhuyenMaiGender(pageable, gioi_tinh);
-        return sanPhams;
-    }
-
-    @Override
     public SanPham getSanPhamTheoCTSP(UUID idCTSP) {
         return iSanPhamRepository.getSanPhamTheoCTSP(idCTSP);
     }
@@ -160,11 +155,5 @@ public class SanPhamServiceImpl implements ISanPhamService {
         return iSanPhamRepository.getALL(pageable);
     }
 
-    @Override
-    public Page<SanPhamAndKhuyenMai> getAllSanPhamAndKhuyenMaiByTenOrMa(String value, Integer page) {
-        Pageable pageable = PageRequest.of(page - 1, 10);
-        Page<SanPhamAndKhuyenMai> sanPhams = iSanPhamRepository.getAllSanPhamAndKhuyenMaiByTenOrMa("%" + value + "%", pageable);
-        return sanPhams;
-    }
-
 }
+

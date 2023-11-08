@@ -216,6 +216,7 @@ async function tongTien() {
     }
 }
 
+
 function innnerHTMLTrByIdHDCT(data) {
     document.getElementById(data.id).innerHTML = `
                 <td>
@@ -242,7 +243,7 @@ function innnerHTMLTrByIdHDCT(data) {
                 />
                 </td>
                 <td id="thanhTien">${VND.format(data.soLuong * data.donGia)}</td>
-                <td><a onclick="deleteSanPhamTrongGioHang(${data.id})"
+                <td><a onclick="deleteSanPhamTrongGioHang('${data.id}')"
                          class="btn btn-danger">Xoá khỏi giỏ</a></td>
             </tr>
         `
@@ -262,7 +263,6 @@ async function updateSoLuong(soLuong, sanPham) {
         };
         const apiUpdateSoLuong = await fetch(`/admin/hoa-don/update-san-pham?idHD=${sanPham.id}&soLuong=${soLuong}`, options)
         const data = await apiUpdateSoLuong.json();
-        console.log(data.donGia);
         innnerHTMLTrByIdHDCT(data);
         await tongTien();
     }

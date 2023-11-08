@@ -1,11 +1,8 @@
 package com.example.web.repository;
 
-import com.example.web.model.ChiTietSanPham;
-import com.example.web.model.GioHang;
 import com.example.web.model.GioHangChiTiet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -18,6 +15,5 @@ public interface IGioHangCTRepository extends JpaRepository<GioHangChiTiet, UUID
 
     @Query(value = "select * from gio_hang_chi_tiet where id_gio_hang=?1 and idctsp=?2",nativeQuery = true)
     GioHangChiTiet getTheoIdGioHangAndIdCTSP(UUID idGioHang, UUID idCTSP);
-
 
 }

@@ -13,9 +13,9 @@ public interface IGioHangOnllineService {
 
    // Page<GioHangOnllineResponse> page(Integer pageNo, Integer size,UUID idKhachHang);
 
-    void updateSoLuong(Integer soLuong, UUID idGioHangCT);
+    void updateSoLuong(Integer soLuong, String idGioHangCT);
 
-    void delete (UUID idGioHangCT);
+    void delete (String idGioHangCT);
 
    // String getTongTienTrongGio(UUID idKhachHang);
 

@@ -27,14 +27,14 @@ public interface IGioHangOnllineRepository extends JpaRepository<GioHangChiTiet,
 
     @Transactional
     @Modifying
-    @Query(value = "\n" +
+    @Query(value =
             "update gio_hang_chi_tiet set so_luong = ?1 where Id = ?2", nativeQuery = true)
-    void updateSoLuong(Integer soLuong, UUID idGioHangCT);
+    void updateSoLuong(Integer soLuong, String idGioHangCT);
 
     @Transactional
     @Modifying
     @Query(value = "delete gio_hang_chi_tiet  where Id = ?1", nativeQuery = true)
-    void delete(UUID idGioHangCT);
+    void delete(String idGioHangCT);
 
     GioHang save(GioHang gioHang);
 }

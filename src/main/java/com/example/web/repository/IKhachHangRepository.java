@@ -25,8 +25,6 @@ public interface IKhachHangRepository extends JpaRepository<KhachHang , UUID> {
     @Query(value = "select kh from KhachHang kh where kh.email = ?1 or kh.taiKhoan = ?1")
     KhachHang findByEmailOrAndTaiKhoan(String username);
 
-    @Query(value = "Select * from khach_hang where id=?1",nativeQuery = true)
-    KhachHang getKH(UUID idKH);
 
     Page<KhachHang> findAll(Specification<KhachHang> khachHangSpecification, Pageable pageable);
 

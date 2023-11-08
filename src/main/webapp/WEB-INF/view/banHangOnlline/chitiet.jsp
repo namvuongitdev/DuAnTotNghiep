@@ -488,7 +488,6 @@
                         <p>${sanPham.moTa}</p>
                         <font color="green">${tong}</font>
                         <div id="tongSanPham"></div>
-                        <form method="get" action="/gio-hang-onl/them-moi-gio-hang/${sanPham.id}">
                             <div class="row" style="margin-top: 10px">
                                 <div class="row">
                                     <div class="form-check">
@@ -539,15 +538,13 @@
                                     <input type="text" style="height: 35px" id="quantity" name="quantity" value="1"
                                            class="qty">
                                     <div class="qtyplus">+</div>
-                                    <p style="color: red">${checkQuantity}</p>
                                     <button type="submit" id="themVaoGioHang"
                                             class="round-black-btn" style="
                                     margin-top: 60px;margin-left: 20px;
-                                    ">Add to Cart
+                                    " onclick="themVaoGiohang({idSP:`${sanPham.id}`})">Add to Cart
                                     </button>
                                 </div>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -780,6 +777,23 @@
                     });
             }
 
+        }
+
+       async function themVaoGiohang(sanPham) {
+            if (mauSacSP == null || kichCoSP == null) {
+                alert("chưa lựa chọn thuộc tính sản phẩm");
+            } else if (quantity.value <= 0) {
+                alert("Số lượng không hợp lệ.");
+            }else{
+                const options = {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                };
+                 const apiThemVaoGioHang = await  fetch("/gio-hang-onl/them-moi-gio-hang/" + sanPham.idSP + "/" + quantity.value + "/" + mauSacSP + "/" + kichCoSP , options);
+                 if(apiThemVaoGioHang.status == 200){
+                     alert('sản phẩm đã được thêm vào giỏ hàng')
+                 }
+            }
         }
 
         $(document).ready(function () {
