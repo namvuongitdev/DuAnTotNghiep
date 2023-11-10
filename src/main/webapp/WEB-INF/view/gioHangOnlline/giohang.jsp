@@ -108,9 +108,9 @@
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li class="active"><a href="">Home</a></li>
-                        <li><a href="./shop.html">Shop</a></li>
-                        <li><a href="#">Pages</a>
+                        <li class="active"><a href="/index/home">Home</a></li>
+                        <li><a href="">Shop</a></li>
+                        <li><a href="">Pages</a>
                             <ul class="dropdown">
                                 <li><a href="">About Us</a></li>
                                 <li><a href="">Shop Details</a></li>
@@ -138,114 +138,102 @@
         <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>
 </header>
-<!-- Header Section End -->
-<section class="h-100 h-custom" style="background-color: #f5f5f5 ">
-    <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12">
-                <div class="card card-registration card-registration-2" style="border-radius: 15px;height: 680px">
-                    <div class="card-body p-0">
-                        <div class="row g-0">
-                            <div class="col-lg-8">
-                                <div class="p-2">
-                                    <c:if test="${gioHangEmpty != null}">
-                                        <div class="alert alert-danger d-flex align-items-center" role="alert">
-                                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
-                                                <use xlink:href="#exclamation-triangle-fill"/>
-                                            </svg>
-                                            <div>
+<h4 class="fw-bold mb-0 text-black" style="margin-left: 200px;margin-top: 20px">GIỎ
+    HÀNG</h4>
+<br>
+<div style="border: 2px solid #eae8e8;border-style: ridge;height: 60px;width: 1170px;margin-left: 190px;align-items: center;background-color: white">
+    <nav style="padding: 0;margin: 0;list-style: none;">
+        <ul style="display: flex;margin-top: 20px">
+            <li  style="color: #7a7a7a;display: flex;margin-left: 20px"><a>Sản Phẩm</a></li>
+            <li style="color: #7a7a7a;display: flex;margin-left: 400px"><a >Số Lượng</a></li>
+            <li style="color: #7a7a7a;display: flex;margin-left: 200px"><a >Số Tiền</a></li>
+            <li style="color: #7a7a7a;display: flex;margin-left: 200px"><a >Thao Tác</a></li>
+        </ul>
+    </nav>
+</div>
+<br>
+<br>
+<div style="border: 2px solid #eae8e8;border-style: ridge;width: 1170px;margin-left: 190px">
+    <c:if test="${gioHangEmpty != null}">
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                <use xlink:href="#exclamation-triangle-fill"/>
+            </svg>
+            <div>
 
-                                                    ${gioHangEmpty}
-                                            </div>
-                                        </div>
-                                    </c:if>
-                                    <h3 class="fw-bold mb-0 text-black" style="margin-left: 40px;margin-top: 20px">GIỎ
-                                        HÀNG</h3>
-                                    <br>
-                                    <c:forEach items="${list}" var="gh" varStatus="i">
-                                        <hr class="my-4">
-                                        <div class="card mb-3">
-                                            <div class="card-body">
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="d-flex flex-row align-items-center">
-                                                        <div>
-                                                            <img
-                                                                    src="/image/${gh.getImg()}"
-                                                                    class="img-fluid rounded-3" alt="Shopping item"
-                                                                    style="width: 65px;">
-                                                        </div>
-                                                        <div class="ms-2">
-                                                            <h5>${gh.getTenSanPham()}</h5>
-                                                            <p class="small mb-0">${gh.getMauSac()},${gh.getKichCo()},
-                                                                <c:choose>
-                                                                <c:when test="${gh.getGiaBanSanPham() != null && gh.trangThaiKMCT == 1 && gh.trangThaiKM ==1}">
-                                                                <font color="#5f9ea0"><fmt:formatNumber pattern="#,###"
-                                                                                                        value="${gh.getDonGiaSauKhiGiam()}"></fmt:formatNumber>
-                                                                    đ</font></p>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <font color="#5f9ea0"><fmt:formatNumber pattern="#,###"
-                                                                                                        value="${gh.getGiaBanSanPham()}"></fmt:formatNumber>
-                                                                    đ</font></p>
-                                                            </c:otherwise>
-                                                            </c:choose>
+                    ${gioHangEmpty}
+            </div>
+        </div>
+    </c:if>
 
-                                                        </div>
-                                                    </div>
-                                                    <form>
-                                                        <div class="d-flex flex-row align-items-center">
-                                                            <div style="margin-left: 15px">
-                                                                <input type="number"
-                                                                       style="width: 60px;text-align: center"
-                                                                       name="soLuong" min="1" value="${gh.getSoLuong()}"
-                                                                       onchange="callYourApi(this.value,{idGioHangCT:`${gh.getId()}`})"/>
-                                                            </div>
-                                                            <div style="margin-left:15px;width: 100px;color: #5f9ea0">
-                                                                <h6 class="mb-0"><b><fmt:formatNumber pattern="#,###"
-                                                                                                      value="${gh.getThanhTien()}"></fmt:formatNumber>
-                                                                    đ</b></h6>
-                                                            </div>
-                                                            <a href="#!" style="color: #cecece;margin-left: 15px">
-                                                                <button formaction="/gio-hang-onl/xoa/${gh.getId()}"
-                                                                        style="background-color:white ;border: none"><i
-                                                                        class="fas fa-trash-alt"></i></button>
-                                                            </a>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
-                                    <hr class="my-4">
-                                </div>
-                            </div>
-                            <div class="col-lg-4 bg-grey" style="height: 680px">
-                                <div class="p-5">
-
-                                    <div class="d-flex justify-content-between mb-5">
-                                        <h5 class="text-uppercase">Tổng đơn</h5>
-                                        <h5><font color="red"><fmt:formatNumber pattern="#,###"
-                                                                                value="${tongTien}"></fmt:formatNumber>
-                                            đ</font></h5>
-                                    </div>
-
-                                    <a href="/checkouts" class="btn btn-dark btn-block btn-lg"
-                                            data-mdb-ripple-color="dark">Thanh toán
-                                    </a>
-
-                                </div>
-                                </form>
-
-                            </div>
+    <c:forEach items="${list}" var="gh" varStatus="i">
+        <hr class="my-4">
+        <div class="card mb-3" style="border: 2px solid #eae8e8;border-style: ridge;height: 100px;width: 1140px;margin-left: 15px">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <div>
+                            <img
+                                    src="/image/${gh.getImg()}"
+                                    class="img-fluid rounded-3" alt="Shopping item"
+                                    style="width: 65px;">
                         </div>
-                        <h6 class="mb-0"><a href="/index/home" class="text-body"><i
-                                class="fas fa-long-arrow-alt-left me-2"></i>Quay lại</a></h6>
+                        <div class="ms-2">
+                            <h5>${gh.getTenSanPham()}</h5>
+                            <p class="small mb-0">${gh.getMauSac()},${gh.getKichCo()},
+                                <c:choose>
+                                <c:when test="${gh.getGiaBanSanPham() != null && gh.trangThaiKMCT == 1 && gh.trangThaiKM ==1}">
+                                <font color="#5f9ea0"><fmt:formatNumber pattern="#,###"
+                                                                        value="${gh.getDonGiaSauKhiGiam()}"></fmt:formatNumber>
+                                    đ</font></p>
+                            </c:when>
+                            <c:otherwise>
+                                <font color="#5f9ea0"><fmt:formatNumber pattern="#,###"
+                                                                        value="${gh.getGiaBanSanPham()}"></fmt:formatNumber>
+                                    đ</font></p>
+                            </c:otherwise>
+                            </c:choose>
+
+                        </div>
                     </div>
+                    <form>
+                        <div class="d-flex flex-row align-items-center">
+                            <div style="margin-left: 15px;width: 30px;margin-right: 210px">
+                                <input type="number"
+                                       style="width: 60px;text-align: center;margin-top: 15px"
+                                       name="soLuong" min="1" value="${gh.getSoLuong()}"
+                                       onchange="callYourApi(this.value,{idGioHangCT:`${gh.getId()}`})"/>
+                            </div>
+                            <div style="margin-right:170px;width: 100px;color: #5f9ea0;">
+                                <h6 class="mb-0" style="margin-top: 15px"><b><fmt:formatNumber pattern="#,###"
+                                                                                               value="${gh.getThanhTien()}"></fmt:formatNumber>
+                                    đ</b></h6>
+                            </div>
+                            <a href="#!" style="color: #cecece;margin-left: 15px">
+                                <button formaction="/gio-hang-onl/xoa/${gh.getId()}"
+                                        style="background-color:white ;border: none;margin-top: 15px;margin-right: 80px"><i
+                                        class="fas fa-trash-alt"></i></button>
+                            </a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </c:forEach>
+</div>
+<br>
+<br>
+<!-- Header Section End -->
+<div style="border: 2px solid #eae8e8;border-style: ridge;height: 60px;margin-left: 730px;display: flex;width: 600px">
+            <h5 class="text-uppercase" style="margin-top: 7px;padding-left: 30px">Tổng đơn
+            <font color="red"><fmt:formatNumber pattern="#,###"
+                                                    value="${tongTien}"></fmt:formatNumber>
+                đ</font></h5>
+        <a href="/checkouts" style="margin-left: 50px" class="btn btn-dark btn-block btn-lg"
+           data-mdb-ripple-color="dark">Thanh toán
+        </a>
+
+</div>
 <br>
 <br>
 <div style="margin-top: 40px"></div>

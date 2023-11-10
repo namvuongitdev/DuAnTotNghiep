@@ -14,14 +14,8 @@ public interface IGioHangOnllineRepository extends JpaRepository<GioHangChiTiet,
 
     @Query(value = "select " +
             " ghct.id as idGHCT , sp.img as anhSanPham, sp.ten as tenSanPham ," +
-<<<<<<< HEAD
             " sp.giaban as giaBanSanPham , ghct.so_luong as soLuong , ms.ten as mauSac , kc.ten as kichCo, ctsp.id as idCTSP, " +
             " kmct.don_gia_sau_khi_giam as donGiaSauKhiGiam , kmct.trang_thai as trangThaiKMCT , km.trang_thai as trangThaiKM  from gio_hang_chi_tiet ghct left join gio_hang gh on ghct.id_gio_hang = gh.id" +
-=======
-            " sp.giaban as giaBanSanPham , ghct.so_luong as soLuong , ms.ten as mauSac , kc.ten as kichCo, " +
-            " kmct.don_gia_sau_khi_giam as donGiaSauKhiGiam , kmct.trang_thai as trangThaiKMCT , km.trang_thai as" +
-            " trangThaiKM  from gio_hang_chi_tiet ghct left join gio_hang gh on ghct.id_gio_hang = gh.id" +
->>>>>>> 1f9bea2 (change giỏ hàng)
             " left join chi_tiet_san_pham ctsp on ghct.idctsp = ctsp.id" +
             " left join mau_sac ms on ms.id = ctsp.idmausac " +
             " left join kich_co kc on kc.id = ctsp.idsize " +
