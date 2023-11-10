@@ -1,6 +1,7 @@
 package com.example.web.service.impl;
 import com.example.web.Config.status.HoaDonChiTietStatus;
 import com.example.web.Config.status.HoaDonStatus;
+import com.example.web.Config.status.PhuongThucThanhToanStatus;
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
 import com.example.web.model.KhachHang;
@@ -129,6 +130,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                         hd.setHoTen(request.getHoTen());
                         hd.setMoTa(request.getMoTa());
                         hd.setSdt(request.getSdt());
+                        hd.setPhuongThucThanhToan(PhuongThucThanhToanStatus.THANH_TOAN_KHI_NHAN_HANG);
                     Date date = java.util.Calendar.getInstance().getTime();
                     LichSuHoaDon lshd = LichSuHoaDon.builder()
                             .hoaDon(hoaDon.get())

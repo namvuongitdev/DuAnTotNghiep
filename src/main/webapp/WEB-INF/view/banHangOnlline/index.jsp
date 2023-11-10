@@ -119,7 +119,12 @@
             </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
-                    <a href="/gio-hang-onl"><img src="../../../img/icon/cart.png" alt=""> <span></span></a>
+                    <a href="/gio-hang-onl" class="position-relative">
+                        <img src="/img/icon/cart.png" alt="" style="width: 30px ; height: 30px">
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="color: #FFFFFF">
+                      ${count != null ? count : 0}
+                   </span>
+                    </a>
                     <c:if test="${empty sessionScope.username}">
                         <div class="dropdown-center">
                             <a href="/login">
@@ -133,11 +138,13 @@
                                 <img src="../../../img/icon/person.svg" alt="">
                             </a>
                             <ul class="dropdown-menu">
-                                <li><b style="margin-left: 25px">${sessionScope.username}</b><hr></li>
+                                <li><b style="margin-left: 25px">${sessionScope.username}</b>
+                                    <hr>
+                                </li>
                                 <li><a class="dropdown-item" href="#">Thông tin của tôi</a></li>
                                 <li><a class="dropdown-item" href="/cuaToi/donHangAll">Đơn hàng của tôi</a></li>
-                                <li><a  class="dropdown-item" href="/logout"
-                                        onclick="if(confirm('Bạn có muốn đăng xuất không ?')==true){return true;}else{return false;}">
+                                <li><a class="dropdown-item" href="/logout"
+                                       onclick="if(confirm('Bạn có muốn đăng xuất không ?')==true){return true;}else{return false;}">
                                     Đăng xuất</a>
                                 </li>
                             </ul>

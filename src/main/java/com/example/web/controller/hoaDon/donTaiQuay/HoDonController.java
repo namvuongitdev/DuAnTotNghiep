@@ -91,7 +91,7 @@ public class HoDonController {
                              @RequestParam("idHD") String idHD ,
                              @RequestParam(value = "idKhachHang") String idKhachHang) {
 
-        HoaDonChiTiet hdct = hoaDonChiTietService.addHoaDonChiTiet(idCTSP, idHD, Integer.parseInt(soLuong));
+        HoaDonChiTiet hdct = hoaDonChiTietService.addHoaDonChiTiet(UUID.fromString(idCTSP), UUID.fromString(idHD), Integer.parseInt(soLuong));
         if(idKhachHang != null && !idKhachHang.isEmpty()){
             return "redirect:/hoa-don/detail?idHD="+ idHD + "&idKhachHang="+idKhachHang;
         }

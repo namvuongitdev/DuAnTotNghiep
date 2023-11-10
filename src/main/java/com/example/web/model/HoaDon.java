@@ -77,7 +77,7 @@ public class HoaDon {
     private Boolean loaiHoaDon;
 
     @Column(name = "phuongThucThanhToan")
-    private Boolean phuongThucThanhToan;
+    private Integer phuongThucThanhToan;
 
     @OneToMany(mappedBy = "hoaDon")
     @JsonIgnore

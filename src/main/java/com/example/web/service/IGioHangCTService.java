@@ -1,9 +1,6 @@
 package com.example.web.service;
 
-import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.GioHangChiTiet;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
 import java.util.UUID;
 

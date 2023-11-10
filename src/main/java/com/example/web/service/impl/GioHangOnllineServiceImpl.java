@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -117,5 +119,30 @@ public class GioHangOnllineServiceImpl implements IGioHangOnllineService {
             }
         }
 
+    }
+
+    @Override
+    public Integer countSoLuongSPTrongGioHang(UUID id) {
+        return iGioHangOnllineRepository.countSanPhamTrongGioHangByKhachHang_id(id);
+    }
+
+    @Override
+    public void clearAllGioHangChiTietByKhachHang_id(UUID idKH) {
+        iGioHangOnllineRepository.deleteAllGioHangChiTiet(idKH);
+    }
+
+    @Override
+    public List<GioHangChiTiet> getGHCTByKhachHang_id(UUID idKh) {
+        return iGioHangOnllineRepository.findGioHangChiTietByKhachHang_id(idKh);
+    }
+
+    @Override
+    public BigDecimal tongTienSanPhamTrongGioHang(UUID idKH) {
+        Double tongTien = 0.0;
+        List<GioHangReponse> response = iGioHangOnllineRepository.findAll(idKH);
+        for (GioHangReponse list : response) {
+            tongTien += list.getThanhTien().doubleValue();
+        }
+        return BigDecimal.valueOf(tongTien);
     }
 }

@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface IHoaDonChiTietService {
 
-    HoaDonChiTiet addHoaDonChiTiet(String idCTSP, String idHD, Integer soLuong);
+    HoaDonChiTiet addHoaDonChiTiet(UUID idCTSP, UUID idHD, Integer soLuong);
 
     HoaDonChiTiet deleteSanPhamHoaDon(String idHDCT);
 

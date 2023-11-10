@@ -33,6 +33,12 @@
     <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </symbol>
+    </svg>
     <style>
         @media (min-width: 1025px) {
             .h-custom {
@@ -120,7 +126,12 @@
             </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
-                    <a href="/gio-hang-onl"><img src="/img/icon/cart.png" alt=""> <span></span></a>
+                    <a href="/gio-hang-onl" class="position-relative">
+                        <img src="/img/icon/cart.png" alt="" style="width: 30px ; height: 30px">
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="color: #FFFFFF">
+                        ${count != null ? count : 0}
+                    </span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -137,10 +148,20 @@
                         <div class="row g-0">
                             <div class="col-lg-8">
                                 <div class="p-2">
+                                    <c:if test="${gioHangEmpty != null}">
+                                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                                                <use xlink:href="#exclamation-triangle-fill"/>
+                                            </svg>
+                                            <div>
+
+                                                    ${gioHangEmpty}
+                                            </div>
+                                        </div>
+                                    </c:if>
                                     <h3 class="fw-bold mb-0 text-black" style="margin-left: 40px;margin-top: 20px">GIỎ
                                         HÀNG</h3>
                                     <br>
-
                                     <c:forEach items="${list}" var="gh" varStatus="i">
                                         <hr class="my-4">
                                         <div class="card mb-3">
@@ -180,40 +201,21 @@
                                                                        onchange="callYourApi(this.value,{idGioHangCT:`${gh.getId()}`})"/>
                                                             </div>
                                                             <div style="margin-left:15px;width: 100px;color: #5f9ea0">
-                                                                <h6 class="mb-0"><b><fmt:formatNumber pattern="#,###" value="${gh.getThanhTien()}"></fmt:formatNumber> đ</b></h6>
+                                                                <h6 class="mb-0"><b><fmt:formatNumber pattern="#,###"
+                                                                                                      value="${gh.getThanhTien()}"></fmt:formatNumber>
+                                                                    đ</b></h6>
                                                             </div>
                                                             <a href="#!" style="color: #cecece;margin-left: 15px">
                                                                 <button formaction="/gio-hang-onl/xoa/${gh.getId()}"
                                                                         style="background-color:white ;border: none"><i
                                                                         class="fas fa-trash-alt"></i></button>
                                                             </a>
-                                                                <%--                                                        <a href="" style="color: #cecece;margin-left: 15px">--%>
-                                                                <%--                                                            <button style="background-color:white ;border: none">--%>
-                                                                <%--                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"--%>
-                                                                <%--                                                                     height="16"--%>
-                                                                <%--                                                                     fill="currentColor"--%>
-                                                                <%--                                                                     viewBox="0 0 16 16">--%>
-                                                                <%--                                                                    <path d="M11 5.466V4H5a4 4 0 0 0-3.584 5.777.5.5 0 1 1-.896.446A5 5 0 0 1 5 3h6V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192Zm3.81.086a.5.5 0 0 1 .67.225A5 5 0 0 1 11 13H5v1.466a.25.25 0 0 1-.41.192l-2.36-1.966a.25.25 0 0 1 0-.384l2.36-1.966a.25.25 0 0 1 .41.192V12h6a4 4 0 0 0 3.585-5.777.5.5 0 0 1 .225-.67Z"/>--%>
-                                                                <%--                                                                </svg></button>--%>
-                                                                <%--                                                        </a>--%>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </c:forEach>
-                                    <%--                phân trang --%>
-                                    <%--                                    <div class="container-fluid mt-5">--%>
-                                    <%--                                        <nav aria-label="Page navigation example">--%>
-                                    <%--                                            <ul class="pagination justify-content-center">--%>
-                                    <%--                                                <li class="page-item ${pageNo<=1?"disabled":""}"><a class="page-link" href="/gio-hang-onl?page=${pageNo-1}"><</a></li>--%>
-                                    <%--                                                <c:forEach begin="1" end="${list.getTotalPages()}" var="i">--%>
-                                    <%--                                                    <li class="page-item"><a class="page-link ${i == pageNo ? 'active ' : ''}" href="/gio-hang-onl?page=${i}">${i}</a></li>--%>
-                                    <%--                                                </c:forEach>--%>
-                                    <%--                                                <li class="page-item ${pageNo>=list.getTotalPages()?"disabled":""}"><a class="page-link" href="/gio-hang-onl?page=${pageNo+1}">></a></li>--%>
-                                    <%--                                            </ul>--%>
-                                    <%--                                        </nav>--%>
-                                    <%--                                    </div>--%>
                                     <hr class="my-4">
                                 </div>
                             </div>
@@ -222,12 +224,14 @@
 
                                     <div class="d-flex justify-content-between mb-5">
                                         <h5 class="text-uppercase">Tổng đơn</h5>
-                                        <h5><font color="red"><fmt:formatNumber pattern="#,###" value="${tongTien}"></fmt:formatNumber> đ</font></h5>
+                                        <h5><font color="red"><fmt:formatNumber pattern="#,###"
+                                                                                value="${tongTien}"></fmt:formatNumber>
+                                            đ</font></h5>
                                     </div>
 
-                                    <button formaction="/giohang/muahang" class="btn btn-dark btn-block btn-lg"
+                                    <a href="/checkouts" class="btn btn-dark btn-block btn-lg"
                                             data-mdb-ripple-color="dark">Thanh toán
-                                    </button>
+                                    </a>
 
                                 </div>
                                 </form>
@@ -335,7 +339,7 @@
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/main.js"></script>
 <script>
-    function callYourApi(newValue,gioHang) {
+    function callYourApi(newValue, gioHang) {
         window.location.href = "/gio-hang-onl/cap-nhat-gio-hang/" + newValue + "/"
             + gioHang.idGioHangCT;
     }

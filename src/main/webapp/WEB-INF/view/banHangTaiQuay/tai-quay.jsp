@@ -22,8 +22,8 @@
     <div>
         <h6>Hình thức thanh toán : </h6>
         <select class="form-select" name="hinhThucThanhToan" style="width: 200px">
-            <option value="true">Tiền mặt</option>
-            <option value="false">Chuyển Khoản</option>
+            <option value="1">Tiền mặt</option>
+            <option value="2">Chuyển Khoản</option>
         </select>
     </div>
     <br>

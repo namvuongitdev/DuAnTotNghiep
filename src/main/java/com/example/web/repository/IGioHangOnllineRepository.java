@@ -14,7 +14,7 @@ public interface IGioHangOnllineRepository extends JpaRepository<GioHangChiTiet,
 
     @Query(value = "select " +
             " ghct.id as idGHCT , sp.img as anhSanPham, sp.ten as tenSanPham ," +
-            " sp.giaban as giaBanSanPham , ghct.so_luong as soLuong , ms.ten as mauSac , kc.ten as kichCo, " +
+            " sp.giaban as giaBanSanPham , ghct.so_luong as soLuong , ms.ten as mauSac , kc.ten as kichCo, ctsp.id as idCTSP, " +
             " kmct.don_gia_sau_khi_giam as donGiaSauKhiGiam , kmct.trang_thai as trangThaiKMCT , km.trang_thai as trangThaiKM  from gio_hang_chi_tiet ghct left join gio_hang gh on ghct.id_gio_hang = gh.id" +
             " left join chi_tiet_san_pham ctsp on ghct.idctsp = ctsp.id" +
             " left join mau_sac ms on ms.id = ctsp.idmausac " +
@@ -37,4 +37,15 @@ public interface IGioHangOnllineRepository extends JpaRepository<GioHangChiTiet,
     void delete(String idGioHangCT);
 
     GioHang save(GioHang gioHang);
+
+    @Query(value = "select count(ctsp)from GioHangChiTiet ghct join ghct.gioHang gh join ghct.chiTietSanPham ctsp join gh.khachHang kh where kh.id = ?1")
+    Integer countSanPhamTrongGioHangByKhachHang_id(UUID idKH);
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from GioHangChiTiet ghct where ghct.gioHang.id in (select gh.id from GioHang gh where gh.khachHang.id = ?1)")
+    void deleteAllGioHangChiTiet(UUID idKH);
+
+    @Query(value = "select ghct from GioHangChiTiet ghct left join  ghct.gioHang gh left join gh.khachHang kh where kh.id =?1")
+    List<GioHangChiTiet> findGioHangChiTietByKhachHang_id(UUID idKH);
 }

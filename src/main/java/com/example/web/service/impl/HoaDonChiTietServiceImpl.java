@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -42,47 +43,45 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
     private ILichSuHoaDonRepository lichSuHoaDonRepository;
 
     @Override
-    public HoaDonChiTiet addHoaDonChiTiet(String idCTSP, String idHD, Integer soLuong) {
-        Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(idHD));
-        Optional<ChiTietSanPham> ctsp = chiTietSanPhamRepository.findById(UUID.fromString(idCTSP));
+    public HoaDonChiTiet addHoaDonChiTiet(UUID idCTSP, UUID idHD, Integer soLuong) {
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
+        Optional<ChiTietSanPham> ctsp = chiTietSanPhamRepository.findById(idCTSP);
         HoaDonChiTiet hdct = null;
-        if (hoaDon.isEmpty() || ctsp.isEmpty()) {
+        ChiTietSanPham chiTietSanPham = ctsp.get();
+
+        if (chiTietSanPham.getSoLuong() < soLuong) {
             return null;
         } else {
-            ChiTietSanPham chiTietSanPham = ctsp.get();
-            if (chiTietSanPham.getSoLuong() < soLuong) {
-                return null;
+            Integer result = chiTietSanPham.getSoLuong() - soLuong;
+            chiTietSanPham.setSoLuong(result);
+            hdct = hoaDonChiTietRepository.findByChiTietSanPham_IdAndAndHoaDon_IdAndTrangThai(idCTSP, idHD, 0);
+            if (hdct != null) {
+                Integer setSoLuongSanPhamTrongHDCT = hdct.getSoLuong() + soLuong;
+                hdct.setSoLuong(setSoLuongSanPhamTrongHDCT);
+                hdct.setChiTietSanPham(chiTietSanPham);
             } else {
-                Integer result = chiTietSanPham.getSoLuong() - soLuong;
-                chiTietSanPham.setSoLuong(result);
-                hdct = hoaDonChiTietRepository.findByChiTietSanPham_IdAndAndHoaDon_IdAndTrangThai(UUID.fromString(idCTSP), UUID.fromString(idHD), 0);
-                if (hdct != null) {
-                    Integer setSoLuongSanPhamTrongHDCT = hdct.getSoLuong() + soLuong;
-                    hdct.setSoLuong(setSoLuongSanPhamTrongHDCT);
-                    hdct.setChiTietSanPham(chiTietSanPham);
-                } else {
-                    hdct = HoaDonChiTiet.builder()
-                            .hoaDon(hoaDon.get())
-                            .soLuong(soLuong)
-                            .chiTietSanPham(chiTietSanPham)
-                            .trangThai(HoaDonChiTietStatus.KICH_HOAT)
-                            .build();
-                    if (!chiTietSanPham.getSanPham().getSanPhamKhuyenMais().isEmpty()) {
-                        for (SanPhamKhuyenMai o : chiTietSanPham.getSanPham().getSanPhamKhuyenMais()) {
-                            if (o.getKhuyenMai().getTrangThai() == 1 && o.getTrangThai() == 1) {
-                                Integer donGiaSauKhiGiam = o.getSanPhamKM().getGiaBan().intValue() - (o.getSanPhamKM().getGiaBan().intValue() / 100) * o.getMucGiam().intValue();
-                                hdct.setDonGia(BigDecimal.valueOf(donGiaSauKhiGiam));
-                            } else {
-                                hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
-                            }
+                hdct = HoaDonChiTiet.builder()
+                        .hoaDon(hoaDon.get())
+                        .soLuong(soLuong)
+                        .chiTietSanPham(chiTietSanPham)
+                        .trangThai(HoaDonChiTietStatus.KICH_HOAT)
+                        .build();
+                if (!chiTietSanPham.getSanPham().getSanPhamKhuyenMais().isEmpty()) {
+                    for (SanPhamKhuyenMai o : chiTietSanPham.getSanPham().getSanPhamKhuyenMais()) {
+                        if (o.getKhuyenMai().getTrangThai() == 1 && o.getTrangThai() == 1) {
+                            Integer donGiaSauKhiGiam = o.getSanPhamKM().getGiaBan().intValue() - (o.getSanPhamKM().getGiaBan().intValue() / 100) * o.getMucGiam().intValue();
+                            hdct.setDonGia(BigDecimal.valueOf(donGiaSauKhiGiam));
+                        } else {
+                            hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
                         }
-                    } else {
-                        hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
                     }
+                } else {
+                    hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
                 }
-                return hoaDonChiTietRepository.save(hdct);
             }
+            return hoaDonChiTietRepository.save(hdct);
         }
+
     }
 
     @Override

@@ -56,6 +56,7 @@ public class ChiTietSanPham {
     private List<HoaDonChiTiet> hoaDonChiTiets;
 
     @OneToMany(mappedBy = "chiTietSanPham")
+    @JsonIgnore
     private List<GioHangChiTiet> gioHangChiTiets;
 
     public ChiTietSanPham(UUID id, SanPham sanPham, Integer soLuong, Integer trangThai, String qrCode, MauSac mauSac, Size size) {

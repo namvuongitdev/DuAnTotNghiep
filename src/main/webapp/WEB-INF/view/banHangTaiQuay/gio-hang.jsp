@@ -379,7 +379,6 @@
         </div>
     </div>
 </div>
-<%--hinh thức thanh toán--%>
 <div id="modalQrcode" class="modal">
     <!-- Modal content -->
     <div class="modal-content-1" style="width: 40%">

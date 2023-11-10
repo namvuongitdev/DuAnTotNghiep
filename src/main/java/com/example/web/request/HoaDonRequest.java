@@ -33,7 +33,7 @@ public class HoaDonRequest {
     private BigDecimal phiVanChuyen;
 
     private String soTienThanhToan;
-    private Boolean hinhThucThanhToan;
+    private Integer hinhThucThanhToan;
     private String moTa;
     private String idKhachHang;
     private BigDecimal tongTien;

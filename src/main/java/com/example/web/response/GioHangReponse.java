@@ -1,6 +1,7 @@
 package com.example.web.response;
 import org.springframework.beans.factory.annotation.Value;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public interface GioHangReponse {
 
@@ -35,6 +36,9 @@ public interface GioHangReponse {
     Integer getTrangThaiKM();
 
     @Value("#{target.trangThaiKM == 1 && target.trangThaiKMCT == 1 ? (target.donGiaSauKhiGiam * target.soLuong) : (target.giaBanSanPham * target.soLuong)}")
-    Integer getThanhTien();
+    BigDecimal getThanhTien();
+
+    @Value("#{target.idCTSP}")
+    UUID getIdCTSP();
 
 }

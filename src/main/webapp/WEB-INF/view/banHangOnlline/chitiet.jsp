@@ -359,6 +359,14 @@
     <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </symbol>
+        <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+        </symbol>
+    </svg>
 
 </head>
 <body>
@@ -411,9 +419,39 @@
             </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
-                    <a href="/gio-hang-onl"><img src="/img/icon/cart.png" alt=""> <span></span></a>
+                    <a href="/gio-hang-onl" class="position-relative">
+                        <img src="/img/icon/cart.png" alt="" style="width: 30px ; height: 30px">
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                              style="color: #FFFFFF">
+                            ${count != null ? count : 0}
+                        </span>
+                    </a>
                 </div>
             </div>
+            <c:choose>
+                <c:when test="${error != null}">
+
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                            <use xlink:href="#exclamation-triangle-fill"/>
+                        </svg>
+                        <div>
+
+                                ${error}
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <c:if test="${success != null}">
+                        <div class="alert alert-success d-flex align-items-center" role="alert">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                            <div>
+                                    ${success}
+                            </div>
+                        </div>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
         </div>
         <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>
@@ -488,6 +526,7 @@
                         <p>${sanPham.moTa}</p>
                         <font color="green">${tong}</font>
                         <div id="tongSanPham"></div>
+                        <form method="post" action="/gio-hang-onl/them-moi-gio-hang/${sanPham.id}">
                             <div class="row" style="margin-top: 10px">
                                 <div class="row">
                                     <div class="form-check">
@@ -498,7 +537,7 @@
                                        id:this.value,
                                         type:'mauSac'
                                                  })"
-                                                   value="${mau.id}" name="color" id="${mau.id}"
+                                                   value="${mau.id}" ${dataRequest.idMS == mau.id ? "checked" : ""} name="color" id="${mau.id}"
                                                    autocomplete="off">
                                             <label class="btn btn-outline-secondary" for="${mau.id}">${mau.ten}
                                             </label>
@@ -518,7 +557,7 @@
                                         type:'size'
                                                  })"
                                                    value="${size.id}" name="size" id="${size.id}"
-                                                   autocomplete="off">
+                                                   autocomplete="off" ${dataRequest.idKC == size.id ? "checked" : ""}>
                                             <label class="btn btn-outline-secondary" for="${size.id}">${size.ten}
                                             </label>
                                         </c:forEach>
@@ -535,16 +574,17 @@
                                 <label for="quantity">Quantity</label>
                                 <div class="display-flex">
                                     <div class="qtyminus" style="">-</div>
-                                    <input type="text" style="height: 35px" id="quantity" name="quantity" value="1"
-                                           class="qty">
+                                    <input type="text" style="height: 35px" id="quantity" name="quantity"
+                                           class="qty" value="${dataRequest.soLuong != null ? dataRequest.soLuong : 1}">
                                     <div class="qtyplus">+</div>
                                     <button type="submit" id="themVaoGioHang"
                                             class="round-black-btn" style="
                                     margin-top: 60px;margin-left: 20px;
-                                    " onclick="themVaoGiohang({idSP:`${sanPham.id}`})">Add to Cart
+                                    ">Add to Cart
                                     </button>
                                 </div>
                             </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -779,22 +819,19 @@
 
         }
 
-       async function themVaoGiohang(sanPham) {
-            if (mauSacSP == null || kichCoSP == null) {
-                alert("chưa lựa chọn thuộc tính sản phẩm");
-            } else if (quantity.value <= 0) {
-                alert("Số lượng không hợp lệ.");
-            }else{
-                const options = {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                };
-                 const apiThemVaoGioHang = await  fetch("/gio-hang-onl/them-moi-gio-hang/" + sanPham.idSP + "/" + quantity.value + "/" + mauSacSP + "/" + kichCoSP , options);
-                 if(apiThemVaoGioHang.status == 200){
-                     alert('sản phẩm đã được thêm vào giỏ hàng')
-                 }
-            }
-        }
+        // async function themVaoGiohang(sanPham) {
+        //     if (mauSacSP == null || kichCoSP == null) {
+        //         alert("chưa lựa chọn thuộc tính sản phẩm");
+        //     } else if (quantity.value <= 0) {
+        //         alert("Số lượng không hợp lệ.");
+        //     } else {
+        //         const options = {
+        //             method: 'POST',
+        //             headers: {'Content-Type': 'application/json'},
+        //         }
+        //
+        //     }
+        // }
 
         $(document).ready(function () {
             var slider = $("#slider");

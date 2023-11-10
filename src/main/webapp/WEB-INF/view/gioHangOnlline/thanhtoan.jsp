@@ -42,7 +42,7 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-<%--        bên trái--%>
+        <%--        bên trái--%>
         <div class="left-panel">
             <div class="container">
                 <div class="pagetitle">
@@ -52,38 +52,32 @@
                         <li class="breadcrumb-item ">Thông tin giao hàng</li>
                     </nav>
                 </div><!-- End Page Title -->
-                <form>
+<%--               <form action="/checkouts/order" method="post" modelAttribute="${checkoutRequest}">--%>
                     <div class="mb-3">
                         <h5>Thông tin giao hàng</h5>
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control"  placeholder="Họ và tên">
+                                <input type="text" class="form-control" id="hoTen" name="hoTen" placeholder="Họ và tên">
                                 <label>Họ và tên</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating mb-3">
-                                <input type="email" class="form-control"  placeholder="Email">
-                                <label>Email</label>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control"  placeholder="Số điện thoại">
+                                <input type="text" class="form-control" id="soDienThoai" name="soDienThoai" placeholder="Số điện thoại">
                                 <label>Số điện thoại</label>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control"  placeholder="Địa chỉ">
+                                <input type="text" class="form-control" id="diaChi" name="diaChi" placeholder="Địa chỉ">
                                 <label>Địa chỉ</label>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="form-floating">
-                                <select id="province" class="form-select tinhThanhPho">
+                                <select id="province" class="form-select tinhThanhPho" id="thanhPho" name="thanhPho">
                                     <option value="">Chọn tỉnh / thành</option>
                                 </select>
                                 <label>Tỉnh / thành</label>
@@ -91,7 +85,7 @@
                         </div>
                         <div class="col-4">
                             <div class="form-floating">
-                                <select id="district" disabled class="form-select chonQuanHuyen">
+                                <select id="district" disabled class="form-select chonQuanHuyen" aria-invalid="quanHuyen" name="quanHuyen">
                                     <option value="">Chọn quận / huyện</option>
                                 </select>
                                 <label>Quận / huyện</label>
@@ -99,10 +93,16 @@
                         </div>
                         <div class="col-4">
                             <div class="form-floating">
-                                <select id="ward" disabled class="form-select chonPhuongXa">
+                                <select id="ward" disabled class="form-select chonPhuongXa" id="phuongXa" name="phuongXa">
                                     <option value="">Chọn phường / xã</option>
                                 </select>
                                 <label>Phường / xã</label>
+                            </div>
+                        </div>
+                        <div class="col-12" style="margin-top: 13px">
+                            <div class="form-floating mb-3">
+                                <textarea type="text" class="form-control" id="ghiChu" name="ghiChu"></textarea>
+                                <label>Ghi chú</label>
                             </div>
                         </div>
                     </div>
@@ -111,7 +111,8 @@
                     </div>
                     <div class="mt-3 card-radio">
                         <div class="form-check radio">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                                   checked value="3">
                             <label class="form-check-label" for="flexRadioDefault2">
                                 Thanh toán khi giao hàng (COD).
                             </label>
@@ -122,15 +123,14 @@
                             <a class="hover" href="/gio-hang-onl">Giỏ hàng</a>
                         </div>
                         <div class="col-6" style="text-align: right">
-                            <button class="btn btn-info p-3" >Hoàn tất đơn hàng</button>
+                            <button class="btn btn-info p-3" onclick="saveOrder()">Hoàn tất đơn hàng</button>
                         </div>
                     </div>
-                </form>
+<%--                </form>--%>
             </div>
-
         </div>
 
-<%--        bên phải--%>
+        <%--        bên phải--%>
         <div class="right-panel">
             <div class="container">
                 <div class="row">
@@ -144,49 +144,56 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr class="product-row">
-                                <td>
-                                    <div style="display: flex; align-items: center;">
-                                        <img src="../../../anh/ao1.jpg" alt="" style="margin-right: 10px;width: 80px; height: 85px; border:1px solid #ccc;border-radius: 10px">
-                                        <div>
-                                            <h3>
-                                                <strong>
-                                                    <span style="text-transform: none">Áo ba lỗ</span>
-                                                </strong>
-                                            </h3>
-                                            <div class="thongTinSP">
-                                                <span>Màu đỏ</span>
-                                                <span>/</span>
-                                                <span>XL</span>
-                                                <br>
-                                                <span>320.000 đ</span>
+                            <c:forEach items="${sanPhamTrongGioHang}" var="items">
+                                <tr class="product-row">
+                                    <td>
+                                        <div style="display: flex; align-items: center;">
+                                            <img src="/image/${items.getImg()}" alt=""
+                                                 style="margin-right: 10px;width: 80px; height: 85px; border:1px solid #ccc;border-radius: 10px">
+                                            <div>
+                                                <h3>
+                                                    <strong>
+                                                        <span style="text-transform: none">${items.getTenSanPham()}</span>
+                                                    </strong>
+                                                </h3>
+                                                <div class="thongTinSP">
+                                                    <span>${items.getMauSac()}</span>
+                                                    <span>/</span>
+                                                    <span>${items.getKichCo()}</span>
+                                                    <br>
+                                                    <c:choose>
+                                                        <c:when test="${items.getGiaBanSanPham() != null && items.trangThaiKMCT == 1 && items.trangThaiKM ==1}">
+                                                    <span> <fmt:formatNumber pattern="#,###"
+                                                                             value="${items.getDonGiaSauKhiGiam()}"></fmt:formatNumber>đ</span>
+
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                     <span> <fmt:formatNumber pattern="#,###"
+                                                                              value="${items.getGiaBanSanPham()}"></fmt:formatNumber>đ</span>
+
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td style="text-align: center">2</td>
-                                <td style="text-align: right">320.000 đ</td>
-                            </tr>
+                                    </td>
+                                    <td style="text-align: center">${items.getSoLuong()}</td>
+                                    <td><span style="text-align: right"><fmt:formatNumber pattern="#,###"
+                                                                                          value="${items.getThanhTien()}"></fmt:formatNumber> đ</span>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+
                             </tbody>
                         </table>
                         <hr>
                     </div>
-
                     <div class="col-12">
                         <div class="row">
-                            <div style="width: 75%">
-                                <input type="text" class="form-control" name="maGiamGia" placeholder="Thêm mã giảm giá">
-                            </div>
-                            <div style="width: 25%">
-                                <button class="btn btn-outline-dark" type="submit" >Áp dụng</button>
-                            </div>
-                        </div>
-                        <hr>
-                    </div>
-                    <div class="col-12">
-                        <div class="row">
-                            <label  class="form-label ml">Tạm tính:</label>
-                            <label  class="form-label mr">320.000 đ</label>
+                            <label class="form-label ml">Tạm tính:</label>
+                            <label class="form-label mr" id="tamTinh"><fmt:formatNumber pattern="#,###"
+                                                                           value="${tongTien}"></fmt:formatNumber>
+                                đ</label>
                         </div>
                     </div>
 
@@ -197,17 +204,12 @@
                         </div>
                         <hr>
                     </div>
-                    <div class="col-12">
-                        <div class="row">
-                            <label class="form-label ml">Giảm giá:</label>
-                            <label class="form-label mr">0 đ</label>
-                        </div>
-                        <hr>
-                    </div>
+
                     <div class="col-12">
                         <div class="row">
                             <h6 class="form-label ml">Tổng cộng:</h6>
-                            <h4 class="form-label mr">320.000 đ</h4>
+                            <h4 class="form-label mr" id="tongTien"><fmt:formatNumber pattern="#,###"
+                                                                        value="${tongTien}"></fmt:formatNumber> đ</h4>
                         </div>
                     </div>
                 </div>

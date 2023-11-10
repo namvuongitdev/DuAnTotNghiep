@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +46,8 @@ public class TrangChuController {
     @Autowired
     private IAnhService anhService;
 
+    @Autowired
+    private IKhachHangService khachHangService;
 
     private Page<SanPham> sanPhamPage = null;
 
@@ -51,9 +55,12 @@ public class TrangChuController {
 
     @GetMapping("/home")
     public String hienThi(Principal principal, HttpSession session, Model model, @RequestParam(defaultValue = "1") int page) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (principal != null){
             String username = principal.getName();
             session.setAttribute("username", username);
+            KhachHang khachHang = khachHangService.findByEmailOrAndTaiKhoan(authentication.getName());
+            model.addAttribute("count" , iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
         }
         Pageable pageable = PageRequest.of(page - 1, 10);
         sanPhamPage = iSanPhamService.findAll(pageable);
@@ -116,7 +123,9 @@ public class TrangChuController {
 
     @GetMapping("/chi-tiet-san-pham-onl")
     public String chiTiet(Model model,@RequestParam (name = "id") String
-            idSanPham){
+            idSanPham , Principal principal){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<Anh> anhs = anhService.getAllAnhBySanPham_id(UUID.fromString(idSanPham));
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(idSanPham));
         List<ChiTietSanPham> listCT = iChiTietSanPhamService.listCTSPTheoIdSP(UUID.fromString(idSanPham));
@@ -133,6 +142,10 @@ public class TrangChuController {
         model.addAttribute("listSize",listSize);
         model.addAttribute("sanPham",sanPham);
         model.addAttribute("listAnh",anhs);
+        if(principal != null){
+            KhachHang khachHang = khachHangService.findByEmailOrAndTaiKhoan(authentication.getName());
+            model.addAttribute("count" , iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
+        }
         return "banHangOnlline/chitiet";
     }
 
