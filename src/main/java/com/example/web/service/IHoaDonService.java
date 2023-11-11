@@ -52,4 +52,6 @@ public interface IHoaDonService {
 
     Page<Object[]> findHoaDonByTrangThai(String taiKhoan, Integer trangThai, Pageable pageable);
 
+    HoaDon getHoaDonByKhachHang_id(UUID idKH);
+
 }

@@ -34,4 +34,6 @@ public interface IKhachHangService {
 
     KhachHang findBySdt(String sdt);
 
+    KhachHang getKhachHangLogin();
+
 }

@@ -57,4 +57,6 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
             "GROUP BY hd.ma, hd.ngayTao, hd.id, hd.tongTien, hd.trangThai")
     Page<Object[]> findHoaDonByTrangThai(String taiKhoan, Integer trangThai, Pageable pageable);
 
+    @Query("select hd from HoaDon hd join hd.khachHang kh where kh.id = ?1")
+    HoaDon findHoaDonByKhachHang(UUID idKH);
 }

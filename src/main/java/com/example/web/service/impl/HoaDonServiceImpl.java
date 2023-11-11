@@ -275,4 +275,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
     public Page<Object[]> findHoaDonByTrangThai(String taiKhoan, Integer trangThai, Pageable pageable) {
         return hoaDonRepository.findHoaDonByTrangThai(taiKhoan, trangThai, pageable);
     }
+
+    @Override
+    public HoaDon getHoaDonByKhachHang_id(UUID idKH) {
+        return hoaDonRepository.findHoaDonByKhachHang(idKH);
+    }
 }
