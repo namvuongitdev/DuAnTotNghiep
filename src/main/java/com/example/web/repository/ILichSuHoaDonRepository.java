@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface ILichSuHoaDonRepository extends JpaRepository<LichSuHoaDon, UUID> {
 
-    @Query(value = "SELECT lshd from LichSuHoaDon lshd where lshd.hoaDon.id=?1")
+    @Query(value = "SELECT lshd from LichSuHoaDon lshd where lshd.hoaDon.id=?1 ORDER BY lshd.ngayThaoTac DESC")
     List<LichSuHoaDon> get(UUID idHd);
 
     @Query(value = "SELECT lshd from LichSuHoaDon lshd where lshd.hoaDon.id=?1 and lshd.thaoTac LIKE %?2%")

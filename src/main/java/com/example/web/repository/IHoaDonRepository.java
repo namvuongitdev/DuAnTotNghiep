@@ -4,6 +4,7 @@ import com.example.web.model.HoaDonChiTiet;
 import com.example.web.response.HoaDonReponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -42,7 +43,7 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
             "left join hdct.chiTietSanPham ctsp where hd.id = ?1 and hdct.trangThai=1")
     Page<HoaDonChiTiet> getHoaDonHuyChiTiet(UUID id ,Pageable pageable);
 
-    @Query(value = "select hd from HoaDon hd where hd.trangThai<>0 and hd.loaiHoaDon=false")
+    @Query(value = "select hd from HoaDon hd where hd.trangThai<>0")
     Page<HoaDon> findAll3(Pageable pageable);
 
     @Query("SELECT hd.id, hd.ma, hd.ngayTao, hd.tongTien, SUM(hdct.soLuong), hd.trangThai FROM HoaDon hd " +
@@ -57,6 +58,6 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
             "GROUP BY hd.ma, hd.ngayTao, hd.id, hd.tongTien, hd.trangThai")
     Page<Object[]> findHoaDonByTrangThai(String taiKhoan, Integer trangThai, Pageable pageable);
 
-    @Query("select hd from HoaDon hd join hd.khachHang kh where kh.id = ?1")
-    HoaDon findHoaDonByKhachHang(UUID idKH);
+    @Query("select hd from HoaDon hd join hd.khachHang kh where kh.id = ?1 and hd.id = ?2")
+    HoaDon findHoaDonByKhachHang(UUID idKH ,UUID idHD);
 }

@@ -104,25 +104,22 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td><fmt:formatNumber pattern="#,###"  value="${hdct.chiTietSanPham.sanPham.giaBan}"/> VNĐ</td>
+                                                    <td><fmt:formatNumber pattern="#,###"  value="${hdct.donGia}"/> VNĐ</td>
                                                     <td>${hdct.soLuong}</td>
-                                                    <td><fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/> VNĐ</td>
+                                                    <td><fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.donGia}"/> VNĐ</td>
                                                 </tr>
                                             </c:forEach>
                                             </tbody>
                                         </table>
                                     </div>
                                     <br>
-                                    <p><b>Tổng giá trị sản phẩm:</b>  <span></span></p>
-                                    <p><b>Giảm giá:</b>  <span >0 VNĐ</span></p>
                                     <p><b>Tổng tiền thanh toán:</b>  <span><fmt:formatNumber pattern="#,###"  value="${hd.tongTien}"/> VNĐ</span></p>
                                 </div>
 
-                                <button style="margin-left: 15px" type="button" class="action-button inHoaDonChiTiet">In hóa đơn
+                                <button style="margin-left: 15px" type="button" class="action-button inHoaDonChiTiet" data-bs-toggle="modal" data-bs-target="#inHoaDonModal">In hóa đơn
                                     <i class="bi bi-printer-fill"></i>
                                 </button>
-                                <input type="hidden" id="idChiTietHoaDon">
-                                <div class="modal fade inHoaDonModal" tabindex="-1" aria-labelledby="inHoaDonModalLabel"
+                                <div class="modal fade inHoaDonModal" id="inHoaDonModal" tabindex="-1" aria-labelledby="inHoaDonModalLabel"
                                      aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
@@ -135,7 +132,7 @@
                                                 Bạn muốn in hóa đơn?
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary btn-dong-y">Đồng ý</button>
+                                                <button type="button" class="btn btn-primary btn-dong-y" onclick="inHoaDon({idhd:`${hd.id}`})">Đồng ý</button>
                                                 <button type="button" class="btn btn-secondary btn-khong"
                                                         data-bs-dismiss="modal">Không
                                                 </button>
@@ -486,12 +483,19 @@
             return;
         }
     }
-function quayLai() {
-    if (confirm("Bạn có muốn quay lại trang trước không?")===true){
-        window.location.href="/admin/hoa-don/hien-thi"
-    }else {
-        return;
+    function quayLai() {
+        if (confirm("Bạn có muốn quay lại trang trước không?")===true){
+            window.location.href="/admin/hoa-don/hien-thi"
+        }else {
+            return;
+        }
     }
-}
+    function inHoaDon(data) {
+        if (confirm("Bạn có muốn in hóa đơn?")===true){
+            window.location.href="/admin/hoa-don/in-hoa-don/"+data.idhd;
+        }else {
+            return;
+        }
+    }
 </script>
 </html>

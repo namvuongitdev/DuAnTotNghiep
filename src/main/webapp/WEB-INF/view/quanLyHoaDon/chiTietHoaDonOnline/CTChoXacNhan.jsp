@@ -51,7 +51,7 @@
                 <nav>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/admin/trang-chu" style="text-decoration: none; color: black">Trang chủ</a></li>
-                        <li class="breadcrumb-item"><a href="/admin/hoa-don-onl/cho-xac-nhan/hien-thi" style="text-decoration: none; color: black">Đơn đặt hàng</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/hoa-don/hien-thi" style="text-decoration: none; color: black">Quản lí hóa đơn</a></li>
                         <li class="breadcrumb-item active">Thông tin hóa đơn</li>
                     </ol>
                 </nav>
@@ -68,10 +68,10 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <p><b>Mã đơn:</b>  <span  value="${hd.ma}">${hd.ma}</span></p>
-                                        <p><b>Ngày thanh tạo:</b>  <span value="${hd.ngayTao}"><fmt:formatDate value="${hd.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
-                                        <p><b>Ngày thanh toán:</b>  <span value="${hd.ngayThanhToan}"><fmt:formatDate value="${hd.ngayThanhToan}" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
+                                        <p><b>Ngày thanh tạo:</b>  <span value="${hd.ngayTao}"><fmt:formatDate value="${hd.ngayTao}" pattern="dd/MM/yyyy HH:mm:ss"/></span></p>
+                                        <p><b>Ngày thanh toán:</b>  <span value="${hd.ngayThanhToan}"><fmt:formatDate value="${hd.ngayThanhToan}" pattern="dd/MM/yyyy HH:mm:ss"/></span></p>
                                         <p><b>Hình thức thanh toán:</b>  <span>${hd.phuongThucThanhToan==true?'Thanh toán khi nhận hàng':'Chuyển khoản'}</span></p>
-                                        <p><b>Trạng thái:</b>  <span>${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Đã tiếp nhận':(hd.trangThai==6)?'Giao hàng thành công':(hd.trangThai==5)?'Hủy đơn hàng':''}</span></p>
+                                        <p><b>Trạng thái:</b>  <span>${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Chuẩn bị hàng và giao cho đơn vị vận chuyển':(hd.trangThai==6)?'Giao hàng thành công':(hd.trangThai==5)?'Hủy đơn hàng':''}</span></p>
                                     </div>
                                     <div class="col-md-6">
                                         <p><b>Nhân viên bán hàng:</b>  <span value="${hd.nhanVien.hoTen}">${hd.nhanVien.hoTen}</span></p>
@@ -85,7 +85,7 @@
                                     </div>
 
                                 </div>
-                                <div style="display: ${hd.trangThai==1?'block':'none'}"><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
+                                <div style="display: ${hd.trangThai==1?'':hd.trangThai==2?'':'none'}"><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
                                                                                                 name="1" onclick="getSanPham(this.name)" style="margin-left: 800px; margin-bottom: 20px">Thêm sản phẩm</button></div>
                                 <div class="table-wrapper">
                                     <table class="table">
@@ -96,7 +96,7 @@
                                             <th scope="col">Đơn giá</th>
                                             <th scope="col">Số lượng</th>
                                             <th scope="col">Thành tiền</th>
-                                            <th scope="col" style="display: ${hd.trangThai==1?'':'none'}">Thao tác</th>
+                                            <th scope="col" style="display: ${hd.trangThai==1?'':hd.trangThai==2?'':'none'}">Thao tác</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -121,10 +121,10 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td><input type="text" class="form-control" id="giaBan" readonly value="<fmt:formatNumber pattern="#,###"  value="${hdct.chiTietSanPham.sanPham.giaBan}"/>"/></td>
-                                                <td><input type="number" class="form-control" id="soLuongSp" ${hd.trangThai==1?'':'disabled'}  onchange="myFunction({idhdct:`${hdct.id}`,soLuong:this.value,idhd:`${hd.id}`})" value="${hdct.soLuong}" min="1" style="width: 40%"></td>
-                                                <td><input type="text" class="form-control" readonly name="${hdct.id}" id="thanhTien" value="<fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.chiTietSanPham.sanPham.giaBan}"/>"></td>
-                                                <td><a style="font-size: 20px;display: ${hd.trangThai==1?'block':'none'}" onclick="xoaSp({idhdct:`${hdct.id}`,idhd:`${hd.id}`})" title="Xóa sản phẩm" type="button" class="badge text-bg-danger text-white"><i class="bi bi-trash3-fill"></i></a></td>
+                                                <td><input type="text" class="form-control" id="giaBan" readonly value="<fmt:formatNumber pattern="#,###"  value="${hdct.donGia}"/>"/></td>
+                                                <td><input type="number" class="form-control" id="soLuongSp" ${hd.trangThai==1?'':hd.trangThai==2?'':'disabled'}   onchange="myFunction({idhdct:`${hdct.id}`,soLuong:this.value,idhd:`${hd.id}`})" value="${hdct.soLuong}" min="0" style="width: 40%"></td>
+                                                <td><input type="text" class="form-control" readonly name="${hdct.id}" id="thanhTien" value="<fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.donGia}"/>"></td>
+                                                <td><a style="font-size: 20px;display: ${hd.trangThai==1?'block':hd.trangThai==2?'block':'none'}" onclick="xoaSp({idhdct:`${hdct.id}`,idhd:`${hd.id}`})" title="Xóa sản phẩm" type="button" class="badge text-bg-danger text-white"><i class="bi bi-trash3-fill"></i></a></td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
@@ -132,39 +132,53 @@
                                 </div>
                                 <br>
                                 <p><b>Tổng giá trị sản phẩm:</b>  <span><fmt:formatNumber pattern="#,###"  value="${hdc}"/> VNĐ</span></p>
-                                <p><b>Phí vận chuyển:</b>  <input id="PVC" type="text" style="border: none;width: 150px;" ${hd.trangThai==1?'':hd.trangThai==2?'':'disabled'} onblur="doiPhiShip({ship:this.value,idhd:`${hd.id}`})" value="<fmt:formatNumber pattern="#,###"  value="${hd.phiVanChuyen}"/>"/>VNĐ</p>
-                                <%--                                                                <p><b>Giảm giá:</b>  <span >0 VNĐ</span></p>--%><hr>
+                                <p><b>Phí vận chuyển:</b>  <input id="PVC" type="text" style="border: none;width: 150px;display: ${hd.trangThai==5?'none':''}" ${hd.trangThai==1?'':hd.trangThai==2?'':'disabled'} onblur="doiPhiShip({ship:this.value,idhd:`${hd.id}`})" value="<fmt:formatNumber pattern="#,###"  value="${hd.phiVanChuyen}"/>"/>VNĐ</p>
                                 <p><b>Tổng tiền thanh toán:</b>  <span><fmt:formatNumber pattern="#,###"  value="${hd.tongTien}"/> VNĐ</span></p>
-                            </div><br>
-<%--                        Lịch sử hóa đơn--%>
-                            <h4 class="card-title">Lịch sử hóa đơn</h4>
-                            <br><br>
-                            <div>
-                                <div class="table-wrapper">
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th data-field="state" data-checkbox="true"></th>
-                                            <th scope="col">Ngày thực hiện</th>
-                                            <th scope="col">Người thực hiện</th>
-                                            <th scope="col">Thao tác</th>
-                                            <th scope="col">Trạng thái</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${lshd}" var="hd" varStatus="i">
-                                                <tr>
-                                                    <td>${i.index+1}</td>
-                                                    <td><fmt:formatDate value="${hd.ngayThaoTac}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <td>${hd.nguoiThaoTac}</td>
-                                                    <td>${hd.thaoTac}</td>
-                                                    <td>Thành công</td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
+                            </div><br><br>
+                            <div style="text-align: right">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#lichSuHoaDon">
+                                    Xem lịch sử hóa đơn
+                                </button>
+                            </div>
+                            <!-- Modal Lịch sử -->
+                            <div class="modal fade" id="lichSuHoaDon" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog mw-100">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="text-primary" id="staticBackdropLabel" style="margin-left: 520px">Lịch sử hóa đơn</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="table-wrapper">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th data-field="state" data-checkbox="true"></th>
+                                                        <th scope="col">Ngày thực hiện</th>
+                                                        <th scope="col">Người thực hiện</th>
+                                                        <th scope="col">Thao tác</th>
+                                                        <th scope="col">Trạng thái</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <c:forEach items="${lshd}" var="hd" varStatus="i">
+                                                        <tr>
+                                                            <td>${i.index+1}</td>
+                                                            <td><fmt:formatDate value="${hd.ngayThaoTac}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
+                                                            <td>${hd.nguoiThaoTac}</td>
+                                                            <td>${hd.thaoTac}</td>
+                                                            <td>Thành công</td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <br>
                             </div>
 
                             <%--Time line--%>
@@ -174,7 +188,7 @@
                                     <div class="date-content">
                                         <div class="date-outer">
                                             <span class="date">
-                                                <span class="month" style="font-size: 13px"><fmt:formatDate value="${taoDon.ngayThaoTac}" pattern="yyyy-MM-dd"/></span><br>
+                                                <span class="month" style="font-size: 13px"><fmt:formatDate value="${taoDon.ngayThaoTac}" pattern="dd/MM/yyyy"/></span><br>
                                                 <span class="hour" style="font-size: 13px;font-weight: 600"><fmt:formatDate value="${taoDon.ngayThaoTac}" pattern="HH:mm:ss"/></span>
                                             </span>
                                         </div>
@@ -193,7 +207,7 @@
                                     <div class="date-content">
                                         <div class="date-outer">
                                                 <span class="date">
-                                                    <span class="month" style="font-size: 13px"><fmt:formatDate value="${xacNhan.ngayThaoTac}" pattern="yyyy-MM-dd"/></span><br>
+                                                    <span class="month" style="font-size: 13px"><fmt:formatDate value="${xacNhan.ngayThaoTac}" pattern="dd/MM/yyyyy"/></span><br>
                                                     <span class="hour" style="font-size: 13px;font-weight: 600"><fmt:formatDate value="${xacNhan.ngayThaoTac}" pattern="HH:mm:ss"/></span>
                                                 </span>
                                         </div>
@@ -212,7 +226,7 @@
                                     <div class="date-content">
                                         <div class="date-outer">
                                             <span class="date">
-                                                <span class="month" style="font-size: 13px"><fmt:formatDate value="${choGiao.ngayThaoTac}" pattern="yyyy-MM-dd"/></span><br>
+                                                <span class="month" style="font-size: 13px"><fmt:formatDate value="${choGiao.ngayThaoTac}" pattern="dd/MM/yyyy"/></span><br>
                                                 <span class="hour" style="font-size: 13px;font-weight: 600"><fmt:formatDate value="${choGiao.ngayThaoTac}" pattern="HH:mm:ss"/></span>
                                             </span>
                                         </div>
@@ -231,7 +245,7 @@
                                     <div class="date-content">
                                         <div class="date-outer">
                                             <span class="date">
-                                                <span class="month" style="font-size: 13px;"><fmt:formatDate value="${daGiao.ngayThaoTac}" pattern="yyyy-MM-dd"/></span><br>
+                                                <span class="month" style="font-size: 13px;"><fmt:formatDate value="${daGiao.ngayThaoTac}" pattern="dd/MM/yyyy"/></span><br>
                                                 <span class="hour" style="font-size: 13px;font-weight: 600"><fmt:formatDate value="${daGiao.ngayThaoTac}" pattern="HH:mm:ss"/></span>
                                             </span>
                                         </div>
@@ -298,33 +312,32 @@
                                     </div>
                                 </div>
 
-                                <button style="margin-left: 15px" type="button" class="action-button inHoaDonChiTiet">
-                                    In hóa đơn
-                                </button>
-                                <input type="hidden" id="idChiTietHoaDon">
-                                <div class="modal fade inHoaDonModal" tabindex="-1" aria-labelledby="inHoaDonModalLabel"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="inHoaDonModalLabel">In hóa đơn</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Bạn muốn in hóa đơn?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary btn-dong-y">Đồng ý</button>
-                                                <button type="button" class="btn btn-secondary btn-khong"
-                                                        data-bs-dismiss="modal">Không
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+<%--                                <button style="margin-left: 15px" type="button" class="action-button inHoaDonChiTiet" data-bs-toggle="modal" data-bs-target="#inHoaDonModal">--%>
+<%--                                    In hóa đơn--%>
+<%--                                </button>--%>
+<%--                                <div class="modal fade inHoaDonModal" id="inHoaDonModal" tabindex="-1" aria-labelledby="inHoaDonModalLabel"--%>
+<%--                                     aria-hidden="true">--%>
+<%--                                    <div class="modal-dialog modal-dialog-centered">--%>
+<%--                                        <div class="modal-content">--%>
+<%--                                            <div class="modal-header">--%>
+<%--                                                <h5 class="modal-title" id="inHoaDonModalLabel">In hóa đơn</h5>--%>
+<%--                                                <button type="button" class="btn-close" data-bs-dismiss="modal"--%>
+<%--                                                        aria-label="Close"></button>--%>
+<%--                                            </div>--%>
+<%--                                            <div class="modal-body">--%>
+<%--                                                Bạn muốn in hóa đơn?--%>
+<%--                                            </div>--%>
+<%--                                            <div class="modal-footer">--%>
+<%--                                                <button type="button" onclick="inHoaDon({idhd:`${hd.id}`})" class="btn btn-primary btn-dong-y">Đồng ý</button>--%>
+<%--                                                <button type="button" class="btn btn-secondary btn-khong"--%>
+<%--                                                        data-bs-dismiss="modal">Không--%>
+<%--                                                </button>--%>
+<%--                                            </div>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
 
-                                <button class="action-button" type="button" onclick="quayLai({trangThai:`${hd.trangThai}`})">Quay lại
+                                <button class="action-button" type="button" onclick="quayLai()">Quay lại
                                     <i class="bi bi-arrow-left"></i>
                                 </button>
                             </div>
@@ -692,31 +705,22 @@
     // --------------------------------------------
     function myFunction(data){
         if (confirm("Bạn có muốn thay đổi số lượng không")===true){
-            window.location.href = "/admin/hoa-don-onl/update-so-luong/"+data.idhd+"?hdct=" + data.idhdct + "&soLuong=" + data.soLuong;
+            if (data.soLuong<0){
+                alert("Số lượng phải lớn hơn 0");
+                return;
+            }else if (data.soLuong=0){
+                window.location.href="/admin/hoa-don-onl/delete/"+data.idhd+"?idHdct="+data.idhdct;
+            }else {
+                window.location.href = "/admin/hoa-don-onl/update-so-luong/"+data.idhd+"?hdct=" + data.idhdct + "&soLuong=" + data.soLuong;
+            }
         }else {
             window.location.reload();
             return;
         }
     }
-    function quayLai(data) {
-        let tt=data.trangThai;
+    function quayLai() {
         if (confirm("Bạn có muốn quay lại trang trước không?")===true){
-            if (tt==1){
-                 window.location.href="/admin/hoa-don-onl/cho-xac-nhan/hien-thi";
-                 return;
-            } if (tt==2){
-                 window.location.href="/admin/hoa-don-onl/cho-giao-hang/hien-thi";
-                return;
-            }else if (tt==3){
-                 window.location.href="/admin/hoa-don-onl/dang-giao/hien-thi";
-                return;
-            }else if (tt==6){
-                 window.location.href="/admin/hoa-don-onl/da-giao/hien-thi";
-                return;
-            }else {
-                 window.location.href="/admin/hoa-don-onl/cho-giao-hang/hien-thi";
-                return;
-            }
+            window.location.href= "/admin/hoa-don/hien-thi";
         }else {
             return;
         }
@@ -773,6 +777,13 @@
             }
         }
 
+    }
+    function inHoaDon(data) {
+        if (confirm("Bạn có muốn in hóa đơn?")===true){
+            window.location.href="/admin/hoa-don-onl/in-hoa-don/"+data.idhd;
+        }else {
+            return;
+        }
     }
 </script>
 </html>

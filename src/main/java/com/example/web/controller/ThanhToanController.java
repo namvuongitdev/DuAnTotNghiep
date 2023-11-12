@@ -15,16 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/checkouts")
@@ -79,14 +78,14 @@ public class ThanhToanController {
                 hoaDonChiTietService.addHoaDonChiTiet(o.getChiTietSanPham().getId(), hd.getId(), o.getSoLuong());
             });
             gioHangOnllineService.clearAllGioHangChiTietByKhachHang_id(khachHang.getId());
-            return "redirect:/checkouts/success";
+            return "redirect:/checkouts/success?idHD="+hd.getId();
         }
     }
 
     @GetMapping(value = "/success")
-    public String datHangThanhCong(Model model) {
+    public String datHangThanhCong(Model model , @RequestParam String idHD) {
         KhachHang khachHang = khachHangService.getKhachHangLogin();
-        HoaDon hd = hoaDonService.getHoaDonByKhachHang_id(khachHang.getId());
+        HoaDon hd = hoaDonService.getHoaDonByKhachHang_idAndHoaDon_id(khachHang.getId() , UUID.fromString(idHD));
         model.addAttribute("hoaDon", hd);
         return "gioHangOnlline/success";
     }

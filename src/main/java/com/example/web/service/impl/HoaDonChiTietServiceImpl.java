@@ -14,6 +14,7 @@ import com.example.web.repository.ILichSuHoaDonRepository;
 import com.example.web.repository.INhanVienRepository;
 import com.example.web.service.IHoaDonChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,9 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
 
     @Autowired
     private IHoaDonRepository hoaDonRepository;
+
+    @Autowired
+    private HoaDonServiceImpl hoaDonService;
 
     @Autowired
     private IChiTietSanPhamRepository chiTietSanPhamRepository;
@@ -169,6 +173,18 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                             .chiTietSanPham(chiTietSanPham)
                             .trangThai(0)
                             .build();
+                    if (!chiTietSanPham.getSanPham().getSanPhamKhuyenMais().isEmpty()) {
+                        for (SanPhamKhuyenMai o : chiTietSanPham.getSanPham().getSanPhamKhuyenMais()) {
+                            if (o.getKhuyenMai().getTrangThai() == 1 && o.getTrangThai() == 1) {
+                                Integer donGiaSauKhiGiam = o.getSanPhamKM().getGiaBan().intValue() - (o.getSanPhamKM().getGiaBan().intValue() / 100) * o.getMucGiam().intValue();
+                                hdct.setDonGia(BigDecimal.valueOf(donGiaSauKhiGiam));
+                            } else {
+                                hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
+                            }
+                        }
+                    } else {
+                        hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
+                    }
                 }
                 Date date = java.util.Calendar.getInstance().getTime();
                 LichSuHoaDon lshd = LichSuHoaDon.builder()
@@ -189,7 +205,6 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
         Optional<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findById(UUID.fromString(idHDCT));
         if (hoaDonChiTiet.isPresent()) {
             HoaDonChiTiet hdct = hoaDonChiTiet.get();
-
             ChiTietSanPham ctsp = hdct.getChiTietSanPham();
             Integer soLuongTon = hdct.getSoLuong() + ctsp.getSoLuong();
             if (Integer.parseInt(soLuong) > soLuongTon) {
@@ -197,7 +212,13 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
             } else {
                 ctsp.setSoLuong(soLuongTon - Integer.parseInt(soLuong));
                 hdct.setChiTietSanPham(ctsp);
-                hdct.setSoLuong(Integer.parseInt(soLuong));
+                if (Integer.parseInt(soLuong)<=0){
+                    hdct.setTrangThai(1);
+                    hdct.setSoLuong(hdct.getSoLuong());
+                }else {
+                    hdct.setTrangThai(0);
+                    hdct.setSoLuong(Integer.parseInt(soLuong));
+                }
                 hoaDonChiTietRepository.save(hdct);
                 return "redirect:/admin/hoa-don-onl/detail/" + hdct.getHoaDon().getId();
             }
@@ -221,9 +242,13 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
             Integer result = ctsp.getSoLuong() + hdct.getSoLuong();
             ctsp.setSoLuong(result);
             hdct.setChiTietSanPham(ctsp);
-            hdct.setTrangThai(1);
+            hdct.setTrangThai(HoaDonChiTietStatus.XOA);
             hoaDonChiTietRepository.save(hdct);
-            return "redirect:/admin/hoa-don-onl/detail/" + hdct.getHoaDon().getId();
+            if (hdct.getHoaDon().getLoaiHoaDon()){
+                return "redirect:/admin/hoa-don-onl/detail/" + hdct.getHoaDon().getId();
+            }else {
+                return "redirect:/admin/hoa-don/view-update/" + hdct.getHoaDon().getId();
+            }
         } else {
             return null;
         }
