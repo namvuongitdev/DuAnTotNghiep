@@ -70,11 +70,11 @@
                         <td>${dg.ma}</td>
                         <td>${dg.hoTen}</td>
                         <td>${dg.sdt}</td>
-                        <td><fmt:formatDate value="${dg.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                        <td><fmt:formatNumber pattern="#,###"  value="${dg.tongTien+dg.phiVanChuyen}"/> VNĐ</td>
+                        <td><fmt:formatDate value="${dg.ngayTao}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
+                        <td><fmt:formatNumber pattern="#,###"  value="${dg.tongTien}"/> VNĐ</td>
                         <td>${dg.moTa}</td>
                         <td>
-                            <a title="Xem chi tiết" href="/admin/hoa-don-onl/detail/${dg.id}" style="font-size: 15px" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
+                            <a title="Xem chi tiết" href="/admin/hoa-don/view-update/${dg.id}" style="font-size: 15px" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
                         </td>
                     </tr>
                 </c:forEach>

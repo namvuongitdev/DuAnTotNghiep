@@ -1,5 +1,6 @@
 package com.example.web.controller.hoaDon.donDatHang;
 
+import com.example.web.Config.status.HoaDonStatus;
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
 import com.example.web.model.LichSuHoaDon;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -141,13 +143,13 @@ public class HoaDonOnlController {
         model.addAttribute("hd",hoaDonService.getOne(id));
         if (hoaDonService.getOne(id).getTrangThai()==5){
             for (int i = 0; i <= lst2.getContent().size()-1; i++) {
-                tongTien+=lst2.getContent().get(i).getSoLuong()*lst2.getContent().get(i).getChiTietSanPham().getSanPham().getGiaBan().intValue();
+                tongTien+=lst2.getContent().get(i).getSoLuong()*lst2.getContent().get(i).getDonGia().intValue();
             }
             model.addAttribute("hdc",tongTien);
             model.addAttribute("lst1",lst2.getContent());
         }else {
             for (int i = 0; i <= lst.getContent().size()-1; i++) {
-                tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getChiTietSanPham().getSanPham().getGiaBan().intValue();
+                tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getDonGia().intValue();
             }
             model.addAttribute("hdc",tongTien);
             model.addAttribute("lst1",lst.getContent());
@@ -169,7 +171,7 @@ public class HoaDonOnlController {
         Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(idHD),page,5);
         Integer tongTien = 0;
         for (int i = 0; i <= lst.getContent().size()-1; i++) {
-            tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getChiTietSanPham().getSanPham().getGiaBan().intValue();
+            tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getDonGia().intValue();
         }
         HoaDon hoaDon = hoaDonService.getOne(idHD);
         hoaDon.setId(UUID.fromString(idHD));
@@ -187,11 +189,11 @@ public class HoaDonOnlController {
         Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
         Integer tongTien = 0;
         for (int i = 0; i <= lst.getContent().size()-1; i++) {
-            tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getChiTietSanPham().getSanPham().getGiaBan().intValue();
+            tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getDonGia().intValue();
         }
         HoaDon hoaDon = hoaDonService.getOne(id);
         hoaDon.setId(UUID.fromString(id));
-        hoaDon.setTongTien(BigDecimal.valueOf(tongTien));
+        hoaDon.setTongTien(BigDecimal.valueOf(tongTien+hoaDon.getPhiVanChuyen().intValue()));
         hoaDonService.updateHoaDonById(hoaDon);
         Date date = java.util.Calendar.getInstance().getTime();
         LichSuHoaDon lshd = LichSuHoaDon.builder()
@@ -214,11 +216,11 @@ public class HoaDonOnlController {
         Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
         Integer tongTien = 0;
         for (int i = 0; i <= lst.getContent().size()-1; i++) {
-            tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getChiTietSanPham().getSanPham().getGiaBan().intValue();
+            tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getDonGia().intValue();
         }
         HoaDon hoaDon = hoaDonService.getOne(id);
         hoaDon.setId(UUID.fromString(id));
-        hoaDon.setTongTien(BigDecimal.valueOf(tongTien));
+        hoaDon.setTongTien(BigDecimal.valueOf(tongTien+hoaDon.getPhiVanChuyen().intValue()));
         hoaDonService.updateHoaDonById(hoaDon);
         Date date = java.util.Calendar.getInstance().getTime();
         LichSuHoaDon lshd = LichSuHoaDon.builder()
@@ -228,12 +230,14 @@ public class HoaDonOnlController {
                 .ngayThaoTac(date)
                 .build();
         lichSuHoaDonService.add(lshd);
+        if (lst.getContent().isEmpty()){
+            hoaDonService.updateStatusHoaDonById(hoaDon,String.valueOf(HoaDonStatus.HUY));
+        }
         return url;
     }
     @GetMapping("xac-nhan/{id}")
     public String xacNhan(
-                          @PathVariable("id")String id,
-                          @RequestParam("trangThai")String tt){
+                          @PathVariable("id")String id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         Integer status;
@@ -241,14 +245,14 @@ public class HoaDonOnlController {
         String thaoThac = null;
         HoaDon hoaDon=hoaDonService.getOne(id);
         if (hoaDon.getTrangThai()==1){
-            status= TrangThaiHoaDon.Cho_xac_nhan.getValue();
+            status= TrangThaiHoaDon.DA_XAC_NHAN.getValue();
             thaoThac="Đơn hàng đã được xác nhận";
         }else if (hoaDon.getTrangThai()==2){
-            status=TrangThaiHoaDon.DA_XAC_NHAN.getValue();
+            status=TrangThaiHoaDon.DANG_VAN_CHUYEN.getValue();
             thaoThac="Đơn hàng đã được giao cho đơn vị vận chuyển";
             hoaDon.setNgayShip(date);
         }else if (hoaDon.getTrangThai()==3){
-            status=TrangThaiHoaDon.DANG_VAN_CHUYEN.getValue();
+            status=TrangThaiHoaDon.GIAO_THANH_CONG.getValue();
             thaoThac="Đơn hàng đã được giao thành công";
             hoaDon.setNgayThanhToan(date);
         }else if (hoaDon.getTrangThai()==6){
@@ -256,7 +260,6 @@ public class HoaDonOnlController {
         }else {
             status=TrangThaiHoaDon.HUY_HOA_DON.getValue();
         }
-        hoaDon.setTrangThai(Integer.parseInt(tt));
         url=hoaDonService.updateStatusHoaDonById(hoaDon,String.valueOf(status));
         LichSuHoaDon lshd = LichSuHoaDon.builder()
                 .hoaDon(hoaDon)
@@ -277,8 +280,7 @@ public class HoaDonOnlController {
             hoaDonChiTietService.deleteSanPhamHoaDon2(String.valueOf(lst.getContent().get(i).getId()));
         }
         HoaDon hoaDon=hoaDonService.getOne(id);
-        hoaDon.setTrangThai(5);
-        url=hoaDonService.updateStatusHoaDonById(hoaDon,"5");
+        url=hoaDonService.updateStatusHoaDonById(hoaDon,String.valueOf(HoaDonStatus.HUY));
         Date date = java.util.Calendar.getInstance().getTime();
         LichSuHoaDon lshd = LichSuHoaDon.builder()
                 .hoaDon(hoaDon)
@@ -306,7 +308,9 @@ public class HoaDonOnlController {
                                  @RequestParam("phiVanChuyen")String Pvc) {
         HoaDon hoaDon = hoaDonService.getOne(idHD);
         hoaDon.setPhiVanChuyen(BigDecimal.valueOf(Long.parseLong(Pvc)));
+        hoaDon.setTongTien(BigDecimal.valueOf(hoaDon.getTongTien().longValue()+Long.parseLong(Pvc)));
         url=hoaDonService.updatePVC(hoaDon);
         return url;
     }
+
 }
