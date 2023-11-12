@@ -47,4 +47,5 @@ public interface IChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,
 
     @Query(value = "select ctsp.size from ChiTietSanPham ctsp join ctsp.sanPham sp join ctsp.mauSac ms  where sp.id = ?1 and ms.id = ?2")
     List<Size> findSizeBySanPham_idAndMauSac_id(UUID idSP , UUID idMS);
+
 }

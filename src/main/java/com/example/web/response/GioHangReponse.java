@@ -8,8 +8,14 @@ public interface GioHangReponse {
     @Value("#{target.idGHCT}")
     String getId();
 
-    @Value("#{target.anhSanPham}")
+    @Value("#{target.img}")
     String getImg();
+
+    @Value("#{target.idSP}")
+    String getIdSP();
+
+    @Value("#{target.idMS}")
+    String getIdMS();
 
     @Value("#{target.tenSanPham}")
     String getTenSanPham();

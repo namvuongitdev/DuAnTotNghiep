@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,6 +50,9 @@ public class ThanhToanController {
     public String thanhToan(Model model, RedirectAttributes attributes) {
         KhachHang khachHang = khachHangService.getKhachHangLogin();
         List<GioHangReponse> response = gioHangOnllineService.findAll(khachHang.getId());
+        if (!model.containsAttribute("checkoutRequest")) {
+            model.addAttribute("checkoutRequest", new CheckoutRequest());
+        }
         if (response.isEmpty()) {
             attributes.addFlashAttribute("gioHangEmpty", "giỏ hàng đang trống");
             return "redirect:/gio-hang-onl";
@@ -55,18 +60,20 @@ public class ThanhToanController {
             BigDecimal tongTien = gioHangOnllineService.tongTienSanPhamTrongGioHang(khachHang.getId());
             model.addAttribute("sanPhamTrongGioHang", response);
             model.addAttribute("tongTien", tongTien);
-            model.addAttribute("checkoutRequest", new CheckoutRequest());
+           // model.addAttribute("checkoutRequest", new CheckoutRequest());
         }
         return "gioHangOnlline/thanhtoan";
     }
 
     @PostMapping(value = "/order")
-    public String order(@Valid @ModelAttribute("checkoutRequest") CheckoutRequest request, BindingResult result, RedirectAttributes attributes) {
+    public String order(@Valid @ModelAttribute("checkoutRequest") CheckoutRequest checkoutRequest, BindingResult result, RedirectAttributes attributes) {
         if (result.hasErrors()) {
+            attributes.addFlashAttribute("org.springframework.validation.BindingResult.checkoutRequest", result);
+            attributes.addFlashAttribute("checkoutRequest" , checkoutRequest);
             return "redirect:/checkouts";
         } else {
             KhachHang khachHang = khachHangService.getKhachHangLogin();
-            HoaDon hd = checkoutService.createOrder(khachHang, request);
+            HoaDon hd = checkoutService.createOrder(khachHang, checkoutRequest);
             List<GioHangChiTiet> response = gioHangOnllineService.getGHCTByKhachHang_id(khachHang.getId());
             response.forEach(o -> {
                 hoaDonChiTietService.addHoaDonChiTiet(o.getChiTietSanPham().getId(), hd.getId(), o.getSoLuong());

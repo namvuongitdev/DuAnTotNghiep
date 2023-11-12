@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface IGioHangOnllineRepository extends JpaRepository<GioHangChiTiet, UUID> {
 
     @Query(value = "select " +
-            " ghct.id as idGHCT , sp.img as anhSanPham, sp.ten as tenSanPham ," +
+            " ghct.id as idGHCT ,sp.img as img ,sp.id as idSP , ms.id as idMS, sp.ten as tenSanPham ," +
             " sp.giaban as giaBanSanPham , ghct.so_luong as soLuong , ms.ten as mauSac , kc.ten as kichCo, ctsp.id as idCTSP, " +
             " kmct.don_gia_sau_khi_giam as donGiaSauKhiGiam , kmct.trang_thai as trangThaiKMCT , km.trang_thai as trangThaiKM  from gio_hang_chi_tiet ghct left join gio_hang gh on ghct.id_gio_hang = gh.id" +
             " left join chi_tiet_san_pham ctsp on ghct.idctsp = ctsp.id" +

@@ -1,10 +1,12 @@
 package com.example.web.controller;
 
+import com.example.web.model.Anh;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.KhachHang;
 import com.example.web.request.DataThemVaoGioHang;
 import com.example.web.response.ChiTietResponse;
 import com.example.web.response.GioHangReponse;
+import com.example.web.service.IAnhService;
 import com.example.web.service.IChiTietSanPhamService;
 import com.example.web.service.IGioHangOnllineService;
 import com.example.web.service.IKhachHangService;
@@ -32,9 +34,11 @@ public class GioHangOnllineController {
     @Autowired
     IKhachHangService iKhachHangService;
 
+    @Autowired
+    private IAnhService anhService;
+
     @GetMapping()
     public String hienThi(Model model) {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         KhachHang khachHang = iKhachHangService.findByEmailOrAndTaiKhoan(authentication.getName());
         List<GioHangReponse> list = iGioHangOnllineService.findAll(khachHang.getId());
@@ -47,9 +51,9 @@ public class GioHangOnllineController {
 
 
     @GetMapping("/cap-nhat-gio-hang/{soLuong}/{idGioHangCT}")
-    public String updateSoLuong(@PathVariable(name = "soLuong") String soLuong,
-                                @PathVariable(name = "idGioHangCT") String idGioHangCT) {
-        iGioHangOnllineService.updateSoLuong(Integer.parseInt(soLuong), idGioHangCT);
+    public String updateSoLuong(@PathVariable(name = "soLuong") Integer soLuong,
+                                @PathVariable(name = "idGioHangCT") String idGioHangCT, RedirectAttributes attributes) {
+        iGioHangOnllineService.updateSoLuong(soLuong, idGioHangCT);
         return "redirect:/gio-hang-onl";
     }
 
@@ -73,16 +77,17 @@ public class GioHangOnllineController {
                 .soLuong(soLuongThem)
                 .build();
 
+        ChiTietResponse chiTietSanPham = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID.fromString(idMau), idSize, UUID.fromString(idSP));
+
         if (idMau.isEmpty() || idSize.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "bạn chưa lựa chọn thuộc tín sản phẩm");
             redirectAttributes.addFlashAttribute("dataRequest", data);
             return "redirect:/index/chi-tiet-san-pham-onl?id=" + idSP;
-        } else if (soLuongThem <= 0 ) {
+        } else if (soLuongThem <= 0 || chiTietSanPham.getSoLuong() < soLuongThem) {
             redirectAttributes.addFlashAttribute("error", "số lượng không thoả mãn");
             redirectAttributes.addFlashAttribute("dataRequest", data);
             return "redirect:/index/chi-tiet-san-pham-onl?id=" + idSP;
         } else {
-            ChiTietResponse chiTietSanPham = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID.fromString(idMau), idSize, UUID.fromString(idSP));
             ChiTietSanPham sanPham = new ChiTietSanPham(chiTietSanPham.getId(), chiTietSanPham.getSanPham(), chiTietSanPham.getSoLuong(), chiTietSanPham.getTrangThai(), chiTietSanPham.getQrCode(),
                     chiTietSanPham.getMauSac(), chiTietSanPham.getSize());
             iGioHangOnllineService.addGioHang(sanPham, soLuongThem);

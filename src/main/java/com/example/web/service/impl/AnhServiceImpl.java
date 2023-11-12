@@ -3,6 +3,7 @@ import com.example.web.model.Anh;
 import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
 import com.example.web.repository.IAnhRepository;
+import com.example.web.response.AnhMauSacReponse;
 import com.example.web.service.IAnhService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -3,6 +3,7 @@ import com.example.web.model.Anh;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
+import com.example.web.response.AnhMauSacReponse;
 import com.example.web.response.AnhResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
