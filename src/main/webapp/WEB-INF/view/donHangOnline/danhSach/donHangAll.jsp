@@ -126,7 +126,7 @@
                 <ul>
                     <li class="active"><a href="/cuaToi/donHangAll">Tất cả đơn hàng</a></li>|
                     <li><a href="/cuaToi/donHangChoXacNhan">Chờ xác nhận</a></li>|
-                    <li><a href="/cuaToi/donHangChoGiaoHang">Chờ giao hàng</a></li>|
+                    <li><a href="/cuaToi/donHangChoGiaoHang">Đã tiếp nhận</a></li>|
                     <li><a href="/cuaToi/donHangDangGiao">Đang giao</a></li>|
                     <li><a href="/cuaToi/donHangDaNhan">Đã nhận</a></li>|
                     <li><a href="/cuaToi/donHangDaHuy">Đã hủy</a></li>
@@ -138,10 +138,9 @@
                 <thead class="thead">
                 <tr>
                     <th scope="col">Tổng sản phẩm</th>
-                    <th scope="col" >Tổng tiền</th>
-                    <th scope="col" style="padding-left: 40px; padding-right: 30px">Hoạt động sản phẩm</th>
-                    <th scope="col" style="padding-right: 90px">Trạng thái</th>
-                    <th scope="col" style="padding-right: 25px">Thao tác</th>
+                    <th scope="col" style="padding-right: 70px">Tổng tiền</th>
+                    <th scope="col" style="padding-right: 60px">Trạng thái</th>
+                    <th scope="col" style="padding-right: 50px">Thao tác</th>
                 </tr>
                 </thead>
             </table>
@@ -154,32 +153,39 @@
                     <tr>
                         <td class="td-1">
                             <div>
+
                                 <h6>${hd[4]} sản phẩm</h6>
                             </div>
                         </td>
-                        <td style="width: 210px">
-                            <p><b style="color: red"><fmt:formatNumber pattern="#,###" value="${hd[3]}"/> đ</b></p>
-                        </td>
-                        <td class="td-2">
-                            <div>
-                                <button class="btn btn-outline-secondary"><a style="color: black" href="#">Sản phẩm trả lại</a></button>
-                            </div>
-                            <div>
-                                <a style="margin-top: 100px" class="text-primary" href="#">Mua lại</a>
-                            </div>
-                            <div>
-                                <a class="text-primary" href="#">Theo dõi</a>
-                            </div>
+                        <td style="width: 300px">
+                            <p>
+                                <b style="color: red">
+                                    <fmt:formatNumber pattern="#,###" value="${hd[3]}"/>
+                                    <c:if test="${hd[3]==null}">
+                                        <span>0</span>
+                                    </c:if>
+                                    <span>đ</span>
+                                </b>
+                            </p>
                         </td>
                         <td>
-                            <div style="margin-top: 30px">${hd[5]==4?'Đã thanh toán':(hd[5]==3)?'Đang giao hàng':(hd[5]==0)?'Đang chờ':(hd[5]==1)?'Chờ xác nhận':(hd[5]==2)?'Chờ giao hàng':(hd[5]==6)?'Đã nhận hàng':(hd[5]==5)?'Hủy đơn hàng':''}</div>
+                            <div style="margin-top: 30px">${hd[5]==4?'Đã thanh toán':(hd[5]==3)?'Đang giao hàng':(hd[5]==0)?'Đang chờ':(hd[5]==1)?'Chờ xác nhận':(hd[5]==2)?'Đã tiếp nhận':(hd[5]==6)?'Đã nhận hàng':(hd[5]==5)?'Hủy đơn hàng':''}</div>
                             <div style="margin-top: 10px">
                                 <a class="text-primary" href="/cuaToi/chiTietDonHang/${hd[0]}">Chi tiết đơn hàng</a>
                             </div>
                         </td>
                         <td>
-                            <div style="margin-top: 40px">
-                                <button class="btn btn-secondary" style="visibility: ${hd[5]==3?'':'hidden'}"><a href="#" style="color: white">Đã nhận</a></button>
+                            <c:if test="${hd[5]==1}">
+                                <div>
+                                    <button id="huy" class="btn btn-secondary" name="${hd[5]}" onclick="huyDonHang({idhd:`${hd[0]}`})" >
+                                        <a href="#" style="color: white">Hủy đơn</a>
+                                    </button>
+                                </div>
+                            </c:if>
+                            <div>
+                                <button id="nhan" class="btn btn-secondary" name="${hd[5]}" onclick="xacNhan({idhd:`${hd[0]}`})" style="visibility: ${hd[5]==3?'':'hidden'}">
+                                    <a href="#" style="color: white">Đã nhận</a>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -298,6 +304,27 @@
 <script src="../../../../js/mixitup.min.js"></script>
 <script src="../../../../js/owl.carousel.min.js"></script>
 <script src="../../../../js/main.js"></script>
+<script>
+    function huyDonHang(data) {
+        if (confirm("Bạn có chắc chắn muốn hủy đơn không ?")===true){
+            window.location.href="/cuaToi/huy-don/"+data.idhd;
+            alert('Hủy đơn thành công.');
+        }else {
+            alert('Hủy đơn thất bại.');
+            return;
+        }
+
+    }
+    function xacNhan(data) {
+        if (confirm("Bạn có chắc chắn là đã nhận hàng chưa ?")===true){
+            window.location.href="/cuaToi/xac-nhan/"+data.idhd;
+            alert('Xác nhận thành công.');
+        }else {
+            alert('Xác nhận thất bại.');
+            return;
+        }
+    }
+</script>
 
 </body>
 </html>

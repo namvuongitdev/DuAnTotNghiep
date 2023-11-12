@@ -176,92 +176,34 @@
                         <p><b>Tổng cộng:</b></p>
                     </div>
                     <div class="right">
-                        <p><fmt:formatNumber pattern="#,###" value="${thanhTien}"/> đ</p>
-                        <p><fmt:formatNumber pattern="#,###" value="${hd.phiVanChuyen}"/> đ</p>
-                        <p><b><fmt:formatNumber pattern="#,###" value="${hd.tongTien}"/> đ</b></p>
+                        <p>
+                            <fmt:formatNumber pattern="#,###" value="${thanhTien}"/>
+                            <c:if test="${thanhTien==null}">
+                                <span>0</span>
+                            </c:if>
+                            <span>đ</span>
+                        </p>
+                        <p>
+                            <fmt:formatNumber pattern="#,###" value="${hd.phiVanChuyen}"/>
+                            <c:if test="${hd.phiVanChuyen==null}">
+                                <span>0</span>
+                            </c:if>
+                            <span>đ</span>
+                        </p>
+                        <p>
+                            <b>
+                                <fmt:formatNumber pattern="#,###" value="${hd.tongTien}"/>
+                                <c:if test="${hd.tongTien==null}">
+                                    <span>0</span>
+                                </c:if>
+                                <span>đ</span>
+                            </b>
+                        </p>
                     </div>
                 </div>
                 <hr class="hr-1">
             </div>
-        </div>
-        <%--Time line--%>
-        <div class="main-timeline" style="display: ${hd.trangThai==5?'none':''}">
-            <div class="timeline">
-                <div class="icon"></div>
-                <div class="date-content">
-                    <div class="date-outer">
-                        <span class="date">
-                            <span class="month" style="font-size: 13px"><fmt:formatDate value="${taoDon.ngayThaoTac}" pattern="yyyy-MM-dd"/></span><br>
-                            <span class="hour" style="font-size: 13px;font-weight: 600"><fmt:formatDate value="${taoDon.ngayThaoTac}" pattern="HH:mm:ss"/></span>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="timeline-content">
-                    <h5 class="title">Chờ xác nhận</h5>
-                    <p class="description"><strong>Thao tác: </strong>Tạo đơn hàng</p>
-                    <p><strong>Người tạo đơn: </strong>
-                        <span>${taoDon.nguoiThaoTac}</span>
-                    </p>
-                </div>
-            </div>
-            <div class="timeline" style="display: ${hd.trangThai==1?"none":"block"}">
-                <div class="icon"></div>
-                <div class="date-content">
-                    <div class="date-outer">
-                        <span class="date">
-                            <span class="month" style="font-size: 13px"><fmt:formatDate value="${xacNhan.ngayThaoTac}" pattern="yyyy-MM-dd"/></span><br>
-                            <span class="hour" style="font-size: 13px;font-weight: 600"><fmt:formatDate value="${xacNhan.ngayThaoTac}" pattern="HH:mm:ss"/></span>
-                        </span>
-                    </div>
-                </div>
-                <div class="timeline-content">
-                    <h5 class="title">Chờ giao hàng</h5>
-                    <p class="description"><strong>Thao tác: </strong>Xác nhận đơn, đợi giao hàng cho đơn vị vận chuyển
-                    </p>
-                    <p><strong>Người thao tác: </strong>
-                        <span>${xacNhan.nguoiThaoTac}</span>
-                    </p>
-                </div>
-            </div>
-            <div class="timeline" style="display: ${hd.trangThai==1?"none":hd.trangThai==2?"none":""}">
-                <div class="icon"></div>
-                <div class="date-content">
-                    <div class="date-outer">
-                        <span class="date">
-                            <span class="month" style="font-size: 13px"><fmt:formatDate value="${choGiao.ngayThaoTac}" pattern="yyyy-MM-dd"/></span><br>
-                            <span class="hour" style="font-size: 13px;font-weight: 600"><fmt:formatDate value="${choGiao.ngayThaoTac}" pattern="HH:mm:ss"/></span>
-                        </span>
-                    </div>
-                </div>
-                <div class="timeline-content">
-                    <h5 class="title">Đang giao hàng</h5>
-                    <p class="description"><strong>Thao tác: </strong>Đã bàn giao cho đơn vị vận chuyển, đang giao đến người nhận</p>
-                    <p><strong>Người thao tác: </strong>
-                        <span>${choGiao.nguoiThaoTac}</span>
-                    </p>
-                </div>
-            </div>
-
-            <div class="timeline" style="display: ${hd.trangThai==1?"none":hd.trangThai==2?"none":hd.trangThai==3?"none":"block"}">
-                <div class="icon"></div>
-                <div class="date-content">
-                    <div class="date-outer">
-                        <span class="date">
-                            <span class="month" style="font-size: 13px;"><fmt:formatDate value="${daGiao.ngayThaoTac}" pattern="yyyy-MM-dd"/></span><br>
-                            <span class="hour" style="font-size: 13px;font-weight: 600"><fmt:formatDate value="${daGiao.ngayThaoTac}" pattern="HH:mm:ss"/></span>
-                        </span>
-                    </div>
-                </div>
-                <div class="timeline-content">
-                    <h5 class="title">Đã nhận hàng</h5>
-                    <p class="description"><strong>Thao tác: </strong>Đã giao hàng thành công</p>
-                    <p><strong>Người thao tác: </strong>
-                        <span>${daGiao.nguoiThaoTac}</span>
-                    </p>
-                </div>
-            </div>
-        </div>
+        </div
 
     </div>
 </section>
