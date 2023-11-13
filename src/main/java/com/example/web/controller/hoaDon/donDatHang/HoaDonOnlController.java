@@ -169,10 +169,7 @@ public class HoaDonOnlController {
                                       @RequestParam(defaultValue = "0") Integer page) {
         url = hoaDonChiTietService.addSanPhamHoaDonChiTietKhiUpdate(idCTSP,idHD,Integer.parseInt(soLuong));
         Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(idHD),page,5);
-        Integer tongTien = 0;
-        for (int i = 0; i <= lst.getContent().size()-1; i++) {
-            tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getDonGia().intValue();
-        }
+        Integer tongTien = getTongTien(lst);
         HoaDon hoaDon = hoaDonService.getOne(idHD);
         hoaDon.setId(UUID.fromString(idHD));
         hoaDon.setTongTien(BigDecimal.valueOf(tongTien));
@@ -187,10 +184,7 @@ public class HoaDonOnlController {
         NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         url = hoaDonChiTietService.updateSoLuongSanPhamHoaDonChiTietKhiUpdate(idHdct,soLuong);
         Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
-        Integer tongTien = 0;
-        for (int i = 0; i <= lst.getContent().size()-1; i++) {
-            tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getDonGia().intValue();
-        }
+        Integer tongTien = getTongTien(lst);
         HoaDon hoaDon = hoaDonService.getOne(id);
         hoaDon.setId(UUID.fromString(id));
         hoaDon.setTongTien(BigDecimal.valueOf(tongTien+hoaDon.getPhiVanChuyen().intValue()));
@@ -214,10 +208,7 @@ public class HoaDonOnlController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
-        Integer tongTien = 0;
-        for (int i = 0; i <= lst.getContent().size()-1; i++) {
-            tongTien+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getDonGia().intValue();
-        }
+        Integer tongTien = getTongTien(lst);
         HoaDon hoaDon = hoaDonService.getOne(id);
         hoaDon.setId(UUID.fromString(id));
         hoaDon.setTongTien(BigDecimal.valueOf(tongTien+hoaDon.getPhiVanChuyen().intValue()));
@@ -235,6 +226,15 @@ public class HoaDonOnlController {
         }
         return url;
     }
+
+    private Integer getTongTien(Page<HoaDonChiTiet> lst) {
+        Integer tongTien = 0;
+        for (int i = 0; i <= lst.getContent().size() - 1; i++) {
+            tongTien += lst.getContent().get(i).getSoLuong() * lst.getContent().get(i).getDonGia().intValue();
+        }
+        return tongTien;
+    }
+
     @GetMapping("xac-nhan/{id}")
     public String xacNhan(
                           @PathVariable("id")String id){
@@ -307,8 +307,10 @@ public class HoaDonOnlController {
     public String updatePVC(@PathVariable("id") String idHD,
                                  @RequestParam("phiVanChuyen")String Pvc) {
         HoaDon hoaDon = hoaDonService.getOne(idHD);
+        Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(idHD),0,5);
+        Integer tongTien = getTongTien(lst);
         hoaDon.setPhiVanChuyen(BigDecimal.valueOf(Long.parseLong(Pvc)));
-        hoaDon.setTongTien(BigDecimal.valueOf(hoaDon.getTongTien().longValue()+Long.parseLong(Pvc)));
+        hoaDon.setTongTien(BigDecimal.valueOf(tongTien.longValue()+Long.parseLong(Pvc)));
         url=hoaDonService.updatePVC(hoaDon);
         return url;
     }
