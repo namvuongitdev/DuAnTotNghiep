@@ -48,7 +48,7 @@ function getSanPham(page) {
                    <button  id="myBtn"  onclick="getModal({idSanPham:'${data.content[i].id}' , 
                     tenSanPham:'${data.content[i].ten}' , giaSanPham:${giaBanSanPham} , img:'${data.content[i].img}'})" class="btn btn-warning" >Chọn</button>
                    </td>`}
-                    </tr>`
+                   </tr>`
             }
 
             for (let i = 1; i <= data.totalPages; i++) {
@@ -251,8 +251,9 @@ function innnerHTMLTrByIdHDCT(data) {
 
 async function updateSoLuong(soLuong, sanPham) {
     const soLuongTon = +sanPham.soLuongHDCT + +sanPham.soLuongCTSP;
-    if (soLuong < 0) {
+    if (soLuong < 0 || soLuong == 0) {
         alert("số lượng phải  lớn hơn 0");
+        window.location.reload();
     } else if (soLuong > soLuongTon) {
         alert("số lượng hiện tại trong của hàng không đủ");
         window.location.reload();

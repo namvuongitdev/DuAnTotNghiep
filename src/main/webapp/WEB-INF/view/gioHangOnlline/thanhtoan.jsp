@@ -49,7 +49,8 @@
                     <h4><b>Sports Clothing</b></h4>
                     <nav class="breadcrumb" style="background-color: white">
                         <li class="breadcrumb-item"><a class="hover" href="/gio-hang-onl">Giỏ hàng</a></li>
-                        <li class="breadcrumb-item ">Thông tin giao hàng</li>
+                        <li class="breadcrumb-item">Thông tin giao hàng</li>
+                        <li class="breadcrumb-item" onclick="alert('hello')">Địa chỉ</li>
                     </nav>
                 </div><!-- End Page Title -->
                <form:form action="/checkouts/order" method="post" modelAttribute="checkoutRequest">

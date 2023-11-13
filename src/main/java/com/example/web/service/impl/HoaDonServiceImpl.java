@@ -178,7 +178,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                         hd.setTrangThai(TrangThaiHoaDon.DA_HOAN_THANH.getValue());
                         hd.setTongTien(tongTienHoaDon);
                         hd.setNgayThanhToan(date);
-                      ///  hd.setPhuongThucThanhToan(request.getHinhThucThanhToan());
+                        hd.setPhuongThucThanhToan(request.getHinhThucThanhToan());
                     }
                 }
                 if (request.getIdKhachHang() != null && !request.getIdKhachHang().isEmpty()) {

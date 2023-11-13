@@ -7,6 +7,7 @@ import com.example.web.response.SanPhamAsKhuyenMai;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,5 +40,7 @@ public interface IKhuyenMaiService {
     Page<SanPhamKhuyenMai> filterSanPhamKhuyeMai(SanPhamAsKhuyenMai filter , Pageable pageable , UUID idKM);
 
     SanPhamKhuyenMai getSanPhamById(UUID idSP);
+
+    BigDecimal donGiaSauKhiGiam(List<SanPhamKhuyenMai> sanPhamKhuyenMais);
 
 }
