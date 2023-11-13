@@ -204,7 +204,6 @@ public class HoDonController {
     public String viewUpdate(Model model,
                              @RequestParam(defaultValue = "0") Integer page,
                              @PathVariable("id") String id) {
-        Page<HoaDonChiTiet> lst3 = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
         Page<HoaDonChiTiet> lst2 = hoaDonService.getHoaDonHuyChiTiet(UUID.fromString(id),page,5);
         Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
         if (!hoaDonService.getOne(id).getLoaiHoaDon()){
@@ -230,10 +229,10 @@ public class HoDonController {
                 model.addAttribute("lst1",lst2.getContent());
             }else {
                 for (int i = 0; i <= lst.getContent().size()-1; i++) {
-                    tongTien2+=lst3.getContent().get(i).getSoLuong()*lst3.getContent().get(i).getDonGia().intValue();
+                    tongTien2+=lst.getContent().get(i).getSoLuong()*lst.getContent().get(i).getDonGia().intValue();
                 }
                 model.addAttribute("hdc",tongTien2);
-                model.addAttribute("lst1",lst3.getContent());
+                model.addAttribute("lst1",lst.getContent());
             }
             model.addAttribute("xacNhan",lichSuHoaDonService.getOne(id,"xác"));
             model.addAttribute("choGiao",lichSuHoaDonService.getOne(id,"ể"));

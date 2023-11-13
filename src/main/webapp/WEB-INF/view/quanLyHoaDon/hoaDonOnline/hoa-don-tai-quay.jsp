@@ -93,7 +93,7 @@
                     <td>${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Đã tiếp nhận':(hd.trangThai==6)?'Giao hàng thành công':(hd.trangThai==5)?'Hủy đơn hàng':''}</td>
                     <td>
                         <a style="font-size: 15px" title="Xem chi tiết" href="/admin/hoa-don/view-update/${hd.id}" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
-                        <a title="Xác nhận đơn?" name="2" id="trangThai" onclick="xacNhan({idhd:`${hd.id}`,trangThai:`${hd.trangThai}`})" style="text-decoration: none;font-size: 15px;display: ${hd.loaiHoaDon==true?'':'none'};visibility: ${hd.trangThai==5?'hidden':hd.trangThai==6?'hidden':''}" class="badge text-bg-info text-white" ><i class="bi bi-check2"></i></a>
+                        <a title="${hd.trangThai==1?'Xác nhận đơn?':hd.trangThai==2?'Đơn hàng đã giao cho đơn vị vận chuyển?':hd.trangThai==3?'Đơn hàng đã giao thành công?':''}" name="2" id="trangThai" onclick="xacNhan({idhd:`${hd.id}`,trangThai:`${hd.trangThai}`})" style="text-decoration: none;font-size: 15px;display: ${hd.loaiHoaDon==true?'':'none'};visibility: ${hd.trangThai==5?'hidden':hd.trangThai==6?'hidden':''}" class="badge text-bg-info text-white" ><i class="bi bi-check2"></i></a>
                         <a title="Hủy đơn hàng" onclick="huyDonHang({idhd:`${hd.id}`})" style="text-decoration: none;font-size: 15px;display: ${hd.loaiHoaDon==true?'':'none'};visibility: ${hd.trangThai==5?'hidden':hd.trangThai==6?'hidden':hd.trangThai==3?'hidden':''}" class="badge text-bg-info text-white" ><i class="bi bi-x-square"></i></a>
                     </td>
                 </tr>

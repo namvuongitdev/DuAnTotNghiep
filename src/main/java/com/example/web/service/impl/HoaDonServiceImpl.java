@@ -327,15 +327,15 @@ public class HoaDonServiceImpl implements IHoaDonService {
         hoaDon.setTrangThai(Integer.parseInt(trangThai));
         hoaDonRepository.save(hoaDon);
         if (Integer.parseInt(trangThai)==1){
-            return "redirect:/admin/hoa-don-onl/cho-giao-hang/hien-thi";
+            return "redirect:/admin/hoa-don-onl/cho-xac-nhan/hien-thi";
         }else if (Integer.parseInt(trangThai)==2){
-            return "redirect:/admin/hoa-don-onl/dang-giao/hien-thi";
+            return "redirect:/admin/hoa-don-onl/cho-giao-hang/hien-thi";
         }else if (Integer.parseInt(trangThai)==3){
+            return "redirect:/admin/hoa-don-onl/dang-giao/hien-thi";
+        }else if (Integer.parseInt(trangThai)==6){
             return "redirect:/admin/hoa-don-onl/da-giao/hien-thi";
-        }else if (Integer.parseInt(trangThai)==5){
-            return "redirect:/admin/hoa-don-onl/da-huy/hien-thi";
         }else {
-            return null;
+            return "redirect:/admin/hoa-don-onl/da-huy/hien-thi";
         }
     }
 

@@ -69,8 +69,8 @@
                                     <div class="col-md-6">
                                         <p><b>Mã đơn:</b>  <span  value="${hd.ma}">${hd.ma}</span></p>
                                         <p><b>Ngày thanh tạo:</b>  <span value="${hd.ngayTao}"><fmt:formatDate value="${hd.ngayTao}" pattern="dd/MM/yyyy HH:mm:ss"/></span></p>
-                                        <p><b>Ngày thanh toán:</b>  <span value="${hd.ngayThanhToan}"><fmt:formatDate value="${hd.ngayThanhToan}" pattern="dd/MM/yyyy HH:mm:ss"/></span></p>
-                                        <p><b>Hình thức thanh toán:</b>  <span>${hd.phuongThucThanhToan==true?'Thanh toán khi nhận hàng':'Chuyển khoản'}</span></p>
+                                        <p style="display:${hd.trangThai==6?'':'none'}"><b>Ngày thanh toán:</b>  <span value="${hd.ngayThanhToan}"><fmt:formatDate value="${hd.ngayThanhToan}" pattern="dd/MM/yyyy HH:mm:ss"/></span></p>
+                                        <p><b>Hình thức thanh toán:</b>  <span>${hd.phuongThucThanhToan==3?'Thanh toán khi nhận hàng':hd.phuongThucThanhToan==2?'Chuyển khoản':'Tiền Mặt'}</span></p>
                                         <p><b>Trạng thái:</b>  <span>${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Chuẩn bị hàng và giao cho đơn vị vận chuyển':(hd.trangThai==6)?'Giao hàng thành công':(hd.trangThai==5)?'Hủy đơn hàng':''}</span></p>
                                     </div>
                                     <div class="col-md-6">
@@ -276,7 +276,7 @@
                                                         aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                Xác nhận đơn hàng?
+                                                ${hd.trangThai==1?'Xác nhận đơn?':hd.trangThai==2?'Đơn hàng đã giao cho đơn vị vận chuyển?':hd.trangThai==3?'Đơn hàng đã giao thành công?':''}
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="submit" onclick="xacNhanGiao({trangThai:`${hd.trangThai}`,idhd:`${hd.id}`})" class="btn btn-primary btn-dong-y">Đồng ý</button>
