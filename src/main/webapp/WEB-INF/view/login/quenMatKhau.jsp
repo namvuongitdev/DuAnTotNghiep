@@ -13,30 +13,25 @@
             <div class="col-lg-8">
                 <div class="form-area login-form">
                     <div class="form-content">
-                        <h2>Đăng nhập</h2>
-                        <p>Vui lòng không chia sẻ bất kỳ thông tin bảo mật cho người khác.</p>
+                        <h2>Quên mật khẩu</h2>
+                        <p>Vui lòng nhập email để được cấp lại mật khẩu mới. Sau khi gửi vui lòng kiểm tra mail.</p><br>
 
                     </div>
                     <div class="form-input">
-                        <h2>Đăng nhập</h2>
-                        <c:if test="${param.error != null}">
-                            <p style="color: #E43535">Tên tài khoản hoặc mật khẩu không chính xác</p>
-                        </c:if>
+                        <h2>Quên mật khẩu</h2>
+                        <p style="color: #E43535">${erroEmail}</p>
+                        <p style="color: #1e7e34">${thongBao}</p>
 
-                        <form action="${pageContext.request.contextPath}/dang-nhap" method="post">
+                        <form action="/quenMatKhau" method="post">
                             <div class="form-group">
-                                <input type="text" id="username" name="username" value="${param.username}" required>
-                                <label>Tài khoản</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="password" id="password" name="password" value="${param.password}" required>
-                                <label>Mật khẩu</label>
+                                <input type="email" id="email" name="email" required>
+                                <label>Email</label>
                             </div>
                             <div class="myform-button">
-                                <button class="myform-btn">Đăng nhập</button>
+                                <button type="submit" class="myform-btn">Gửi</button>
                             </div><br>
                             <div style="text-align: center">
-                                <a href="/quenMatKhau">Quên mật khẩu</a>
+                                <a href="/login">Đăng nhập</a>
                             </div><br>
                             <div style="text-align: center">
                                 <a href="/dangKy">Bạn chưa có tài khoản? Đăng ký</a>

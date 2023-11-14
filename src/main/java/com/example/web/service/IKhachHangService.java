@@ -36,4 +36,8 @@ public interface IKhachHangService {
 
     KhachHang getKhachHangLogin();
 
+    UUID findIdByTaiKhoan(String taiKhoan);
+
+    UUID findIdByEmail(String email);
+
 }

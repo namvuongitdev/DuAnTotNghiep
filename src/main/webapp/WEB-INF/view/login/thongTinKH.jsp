@@ -119,89 +119,57 @@
 <section class="section">
     <div class="container">
         <div>
-            <h3 class="h3-title">Đơn hàng của tôi</h3>
+            <h3 class="h3-title">Thông tin của tôi</h3>
         </div>
-        <div>
-            <nav class="primary-navigation">
-                <ul>
-                    <li><a href="/cuaToi/donHangAll">Tất cả đơn hàng</a></li>|
-                    <li><a href="/cuaToi/donHangChoXacNhan">Chờ xác nhận</a></li>|
-                    <li><a href="/cuaToi/donHangChoGiaoHang">Đã tiếp nhận</a></li>|
-                    <li><a href="/cuaToi/donHangDangGiao">Đang giao</a></li>|
-                    <li><a href="/cuaToi/donHangDaNhan">Đã nhận</a></li>|
-                    <li class="active"><a href="/cuaToi/donHangDaHuy">Đã hủy</a></li>
-                </ul>
-            </nav>
-        </div>
-        <div class="row">
-            <table class="table">
-                <thead class="thead">
-                <tr>
-                    <th scope="col">Tổng sản phẩm</th>
-                    <th scope="col" style="padding-right: 70px">Tổng tiền</th>
-                    <th scope="col" style="padding-right: 60px">Trạng thái</th>
-                    <th scope="col" style="padding-right: 50px">Thao tác</th>
-                </tr>
-                </thead>
-            </table>
-            <c:forEach items="${listHd.content}" var="hd" >
-                <div class="span">
-                    <fmt:formatDate value="${hd[2]}" pattern="dd-MM-yyyy HH:mm:ss"/> | Mã đơn hàng: ${hd[1]}
-                </div>
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <td class="td-1">
-                            <div>
-                                <h6>${hd[4]} sản phẩm</h6>
-                            </div>
-                        </td>
-                        <td style="width: 300px">
-                            <p>
-                                <b style="color: red">
-                                    <fmt:formatNumber pattern="#,###" value="${hd[3]}"/>
-                                    <span style="visibility: ${hd[3]!=null?'':'hidden'}">đ</span>
-                                </b>
-                            </p>
-                        </td>
-                        <td>
-                            <div style="margin-top: 30px">${hd[5]==4?'Đã thanh toán':(hd[5]==3)?'Đang giao hàng':(hd[5]==0)?'Đang chờ':(hd[5]==1)?'Chờ xác nhận':(hd[5]==2)?'Đã tiếp nhận':(hd[5]==6)?'Đã nhận hàng':(hd[5]==5)?'Hủy đơn hàng':''}</div>
-                            <div style="margin-top: 10px">
-                                <a class="text-primary" href="/cuaToi/chiTietDonHang/${hd[0]}">Chi tiết đơn hàng</a>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <button class="btn btn-secondary" style="visibility: ${hd[5]==5?'hidden':''}"><a href="#" style="color: white">Hủy đơn</a></button>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </c:forEach>
-            <%--end--%>
-            <%--                  phân trang--%>
-            <div class="container-fluid mt-5">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item ${listHd.number + 1<=1?"disabled":""}"><a class="page-link"
-                                                                                       href="${url}${(listHd.number + 1) - 1}"><</a>
-                        </li>
-                        <c:forEach begin="1" end="${listHd.getTotalPages()}" var="i">
-                            <li class="page-item"><a class="page-link ${i == listHd.number + 1 ? 'active ' : ''}"
-                                                     href="${url}${i}">${i}</a></li>
-                        </c:forEach>
-                        <li class="page-item ${listHd.number + 1 >= listHd.getTotalPages() ? "disabled":  ""}">
-                            <a class="page-link"
-                               href="${url}${(listHd.number + 1) + 1}">></a>
-                        </li>
-                    </ul>
-                </nav>
-                <br><br>
-            </div>
-        </div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">
+            Đổi mật khẩu
+        </button>
     </div>
 </section>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Đổi mật khẩu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/cuaToi/doiMatKhau/${sessionScope.username}" method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div style="width: 90%">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="matKhauMoi" name="matKhauMoi" placeholder="Mật khẩu mới">
+                                <label for="matKhauMoi">Mật khẩu mới</label>
+                            </div>
+                        </div>
+                        <div style="width: 10%; padding-top: 20px">
+                            <i onclick="matKhauMoi()" class="bi bi-eye-slash"></i>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="width: 90%">
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="nhapLai" name="nhapLai" placeholder="Nhập lại mật khẩu">
+                                <label for="nhapLai">Nhập lại mật khẩu</label>
+                            </div>
+                        </div>
+                        <div style="width: 10%; padding-top: 20px">
+                            <i onclick="nhapLai()" class="bi bi-eye-slash"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" onclick="reload()" class="btn btn-primary">Xác nhận</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Footer Section Begin -->
 <footer class="footer">
@@ -291,6 +259,21 @@
 <script src="../../../../js/mixitup.min.js"></script>
 <script src="../../../../js/owl.carousel.min.js"></script>
 <script src="../../../../js/main.js"></script>
+<script>
+    function reload() {
+        var matKhauMoi = document.getElementById('matKhauMoi');
+        var nhapLai = document.getElementById('nhapLai');
+        if (matKhauMoi.value.trim() === '' || nhapLai.value.trim() === '') {
+            alert('Vui lòng điền đủ thông tin.');
+            location.reload();
+        }else if (nhapLai.value.trim() !== matKhauMoi.value.trim()) {
+            alert('Mật khẩu không trùng khớp.');
+            location.reload();
+        }else{
+            alert('Đổi mật khẩu thành công.')
+        }
+    }
+</script>
 
 </body>
 </html>

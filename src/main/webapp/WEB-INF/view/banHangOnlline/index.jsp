@@ -141,7 +141,7 @@
                                 <li><b style="margin-left: 25px">${sessionScope.username}</b>
                                     <hr>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Thông tin của tôi</a></li>
+                                <li><a class="dropdown-item" href="/cuaToi/thongTin">Thông tin của tôi</a></li>
                                 <li><a class="dropdown-item" href="/cuaToi/donHangAll">Đơn hàng của tôi</a></li>
                                 <li><a class="dropdown-item" href="/logout"
                                        onclick="if(confirm('Bạn có muốn đăng xuất không ?')==true){return true;}else{return false;}">
