@@ -108,4 +108,9 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
     public List<Size> getSizeBySanPham_idAndMauSac_id(UUID idSP, UUID idMS) {
         return iChiTietSanPhamRepository.findSizeBySanPham_idAndMauSac_id(idSP , idMS);
     }
+
+    @Override
+    public List<ChiTietSanPham> getTop5SanPhamBanChay() {
+        return iChiTietSanPhamRepository.getTop5SanPhamBanChay();
+    }
 }

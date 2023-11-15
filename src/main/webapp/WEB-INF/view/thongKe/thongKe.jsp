@@ -1,6 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -49,7 +51,9 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Tổng doanh thu</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <fmt:formatNumber pattern="#,###"
+                                                                  value="${tongDoanhThu}"></fmt:formatNumber> đ</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="bi bi-cash-coin"></i>
@@ -67,7 +71,8 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Doanh thu hôm nay</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><fmt:formatNumber pattern="#,###"
+                                                                                                                   value="${doanhThuTrongNgay}"></fmt:formatNumber> đ</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="bi bi-cash-coin"></i>
@@ -85,7 +90,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 Số lượng sản phẩm đã bán</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">2</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">${soLuongDaBan}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="bi bi-box-seam"></i>
@@ -103,7 +108,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 Tổng số hóa đơn</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">${tongHoaDon}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="bi bi-receipt"></i>
@@ -117,7 +122,6 @@
                     <!-- Content Row -->
 
                     <div class="row">
-
                         <!-- Area Chart -->
                         <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
@@ -166,30 +170,22 @@
                                     <table class="table">
                                         <thead>
                                         <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">First</th>
-                                            <th scope="col">Last</th>
-                                            <th scope="col">Handle</th>
+                                            <th scope="col">STT</th>
+                                            <th scope="col">Tên Sản Phẩm</th>
+                                            <th scope="col">Màu Sắc</th>
+                                            <th scope="col">Danh Mục</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td colspan="2">Larry the Bird</td>
-                                            <td>@twitter</td>
-                                        </tr>
+                                        <c:forEach items="${sanPhamBanChay}" var="sp" varStatus="i">
+                                            <tr>
+                                                <th scope="row">${i.index+1}</th>
+                                                <td>${sp.sanPham.ten}</td>
+                                                <td>${sp.mauSac.ten}</td>
+                                                <td>${sp.sanPham.danhMuc.ten}</td>
+                                            </tr>
+                                        </c:forEach>
+
                                         </tbody>
                                     </table>
                                 </div>
