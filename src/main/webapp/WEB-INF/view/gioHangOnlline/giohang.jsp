@@ -201,7 +201,7 @@
                             <div style="margin-left: 15px;width: 30px;margin-right: 210px">
                                 <input type="number"
                                        style="width: 60px;text-align: center;margin-top: 15px"
-                                       name="soLuong" min="1" value="${gh.getSoLuong()}"
+                                       name="soLuong" min="1" value="${gh.getSoLuong()}" class="form-control"
                                        onchange="callYourApi(this.value,{idGioHangCT:`${gh.getId()}`})"/>
                             </div>
                             <div style="margin-right:170px;width: 100px;color: #5f9ea0;">

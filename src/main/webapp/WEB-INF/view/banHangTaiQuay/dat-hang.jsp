@@ -6,7 +6,7 @@
 <div class="col l-3" style="margin-top: 45px; margin-bottom: 20px">
     <div class="row">
         <div class="col-sm-12"><label for="hoTen">Họ tên</label>
-            <input type="text" class="form-control" name="hoTen" id="hoTen" value="${datHang.hoTen}"></div>
+            <input type="text" class="form-control" name="hoTen" id="hoTen" value="${khachHang != null ? khachHang.hoTen : datHang.hoTen}"></div>
         <c:if test="${hoTen != null}">
             <p style="color: #E43535">${hoTen}</p>
         </c:if>
@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-sm-5">
             <label for="sdt">Số điện thoại</label>
-            <input type="number" class="form-control" name="sdt" id="sdt" value="${datHang.sdt}" >
+            <input type="number" class="form-control" name="sdt" id="sdt" value="${khachHang != null ? khachHang.sdt : datHang.sdt}" >
             <c:if test="${sdt != null}">
                 <p style="color: #E43535">${sdt}</p>
             </c:if>

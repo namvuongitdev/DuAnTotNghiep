@@ -39,34 +39,10 @@ public class GioHang {
     @Column(name = "ngayTao")
     private Date ngayTao;
 
-    @Column(name = "ngayThanhToan")
-    private Date ngayThanhToan;
-
-    @Column(name = "tenNguoiNhan")
-    @Nationalized
-    private String tenNguoiNhan;
-
-    @Column(name = "diaChi")
-    @Nationalized
-    private String diaChi;
-
-    @Column(name = "sdt")
-    private String sdt;
-
     @Column(name = "trangThai")
     private Integer trangThai;
 
     @OneToMany(mappedBy = "gioHang")
     private List<GioHangChiTiet> gioHangChiTiets;
 
-    public GioHang(UUID id, KhachHang khachHang, Date ngayTao, Date ngayThanhToan, String tenNguoiNhan, String diaChi, String sdt, Integer trangThai) {
-        this.id = id;
-        this.khachHang = khachHang;
-        this.ngayTao = ngayTao;
-        this.ngayThanhToan = ngayThanhToan;
-        this.tenNguoiNhan = tenNguoiNhan;
-        this.diaChi = diaChi;
-        this.sdt = sdt;
-        this.trangThai = trangThai;
-    }
 }

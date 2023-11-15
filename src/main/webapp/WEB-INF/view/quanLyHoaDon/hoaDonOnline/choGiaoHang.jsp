@@ -70,12 +70,12 @@
                         <td>${gh.ma}</td>
                         <td>${gh.hoTen}</td>
                         <td>${gh.sdt}</td>
-                        <td><fmt:formatDate value="${gh.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                        <td><fmt:formatDate value="${gh.ngayTao}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
                         <td><fmt:formatNumber pattern="#,###"  value="${gh.tongTien+gh.phiVanChuyen}"/> VNĐ</td>
                         <td>${gh.moTa}</td>
                         <td>
                             <a title="Đã giao cho đơn vị vận chuyển?" name="3" id="trangThai" style="text-decoration: none;font-size: 15px" onclick="xacNhan({idhd:`${gh.id}`})" class="badge text-bg-info text-white"><i class="bi bi-truck"></i></a>
-                            <a title="Xem chi tiết" href="/admin/hoa-don-onl/detail/${gh.id}" style="font-size: 15px" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
+                            <a title="Xem chi tiết" href="/admin/hoa-don/view-update/${gh.id}" style="font-size: 15px" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
                         </td>
                     </tr>
                 </c:forEach>

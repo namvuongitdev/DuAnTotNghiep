@@ -8,20 +8,22 @@ import com.example.web.response.GioHangReponse;
 import com.example.web.service.CheckoutService;
 import com.example.web.service.IGioHangOnllineService;
 import com.example.web.service.IHoaDonChiTietService;
+import com.example.web.service.IHoaDonService;
 import com.example.web.service.IKhachHangService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/checkouts")
@@ -39,13 +41,17 @@ public class ThanhToanController {
     @Autowired
     private CheckoutService checkoutService;
 
+    @Autowired
+    private IHoaDonService hoaDonService;
+
 
     @GetMapping("")
     public String thanhToan(Model model, RedirectAttributes attributes) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        KhachHang khachHang = khachHangService.findByEmailOrAndTaiKhoan(authentication.getName());
+        KhachHang khachHang = khachHangService.getKhachHangLogin();
         List<GioHangReponse> response = gioHangOnllineService.findAll(khachHang.getId());
+        if (!model.containsAttribute("checkoutRequest")) {
+            model.addAttribute("checkoutRequest", new CheckoutRequest());
+        }
         if (response.isEmpty()) {
             attributes.addFlashAttribute("gioHangEmpty", "giỏ hàng đang trống");
             return "redirect:/gio-hang-onl";
@@ -59,17 +65,28 @@ public class ThanhToanController {
     }
 
     @PostMapping(value = "/order")
-    @ResponseBody
-    public HoaDon order(@RequestBody CheckoutRequest request) {
+    public String order(@Valid @ModelAttribute("checkoutRequest") CheckoutRequest checkoutRequest, BindingResult result, RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            attributes.addFlashAttribute("org.springframework.validation.BindingResult.checkoutRequest", result);
+            attributes.addFlashAttribute("checkoutRequest" , checkoutRequest);
+            return "redirect:/checkouts";
+        } else {
+            KhachHang khachHang = khachHangService.getKhachHangLogin();
+            HoaDon hd = checkoutService.createOrder(khachHang, checkoutRequest);
+            List<GioHangChiTiet> response = gioHangOnllineService.getGHCTByKhachHang_id(khachHang.getId());
+            response.forEach(o -> {
+                hoaDonChiTietService.addHoaDonChiTiet(o.getChiTietSanPham().getId(), hd.getId(), o.getSoLuong());
+            });
+            gioHangOnllineService.clearAllGioHangChiTietByKhachHang_id(khachHang.getId());
+            return "redirect:/checkouts/success?idHD="+hd.getId();
+        }
+    }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        KhachHang khachHang = khachHangService.findByEmailOrAndTaiKhoan(authentication.getName());
-        HoaDon hd = checkoutService.createOrder(khachHang, request);
-        List<GioHangChiTiet> response = gioHangOnllineService.getGHCTByKhachHang_id(khachHang.getId());
-        response.forEach(o -> { ;
-            hoaDonChiTietService.addHoaDonChiTiet(o.getChiTietSanPham().getId(), hd.getId(), o.getSoLuong());
-        });
-        gioHangOnllineService.clearAllGioHangChiTietByKhachHang_id(khachHang.getId());
-        return hd;
+    @GetMapping(value = "/success")
+    public String datHangThanhCong(Model model , @RequestParam String idHD) {
+        KhachHang khachHang = khachHangService.getKhachHangLogin();
+        HoaDon hd = hoaDonService.getHoaDonByKhachHang_idAndHoaDon_id(khachHang.getId() , UUID.fromString(idHD));
+        model.addAttribute("hoaDon", hd);
+        return "gioHangOnlline/success";
     }
 }

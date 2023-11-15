@@ -9,7 +9,6 @@ import com.example.web.service.CheckoutService;
 import com.example.web.service.IGioHangOnllineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -26,7 +25,6 @@ public class CheckoutServiceImpl implements CheckoutService {
     public HoaDon createOrder(KhachHang khachHang, CheckoutRequest request) {
         Date date = java.util.Calendar.getInstance().getTime();
         BigDecimal tongTien = gioHangOnllineService.tongTienSanPhamTrongGioHang(khachHang.getId());
-        Integer tongTienAndPhiGiaHang = tongTien.intValue() + request.getPhiGiaoHang().intValue();
         String diaChi = request.getDiaChi() + "," + request.getPhuongXa() + "," + request.getQuanHuyen() + "," + request.getThanhPho();
         HoaDon hoaDon = HoaDon.builder()
                 .trangThai(HoaDonStatus.CHO_XAC_NHAN)
@@ -39,8 +37,7 @@ public class CheckoutServiceImpl implements CheckoutService {
                 .sdt(request.getSoDienThoai())
                 .moTa(request.getGhiChu())
                 .phuongThucThanhToan(request.getPhuongThucThanhToan())
-                .tongTien(BigDecimal.valueOf(tongTienAndPhiGiaHang))
-                .phiVanChuyen(request.getPhiGiaoHang())
+                .tongTien(tongTien)
                 .build();
         return hoaDonRepository.save(hoaDon);
     }

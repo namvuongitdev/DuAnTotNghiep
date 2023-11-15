@@ -37,8 +37,4 @@ public class CheckoutRequest {
     private Integer phuongThucThanhToan;
 
     private String ghiChu;
-
-    private BigDecimal phiGiaoHang;
-
-    private Integer tongTien;
 }

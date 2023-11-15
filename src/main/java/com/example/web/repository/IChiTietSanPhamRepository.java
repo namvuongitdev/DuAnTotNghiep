@@ -51,4 +51,5 @@ public interface IChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,
     @Query(value = "select * from chi_tiet_san_pham where Id in (\n" +
             "  select top 5 idctsp from hoa_don_chi_tiet group by idctsp order by  sum(so_luong) desc)",nativeQuery = true)
     List<ChiTietSanPham> getTop5SanPhamBanChay();
+
 }

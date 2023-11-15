@@ -44,12 +44,6 @@
             <div class="container">
 
                 <div class="row">
-                     <div class="col l-3">
-                       <div>
-                           <input type="text" >
-                           <a href="#" class="btn btn-primary">Tìm kiếm</a>
-                       </div>
-                     </div>
                     <div class="col l-3">
                         <div>
                             <form action="/admin/hoa-don/create" method="post">

@@ -1,10 +1,13 @@
 package com.example.web.controller;
 
+import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
+import com.example.web.model.LichSuHoaDon;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.web.service.ILichSuHoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,10 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -31,8 +33,9 @@ public class HoaDonCuaToiController {
     @Autowired
     private IHoaDonChiTietService hoaDonChiTietService;
 
-//    @Autowired
-//    private ILichSuHoaDonService lichSuHoaDonService;
+    @Autowired
+    private ILichSuHoaDonService lichSuHoaDonService;
+
 
     @GetMapping("/donHangAll")
     public String donHangAll(Principal principal, Model model, @RequestParam(defaultValue = "1") Integer page){
@@ -99,12 +102,45 @@ public class HoaDonCuaToiController {
         }
         model.addAttribute("thanhTien", thanhTien);
         model.addAttribute("listHDCT", hoaDonChiTiet);
-//        model.addAttribute("xacNhan",lichSuHoaDonService.getOne(id,"xác"));
-//        model.addAttribute("choGiao",lichSuHoaDonService.getOne(id,"v"));
-//        model.addAttribute("daGiao",lichSuHoaDonService.getOne(id,"ô"));
-//        model.addAttribute("taoDon",lichSuHoaDonService.getOneTao(id));
 
         model.addAttribute("hd", hoaDonService.getOne(String.valueOf(idHD)));
         return "donHangOnline/chiTiet/chiTietDonHang";
+    }
+
+    @GetMapping("/xac-nhan/{id}")
+    public String xacNhan(Principal principal, @PathVariable("id")String id){
+        HoaDon hoaDon=hoaDonService.getOne(id);
+        hoaDon.setTrangThai(6);
+        hoaDonService.updateStatusHoaDonById(hoaDon,"6");
+        Date date = java.util.Calendar.getInstance().getTime();
+        LichSuHoaDon lshd = LichSuHoaDon.builder()
+                .hoaDon(hoaDon)
+                .nguoiThaoTac(principal.getName())
+                .thaoTac("Đơn hàng đã được giao thành công")
+                .ngayThaoTac(date)
+                .build();
+        lichSuHoaDonService.add(lshd);
+        return "redirect:/cuaToi/donHangAll";
+    }
+
+    @GetMapping("/huy-don/{id}")
+    public String huyDon(Principal principal, @RequestParam(defaultValue = "0") Integer page,
+                         @PathVariable("id")String id){
+        Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
+        for (int i = 0; i <= lst.getContent().size()-1; i++) {
+            hoaDonChiTietService.deleteSanPhamHoaDon2(String.valueOf(lst.getContent().get(i).getId()));
+        }
+        HoaDon hoaDon=hoaDonService.getOne(id);
+        hoaDon.setTrangThai(5);
+        hoaDonService.updateStatusHoaDonById(hoaDon,"5");
+        Date date = java.util.Calendar.getInstance().getTime();
+        LichSuHoaDon lshd = LichSuHoaDon.builder()
+                .hoaDon(hoaDon)
+                .nguoiThaoTac(principal.getName())
+                .thaoTac("Hủy hóa đơn")
+                .ngayThaoTac(date)
+                .build();
+        lichSuHoaDonService.add(lshd);
+        return "redirect:/cuaToi/donHangAll";
     }
 }

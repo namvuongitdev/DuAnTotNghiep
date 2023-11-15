@@ -173,8 +173,8 @@ $(document).ready(function () {
                             }),
                             success: function (response) {
                                 const shippingFee = response.data.total;
-                                ship = shippingFee;
-                                const tamTinh = $('#tamTinh').text().replace(/[^\d]/g, "");
+                                // ship = shippingFee;
+                                // const tamTinh = $('#tamTinh').text().replace(/[^\d]/g, "");
 
                                 // Format the shipping fee with commas and "VNĐ" before updating the label
                                 const formattedShippingFee = shippingFee.toLocaleString("vi-VN", {
@@ -185,11 +185,11 @@ $(document).ready(function () {
                                 // Update shipping fee in the label
                                 $("#shippingFee").text(formattedShippingFee);
                                 $("#tienShip").text(formattedShippingFee);
-                                const tongTien = Number.parseInt(tamTinh) + Number.parseInt(shippingFee);
-                                $("#tongTien").text(tongTien.toLocaleString("vi-VN", {
-                                    style: "currency",
-                                    currency: "VND",
-                                }))
+                                // const tongTien = Number.parseInt(tamTinh) + Number.parseInt(shippingFee);
+                                // $("#tongTien").text(tongTien.toLocaleString("vi-VN", {
+                                //     style: "currency",
+                                //     currency: "VND",
+                                // }))
 
                                 // calculateTotal();
                             },
@@ -210,36 +210,37 @@ $(document).ready(function () {
 });
 
 
-async function saveOrder(){
-    const hoTen = document.getElementById("hoTen").value;
-    const sdt = document.getElementById("soDienThoai").value;
-    const adress = document.getElementById("diaChi").value;
-    const node = document.getElementById("ghiChu").value;
-    const province = document.getElementById("province").value;
-    const district = document.getElementById("district").value;
-    const ward = document.getElementById("ward").value;
-    const hinhThucThanhToan = document.getElementById("flexRadioDefault2").value;
-
-    const data = {
-        hoTen : hoTen,
-        soDienThoai : sdt,
-        ghiChu:node,
-        diaChi : adress,
-        thanhPho : province,
-        quanHuyen : district,
-        phuongXa : ward,
-        phiGiaoHang:ship,
-        phuongThucThanhToan :hinhThucThanhToan
-    }
-    console.log(data);
-
-    // const options = {
-    //     method: 'POST',
-    //     headers: {'Content-Type': 'application/json'},
-    //     body: JSON.stringify(data)
-    // };
-    // const api  = await fetch("/checkouts/order" , options);
-    // const response = await api.json();
-    // console.log(response);
-
-}
+// async function saveOrder() {
+//     const hoTen = document.getElementById("hoTen").value;
+//     const sdt = document.getElementById("soDienThoai").value;
+//     const adress = document.getElementById("diaChi").value;
+//     const node = document.getElementById("ghiChu").value;
+//     const province = document.getElementById("province").value;
+//     const district = document.getElementById("district").value;
+//     const ward = document.getElementById("ward").value;
+//     const hinhThucThanhToan = document.getElementById("flexRadioDefault2").value;
+//
+//     const data = {
+//         hoTen: hoTen,
+//         soDienThoai: sdt,
+//         ghiChu: node,
+//         diaChi: adress,
+//         thanhPho: province,
+//         quanHuyen: district,
+//         phuongXa: ward,
+//         phiGiaoHang: ship,
+//         phuongThucThanhToan: hinhThucThanhToan
+//     }
+//
+//     const options = {
+//         method: 'POST',
+//         headers: {'Content-Type': 'application/json'},
+//         body: JSON.stringify(data)
+//     };
+//         const api = await fetch("/checkouts/order", options);
+//         const response = await api.json();
+//         if(api.status == 200){
+//              console.log(response);
+//         }
+//
+// }
