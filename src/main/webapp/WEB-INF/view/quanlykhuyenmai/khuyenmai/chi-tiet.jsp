@@ -147,7 +147,7 @@
                     </div>
                 </div>
             </div>
-            <form id="updateSanPhamKhuyenMai" method="post" modelAttribute="${sanPhamKhuyenMai}">
+            <form id="updateSanPhamKhuyenMai" method="post" modelAttribute="${sanPhamKhuyenMai}" name="formUpdate">
                 <div class="row">
                     <div class="col-sm-6">
                         <input type="radio" class="btn-check loaiGiamGia" name="loaiGiamGia"

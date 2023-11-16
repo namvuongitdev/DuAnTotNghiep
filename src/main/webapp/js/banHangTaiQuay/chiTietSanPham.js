@@ -12,11 +12,17 @@ function getModal(dataSanPham) {
         .then(response => response.json())
         .then(data => {
             dataCTSP = data;
-            for (let i = 0; i < data.length; i++) {
-                document.getElementById("img").innerHTML = `<img src="/image/${dataSanPham.img}">`
-                document.getElementById("sp").innerHTML = `<div><h3>${dataSanPham.tenSanPham}</h3></div> <div><h5 style="color: #03AA28"> ${VND.format(dataSanPham.giaSanPham)} </h5></div>`
-                break;
-            }
+            document.getElementById("img").innerHTML = `<img src="/image/${dataSanPham.img}">`
+            document.getElementById("sp").innerHTML = `<div>
+             <h3>${dataSanPham.tenSanPham}</h3>
+               </div>
+               <div>${dataSanPham.donGiaSauKhiGiam !== 'null' ?
+                `<div><h5 style="color: #03AA28">${VND.format(dataSanPham.donGiaSauKhiGiam)}</h5>
+                <strike>
+                ${VND.format(dataSanPham.giaBan)} 
+               </strike>
+               ` : `<h5 style="color: #03AA28">${VND.format(dataSanPham.giaBan)} </h5>`}
+               </div>`
             getMauSac(data);
             getSize(data);
         });
@@ -67,7 +73,7 @@ function dataColor(data) {
 }
 
 function getCTSP(id) {
-    if (id.type == 'kichCo') {
+    if (id.type === 'kichCo') {
         kichCo = id.id;
     } else {
         mauSac = id.id;
@@ -75,27 +81,27 @@ function getCTSP(id) {
         kichCo = undefined;
         document.getElementById("themVaoGioHang").name = "";
         for (var i = 0; i < dataCTSP.length; i++) {
-            if (dataCTSP[i].mauSac.id == mauSac && dataCTSP[i].sanPham.id == sanPham) {
+            if (dataCTSP[i].mauSac.id === mauSac && dataCTSP[i].sanPham.id === sanPham) {
                 dataSize(dataCTSP[i].size)
             }
         }
     }
-    if (mauSac != undefined && kichCo != undefined) {
+    if (mauSac !== undefined && kichCo !== undefined) {
         const sp = document.getElementById("sp");
         const themVaoGioHang = document.getElementById("themVaoGioHang");
         for (let i = 0; i < dataCTSP.length; i++) {
-            if (dataCTSP[i].mauSac.id == mauSac && dataCTSP[i].size.id == kichCo && dataCTSP[i].sanPham.id == sanPham) {
-                if (dataCTSP[i].trangThai != 1) {
+            if (dataCTSP[i].mauSac.id === mauSac && dataCTSP[i].size.id === kichCo && dataCTSP[i].sanPham.id === sanPham) {
+                if (dataCTSP[i].trangThai !== 1) {
                     sp.innerHTML += `<h5 id="message" style="color: #e43535">Sản phẩm ngừng kinh doanh</h5>`
                     themVaoGioHang.setAttribute("disabled", "");
                 } else {
-                    if (dataCTSP[i].soLuong == 0 || dataCTSP[i].soLuong < 0) {
+                    if (dataCTSP[i].soLuong === 0 || dataCTSP[i].soLuong < 0) {
                         themVaoGioHang.setAttribute("disabled", "");
                         sp.innerHTML += `<h5 id="messageChiTietSanPham" style="color: #e43535">Sản phẩm hết hàng</h5>`
                         return;
                     } else {
-                        const messageChiTietSanPham =  document.getElementById("messageChiTietSanPham");
-                        if(messageChiTietSanPham != null){
+                        const messageChiTietSanPham = document.getElementById("messageChiTietSanPham");
+                        if (messageChiTietSanPham != null) {
                             messageChiTietSanPham.remove();
                         }
                         themVaoGioHang.removeAttribute('disabled');
@@ -110,14 +116,14 @@ function getCTSP(id) {
     }
 }
 
-function themSanPhamVaoGioHang(data) {
+async function themSanPhamVaoGioHang(data) {
     let soLuong = document.getElementById("soLuongTon").value;
     let idHD = document.getElementById("soLuongTon").name;
-    if (data.idCTSP == "") {
+    if (data.idCTSP === "") {
         alert("lựa chon các thuộc tính sản phẩm")
     } else {
         for (let i = 0; i < dataCTSP.length; i++) {
-            if (data.idCTSP == dataCTSP[i].soLuong) {
+           if (data.idCTSP === dataCTSP[i].soLuong) {
                 if (soLuong > dataCTSP[i].soLuong) {
                     alert("số lượng sản phẩm không đủ");
                     return;

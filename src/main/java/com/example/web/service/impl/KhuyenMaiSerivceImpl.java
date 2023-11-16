@@ -7,6 +7,7 @@ import com.example.web.model.SanPham;
 import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.repository.IKhuyenMaiRepository;
 import com.example.web.repository.SanPhamKhuyenMaiRepository;
+import com.example.web.request.KhuyenMaiRequest;
 import com.example.web.response.FilterKhuyenMai;
 import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.service.IKhuyenMaiService;
@@ -22,8 +23,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,13 +44,35 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     public KhuyenMai addKhuyenMai(KhuyenMai khuyenMai) {
         Integer maKhuyenMai = repository.findAll().size() + 1;
         khuyenMai.setMa("KM" + maKhuyenMai);
-        khuyenMai.setTrangThai(KhuyenMaiStatus.KICH_HOAT);
         return repository.save(khuyenMai);
     }
 
     @Override
-    public KhuyenMai updateKhuyenMai(KhuyenMai khuyenMai) {
-        return repository.save(khuyenMai);
+    public Integer validateTrangThai(KhuyenMai khuyenMai) {
+        Date thoiGianHienTai = java.util.Calendar.getInstance().getTime();
+        if (khuyenMai.getNgayKetThuc().before(thoiGianHienTai)) {
+            return KhuyenMaiStatus.NGUNG_KICH_HOAT;
+        } else if (khuyenMai.getNgayBatDau().after(thoiGianHienTai)) {
+            return KhuyenMaiStatus.CHUA_BAT_DAU;
+        } else {
+            return KhuyenMaiStatus.KICH_HOAT;
+        }
+    }
+
+    @Override
+    public KhuyenMai updateKhuyenMai(KhuyenMaiRequest request, UUID idKM) {
+        Optional<KhuyenMai> km = repository.findById(idKM);
+        if (km.isPresent()) {
+            KhuyenMai khuyenMai = km.get();
+            khuyenMai.setMoTa(request.getMoTa());
+            khuyenMai.setNgayBatDau(java.sql.Date.valueOf(request.getNgayBatDau()));
+            khuyenMai.setNgayKetThuc(java.sql.Date.valueOf(request.getNgayKetThuc()));
+            khuyenMai.setTen(request.getTen());
+            Integer trangThai = validateTrangThai(khuyenMai);
+            khuyenMai.setTrangThai(trangThai);
+            return repository.save(khuyenMai);
+        }
+        return null;
     }
 
     @Override
@@ -103,6 +128,7 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
         return null;
     }
 
+
     @Override
     public Page<KhuyenMai> getAll(Integer page) {
         if (page < 0) {
@@ -142,29 +168,33 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     @Override
     public Boolean addSanPhamKhuyenMai(SanPhamKhuyenMai sanPhamKhuyenMai, String idKM) {
         Optional<KhuyenMai> khuyenMai = repository.findById(UUID.fromString(idKM));
-        if (khuyenMai.isPresent()) {
-            sanPhamKhuyenMai.getSanPhams().forEach(o -> {
-                if (sanPhamKhuyenMaiRepository.kiemTraDaTonTai(o.getId(), khuyenMai.get().getId()) != null) {
-                    return;
-                }
-                SanPhamKhuyenMai spkm = SanPhamKhuyenMai.builder()
-                        .khuyenMai(khuyenMai.get())
-                        .sanPhamKM(o)
-                        .trangThai(KhuyenMaiStatus.KICH_HOAT)
-                        .mucGiam(sanPhamKhuyenMai.getMucGiam())
-                        .loaiGiamGia(sanPhamKhuyenMai.getLoaiGiamGia())
-                        .build();
-                if (sanPhamKhuyenMai.getLoaiGiamGia()) {
-                    Integer donGiaKhiGiamPhanTram = spkm.getSanPhamKM().getGiaBan().intValue() - (spkm.getSanPhamKM().getGiaBan().intValue() / 100) * sanPhamKhuyenMai.getMucGiam().intValue();
-                    spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamPhanTram));
-                } else {
-                    Integer donGiaKhiGiamVND = spkm.getSanPhamKM().getGiaBan().intValue() - sanPhamKhuyenMai.getMucGiam().intValue();
-                    spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamVND));
-                }
-                sanPhamKhuyenMaiRepository.save(spkm);
-            });
-        } else {
+        if (sanPhamKhuyenMai.getSanPhams() == null) {
             return false;
+        } else {
+            if (khuyenMai.isPresent()) {
+                sanPhamKhuyenMai.getSanPhams().forEach(o -> {
+                    if (sanPhamKhuyenMaiRepository.kiemTraDaTonTai(o.getId(), khuyenMai.get().getId()) != null) {
+                        return;
+                    }
+                    SanPhamKhuyenMai spkm = SanPhamKhuyenMai.builder()
+                            .khuyenMai(khuyenMai.get())
+                            .sanPhamKM(o)
+                            .trangThai(KhuyenMaiStatus.KICH_HOAT)
+                            .mucGiam(sanPhamKhuyenMai.getMucGiam())
+                            .loaiGiamGia(sanPhamKhuyenMai.getLoaiGiamGia())
+                            .build();
+                    if (sanPhamKhuyenMai.getLoaiGiamGia()) {
+                        Integer donGiaKhiGiamPhanTram = spkm.getSanPhamKM().getGiaBan().intValue() - (spkm.getSanPhamKM().getGiaBan().intValue() / 100) * sanPhamKhuyenMai.getMucGiam().intValue();
+                        spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamPhanTram));
+                    } else {
+                        Integer donGiaKhiGiamVND = spkm.getSanPhamKM().getGiaBan().intValue() - sanPhamKhuyenMai.getMucGiam().intValue();
+                        spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamVND));
+                    }
+                    sanPhamKhuyenMaiRepository.save(spkm);
+                });
+            } else {
+                return false;
+            }
         }
         return true;
     }
@@ -180,17 +210,6 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
         if (sanPhamKhuyenMai.isPresent()) {
             sanPhamKhuyenMai.get().setTrangThai(trangThai);
             return sanPhamKhuyenMaiRepository.save(sanPhamKhuyenMai.get());
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public KhuyenMai updateTrangThaiKhuyenMai(Integer trangThai, UUID uuid) {
-        Optional<KhuyenMai> khuyenMai = repository.findById(uuid);
-        if (khuyenMai.isPresent()) {
-            khuyenMai.get().setTrangThai(trangThai);
-            return repository.save(khuyenMai.get());
         } else {
             return null;
         }

@@ -25,4 +25,6 @@ public class KhuyenMaiRequest {
 
     @NotBlank(message = "không để trống ngày kết thúc khuyến mại")
     private String ngayKetThuc;
+
+    private Integer trangThai;
 }

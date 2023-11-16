@@ -95,40 +95,28 @@ public class KhuyenMaiController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid @ModelAttribute("khuyenMai") KhuyenMaiRequest khuyenMaiRequest, BindingResult result, Model model) {
+    public String create(@Valid @ModelAttribute("khuyenMaiRequest") KhuyenMaiRequest khuyenMaiRequest, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("dataKhuyenMai", khuyenMaiRequest);
             return "quanlykhuyenmai/khuyenmai/new-khuyen-mai";
         }
-        if (khuyenMaiRequest.getNgayBatDau().compareTo(khuyenMaiRequest.getNgayKetThuc()) >= 0) {
-            model.addAttribute("dataKhuyenMai", khuyenMaiRequest);
-            model.addAttribute("errorNgay", "ngày không hợp lệ");
-            return "quanlykhuyenmai/khuyenmai/new-khuyen-mai";
-        } else {
-            KhuyenMai km = khuyenMaiService.addKhuyenMai(modelMapper.map(khuyenMaiRequest, KhuyenMai.class));
-            return "redirect:/admin/khuyen-mai/detail?id=" + km.getId();
-
-        }
+        KhuyenMai response = modelMapper.map(khuyenMaiRequest, KhuyenMai.class);
+        Integer trangThai = khuyenMaiService.validateTrangThai(response);
+        response.setTrangThai(trangThai);
+        KhuyenMai km = khuyenMaiService.addKhuyenMai(response);
+        return "redirect:/admin/khuyen-mai/detail?id=" + km.getId();
     }
 
     @PostMapping(value = "/update")
-    public String update(@Valid @ModelAttribute("khuyenMai") KhuyenMaiRequest khuyenMaiRequest, BindingResult result, RedirectAttributes attributes, @RequestParam(required = false) String idKM) {
+    public String update(@Valid @ModelAttribute("khuyenMaiRequest") KhuyenMaiRequest khuyenMaiRequest, BindingResult result, RedirectAttributes attributes, @RequestParam(required = false) String idKM) {
         if (result.hasErrors()) {
-            return "quanlykhuyenmai/khuyenmai/new-khuyen-mai";
-        }
-        if (khuyenMaiRequest.getNgayBatDau().compareTo(khuyenMaiRequest.getNgayKetThuc()) >= 0) {
-            attributes.addFlashAttribute("errorNgay", "ngày không hợp lệ");
+            attributes.addFlashAttribute("dataKhuyenMai", khuyenMaiRequest);
             return "redirect:/admin/khuyen-mai/detail?id=" + idKM;
         } else {
-            KhuyenMai khuyenMai = khuyenMaiService.getById(UUID.fromString(idKM));
-            khuyenMai.setMoTa(khuyenMaiRequest.getMoTa());
-            khuyenMai.setNgayBatDau(Date.valueOf(khuyenMaiRequest.getNgayBatDau()));
-            khuyenMai.setNgayKetThuc(Date.valueOf(khuyenMaiRequest.getNgayKetThuc()));
-            khuyenMai.setTen(khuyenMaiRequest.getTen());
-            khuyenMaiService.updateKhuyenMai(khuyenMai);
+            KhuyenMai khuyenMai = khuyenMaiService.updateKhuyenMai(khuyenMaiRequest, UUID.fromString(idKM));
+            attributes.addFlashAttribute("success", "update thành công");
             return "redirect:/admin/khuyen-mai/detail?id=" + khuyenMai.getId();
         }
-
     }
 
     @GetMapping("/detail")
@@ -138,7 +126,6 @@ public class KhuyenMaiController {
         sanPhamController.danhSachThuocTinhSanPham(model);
         model.addAttribute("listChiTietKhuyenMai", list);
         model.addAttribute("dataKhuyenMai", km);
-        model.addAttribute("khuyenMai", new KhuyenMaiRequest());
         model.addAttribute("url", "/admin/khuyen-mai/update?idKM=" + km.getId());
         model.addAttribute("sanPhamKhuyenMai", new SanPhamKhuyenMai());
         model.addAttribute("sanPhamAsKhuyeMai", new SanPhamAsKhuyenMai());
@@ -153,8 +140,13 @@ public class KhuyenMaiController {
     }
 
     @PostMapping("/khuyen-mai-san-pham")
-    public String addSanPhamKhuyenMai(@ModelAttribute("sanPhamKhuyenMai") SanPhamKhuyenMai sanPhamKhuyenMai, @RequestParam String idKM) {
+    public String addSanPhamKhuyenMai(@ModelAttribute("sanPhamKhuyenMai") SanPhamKhuyenMai sanPhamKhuyenMai, @RequestParam String idKM, RedirectAttributes attributes) {
         Boolean spkm = khuyenMaiService.addSanPhamKhuyenMai(sanPhamKhuyenMai, idKM);
+        if (spkm) {
+            attributes.addFlashAttribute("success", "thêm thành công");
+        } else {
+            attributes.addFlashAttribute("error", "chưa chọn sản phẩm thêm vào khuyến mại");
+        }
         return "redirect:/admin/khuyen-mai/detail?id=" + idKM;
     }
 
@@ -167,14 +159,6 @@ public class KhuyenMaiController {
             return "redirect:" + urlUpdate + pager;
         }
     }
-
-
-    @GetMapping("/update-trang-thai")
-    public String updateTrangThaiKhuyenMai(@RequestParam String idKM, @RequestParam Integer trangThai) {
-        KhuyenMai khuyenMai = khuyenMaiService.updateTrangThaiKhuyenMai(trangThai, UUID.fromString(idKM));
-        return "redirect:/admin/khuyen-mai/";
-    }
-
 
     @PostMapping("/update-san-pham-khuyen-mai")
     public String updateSanPhamKhuyenMai(@RequestParam String idSPKM, @ModelAttribute("sanPhamKhuyenMai") SanPhamKhuyenMai sanPhamKhuyenMai) {
@@ -192,7 +176,7 @@ public class KhuyenMaiController {
         if (urlUpdate == null) {
             return "redirect:/admin/khuyen-mai/detail?id=" + spkm.getKhuyenMai().getId();
         } else {
-         return "redirect:"+urlUpdate+pager;
+            return "redirect:" + urlUpdate + pager;
         }
     }
 }

@@ -87,27 +87,36 @@
                     </thead>
                     <tbody>
                     <c:forEach items="${khuyenMais.content}" var="khuyenMai" varStatus="i">
-                        <tr onclick="window.location.href='/admin/khuyen-mai/detail?id=${khuyenMai.id}'">
+                        <tr>
                             <th scope="row">${i.index+ (khuyenMais.number + 1 != 1 ? ((khuyenMais.number + 1) * khuyenMais.size) -(khuyenMais.size - 1) : khuyenMais.number + 1)}</th>
                             <td>
                                ${khuyenMai.ma}
                             </td>
                             <td>${khuyenMai.ten}</td>
                             <td>
-                                <fmt:formatDate value="${khuyenMai.ngayBatDau}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                <fmt:formatDate value="${khuyenMai.ngayBatDau}" pattern="yyyy-MM-dd"/>
                             </td>
                             <td>
-                                <fmt:formatDate value="${khuyenMai.ngayKetThuc}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                <fmt:formatDate value="${khuyenMai.ngayKetThuc}" pattern="yyyy-MM-dd"/>
                             </td>
-                            <td style="${khuyenMai.trangThai == 1 ? 'color: #03AA28' : 'color:red'}">${khuyenMai.trangThai == 1 ? 'kích hoạt' : 'ngừng hoạt động'}</td>
-                            <td><c:choose>
-                                <c:when test="${khuyenMai.trangThai == 1}">
-                                    <a href="/admin/khuyen-mai/update-trang-thai?idKM=${khuyenMai.id}&trangThai=${khuyenMai.trangThai == 1 ? 0 : 1}" class="btn btn-danger">huỷ</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="/admin/khuyen-mai/update-trang-thai?idKM=${khuyenMai.id}&trangThai=${khuyenMai.trangThai == 1 ? 0 : 1}" class="btn btn-success">Kích hoạt</a>
-                                </c:otherwise>
-                            </c:choose></td>
+
+                                <c:choose>
+                                    <c:when test="${khuyenMai.trangThai == 1}">
+                                        <td style="color: #03AA28">Kích hoạt</td>
+                                    </c:when>
+                                    <c:when test="${khuyenMai.trangThai == 2}">
+                                        <td style="color: #1da1f2">Chưa được kích hoạt</td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td style="color: red">Ngừng kích hoạt</td>
+                                    </c:otherwise>
+                                </c:choose>
+                            <td>
+                                <button type="button" class="btn btn-success" title="chi tiết"
+                                        onclick="getKhuyenMaiById(`${khuyenMai.id}`)">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </td>
                         </tr>
                     </c:forEach>
                     </tbody>
@@ -136,3 +145,8 @@
         </div>
     </div>
 </body>
+<script>
+    function getKhuyenMaiById(id){
+        window.location.href='/admin/khuyen-mai/detail?id='+id;
+    }
+</script>

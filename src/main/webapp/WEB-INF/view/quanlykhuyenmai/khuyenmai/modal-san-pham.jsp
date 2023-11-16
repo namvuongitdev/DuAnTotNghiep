@@ -127,7 +127,7 @@
                 </div>
                 <br>
                 <div class="row">
-                    <form action="/admin/khuyen-mai/khuyen-mai-san-pham?idKM=${dataKhuyenMai.id}" method="post"
+                    <form name="myForm" action="/admin/khuyen-mai/khuyen-mai-san-pham?idKM=${dataKhuyenMai.id}" method="post" onsubmit="return formCreate()"
                           modelAttribute="${sanPhamKhuyenMai}">
                         <table>
                             <thead>

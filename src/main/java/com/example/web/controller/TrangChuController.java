@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/index")
-public class TrangChuController {
+public class    TrangChuController {
 
     @Autowired
     private IFormDangService iFormDangService;

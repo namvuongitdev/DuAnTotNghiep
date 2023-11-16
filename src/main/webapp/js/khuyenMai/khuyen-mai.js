@@ -2,9 +2,6 @@ const VND = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
 });
-let url_string = window.location.href;
-let url = new URL(url_string);
-let paramValue = url.searchParams.get("id");
 
 let data = {
     search: "",
@@ -19,12 +16,14 @@ let data = {
 
 };
 
+const arrayChecked = [];
+
 function getSanPham(page) {
     const value = document.querySelector("#search-input").value;
     data.search = value;
-    let url = `/admin/san-pham/api-hien-thi?page=` + page + `&value=` + value;
+    let url = `/admin/san-pham/api-hien-thi?page=${page}&value=${value}`;
     if (value == null) {
-        url = `/admin/san-pham/api-hien-thi?page=` + page;
+        url = `/admin/san-pham/api-hien-thi?page=${page}`;
     }
     fetch(url)
         .then(response => response.json())
@@ -35,12 +34,20 @@ function getSanPham(page) {
             let sanPham = "";
             let phanTrang = "";
             for (let i = 0; i < data.content.length; i++) {
+                console.log(arrayChecked[i]);
                 sanPham += `<tr><td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img}"></td>
                   <td>${data.content[i].ma}</td>
                   <td>${data.content[i].ten}</td>
                   <td>${VND.format(data.content[i].giaBan)}</td>
-                 ${data.content[i].sanPhamKhuyenMais.length > 0 ? `<td style="color: #03AA28"> Đã được áp dụng</td>` : `<td><input type="checkbox" name="sanPhams" value="${data.content[i].id}"></td>`}
-                   </tr>`
+                 ${data.content[i].sanPhamKhuyenMais.length > 0 ?
+                    `<td style="color: #03AA28"> Đã được áp dụng</td>` :
+                    `<td>
+                     <input type="checkbox" onchange="checkeds(this.value)"
+                     name="sanPhams" id="${data.content[i].id}" ${arrayChecked[i] === data.content[i].id ? 'checked' : ''} 
+                     value="${data.content[i].id}">
+                    </td>`
+                  }
+                  </tr>`
             }
 
             for (let i = 1; i <= data.totalPages; i++) {
@@ -171,4 +178,8 @@ document.getElementById('clear').addEventListener('click', () => {
 
 function timKiem() {
     getSanPham(1);
+}
+
+function checkeds(id) {
+    arrayChecked.push(id);
 }

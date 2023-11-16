@@ -18,7 +18,7 @@ public interface IHoaDonService {
 
     Page<Object[]> findByHoaDonCho(Integer trangThaiHD ,Pageable pageable);
 
-    String getHoaDonById(Model model ,  String id);
+    String getHoaDonById(Model model ,  String id , RedirectAttributes attributes);
 
     String updateHoaDonTrangThai(String id);
 

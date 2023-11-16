@@ -81,8 +81,8 @@ public class HoDonController {
     }
 
     @GetMapping(value = "/detail")
-    public String getHoaDon(Model model, @RequestParam("idHD") String id, @RequestParam(required = false) String idKhachHang
-                           ) {
+    public String getHoaDon(Model model, @RequestParam("idHD") String id, @RequestParam(required = false) String idKhachHang,
+                           RedirectAttributes attributes) {
         if (idKhachHang != null && !idKhachHang.isEmpty()) {
             KhachHang khachHang = khachHangService.getKhachHangById(idKhachHang);
             model.addAttribute("khachHang", khachHang);
@@ -90,7 +90,7 @@ public class HoDonController {
         model.addAttribute("filter", new SanPhamFilter());
         sanPhamController.danhSachThuocTinhSanPham(model);
         model.addAttribute("request", new HoaDonRequest());
-        url = hoaDonService.getHoaDonById(model, id);
+        url = hoaDonService.getHoaDonById(model, id , attributes);
         return url;
     }
 
@@ -152,7 +152,6 @@ public class HoDonController {
            if(result.hasErrors()){
                for (FieldError fieldError : result.getFieldErrors()) {
                  attributes.addFlashAttribute(fieldError.getField() , fieldError.getDefaultMessage());
-
                }
                attributes.addFlashAttribute("datHang" , hoaDonRequest);
                return  "redirect:/admin/hoa-don/detail?idHD=" + hoaDon.getId() + "&idKhachHang=" + idKhachHang;

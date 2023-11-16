@@ -71,25 +71,26 @@ public class GioHangOnllineController {
                 .idMS(idMau)
                 .soLuong(soLuongThem)
                 .build();
-
-        ChiTietResponse chiTietSanPham = iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID.fromString(idMau), idSize, UUID.fromString(idSP));
-
+        ChiTietResponse chiTietSanPham = null;
         if (idMau.isEmpty() || idSize.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "bạn chưa lựa chọn thuộc tín sản phẩm");
             redirectAttributes.addFlashAttribute("dataRequest", data);
             return "redirect:/index/chi-tiet-san-pham-onl?id=" + idSP;
-        } else if (soLuongThem <= 0 || chiTietSanPham.getSoLuong() < soLuongThem) {
-            redirectAttributes.addFlashAttribute("error", "số lượng không thoả mãn");
-            redirectAttributes.addFlashAttribute("dataRequest", data);
-            return "redirect:/index/chi-tiet-san-pham-onl?id=" + idSP;
         } else {
-            ChiTietSanPham sanPham = new ChiTietSanPham(chiTietSanPham.getId(), chiTietSanPham.getSanPham(), chiTietSanPham.getSoLuong(), chiTietSanPham.getTrangThai(), chiTietSanPham.getQrCode(),
-                    chiTietSanPham.getMauSac(), chiTietSanPham.getSize());
-            iGioHangOnllineService.addGioHang(sanPham, soLuongThem);
-            redirectAttributes.addFlashAttribute("dataRequest", data);
-            redirectAttributes.addFlashAttribute("success", "sản phẩm đã được thêm vào giỏ hàng");
-            redirectAttributes.addFlashAttribute("error", null);
-            return "redirect:/index/chi-tiet-san-pham-onl?id=" + idSP;
+            chiTietSanPham =  iChiTietSanPhamService.getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID.fromString(idMau), idSize, UUID.fromString(idSP));
+            if (soLuongThem <= 0 || chiTietSanPham.getSoLuong() < soLuongThem) {
+                redirectAttributes.addFlashAttribute("error", "số lượng không thoả mãn");
+                redirectAttributes.addFlashAttribute("dataRequest", data);
+                return "redirect:/index/chi-tiet-san-pham-onl?id=" + idSP;
+            } else {
+                ChiTietSanPham sanPham = new ChiTietSanPham(chiTietSanPham.getId(), chiTietSanPham.getSanPham(), chiTietSanPham.getSoLuong(), chiTietSanPham.getTrangThai(), chiTietSanPham.getQrCode(),
+                        chiTietSanPham.getMauSac(), chiTietSanPham.getSize());
+                iGioHangOnllineService.addGioHang(sanPham, soLuongThem);
+                redirectAttributes.addFlashAttribute("dataRequest", data);
+                redirectAttributes.addFlashAttribute("success", "sản phẩm đã được thêm vào giỏ hàng");
+                redirectAttributes.addFlashAttribute("error", null);
+                return "redirect:/index/chi-tiet-san-pham-onl?id=" + idSP;
+            }
         }
     }
 }

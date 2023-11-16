@@ -37,6 +37,5 @@ function getSanPhamKhuyenMai(id) {
             document.getElementById("maSanPham").value = data.maSanPham;
             document.getElementById("mucGiamSanPham").value = data.mucGiam;
             document.getElementById("updateSanPhamKhuyenMai").action="/admin/khuyen-mai/update-san-pham-khuyen-mai?idSPKM="+id;
-
         })
 }

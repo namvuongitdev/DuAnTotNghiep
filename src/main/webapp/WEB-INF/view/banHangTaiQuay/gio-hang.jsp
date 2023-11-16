@@ -50,7 +50,7 @@
                                     style="text-decoration: none; color: black">Hoá đơn chờ</a></li>
                             <li class="breadcrumb-item"><a
                                     href="/admin/hoa-don/detail?idHD=${hoaDon.id}" <%= request.getRequestURI().contains("gio-hang") ? "class=\"link-primary\"" : ""  %>
-                                    style="text-decoration: none; color: black ; ">Tạo hoá đơn</a></li>
+                                    style="text-decoration: none; color: black ; ">Tạo hoá đơn - ${hoaDon.ma}</a></li>
                         </ol>
                     </nav>
                 </div><!-- End Page Title -->
@@ -83,7 +83,7 @@
                                         <button class="btn btn-light" id="btnThemKhachHang">+</button>
                                     </div>
                                 </div>
-                                <div class="col-sm-2" style="width: 14%">
+                                <div class="col-sm-2" style="width: 16%">
                                     <button type="button" class="btn btn-secondary"
                                             id="btnKhachHang"
                                     >

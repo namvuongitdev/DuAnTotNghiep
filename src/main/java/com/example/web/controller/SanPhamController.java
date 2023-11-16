@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -102,7 +103,7 @@ public class SanPhamController {
     @ResponseBody
     public Page<SanPham> apiSanPham(@RequestParam Integer page , @RequestParam(required = false) String value) {
         Page listSanPham = null;
-        Pageable pageable = PageRequest.of(page - 1, 10);
+        Pageable pageable = PageRequest.of(page - 1, 4);
         if(value.isEmpty()){
             listSanPham = iSanPhamService.findAll(pageable);
         }else{

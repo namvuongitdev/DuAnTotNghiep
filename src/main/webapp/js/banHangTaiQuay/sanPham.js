@@ -26,27 +26,47 @@ function getSanPham(page) {
             let pageSize = page >= data.totalPages ? "disabled" : "";
             let sanPham = "";
             let phanTrang = "";
-            let giaBanSanPham = null;
+            let khuyenMai = null;
             for (let i = 0; i < data.content.length; i++) {
                 if (data.content[i].sanPhamKhuyenMais.length > 0) {
                     data.content[i].sanPhamKhuyenMais.map(function (e) {
                         if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
-                            giaBanSanPham = e.donGiaSauKhiGiam;
+                            khuyenMai = e;
                         } else {
-                            giaBanSanPham = data.content[i].giaBan;
+                            khuyenMai = null;
                         }
                     })
                 } else {
-                    giaBanSanPham = data.content[i].giaBan;
+                    khuyenMai = null;
                 }
                 sanPham += `<tr>
                    <td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img} "></td>
                     <td>${data.content[i].ma}</td>
                     <td>${data.content[i].ten}</td>
-                    <td style="color: #03AA28">${VND.format(giaBanSanPham)}</td>
-                    ${data.content[i].trangThai != 0 ? `<td style="color: #E43535">ngừng kinh doanh</td>` : `<td>
-                   <button  id="myBtn"  onclick="getModal({idSanPham:'${data.content[i].id}' , 
-                    tenSanPham:'${data.content[i].ten}' , giaSanPham:${giaBanSanPham} , img:'${data.content[i].img}'})" class="btn btn-warning" >Chọn</button>
+                    <td>
+                    ${khuyenMai != null ?
+                    `<div><span style="color: #03AA28">${VND.format(khuyenMai.donGiaSauKhiGiam)}</span></div>
+
+                     <div style="display: flex">
+                     <strike>${VND.format(data.content[i].giaBan)}</strike>
+                     <p style="color: #E43535">${khuyenMai.loaiGiamGia == true ? '-'+khuyenMai.mucGiam+'%' : '-'+VND.format(khuyenMai.mucGiam)}</p>
+                     </div>`
+
+                    : `<span style="color: #03AA28">${VND.format(data.content[i].giaBan)}</span>`}
+                    </td>
+                    
+                    ${data.content[i].trangThai != 0 ? `<td style="color: #E43535">ngừng kinh doanh</td>` :
+                    `<td>
+                   <button  id="myBtn"  onclick="getModal(
+                       {idSanPham:'${data.content[i].id}' , 
+                       tenSanPham:'${data.content[i].ten}' ,
+                       giaBan:'${data.content[i].giaBan}',
+                       img:'${data.content[i].img}',
+                       donGiaSauKhiGiam:'${khuyenMai != null ? khuyenMai.donGiaSauKhiGiam : null }',
+                       loaiGiamGia:'${khuyenMai != null ? khuyenMai.loaiGiamGia : null}',
+                       mucGiam:'${khuyenMai != null ? khuyenMai.mucGiam : null}'
+                       },
+                       )" class="btn btn-warning" >Chọn</button>
                    </td>`}
                    </tr>`
             }
@@ -81,28 +101,49 @@ function api(page, data) {
             let pageSize = page >= data.totalPages ? "disabled" : "";
             let sanPham = "";
             let phanTrang = "";
-            let giaBanSanPham = null;
+            let khuyenMai = null;
             for (let i = 0; i < data.content.length; i++) {
                 if (data.content[i].sanPhamKhuyenMais.length > 0) {
                     data.content[i].sanPhamKhuyenMais.map(function (e) {
                         if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
-                            giaBanSanPham = e.donGiaSauKhiGiam;
+                            khuyenMai = e;
                         } else {
-                            giaBanSanPham = data.content[i].giaBan;
+                            khuyenMai = null;
                         }
                     })
-
                 } else {
-                    giaBanSanPham = data.content[i].giaBan;
+                    khuyenMai = null;
                 }
                 sanPham += `<tr>
                    <td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img} "></td>
                     <td>${data.content[i].ma}</td>
                     <td>${data.content[i].ten}</td>
-                    <td style="color: #03AA28">${VND.format(giaBanSanPham)}</td>
-                    <td> <button  id="myBtn"  onclick="getModal({idSanPham:'${data.content[i].id}' , 
-                    tenSanPham:'${data.content[i].ten}' , giaSanPham:${giaBanSanPham} , img:'${data.content[i].img}'})" class="btn btn-warning" >Chọn</button></td>
-                    </tr>`
+                    <td>
+                    ${khuyenMai != null ?
+                    `<div><span style="color: #03AA28">${VND.format(khuyenMai.donGiaSauKhiGiam)}</span></div>
+
+                     <div style="display: flex">
+                     <strike>${VND.format(data.content[i].giaBan)}</strike>
+                     <p style="color: #E43535">${khuyenMai.loaiGiamGia == true ? '-'+khuyenMai.mucGiam+'%' : '-'+VND.format(khuyenMai.mucGiam)}</p>
+                     </div>`
+
+                    : `<span style="color: #03AA28">${VND.format(data.content[i].giaBan)}</span>`}
+                    </td>
+                    
+                    ${data.content[i].trangThai != 0 ? `<td style="color: #E43535">ngừng kinh doanh</td>` :
+                    `<td>
+                   <button  id="myBtn"  onclick="getModal(
+                       {idSanPham:'${data.content[i].id}' , 
+                       tenSanPham:'${data.content[i].ten}' ,
+                       giaBan:'${data.content[i].giaBan}',
+                       img:'${data.content[i].img}',
+                       donGiaSauKhiGiam:'${khuyenMai != null ? khuyenMai.donGiaSauKhiGiam : null }',
+                       loaiGiamGia:'${khuyenMai != null ? khuyenMai.loaiGiamGia : null}',
+                       mucGiam:'${khuyenMai != null ? khuyenMai.mucGiam : null}'
+                       },
+                       )" class="btn btn-warning" >Chọn</button>
+                   </td>`}
+                   </tr>`
             }
 
             for (let i = 1; i <= data.totalPages; i++) {
