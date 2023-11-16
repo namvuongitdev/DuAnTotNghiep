@@ -90,11 +90,15 @@
                     <td><fmt:formatDate value="${hd.ngayTao}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
                     <td>${hd.hoTen==null?'Khách bán lẻ':hd.hoTen}</td>
                     <td><fmt:formatNumber pattern="#,###" value="${hd.tongTien}"/></td>
-                    <td>${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Đã tiếp nhận':(hd.trangThai==6)?'Giao hàng thành công':(hd.trangThai==5)?'Hủy đơn hàng':''}</td>
                     <td>
-                        <a style="font-size: 15px" title="Xem chi tiết" href="/admin/hoa-don/view-update/${hd.id}" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
+                        <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" type="button" class="${hd.trangThai == 5 ? 'btn btn-danger' : hd.trangThai==1?'btn btn-primary': hd.trangThai==6? 'btn btn-success':hd.trangThai==3?'btn btn-warning':hd.trangThai==2?'btn btn-secondary':'btn btn-success'}">
+                                ${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Đã xác nhận':(hd.trangThai==6)?'Giao hàng thành công':(hd.trangThai==5)?'Đơn hủy':''}
+                        </button>
+                    </td>
+                    <td>
+                        <a style="font-size: 15px" title="Xem chi tiết" href="/admin/hoa-don/view-update/${hd.id}" class="badge text-bg-success text-white"><i class="bi bi-eye-fill"></i></a>
                         <a title="${hd.trangThai==1?'Xác nhận đơn?':hd.trangThai==2?'Đơn hàng đã giao cho đơn vị vận chuyển?':hd.trangThai==3?'Đơn hàng đã giao thành công?':''}" name="2" id="trangThai" onclick="xacNhan({idhd:`${hd.id}`,trangThai:`${hd.trangThai}`})" style="text-decoration: none;font-size: 15px;display: ${hd.loaiHoaDon==true?'':'none'};visibility: ${hd.trangThai==5?'hidden':hd.trangThai==6?'hidden':''}" class="badge text-bg-info text-white" ><i class="bi bi-check2"></i></a>
-                        <a title="Hủy đơn hàng" onclick="huyDonHang({idhd:`${hd.id}`})" style="text-decoration: none;font-size: 15px;display: ${hd.loaiHoaDon==true?'':'none'};visibility: ${hd.trangThai==5?'hidden':hd.trangThai==6?'hidden':hd.trangThai==3?'hidden':''}" class="badge text-bg-info text-white" ><i class="bi bi-x-square"></i></a>
+                        <a title="Hủy đơn hàng" onclick="huyDonHang({idhd:`${hd.id}`})" style="text-decoration: none;font-size: 15px;display: ${hd.loaiHoaDon==true?'':'none'};visibility: ${hd.trangThai==5?'hidden':hd.trangThai==6?'hidden':hd.trangThai==3?'hidden':''}" class="badge text-bg-danger text-white" ><i class="bi bi-x-square"></i></a>
                     </td>
                 </tr>
             </c:forEach>

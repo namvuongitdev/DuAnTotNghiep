@@ -3,6 +3,7 @@ package com.example.web.controller;
 import com.example.web.model.GioHangChiTiet;
 import com.example.web.model.HoaDon;
 import com.example.web.model.KhachHang;
+import com.example.web.model.LichSuHoaDon;
 import com.example.web.request.CheckoutRequest;
 import com.example.web.response.GioHangReponse;
 import com.example.web.service.CheckoutService;
@@ -10,6 +11,7 @@ import com.example.web.service.IGioHangOnllineService;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
 import com.example.web.service.IKhachHangService;
+import com.example.web.service.ILichSuHoaDonService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,6 +46,9 @@ public class ThanhToanController {
 
     @Autowired
     private IHoaDonService hoaDonService;
+
+    @Autowired
+    private ILichSuHoaDonService lichSuHoaDonService;
 
 
     @GetMapping("")
@@ -77,6 +83,14 @@ public class ThanhToanController {
             response.forEach(o -> {
                 hoaDonChiTietService.addHoaDonChiTiet(o.getChiTietSanPham().getId(), hd.getId(), o.getSoLuong());
             });
+            Date date = java.util.Calendar.getInstance().getTime();
+            LichSuHoaDon lshd = LichSuHoaDon.builder()
+                    .hoaDon(hd)
+                    .nguoiThaoTac("Khách hàng: "+khachHang.getHoTen())
+                    .thaoTac("Tạo đơn hàng")
+                    .ngayThaoTac(date)
+                    .build();
+            lichSuHoaDonService.add(lshd);
             gioHangOnllineService.clearAllGioHangChiTietByKhachHang_id(khachHang.getId());
             return "redirect:/checkouts/success?idHD="+hd.getId();
         }

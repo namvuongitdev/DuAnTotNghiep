@@ -182,7 +182,6 @@ public class HoDonController {
         model.addAttribute("lst", hoaDonService.pagination(page, 10).getContent());
         model.addAttribute("lst1",hoaDonService.pagination(page,10).getNumber());
         model.addAttribute("currentPage", page);
-        model.addAttribute("url","/admin/hoa-don/hien-thi");
         model.addAttribute("totalPage", hoaDonService.pagination(page, 10).getTotalPages());
         model.addAttribute("contentPage", "hoa-don-tai-quay.jsp");
         return "quanLyHoaDon/hoaDonOnline/hoa-don-onl";

@@ -141,6 +141,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
     public String addSanPhamHoaDonChiTietKhiUpdate(String idCTSP, String idHD, Integer soLuong) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(idHD));
         Optional<ChiTietSanPham> ctsp = chiTietSanPhamRepository.findById(UUID.fromString(idCTSP));
+        BigDecimal donGiaSauKhiGiam = khuyenMaiService.donGiaSauKhiGiam(ctsp.get().getSanPham().getSanPhamKhuyenMais());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         HoaDonChiTiet hdct = null;
@@ -161,29 +162,21 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                 } else {
                     hdct = HoaDonChiTiet.builder()
                             .hoaDon(hoaDon.get())
-                            .donGia(chiTietSanPham.getSanPham().getGiaBan())
                             .soLuong(soLuong)
                             .chiTietSanPham(chiTietSanPham)
                             .trangThai(0)
                             .build();
-                    if (!chiTietSanPham.getSanPham().getSanPhamKhuyenMais().isEmpty()) {
-                        for (SanPhamKhuyenMai o : chiTietSanPham.getSanPham().getSanPhamKhuyenMais()) {
-                            if (o.getKhuyenMai().getTrangThai() == 1 && o.getTrangThai() == 1) {
-                                Integer donGiaSauKhiGiam = o.getSanPhamKM().getGiaBan().intValue() - (o.getSanPhamKM().getGiaBan().intValue() / 100) * o.getMucGiam().intValue();
-                                hdct.setDonGia(BigDecimal.valueOf(donGiaSauKhiGiam));
-                            } else {
-                                hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
-                            }
-                        }
-                    } else {
+                    if(donGiaSauKhiGiam == null){
                         hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
+                    }else{
+                        hdct.setDonGia(donGiaSauKhiGiam);
                     }
                 }
                 Date date = java.util.Calendar.getInstance().getTime();
                 LichSuHoaDon lshd = LichSuHoaDon.builder()
                         .hoaDon(hoaDon.get())
                         .nguoiThaoTac(nhanVien.getHoTen() + " (" + nhanVien.getChucVu().getTen() + ")")
-                        .thaoTac("Thêm sản phẩm vào hóa đơn")
+                        .thaoTac("Thêm sản phẩm " + ctsp.get().getSanPham().getTen()+"["+ctsp.get().getSize().getTen()+"-"+ctsp.get().getSanPham().getChatLieu().getTen()+"-"+ctsp.get().getMauSac().getTen()+"] vào hóa đơn")
                         .ngayThaoTac(date)
                         .build();
                 lichSuHoaDonRepository.save(lshd);
@@ -213,7 +206,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                     hdct.setSoLuong(Integer.parseInt(soLuong));
                 }
                 hoaDonChiTietRepository.save(hdct);
-                return "redirect:/admin/hoa-don-onl/detail/" + hdct.getHoaDon().getId();
+                return "redirect:/admin/hoa-don/view-update/" + hdct.getHoaDon().getId();
             }
         } else {
             return null;
@@ -251,4 +244,5 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
     public List<HoaDonChiTiet> getAllByIdHoaDon(UUID idHD) {
         return hoaDonChiTietRepository.getAllByIdHoaDon(idHD);
     }
+
 }

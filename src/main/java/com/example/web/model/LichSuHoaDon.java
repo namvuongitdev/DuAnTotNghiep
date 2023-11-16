@@ -33,9 +33,11 @@ public class LichSuHoaDon {
     @JoinColumn(name = "id_hoa_don")
     private HoaDon hoaDon;
 
+    @Nationalized
     @Column(name = "nguoi_thao_tac")
     private String nguoiThaoTac;
 
+    @Nationalized
     @Column(name = "thao_tac")
     private String thaoTac;
 

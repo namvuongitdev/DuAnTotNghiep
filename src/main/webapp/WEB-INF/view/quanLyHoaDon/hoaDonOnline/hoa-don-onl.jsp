@@ -24,11 +24,11 @@
         <div class="col py-3">
             <div class="tab-buttons">
                 <button class="tab-button" style="background-color: ${url.contains("hoa-don/")?'#29B5D4':''}" onclick="window.location.href='/admin/hoa-don/hien-thi'">Tất cả</button>
-                <button class="tab-button" style="background-color: ${url.contains("cho-xac-nhan")?'#29B5D4':''}" onclick="window.location.href='/admin/hoa-don-onl/cho-xac-nhan/hien-thi'">Chờ xác nhận</button>
-                <button class="tab-button" style="background-color: ${url.contains("cho-giao-hang")?'#29B5D4':''}" onclick="window.location.href='/admin/hoa-don-onl/cho-giao-hang/hien-thi'">Chờ giao hàng</button>
-                <button class="tab-button" style="background-color: ${url.contains("dang-giao")?'#29B5D4':''}" onclick="window.location.href='/admin/hoa-don-onl/dang-giao/hien-thi'">Đang giao</button>
-                <button class="tab-button" style="background-color: ${url.contains("da-giao")?'#29B5D4':''}" onclick="window.location.href='/admin/hoa-don-onl/da-giao/hien-thi'">Đã giao</button>
-                <button class="tab-button" style="background-color: ${url.contains("da-huy")?'#29B5D4':''}" onclick="window.location.href='/admin/hoa-don-onl/da-huy/hien-thi'">Đã hủy</button>
+                <button class="tab-button" style="background-color: ${url.contains("cho-xac-nhan")?'#29B5D4':uri.contains("1")?'#29B5D4':''}" onclick="window.location.href='/admin/hoa-don-onl/cho-xac-nhan/hien-thi'">Chờ xác nhận</button>
+                <button class="tab-button" style="background-color: ${url.contains("cho-giao-hang")?'#29B5D4':uri.contains("2")?'#29B5D4':''}" onclick="window.location.href='/admin/hoa-don-onl/cho-giao-hang/hien-thi'">Chờ giao hàng</button>
+                <button class="tab-button" style="background-color: ${url.contains("dang-giao")?'#29B5D4':uri.contains("3")?'#29B5D4':''}" onclick="window.location.href='/admin/hoa-don-onl/dang-giao/hien-thi'">Đang giao</button>
+                <button class="tab-button" style="background-color: ${url.contains("da-giao")?'#29B5D4':uri.contains("6")?'#29B5D4':''}" onclick="window.location.href='/admin/hoa-don-onl/da-giao/hien-thi'">Đã giao</button>
+                <button class="tab-button" style="background-color: ${url.contains("da-huy")?'#29B5D4':uri.contains("5")?'#29B5D4':''}" onclick="window.location.href='/admin/hoa-don-onl/da-huy/hien-thi'">Đã hủy</button>
             </div><br>
             <jsp:include page="${contentPage}"/>
         </div>
