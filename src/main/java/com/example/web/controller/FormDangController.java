@@ -97,6 +97,11 @@ public class FormDangController {
             return "redirect:/admin/kieu-dang/hien-thi";
         }
     }
-
+    @GetMapping("/update-status/{id}")
+    public String page(@PathVariable("id") String id,
+                       @RequestParam(name = "trangThai")Integer trangThai ){
+        String url = service.updateStatus(id,trangThai);
+        return url;
+    }
 
 }

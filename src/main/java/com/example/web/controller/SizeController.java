@@ -98,5 +98,10 @@ public class SizeController {
         model.addAttribute("totalPage",sizeService.pagination(p,5).getTotalPages());
         return "quanLySanPham/kichco/kichco";
     }
-
+    @GetMapping("/update-status/{id}")
+    public String page(@PathVariable("id") String id,
+                       @RequestParam(name = "trangThai")Integer trangThai ){
+        String url = sizeService.updateStatus(id,trangThai);
+        return url;
+    }
 }

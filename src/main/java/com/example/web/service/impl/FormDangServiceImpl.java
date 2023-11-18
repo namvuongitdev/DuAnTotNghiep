@@ -52,4 +52,16 @@ public class FormDangServiceImpl implements IFormDangService {
         Pageable pageable = PageRequest.of(pageNo, size);
         return repository.findAll(pageable);
     }
+
+    @Override
+    public String updateStatus(String id, Integer trangThai) {
+        KieuDang kieuDang = repository.getReferenceById(UUID.fromString(id));
+        if (trangThai==0){
+            kieuDang.setTrangThai(1);
+        }else {
+            kieuDang.setTrangThai(0);
+        }
+        repository.save(kieuDang);
+        return "redirect:/admin/kieu-dang/hien-thi";
+    }
 }

@@ -57,4 +57,16 @@ public class DanhMucServiceImpl implements DanhMucService {
         Pageable pageable = PageRequest.of(pageNo, size);
         return danhMucRepository.findAll(pageable);
     }
+
+    @Override
+    public String updateStatus(String id, Integer trangThai) {
+        DanhMuc danhMuc = danhMucRepository.getReferenceById(id);
+        if (trangThai==0){
+            danhMuc.setTrangThai(1);
+        }else {
+            danhMuc.setTrangThai(0);
+        }
+        danhMucRepository.save(danhMuc);
+        return "redirect:/admin/danh-muc/hien-thi";
+    }
 }

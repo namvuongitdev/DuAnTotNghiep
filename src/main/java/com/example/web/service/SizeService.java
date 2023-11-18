@@ -25,4 +25,6 @@ public interface SizeService {
 
     List<Size> getTheoCT (UUID idSP);
 
+    String updateStatus(String id,Integer trangThai);
+
 }

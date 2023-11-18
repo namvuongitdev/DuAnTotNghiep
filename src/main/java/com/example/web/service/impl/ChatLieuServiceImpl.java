@@ -53,4 +53,16 @@ public class ChatLieuServiceImpl implements IChatLieuService {
         Pageable pageable = PageRequest.of(pageNo, size);
         return repository.findAll(pageable);
     }
+
+    @Override
+    public String updateStatus(String id, Integer trangThai) {
+        ChatLieu chatLieu = repository.getReferenceById(UUID.fromString(id));
+        if (trangThai==0){
+            chatLieu.setTrangThai(1);
+        }else {
+            chatLieu.setTrangThai(0);
+        }
+        repository.save(chatLieu);
+        return "redirect:/admin/chat-lieu/hien-thi";
+    }
 }

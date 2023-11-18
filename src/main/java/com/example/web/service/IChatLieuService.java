@@ -20,4 +20,6 @@ public interface IChatLieuService {
     void delete(UUID id);
 
     Page<ChatLieu> page(Integer pageNo, Integer size);
+
+    String updateStatus(String id,Integer trangThai);
 }

@@ -22,4 +22,6 @@ public interface IMauSacService {
     List<MauSac> getAll1();
 
     List<MauSac> getTheoCTSP(UUID idSP);
+
+    String updateStatus(String id,Integer trangThai);
 }

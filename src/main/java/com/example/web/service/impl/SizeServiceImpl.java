@@ -63,5 +63,17 @@ public class SizeServiceImpl implements SizeService {
         return sizeRepository.getTheoCT(idSP);
     }
 
+    @Override
+    public String updateStatus(String id, Integer trangThai) {
+        Size size =sizeRepository.getReferenceById(id);
+        if (trangThai==0){
+            size.setTrangThai(1);
+        }else {
+            size.setTrangThai(0);
+        }
+        sizeRepository.save(size);
+        return "redirect:/admin/size/hien-thi";
+    }
+
 
 }

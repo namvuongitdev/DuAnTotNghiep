@@ -87,11 +87,11 @@
                                         <tr>
                                             <th scope="row">${i.index+1}</th>
                                             <td>${list.ten}</td>
-                                            <td><fmt:formatDate value="${list.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                            <td><fmt:formatDate value="${list.ngaySua}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td><fmt:formatDate value="${list.ngayTao}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
+                                            <td><fmt:formatDate value="${list.ngaySua}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
                                             <td>
                                                 <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        type="button" class="${list.trangThai == 0 ? 'btn btn-danger' : 'btn btn-success'}">
+                                                        type="button" onclick="updateStatus({id:`${list.id}`,trangThai:`${list.trangThai}`})" class="${list.trangThai == 0 ? 'btn btn-danger' : 'btn btn-success'}">
                                                         ${list.trangThai == 0 ? 'Ngừng kích hoạt' : 'Kích hoạt'}
                                                 </button>
                                             </td>
@@ -159,6 +159,14 @@
     function myFunction() {
         document.getElementById("floatingName").readOnly = false;
         document.getElementById("disabled").disabled = false
+    }
+    function updateStatus(data) {
+        if (confirm("Bạn có muốn cập nhật trạng thái không?")==true){
+            window.location.href="/admin/mau-sac/update-status/"+data.id+"?trangThai="+data.trangThai;
+        }else {
+            alert("Cập nhật thất bại");
+            return;
+        }
     }
 </script>
 

@@ -104,4 +104,10 @@ public class DanhMucController {
             return "redirect:/admin/danh-muc/hien-thi";
         }
     }
+    @GetMapping("/update-status/{id}")
+    public String page(@PathVariable("id") String id,
+                       @RequestParam(name = "trangThai")Integer trangThai ){
+        String url = danhMucService.updateStatus(id,trangThai);
+        return url;
+    }
 }
