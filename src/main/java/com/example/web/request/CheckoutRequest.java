@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,4 +38,6 @@ public class CheckoutRequest {
     private Integer phuongThucThanhToan;
 
     private String ghiChu;
+
+    private Date ngayThanhToan;
 }

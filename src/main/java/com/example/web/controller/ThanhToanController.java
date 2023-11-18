@@ -1,15 +1,16 @@
 package com.example.web.controller;
 
-import com.example.web.model.GioHangChiTiet;
+import com.example.web.model.DiaChi;
 import com.example.web.model.HoaDon;
 import com.example.web.model.KhachHang;
 import com.example.web.request.CheckoutRequest;
 import com.example.web.response.GioHangReponse;
 import com.example.web.service.CheckoutService;
+import com.example.web.service.IDiaChiService;
 import com.example.web.service.IGioHangOnllineService;
-import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
 import com.example.web.service.IKhachHangService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,19 +40,26 @@ public class ThanhToanController {
     private IKhachHangService khachHangService;
 
     @Autowired
-    private IHoaDonChiTietService hoaDonChiTietService;
-
-    @Autowired
     private CheckoutService checkoutService;
 
     @Autowired
     private IHoaDonService hoaDonService;
 
 
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private IDiaChiService diaChiService;
+
+    private CheckoutRequest checkout = null;
+
+
     @GetMapping("")
     public String thanhToan(Model model, RedirectAttributes attributes) {
         KhachHang khachHang = khachHangService.getKhachHangLogin();
         List<GioHangReponse> response = gioHangOnllineService.findAll(khachHang.getId());
+        DiaChi diaChi = diaChiService.getDiaChiByKhachHang_idAndDiaChiMacDinh(khachHang.getId());
         if (!model.containsAttribute("checkoutRequest")) {
             model.addAttribute("checkoutRequest", new CheckoutRequest());
         }
@@ -59,34 +70,42 @@ public class ThanhToanController {
             BigDecimal tongTien = gioHangOnllineService.tongTienSanPhamTrongGioHang(khachHang.getId());
             model.addAttribute("sanPhamTrongGioHang", response);
             model.addAttribute("tongTien", tongTien);
-           // model.addAttribute("checkoutRequest", new CheckoutRequest());
+            model.addAttribute("diaChi", diaChi);
         }
         return "gioHangOnlline/thanhtoan";
     }
 
     @PostMapping(value = "/order")
-    public String order(@Valid @ModelAttribute("checkoutRequest") CheckoutRequest checkoutRequest, BindingResult result, RedirectAttributes attributes) {
+    public String order(@Valid @ModelAttribute("checkoutRequest") CheckoutRequest checkoutRequest, BindingResult result, RedirectAttributes attributes) throws UnsupportedEncodingException {
         if (result.hasErrors()) {
             attributes.addFlashAttribute("org.springframework.validation.BindingResult.checkoutRequest", result);
-            attributes.addFlashAttribute("checkoutRequest" , checkoutRequest);
+            attributes.addFlashAttribute("checkoutRequest", checkoutRequest);
             return "redirect:/checkouts";
         } else {
+            checkout = checkoutRequest;
             KhachHang khachHang = khachHangService.getKhachHangLogin();
-            HoaDon hd = checkoutService.createOrder(khachHang, checkoutRequest);
-            List<GioHangChiTiet> response = gioHangOnllineService.getGHCTByKhachHang_id(khachHang.getId());
-            response.forEach(o -> {
-                hoaDonChiTietService.addHoaDonChiTiet(o.getChiTietSanPham().getId(), hd.getId(), o.getSoLuong());
-            });
-            gioHangOnllineService.clearAllGioHangChiTietByKhachHang_id(khachHang.getId());
-            return "redirect:/checkouts/success?idHD="+hd.getId();
+            String url = checkoutService.createOrder(khachHang, checkoutRequest, request);
+            return "redirect:" + url;
         }
     }
 
     @GetMapping(value = "/success")
-    public String datHangThanhCong(Model model , @RequestParam String idHD) {
+    public String datHangThanhCong(Model model, @RequestParam String idHD) {
         KhachHang khachHang = khachHangService.getKhachHangLogin();
-        HoaDon hd = hoaDonService.getHoaDonByKhachHang_idAndHoaDon_id(khachHang.getId() , UUID.fromString(idHD));
+        HoaDon hd = hoaDonService.getHoaDonByKhachHang_idAndHoaDon_id(khachHang.getId(), UUID.fromString(idHD));
         model.addAttribute("hoaDon", hd);
         return "gioHangOnlline/success";
     }
+
+    @GetMapping(value = "/payment/return")
+    public String payment(@RequestParam("vnp_PayDate") Date payDate) {
+        Integer ischeck = checkoutService.orderReturn(request);
+        KhachHang khachHang = khachHangService.getKhachHangLogin();
+        if (ischeck == 1) {
+           HoaDon hoaDon = checkoutService.saveOrder(checkout , khachHang);
+            return "redirect:/checkouts/success?idHD=" + hoaDon.getId();
+        }
+        return null;
+    }
+
 }
