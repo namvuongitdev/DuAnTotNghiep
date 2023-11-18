@@ -49,7 +49,8 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
     @Query("SELECT hd.id, hd.ma, hd.ngayTao, hd.tongTien, SUM(hdct.soLuong), hd.trangThai FROM HoaDon hd " +
             "JOIN HoaDonChiTiet hdct ON hdct.hoaDon.id = hd.id " +
             "WHERE hd.khachHang.taiKhoan = ?1 AND hd.loaiHoaDon = true " +
-            "GROUP BY hd.ma, hd.ngayTao, hd.id, hd.tongTien, hd.trangThai")
+            "GROUP BY hd.ma, hd.ngayTao, hd.id, hd.tongTien, hd.trangThai,hdct.soLuong "+
+            "HAVING hdct.soLuong in(SELECT hdct.soLuong from HoaDonChiTiet hdct where hdct.trangThai=0)")
     Page<Object[]> findHoaDonByTaiKhoan(String taiKhoan, Pageable pageable);
 
     @Query("SELECT hd.id, hd.ma, hd.ngayTao, hd.tongTien, SUM(hdct.soLuong), hd.trangThai FROM HoaDon hd " +

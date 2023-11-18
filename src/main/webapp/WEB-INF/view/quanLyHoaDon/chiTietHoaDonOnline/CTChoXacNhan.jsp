@@ -70,7 +70,7 @@
                                         <p><b>Mã đơn:</b>  <span  value="${hd.ma}">${hd.ma}</span></p>
                                         <p><b>Ngày thanh tạo:</b>  <span value="${hd.ngayTao}"><fmt:formatDate value="${hd.ngayTao}" pattern="dd/MM/yyyy HH:mm:ss"/></span></p>
                                         <p style="display:${hd.trangThai==6?'':'none'}"><b>Ngày thanh toán:</b>  <span value="${hd.ngayThanhToan}"><fmt:formatDate value="${hd.ngayThanhToan}" pattern="dd/MM/yyyy HH:mm:ss"/></span></p>
-                                        <p><b>Hình thức thanh toán:</b>  <span>${hd.phuongThucThanhToan==3?'Thanh toán khi nhận hàng':hd.phuongThucThanhToan==2?'Chuyển khoản':'Tiền Mặt'}</span></p>
+                                        <p><b>Hình thức thanh toán:</b>  <span>${hd.phuongThucThanhToan==3?'Thanh toán khi nhận hàng':hd.phuongThucThanhToan==2?'Chuyển khoản':hd.phuongThucThanhToan==4?'Thanh toán VNPay':'Tiền mặt'}</span></p>
                                         <p><b>Trạng thái:</b>  <span>${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Chuẩn bị hàng và giao cho đơn vị vận chuyển':(hd.trangThai==6)?'Giao hàng thành công':(hd.trangThai==5)?'Hủy đơn hàng':''}</span></p>
                                     </div>
                                     <div class="col-md-6">
@@ -85,8 +85,8 @@
                                     </div>
 
                                 </div>
-                                <div style="display: ${hd.trangThai==1?'':hd.trangThai==2?'':'none'}"><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
-                                                                                                name="1" onclick="getSanPham(this.name)" style="margin-left: 800px; margin-bottom: 20px">Thêm sản phẩm</button></div>
+<%--                                <div style="display: ${hd.trangThai==1?'':hd.trangThai==2?'':'none'}"><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"--%>
+<%--                                                                                                name="1" onclick="getSanPham(this.name)" style="margin-left: 800px; margin-bottom: 20px">Thêm sản phẩm</button></div>--%>
                                 <div class="table-wrapper">
                                     <table class="table">
                                         <thead>
@@ -96,7 +96,7 @@
                                             <th scope="col">Đơn giá</th>
                                             <th scope="col">Số lượng</th>
                                             <th scope="col">Thành tiền</th>
-                                            <th scope="col" style="display: ${hd.trangThai==1?'':hd.trangThai==2?'':'none'}">Thao tác</th>
+<%--                                            <th scope="col" style="display: ${hd.trangThai==1?'':hd.trangThai==2?'':'none'}">Thao tác</th>--%>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -121,10 +121,10 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td><input type="text" class="form-control" id="giaBan" readonly value="<fmt:formatNumber pattern="#,###"  value="${hdct.donGia}"/>"/></td>
-                                                <td><input type="number" class="form-control" id="soLuongSp" ${hd.trangThai==1?'':hd.trangThai==2?'':'disabled'}   onchange="myFunction({idhdct:`${hdct.id}`,soLuong:this.value,idhd:`${hd.id}`})" value="${hdct.soLuong}" min="0" style="width: 40%"></td>
-                                                <td><input type="text" class="form-control" readonly name="${hdct.id}" id="thanhTien" value="<fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.donGia}"/>"></td>
-                                                <td><a style="font-size: 20px;display: ${hd.trangThai==1?'block':hd.trangThai==2?'block':'none'}" onclick="xoaSp({idhdct:`${hdct.id}`,idhd:`${hd.id}`})" title="Xóa sản phẩm" type="button" class="badge text-bg-danger text-white"><i class="bi bi-trash3-fill"></i></a></td>
+                                                <td><fmt:formatNumber pattern="#,###"  value="${hdct.donGia}"/></td>
+                                                <td>${hdct.soLuong}</td>
+                                                <td><fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.donGia}"/></td>
+<%--                                                <td><a style="font-size: 20px;display: ${hd.trangThai==1?'block':hd.trangThai==2?'block':'none'}" onclick="xoaSp({idhdct:`${hdct.id}`,idhd:`${hd.id}`})" title="Xóa sản phẩm" type="button" class="badge text-bg-danger text-white"><i class="bi bi-trash3-fill"></i></a></td>--%>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
@@ -312,31 +312,6 @@
                                     </div>
                                 </div>
 
-<%--                                <button style="margin-left: 15px" type="button" class="action-button inHoaDonChiTiet" data-bs-toggle="modal" data-bs-target="#inHoaDonModal">--%>
-<%--                                    In hóa đơn--%>
-<%--                                </button>--%>
-<%--                                <div class="modal fade inHoaDonModal" id="inHoaDonModal" tabindex="-1" aria-labelledby="inHoaDonModalLabel"--%>
-<%--                                     aria-hidden="true">--%>
-<%--                                    <div class="modal-dialog modal-dialog-centered">--%>
-<%--                                        <div class="modal-content">--%>
-<%--                                            <div class="modal-header">--%>
-<%--                                                <h5 class="modal-title" id="inHoaDonModalLabel">In hóa đơn</h5>--%>
-<%--                                                <button type="button" class="btn-close" data-bs-dismiss="modal"--%>
-<%--                                                        aria-label="Close"></button>--%>
-<%--                                            </div>--%>
-<%--                                            <div class="modal-body">--%>
-<%--                                                Bạn muốn in hóa đơn?--%>
-<%--                                            </div>--%>
-<%--                                            <div class="modal-footer">--%>
-<%--                                                <button type="button" onclick="inHoaDon({idhd:`${hd.id}`})" class="btn btn-primary btn-dong-y">Đồng ý</button>--%>
-<%--                                                <button type="button" class="btn btn-secondary btn-khong"--%>
-<%--                                                        data-bs-dismiss="modal">Không--%>
-<%--                                                </button>--%>
-<%--                                            </div>--%>
-<%--                                        </div>--%>
-<%--                                    </div>--%>
-<%--                                </div>--%>
-
                                 <button class="action-button" type="button" onclick="quayLai()">Quay lại
                                     <i class="bi bi-arrow-left"></i>
                                 </button>
@@ -363,15 +338,15 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label class="form-label">Họ tên khách hàng</label>
-                        <input id="hoTenKhach" type="text" class="form-control"/>
+                        <input id="hoTenKhach" value="${hd.hoTen}" type="text" class="form-control"/>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Số điện thoại</label>
-                        <input id="sdtKhach" type="text" class="form-control"/>
+                        <input id="sdtKhach" value="${hd.sdt}" type="text" class="form-control"/>
                     </div>
                     <div class="col-md-12">
                         <label class="form-label">Địa chỉ</label>
-                        <input id="diaChiMoi" type="text" class="form-control"/>
+                        <input id="diaChiMoi" value="${hd.diaChi}" type="text" class="form-control"/>
                     </div>
                 </div>
             </div>
