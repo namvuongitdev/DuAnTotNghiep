@@ -10,6 +10,7 @@ import com.example.web.service.IDiaChiService;
 import com.example.web.service.IGioHangOnllineService;
 import com.example.web.service.IHoaDonService;
 import com.example.web.service.IKhachHangService;
+import com.example.web.service.ILichSuHoaDonService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,8 @@ public class ThanhToanController {
     @Autowired
     private IHoaDonService hoaDonService;
 
+    @Autowired
+    private ILichSuHoaDonService lichSuHoaDonService;
 
     @Autowired
     private HttpServletRequest request;
@@ -103,6 +106,7 @@ public class ThanhToanController {
         KhachHang khachHang = khachHangService.getKhachHangLogin();
         if (ischeck == 1) {
             HoaDon hoaDon = checkoutService.saveOrder(checkout, khachHang);
+            lichSuHoaDonService.add(khachHang.getHoTen(),"Tạo đơn hàng",hoaDon,null);
             return "redirect:/checkouts/success?idHD=" + hoaDon.getId();
         }
         return null;

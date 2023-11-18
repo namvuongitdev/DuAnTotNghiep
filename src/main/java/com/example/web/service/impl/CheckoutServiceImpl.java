@@ -10,6 +10,7 @@ import com.example.web.request.CheckoutRequest;
 import com.example.web.service.CheckoutService;
 import com.example.web.service.IGioHangOnllineService;
 import com.example.web.service.IHoaDonChiTietService;
+import com.example.web.service.ILichSuHoaDonService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,9 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     @Autowired
     private IHoaDonChiTietService hoaDonChiTietService;
+
+    @Autowired
+    private ILichSuHoaDonService lichSuHoaDonService;
 
 
     @Override
@@ -125,6 +129,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         }
         if (checkoutRequest.getPhuongThucThanhToan() == PhuongThucThanhToanStatus.THANH_TOAN_KHI_NHAN_HANG) {
             HoaDon hoaDon = saveOrder(checkoutRequest, khachHang);
+            lichSuHoaDonService.add(khachHang.getHoTen(),"Tạo đơn hàng",hoaDon,null);
             return "/checkouts/success?idHD=" + hoaDon.getId();
         }
         return null;
