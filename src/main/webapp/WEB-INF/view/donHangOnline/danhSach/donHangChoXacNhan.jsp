@@ -36,84 +36,7 @@
 </head>
 <body>
 <!-- Header Section Begin -->
-<header class="header">
-    <div class="header__top">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-7">
-                    <div class="header__top__left">
-                        <p>Free shipping, 30-day return or refund guarantee.</p>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-5">
-                    <div class="header__top__right">
-                        <div class="header__top__links">
-                            <a href="#">Sign in</a>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-3">
-                <div class="header__logo">
-                    <a href="./index.html"><img src="/anh/logochu.png" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <nav class="header__menu mobile-menu">
-                    <ul>
-                        <li class="active"><a href="">Home</a></li>
-                        <li><a href="./shop.html">Shop</a></li>
-                        <li><a href="#">Pages</a>
-                            <ul class="dropdown">
-                                <li><a href="">About Us</a></li>
-                                <li><a href="">Shop Details</a></li>
-                                <li><a href="">Shopping Cart</a></li>
-                                <li><a href="">Check Out</a></li>
-                                <li><a href="">Blog Details</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="">Blog</a></li>
-                        <li><a href="">Contacts</a></li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="col-lg-3 col-md-3">
-                <div class="header__nav__option">
-                    <a href="/gio-hang-onl"><img src="/img/icon/cart.png" alt=""> <span></span></a>
-                    <c:if test="${empty sessionScope.username}">
-                        <div class="dropdown-center">
-                            <a href="/login">
-                                <img src="../../../img/icon/person.svg" alt="">
-                            </a>
-                        </div>
-                    </c:if>
-                    <c:if test="${not empty sessionScope.username}">
-                        <div class="dropdown-center">
-                            <a href="#" class="dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="../../../img/icon/person.svg" alt="">
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><b style="margin-left: 25px">${sessionScope.username}</b><hr></li>
-                                <li><a class="dropdown-item" href="#">Thông tin của tôi</a></li>
-                                <li><a class="dropdown-item" href="/cuaToi/donHangAll">Đơn hàng của tôi</a></li>
-                                <li><a  class="dropdown-item" href="/logout"
-                                        onclick="if(confirm('Bạn có muốn đăng xuất không ?')==true){return true;}else{return false;}">
-                                    Đăng xuất</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </c:if>
-                </div>
-            </div>
-        </div>
-        <div class="canvas__open"><i class="fa fa-bars"></i></div>
-    </div>
-</header>
+<jsp:include page="../../layout/header.jsp"/>
 
 <!-- Header Section End -->
 <section class="section">
@@ -206,81 +129,8 @@
 </section>
 
 <!-- Footer Section Begin -->
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="footer__about">
-                    <div class="footer__logo">
-                        <a href="#"><img src="/img/footer-logo.png" alt=""></a>
-                    </div>
-                    <p>The customer is at the heart of our unique business model, which includes design.</p>
-                    <a href="#"><img src="/img/payment.png" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
-                <div class="footer__widget">
-                    <h6>Shopping</h6>
-                    <ul>
-                        <li><a href="#">Clothing Store</a></li>
-                        <li><a href="#">Trending Shoes</a></li>
-                        <li><a href="#">Accessories</a></li>
-                        <li><a href="#">Sale</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-3 col-sm-6">
-                <div class="footer__widget">
-                    <h6>Shopping</h6>
-                    <ul>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Payment Methods</a></li>
-                        <li><a href="#">Delivary</a></li>
-                        <li><a href="#">Return & Exchanges</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
-                <div class="footer__widget">
-                    <h6>NewLetter</h6>
-                    <div class="footer__newslatter">
-                        <p>Be the first to know about new arrivals, look books, sales & promos!</p>
-                        <form action="#">
-                            <input type="text" placeholder="Your email">
-                            <button type="submit"><span class="icon_mail_alt"></span></button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="footer__copyright__text">
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    <p>Copyright ©
-                        <script>
-                            document.write(new Date().getFullYear());
-                        </script>2020
-                        All rights reserved | This template is made with <i class="fa fa-heart-o"
-                                                                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                    </p>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-<!-- Footer Section End -->
+<jsp:include page="../../layout/footer.jsp"/>
 
-<!-- Search Begin -->
-<div class="search-model">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-switch">+</div>
-        <form class="search-model-form">
-            <input type="text" id="search-input1" placeholder="Search here.....">
-        </form>
-    </div>
-</div>
 <!-- Search End -->
 <!-- Js Plugins -->
 <script src="../../../../js/jquery-3.3.1.min.js"></script>
