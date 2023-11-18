@@ -2,7 +2,6 @@ package com.example.web.controller;
 
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
-import com.example.web.model.LichSuHoaDon;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
 import com.example.web.service.ILichSuHoaDonService;
@@ -17,9 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.security.Principal;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -94,8 +91,6 @@ public class HoaDonCuaToiController {
     @GetMapping("/chiTietDonHang/{idHD}")
     public String chiTietDonHang(@PathVariable UUID idHD, Model model){
         List<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietService.getAllByIdHoaDon(idHD);
-
-
         Double thanhTien = 0.0;
         for (int i = 0; i < hoaDonChiTietService.getAllByIdHoaDon(idHD).size(); i++) {
             thanhTien += hoaDonChiTiet.get(i).getSoLuong() * hoaDonChiTiet.get(i).getChiTietSanPham().getSanPham().getGiaBan().doubleValue();
@@ -113,7 +108,6 @@ public class HoaDonCuaToiController {
         hoaDon.setTrangThai(6);
         hoaDonService.updateStatusHoaDonById(hoaDon,"6");
         lichSuHoaDonService.add(principal.getName(),"Đơn hàng đã được giao thành công",hoaDon,null);
-
         return "redirect:/cuaToi/donHangAll";
     }
 

@@ -1,5 +1,6 @@
 .section{
     border-top: 1px #cbd3da groove;
+    background-color: white;
 }
 
 .h3-title{
@@ -8,6 +9,11 @@
     text-align: center;
     text-transform: uppercase;
     font-weight: bold;
+}
+
+.table{
+    border-right: 1px whitesmoke solid;
+    border-left: 1px whitesmoke solid;
 }
 
 .table .thead th{
