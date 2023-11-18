@@ -1,13 +1,11 @@
 package com.example.web.service.impl;
 
-import com.example.web.model.HoaDon;
 import com.example.web.model.LichSuHoaDon;
 import com.example.web.repository.ILichSuHoaDonRepository;
 import com.example.web.service.ILichSuHoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 @Service
@@ -35,24 +33,7 @@ public class LichSuHoaDonServiceImpl implements ILichSuHoaDonService {
     }
 
     @Override
-    public void add(String nguoiThaoTac, String thaoTac, HoaDon hoaDon,String chucVu) {
-        Date date = java.util.Calendar.getInstance().getTime();
-        LichSuHoaDon lshd;
-        if (chucVu==null){
-             lshd= LichSuHoaDon.builder()
-                    .hoaDon(hoaDon)
-                    .nguoiThaoTac("Khách hàng: "+nguoiThaoTac)
-                    .thaoTac(thaoTac)
-                    .ngayThaoTac(date)
-                    .build();
-        }else {
-             lshd = LichSuHoaDon.builder()
-                    .hoaDon(hoaDon)
-                    .nguoiThaoTac(nguoiThaoTac+" ("+chucVu+")")
-                    .thaoTac(thaoTac)
-                    .ngayThaoTac(date)
-                    .build();
-        }
+    public void add(LichSuHoaDon lshd) {
         iLichSuHoaDonRepository.save(lshd);
     }
 

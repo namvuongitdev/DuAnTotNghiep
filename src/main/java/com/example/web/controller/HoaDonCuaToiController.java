@@ -112,14 +112,8 @@ public class HoaDonCuaToiController {
         HoaDon hoaDon=hoaDonService.getOne(id);
         hoaDon.setTrangThai(6);
         hoaDonService.updateStatusHoaDonById(hoaDon,"6");
-        Date date = java.util.Calendar.getInstance().getTime();
-        LichSuHoaDon lshd = LichSuHoaDon.builder()
-                .hoaDon(hoaDon)
-                .nguoiThaoTac(principal.getName())
-                .thaoTac("Đơn hàng đã được giao thành công")
-                .ngayThaoTac(date)
-                .build();
-        lichSuHoaDonService.add(lshd);
+        lichSuHoaDonService.add(principal.getName(),"Đơn hàng đã được giao thành công",hoaDon,null);
+
         return "redirect:/cuaToi/donHangAll";
     }
 
@@ -133,14 +127,7 @@ public class HoaDonCuaToiController {
         HoaDon hoaDon=hoaDonService.getOne(id);
         hoaDon.setTrangThai(5);
         hoaDonService.updateStatusHoaDonById(hoaDon,"5");
-        Date date = java.util.Calendar.getInstance().getTime();
-        LichSuHoaDon lshd = LichSuHoaDon.builder()
-                .hoaDon(hoaDon)
-                .nguoiThaoTac(principal.getName())
-                .thaoTac("Hủy hóa đơn")
-                .ngayThaoTac(date)
-                .build();
-        lichSuHoaDonService.add(lshd);
+        lichSuHoaDonService.add(principal.getName(),"Hủy hóa đơn",hoaDon,null);
         return "redirect:/cuaToi/donHangAll";
     }
 }

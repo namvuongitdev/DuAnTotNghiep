@@ -83,7 +83,14 @@ public class ThanhToanController {
             response.forEach(o -> {
                 hoaDonChiTietService.addHoaDonChiTiet(o.getChiTietSanPham().getId(), hd.getId(), o.getSoLuong());
             });
-            lichSuHoaDonService.add(khachHang.getHoTen(),"Tạo đơn hàng",hd,null);
+            Date date = java.util.Calendar.getInstance().getTime();
+            LichSuHoaDon lshd = LichSuHoaDon.builder()
+                    .hoaDon(hd)
+                    .nguoiThaoTac("Khách hàng: "+khachHang.getHoTen())
+                    .thaoTac("Tạo đơn hàng")
+                    .ngayThaoTac(date)
+                    .build();
+            lichSuHoaDonService.add(lshd);
             gioHangOnllineService.clearAllGioHangChiTietByKhachHang_id(khachHang.getId());
             return "redirect:/checkouts/success?idHD="+hd.getId();
         }
