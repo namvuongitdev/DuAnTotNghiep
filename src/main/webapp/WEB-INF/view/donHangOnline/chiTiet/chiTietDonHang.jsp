@@ -91,6 +91,23 @@
                 </tbody>
             </table>
             <%--end--%>
+
+            <div class="container">
+                <div class="row" style="padding-top: 10px;">
+                    <div class="trai">
+                        <h5 style="padding-bottom: 15px"><b>Thông tin giao hàng</b></h5>
+                        <p><b>Họ tên:</b> ${hd.hoTen}</p>
+                        <p><b>Địa chỉ:</b> ${hd.diaChi}</p>
+                    </div>
+                    <div class="phai">
+                        <h5 style="padding-bottom: 15px"><b>Phương thức thanh toán</b></h5>
+                        <p>${hd.phuongThucThanhToan==1?'Tiền mặt':(hd.phuongThucThanhToan==2)?'Chuyển khoản':(hd.phuongThucThanhToan==3)?'Thanh toán khi nhận hàng':(hd.phuongThucThanhToan==4)?'Thanh toán qua ví VNPAY':''}</p>
+                    </div>
+                </div>
+                <hr class="hr-1">
+            </div>
+
+            <%--tính tổng tiền--%>
             <div class="container">
                 <div class="row">
                     <div class="left">
@@ -123,8 +140,7 @@
                             </b>
                         </p>
                     </div>
-                </div>
-                <hr class="hr-1">
+                </div><br>
             </div>
         </div
 
