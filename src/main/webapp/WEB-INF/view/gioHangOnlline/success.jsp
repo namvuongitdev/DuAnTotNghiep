@@ -68,7 +68,14 @@
                                 </div>
                                 <div style="margin-top: 15px">
                                     <h5 style="color: #95999c">Thông tin giao hàng</h5>
-                                    <p class="text-muted mb-0 big">${hoaDon.phuongThucThanhToan == 3 ? "Thanh toán khi nhận hàng (COD)" : ""}</p>
+                                    <p class="text-muted mb-0 big">
+                                        <c:if test="${hoaDon.phuongThucThanhToan == 3}">
+                                            Thanh toán khi nhận hàng (COD)
+                                        </c:if>
+                                           <c:if test="${hoaDon.phuongThucThanhToan == 4}">
+                                               Thanh toán (VNPAY)
+                                           </c:if>
+                                    </p>
                                 </div>
                                 <div style="margin-top: 15px">
                                     <h5 style="color: #95999c">Thông tin thanh toán</h5>

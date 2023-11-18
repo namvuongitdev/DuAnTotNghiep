@@ -708,7 +708,7 @@
             if (data.soLuong<0){
                 alert("Số lượng phải lớn hơn 0");
                 return;
-            }else if (data.soLuong=0){
+            }else if (data.soLuong==0){
                 window.location.href="/admin/hoa-don-onl/delete/"+data.idhd+"?idHdct="+data.idhdct;
             }else {
                 window.location.href = "/admin/hoa-don-onl/update-so-luong/"+data.idhd+"?hdct=" + data.idhdct + "&soLuong=" + data.soLuong;

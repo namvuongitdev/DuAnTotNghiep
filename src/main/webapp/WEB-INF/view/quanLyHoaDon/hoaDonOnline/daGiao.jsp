@@ -22,7 +22,7 @@
     </div>
     <div class="row">
         <%--@elvariable id="hoaDonFillter" type=""--%>
-        <form:form action="/admin/hoa-don/filter" method="get" modelAttribute="hoaDonFillter">
+        <form:form action="/admin/hoa-don-onl/filter/6" method="get" modelAttribute="hoaDonFillter">
             <div class="input-group" style="width: 300px">
                 <input type="text" class="form-control" name="search" value="${fillter.search}"
                        placeholder="Tìm theo mã hóa đơn" aria-label="Tìm theo mã hóa đơn"
@@ -32,12 +32,12 @@
             <div class="row">
                 <div class="col-4">
                     <label class="col-form-label">Từ ngày</label>
-                    <input type="date" value="${fillter.dateBegin}" name="dateBegin"
+                    <input type="date" pattern="dd/MM/yyyy" value="${fillter.dateBegin}" name="dateBegin"
                            class="form-control"/>
                 </div>
                 <div class="col-4">
                     <label class="col-form-label">Đến ngày</label>
-                    <input type="date" value="${fillter.dateEnd}" name="dateEnd"
+                    <input type="date" pattern="dd/MM/yyyy" value="${fillter.dateEnd}" name="dateEnd"
                            class="form-control"/>
                 </div>
                 <br>
@@ -74,13 +74,30 @@
                         <td><fmt:formatNumber pattern="#,###"  value="${dg.tongTien}"/> VNĐ</td>
                         <td>${dg.moTa}</td>
                         <td>
-                            <a title="Xem chi tiết" href="/admin/hoa-don/view-update/${dg.id}" style="font-size: 15px" class="badge text-bg-warning text-white"><i class="bi bi-info-circle"></i></a>
+                            <a title="Xem chi tiết" href="/admin/hoa-don/view-update/${dg.id}" style="font-size: 15px" class="badge text-bg-success text-white"><i class="bi bi-eye-fill"></i></a>
                         </td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
     </div>
+    <%--  phân trang --%>
+    <div class="container-fluid mt-5">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item ${currentPage<=0?"disabled":""}"><a class="page-link"
+                                                                         href="/admin/hoa-don-onl/hien-thi/6/${currentPage-1}"><</a>
+                </li>
+                <c:forEach begin="1" end="${totalPage}" var="i">
+                    <li class="page-item"><a class="page-link ${currentPage+1==i?'active':''}"
+                                             href="/admin/hoa-don-onl/hien-thi/6/${i-1}">${i}</a></li>
+                </c:forEach>
+                <li class="page-item ${currentPage>=totalPage-1?"disabled":""}"><a class="page-link" href="/admin/hoa-don-onl/hien-thi/6/${currentPage+1}">></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
 </div>
 </body>
 </html>

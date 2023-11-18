@@ -43,7 +43,7 @@ function getSanPham(page) {
                     `<td style="color: #03AA28"> Đã được áp dụng</td>` :
                     `<td>
                      <input type="checkbox" onchange="checkeds(this.value)"
-                     name="sanPhams" id="${data.content[i].id}" ${arrayChecked[i] === data.content[i].id ? 'checked' : ''} 
+                     name="sanPhams" id="${data.content[i].id}"} 
                      value="${data.content[i].id}">
                     </td>`
                   }

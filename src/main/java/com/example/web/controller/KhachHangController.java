@@ -138,25 +138,14 @@ public class KhachHangController {
         if(result.hasErrors()) {
             return "quanLyTaiKhoan/khachHang/update";
         }
-        if (khachHangService.findByTaiKhoan(khachHang.getTaiKhoan())!=null){
-            model.addAttribute("taiK","Tài khoản đã tồn tại");
-            return "quanLyTaiKhoan/khachHang/add";
-        }
-        if (khachHangService.findByEmail(khachHang.getEmail())!=null){
-            model.addAttribute("email","Email này đã được sử dụng");
-            return "quanLyTaiKhoan/khachHang/add";
-        }
-        if (khachHangService.findBySdt(khachHang.getSdt())!=null){
-            model.addAttribute("sdt","SĐT này đã được sử dụng");
-            return "quanLyTaiKhoan/khachHang/add";
-        }
             Date date = java.util.Calendar.getInstance().getTime();
             khachHang.setId(kh.getId());
+            khachHang.setTrangThai(0);
+            khachHang.setMatKhau(passwordEncoder.encode(khachHang.getMatKhau()));
             khachHang.setNgayTao(kh.getNgayTao());
             khachHang.setNgaySua(date);
             khachHangService.update(khachHang);
             return "redirect:/admin/khach-hang/hien-thi";
-
     }
 
     @GetMapping("/view-update/{id}")

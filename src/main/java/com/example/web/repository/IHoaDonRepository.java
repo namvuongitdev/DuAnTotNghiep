@@ -60,4 +60,7 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
 
     @Query("select hd from HoaDon hd join hd.khachHang kh where kh.id = ?1 and hd.id = ?2")
     HoaDon findHoaDonByKhachHang(UUID idKH ,UUID idHD);
+
+    @Query(value = "select hd from HoaDon hd where hd.loaiHoaDon=true and hd.trangThai=?1")
+    Page<HoaDon> phanTrangOnl(String trangThai,Pageable pageable);
 }

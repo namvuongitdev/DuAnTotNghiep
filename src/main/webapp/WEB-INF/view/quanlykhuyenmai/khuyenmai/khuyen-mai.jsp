@@ -105,7 +105,7 @@
                                         <td style="color: #03AA28">Kích hoạt</td>
                                     </c:when>
                                     <c:when test="${khuyenMai.trangThai == 2}">
-                                        <td style="color: #1da1f2">Chưa được kích hoạt</td>
+                                        <td style="color: #005cbf">Chưa được kích hoạt</td>
                                     </c:when>
                                     <c:otherwise>
                                         <td style="color: red">Ngừng kích hoạt</td>

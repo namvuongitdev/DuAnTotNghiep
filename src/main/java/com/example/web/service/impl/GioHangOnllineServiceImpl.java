@@ -3,6 +3,7 @@ package com.example.web.service.impl;
 import com.example.web.model.*;
 import com.example.web.repository.IGioHangOnllineRepository;
 import com.example.web.repository.IGioHangRepository;
+import com.example.web.repository.IKhachHangRepository;
 import com.example.web.response.GioHangReponse;
 import com.example.web.service.IGioHangCTService;
 import com.example.web.service.IGioHangOnllineService;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +28,12 @@ public class GioHangOnllineServiceImpl implements IGioHangOnllineService {
 
     @Autowired
     ISanPhamService iSanPhamService;
+
+    @Autowired
+    IKhachHangService khachHangService;
+
+    @Autowired
+    IKhachHangRepository khachHangRepository;
 
     @Autowired
     IGioHangCTService iGioHangCTService;

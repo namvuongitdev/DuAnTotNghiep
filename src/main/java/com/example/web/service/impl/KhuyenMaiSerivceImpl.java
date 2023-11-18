@@ -237,9 +237,18 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
 
     @Scheduled(cron = "0 0 0 * * *")
     public void updateNgayHetHan() {
-        List<KhuyenMai> listKhuyenMai = repository.updateNgayKetThuc();
+        List<KhuyenMai> listKhuyenMai = repository.findKhuyenMaiByHetHan();
         listKhuyenMai.forEach(o -> {
-            o.setTrangThai(KhuyenMaiStatus.NGUNG_KICH_HOAT);
+            o.setTrangThai(KhuyenMaiStatus.HET_HAN);
+            repository.save(o);
+        });
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void updateChuaBatDau() {
+        List<KhuyenMai> listKhuyenMai = repository.findKhuyenMaiByChuBatDau();
+        listKhuyenMai.forEach(o -> {
+            o.setTrangThai(KhuyenMaiStatus.KICH_HOAT);
             repository.save(o);
         });
     }

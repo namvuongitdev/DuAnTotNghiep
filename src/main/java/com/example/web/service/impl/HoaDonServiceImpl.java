@@ -30,7 +30,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,10 +42,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -235,18 +232,45 @@ public class HoaDonServiceImpl implements IHoaDonService {
             public Predicate toPredicate(Root<HoaDon> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
                 if (!filter.getSearch().isBlank()) {
-                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("ma"), "%" + filter.getSearch() + "%"),
-                            criteriaBuilder.like(root.get("sdt"), "%" + filter.getSearch() + "%"),
-                            criteriaBuilder.like(root.get("hoTen"), "%" + filter.getSearch() + "%")));
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("ma"), "%"+filter.getSearch()+"%"),
+                            criteriaBuilder.like(root.get("sdt"), "%"+filter.getSearch()+"%"),
+                            criteriaBuilder.like(root.get("hoTen"), "%"+filter.getSearch()+"%")));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("trangThai"),0)));
                 }
                 if (!filter.getDateBegin().isBlank() && !filter.getDateEnd().isBlank()) {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date date1 = dateFormat.parse(filter.getDateBegin());
                     Date date2 = dateFormat.parse(filter.getDateEnd());
                     predicates.add(criteriaBuilder.and(criteriaBuilder.between(root.get("ngayTao"), date1, date2)));
-                }
-                if (!filter.getLoaiHoaDon().isBlank()) {
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("trangThai"),0)));
+                }if (!filter.getLoaiHoaDon().isBlank()) {
                     predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("loaiHoaDon"), Boolean.valueOf(filter.getLoaiHoaDon()))));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("trangThai"),0)));
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        }, pageable);
+    }
+
+    @Override
+    public Page<HoaDon> hoaDonFillter2(HoaDonFilter filter, Pageable pageable) {
+        return hoaDonRepository.findAll(new Specification<HoaDon>() {
+            @SneakyThrows
+            @Override
+            public Predicate toPredicate(Root<HoaDon> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                if (!filter.getSearch().isBlank()) {
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("ma"), "%"+filter.getSearch()+"%"),
+                            criteriaBuilder.like(root.get("sdt"), "%"+filter.getSearch()+"%"),
+                            criteriaBuilder.like(root.get("hoTen"), "%"+filter.getSearch()+"%")));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("loaiHoaDon"), false)));
+                }
+                if (!filter.getDateBegin().isBlank() && !filter.getDateEnd().isBlank()) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date1 = dateFormat.parse(filter.getDateBegin());
+                    Date date2 = dateFormat.parse(filter.getDateEnd());
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.between(root.get("ngayTao"), date1, date2)));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("loaiHoaDon"), false)));
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
@@ -350,5 +374,11 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public HoaDon getHoaDonByKhachHang_idAndHoaDon_id(UUID idKH, UUID idHD) {
         return hoaDonRepository.findHoaDonByKhachHang(idKH, idHD);
+    }
+
+    @Override
+    public Page<HoaDon> phanTrangOnl(String trangThai,Integer pageNo,Integer size) {
+        Pageable pageable = PageRequest.of(pageNo,size);
+        return hoaDonRepository.phanTrangOnl(trangThai,pageable);
     }
 }

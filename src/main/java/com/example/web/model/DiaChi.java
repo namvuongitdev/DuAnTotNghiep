@@ -42,8 +42,8 @@ public class DiaChi {
     @Nationalized
     private String diaChi;
 
-    @Column(name = "trang_thai")
-    private Integer trangThai;
+    @Column(name = "dia_chi_mac_dinh")
+    private boolean diaChiMacDinh;
 
     @ManyToOne
     @JoinColumn(name = "id_khachHang")

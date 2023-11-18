@@ -50,7 +50,6 @@
                     <nav class="breadcrumb" style="background-color: white">
                         <li class="breadcrumb-item"><a class="hover" href="/gio-hang-onl">Giỏ hàng</a></li>
                         <li class="breadcrumb-item">Thông tin giao hàng</li>
-                        <li class="breadcrumb-item" onclick="alert('hello')">Địa chỉ</li>
                     </nav>
                 </div><!-- End Page Title -->
                <form:form action="/checkouts/order" method="post" modelAttribute="checkoutRequest">
@@ -58,60 +57,7 @@
                         <h5>Thông tin giao hàng</h5>
                     </div>
                     <div class="row">
-                        <div class="col-12">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="hoTen" name="hoTen" placeholder="Họ và tên" value="${checkoutRequest.hoTen}">
-                                <label>Họ và tên</label>
-                                <form:errors path="hoTen" cssStyle="color: red"/>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="soDienThoai" name="soDienThoai" placeholder="Số điện thoại" value="${checkoutRequest.soDienThoai}">
-                                <label>Số điện thoại</label>
-                                <form:errors path="soDienThoai" cssStyle="color: red"/>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="diaChi" name="diaChi" placeholder="Địa chỉ" value="${checkoutRequest.diaChi}">
-                                <label>Địa chỉ</label>
-                                <form:errors path="diaChi" cssStyle="color: red"/>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-floating">
-                                <select id="province" class="form-select tinhThanhPho" id="thanhPho" name="thanhPho">
-                                    <option value="">Chọn tỉnh / thành</option>
-                                </select>
-                                <label>Tỉnh / thành</label>
-                                <form:errors path="thanhPho" cssStyle="color: red"/>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-floating">
-                                <select id="district" disabled class="form-select chonQuanHuyen" aria-invalid="quanHuyen" name="quanHuyen">
-                                    <option value="">Chọn quận / huyện</option>
-                                </select>
-                                <label>Quận / huyện</label>
-                                <form:errors path="quanHuyen" cssStyle="color: red"/>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-floating">
-                                <select id="ward" disabled class="form-select chonPhuongXa" id="phuongXa" name="phuongXa">
-                                    <option value="">Chọn phường / xã</option>
-                                </select>
-                                <label>Phường / xã</label>
-                                <form:errors path="phuongXa" cssStyle="color: red"/>
-                            </div>
-                        </div>
-                        <div class="col-12" style="margin-top: 13px">
-                            <div class="form-floating mb-3">
-                                <textarea type="text" class="form-control" id="ghiChu" name="ghiChu" value="${checkoutRequest.ghiChu}"></textarea>
-                                <label>Ghi chú</label>
-                            </div>
-                        </div>
+                      <jsp:include page="newDiaChi.jsp"></jsp:include>
                     </div>
                     <div class="mt-5">
                         <h5>Phương thức thanh toán</h5>
@@ -125,6 +71,16 @@
                             </label>
                         </div>
                     </div>
+                   <div class="mt-3 card-radio">
+                       <div class="form-check radio">
+                           <input class="form-check-input" type="radio" name="phuongThucThanhToan" id="flexRadioDefault3"
+                                  value="4">
+                           <label class="form-check-label" for="flexRadioDefault3">
+                               Thanh toán (VNPAY).
+                           </label>
+                       </div>
+                   </div>
+
                     <div class="row mt-5">
                         <div class="col-6">
                             <a class="hover" href="/gio-hang-onl">Giỏ hàng</a>

@@ -27,6 +27,9 @@ public interface IKhuyenMaiRepository extends JpaRepository<KhuyenMai , UUID>  ,
     SanPhamKhuyenMai findBySanPham_id(UUID id);
 
     @Query(value = "select km from KhuyenMai km where km.ngayKetThuc <= current_date ")
-    List<KhuyenMai> updateNgayKetThuc();
+    List<KhuyenMai> findKhuyenMaiByHetHan();
+
+    @Query(value = "select km from KhuyenMai km where km.ngayBatDau = current_date")
+    List<KhuyenMai> findKhuyenMaiByChuBatDau();
 
 }

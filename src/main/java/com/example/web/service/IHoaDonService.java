@@ -36,6 +36,8 @@ public interface IHoaDonService {
 
     Page<HoaDon> hoaDonFillter(HoaDonFilter filter , Pageable pageable);
 
+    Page<HoaDon> hoaDonFillter2(HoaDonFilter filter , Pageable pageable);
+
     HoaDon add(HoaDon hoaDon);
 
    String updateHoaDonById(HoaDon hoaDon);
@@ -56,4 +58,5 @@ public interface IHoaDonService {
 
     HoaDon getHoaDonByKhachHang_idAndHoaDon_id(UUID idKH , UUID idHD );
 
+    Page<HoaDon> phanTrangOnl(String trangThai,Integer pageNo,Integer size);
 }
