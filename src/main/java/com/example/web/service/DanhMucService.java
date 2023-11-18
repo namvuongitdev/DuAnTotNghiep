@@ -22,4 +22,6 @@ public interface DanhMucService {
     void delete(String id);
 
     Page<DanhMuc> page(Integer pageNo, Integer size);
+
+    String updateStatus(String id,Integer trangThai);
 }

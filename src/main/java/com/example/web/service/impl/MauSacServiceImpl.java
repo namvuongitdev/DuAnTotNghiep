@@ -57,5 +57,17 @@ public class MauSacServiceImpl implements IMauSacService {
         return mauSacRepository.getTheoCTSP(idSP);
     }
 
+    @Override
+    public String updateStatus(String id, Integer trangThai) {
+        MauSac mauSac = mauSacRepository.getReferenceById(UUID.fromString(id));
+        if (trangThai==0){
+            mauSac.setTrangThai(1);
+        }else {
+            mauSac.setTrangThai(0);
+        }
+        mauSacRepository.save(mauSac);
+        return "redirect:/admin/mau-sac/hien-thi";
+    }
+
 
 }

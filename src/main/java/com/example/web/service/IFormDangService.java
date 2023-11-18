@@ -21,4 +21,6 @@ public interface IFormDangService {
     void delete(UUID id);
 
     Page<KieuDang> page(Integer pageNo, Integer size);
+
+    String updateStatus(String id,Integer trangThai);
 }

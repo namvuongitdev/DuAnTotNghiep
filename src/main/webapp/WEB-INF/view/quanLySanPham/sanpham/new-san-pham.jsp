@@ -540,7 +540,7 @@
             window.location.href = '/admin/san-pham/stop-ctsp/' + data.idctsp + "?idSP=" + data.idsp + "&tt=" + data.trangThai;
         } else {
             alert('Cập nhật thất bại!')
-            return fasle;
+            return;
         }
     }
 </script>
