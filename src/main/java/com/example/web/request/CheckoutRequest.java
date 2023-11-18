@@ -39,5 +39,5 @@ public class CheckoutRequest {
 
     private String ghiChu;
 
-    private Date ngayThanhToan;
+    private String ngayThanhToan;
 }

@@ -1,6 +1,5 @@
 package com.example.web.service.impl;
 
-import com.example.web.Config.VNPAY.Config;
 import com.example.web.Config.status.HoaDonStatus;
 import com.example.web.Config.status.PhuongThucThanhToanStatus;
 import com.example.web.model.GioHangChiTiet;
@@ -14,7 +13,6 @@ import com.example.web.service.IHoaDonChiTietService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -30,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import com.example.web.Config.VNPAY.Config;
 
 @Service
 public class CheckoutServiceImpl implements CheckoutService {
@@ -149,8 +148,8 @@ public class CheckoutServiceImpl implements CheckoutService {
                 .phuongThucThanhToan(request.getPhuongThucThanhToan())
                 .tongTien(tongTien)
                 .build();
-        if (request.getNgayThanhToan() != null) {
-            hoaDon.setNgayThanhToan(request.getNgayThanhToan());
+        if (request.getPhuongThucThanhToan() == PhuongThucThanhToanStatus.VNPAY) {
+            hoaDon.setNgayThanhToan(date);
         }
         hoaDonRepository.save(hoaDon);
         List<GioHangChiTiet> response = gioHangOnllineService.getGHCTByKhachHang_id(khachHang.getId());

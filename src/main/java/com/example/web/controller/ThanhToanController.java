@@ -98,11 +98,11 @@ public class ThanhToanController {
     }
 
     @GetMapping(value = "/payment/return")
-    public String payment(@RequestParam("vnp_PayDate") Date payDate) {
+    public String payment() {
         Integer ischeck = checkoutService.orderReturn(request);
         KhachHang khachHang = khachHangService.getKhachHangLogin();
         if (ischeck == 1) {
-           HoaDon hoaDon = checkoutService.saveOrder(checkout , khachHang);
+            HoaDon hoaDon = checkoutService.saveOrder(checkout, khachHang);
             return "redirect:/checkouts/success?idHD=" + hoaDon.getId();
         }
         return null;
