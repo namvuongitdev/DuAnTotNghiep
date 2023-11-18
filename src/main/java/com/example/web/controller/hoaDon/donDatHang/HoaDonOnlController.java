@@ -186,14 +186,10 @@ public class HoaDonOnlController {
         }
         hoaDonService.updateHoaDonById(hoaDon);
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietService.getOne(idHdct);
-        Date date = java.util.Calendar.getInstance().getTime();
-        LichSuHoaDon lshd = LichSuHoaDon.builder()
-                .hoaDon(hoaDon)
-                .nguoiThaoTac(nhanVien.getHoTen()+" ("+nhanVien.getChucVu().getTen()+")")
-                .thaoTac("Chỉnh sửa số lượng sản phẩm " + hoaDonChiTiet.getChiTietSanPham().getSanPham().getTen()+"["+hoaDonChiTiet.getChiTietSanPham().getSize().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getSanPham().getChatLieu().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getMauSac().getTen()+"]")
-                .ngayThaoTac(date)
-                .build();
-        lichSuHoaDonService.add(lshd);
+        lichSuHoaDonService.add(nhanVien.getHoTen(),
+                "Chỉnh sửa số lượng sản phẩm "+ hoaDonChiTiet.getChiTietSanPham().getSanPham().getTen()+"["+hoaDonChiTiet.getChiTietSanPham().getSize().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getSanPham().getChatLieu().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getMauSac().getTen()+"]",
+                hoaDon,
+                nhanVien.getChucVu().getTen());
         return url;
     }
 
@@ -215,14 +211,7 @@ public class HoaDonOnlController {
         }
         hoaDonService.updateHoaDonById(hoaDon);
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietService.getOne(idHdct);
-        Date date = java.util.Calendar.getInstance().getTime();
-        LichSuHoaDon lshd = LichSuHoaDon.builder()
-                .hoaDon(hoaDon)
-                .nguoiThaoTac(nhanVien.getHoTen()+" ("+nhanVien.getChucVu().getTen()+")")
-                .thaoTac("Xóa sản phẩm " + hoaDonChiTiet.getChiTietSanPham().getSanPham().getTen()+"["+hoaDonChiTiet.getChiTietSanPham().getSize().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getSanPham().getChatLieu().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getMauSac().getTen()+"]")
-                .ngayThaoTac(date)
-                .build();
-        lichSuHoaDonService.add(lshd);
+        lichSuHoaDonService.add(nhanVien.getHoTen(),"Xóa sản phẩm " + hoaDonChiTiet.getChiTietSanPham().getSanPham().getTen()+"["+hoaDonChiTiet.getChiTietSanPham().getSize().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getSanPham().getChatLieu().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getMauSac().getTen()+"]",hoaDon,nhanVien.getChucVu().getTen());
         if (lst.getContent().isEmpty()){
             hoaDonService.updateStatusHoaDonById(hoaDon,String.valueOf(HoaDonStatus.HUY));
         }
@@ -244,18 +233,18 @@ public class HoaDonOnlController {
         NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         Integer status;
         Date date = java.util.Calendar.getInstance().getTime();
-        String thaoThac = null;
+        String thaoTac = null;
         HoaDon hoaDon=hoaDonService.getOne(id);
         if (hoaDon.getTrangThai()==1){
             status= TrangThaiHoaDon.DA_XAC_NHAN.getValue();
-            thaoThac="Đơn hàng đã được xác nhận";
+            thaoTac="Đơn hàng đã được xác nhận";
         }else if (hoaDon.getTrangThai()==2){
             status=TrangThaiHoaDon.DANG_VAN_CHUYEN.getValue();
-            thaoThac="Đơn hàng đã được giao cho đơn vị vận chuyển";
+            thaoTac="Đơn hàng đã được giao cho đơn vị vận chuyển";
             hoaDon.setNgayShip(date);
         }else if (hoaDon.getTrangThai()==3){
             status=TrangThaiHoaDon.GIAO_THANH_CONG.getValue();
-            thaoThac="Đơn hàng đã được giao thành công";
+            thaoTac="Đơn hàng đã được giao thành công";
             hoaDon.setNgayThanhToan(date);
         }else if (hoaDon.getTrangThai()==6){
             status=TrangThaiHoaDon.GIAO_THANH_CONG.getValue();
@@ -263,13 +252,7 @@ public class HoaDonOnlController {
             status=TrangThaiHoaDon.HUY_HOA_DON.getValue();
         }
         url=hoaDonService.updateStatusHoaDonById(hoaDon,String.valueOf(status));
-        LichSuHoaDon lshd = LichSuHoaDon.builder()
-                .hoaDon(hoaDon)
-                .nguoiThaoTac(nhanVien.getHoTen()+" ("+nhanVien.getChucVu().getTen()+")")
-                .thaoTac(thaoThac)
-                .ngayThaoTac(date)
-                .build();
-        lichSuHoaDonService.add(lshd);
+        lichSuHoaDonService.add(nhanVien.getHoTen(),thaoTac,hoaDon,nhanVien.getChucVu().getTen());
         return url;
     }
     @GetMapping("huy-don/{id}")
@@ -284,14 +267,7 @@ public class HoaDonOnlController {
         HoaDon hoaDon=hoaDonService.getOne(id);
         hoaDon.setTongTien(BigDecimal.valueOf(0));
         url=hoaDonService.updateStatusHoaDonById(hoaDon,String.valueOf(HoaDonStatus.HUY));
-        Date date = java.util.Calendar.getInstance().getTime();
-        LichSuHoaDon lshd = LichSuHoaDon.builder()
-                .hoaDon(hoaDon)
-                .nguoiThaoTac(nhanVien.getHoTen()+" ("+nhanVien.getChucVu().getTen()+")")
-                .thaoTac("Hủy hóa đơn")
-                .ngayThaoTac(date)
-                .build();
-        lichSuHoaDonService.add(lshd);
+        lichSuHoaDonService.add(nhanVien.getHoTen(),"Hủy hóa đơn",hoaDon,nhanVien.getChucVu().getTen());
         return url;
     }
     @GetMapping("/update-thong-tin/{id}")
