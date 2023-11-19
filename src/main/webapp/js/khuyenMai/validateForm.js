@@ -13,7 +13,7 @@ const formCreate = () => {
         return false;
     } else if (mucGiam) {
         if(mucGiam >= 100){
-            alert("mức giảm giá tối hiểu chỉ được 100%")
+            alert("mức giảm giá phải nhỏ hơn 100%")
             return false;
         }
     } else {

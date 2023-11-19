@@ -85,8 +85,8 @@
                                     </div>
 
                                 </div>
-<%--                                <div style="display: ${hd.trangThai==1?'':hd.trangThai==2?'':'none'}"><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"--%>
-<%--                                                                                                name="1" onclick="getSanPham(this.name)" style="margin-left: 800px; margin-bottom: 20px">Thêm sản phẩm</button></div>--%>
+                                <div style="display: ${hd.trangThai==1?'':hd.trangThai==2?'':'none'}"><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
+                                                                                                name="1" onclick="getSanPham(this.name)" style="margin-left: 800px; margin-bottom: 20px">Thêm sản phẩm</button></div>
                                 <div class="table-wrapper">
                                     <table class="table">
                                         <thead>
@@ -122,9 +122,9 @@
                                                     </div>
                                                 </td>
                                                 <td><fmt:formatNumber pattern="#,###"  value="${hdct.donGia}"/></td>
-                                                <td>${hdct.soLuong}</td>
+                                                <td><input type="number" class="form-control" id="soLuongSp" ${hd.trangThai==1?'':hd.trangThai==2?'':'disabled'}   onchange="myFunction({idhdct:`${hdct.id}`,soLuong:this.value,idhd:`${hd.id}`})" value="${hdct.soLuong}" min="0" style="width: 40%"></td>
                                                 <td><fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.donGia}"/></td>
-<%--                                                <td><a style="font-size: 20px;display: ${hd.trangThai==1?'block':hd.trangThai==2?'block':'none'}" onclick="xoaSp({idhdct:`${hdct.id}`,idhd:`${hd.id}`})" title="Xóa sản phẩm" type="button" class="badge text-bg-danger text-white"><i class="bi bi-trash3-fill"></i></a></td>--%>
+                                               <td><a style="font-size: 20px;display: ${hd.trangThai==1?'block':hd.trangThai==2?'block':'none'}" onclick="xoaSp({idhdct:`${hdct.id}`,idhd:`${hd.id}`})" title="Xóa sản phẩm" type="button" class="badge text-bg-danger text-white"><i class="bi bi-trash3-fill"></i></a></td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>

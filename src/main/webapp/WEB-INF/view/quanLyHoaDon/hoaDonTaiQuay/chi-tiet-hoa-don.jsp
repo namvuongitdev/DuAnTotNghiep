@@ -63,9 +63,9 @@
                                         <label class="form-label" path="">Ngày thanh toán</label>
                                     </div>
                                 </div>
-                                <%--                                <div style="text-align: center">--%>
-                                <%--                                    <button type="submit" class="btn btn-outline-dark">Cập nhật</button>--%>
-                                <%--                                </div>--%>
+<%--                                                                <div style="text-align: center">--%>
+<%--                                                                    <button type="submit" class="btn btn-outline-dark">Cập nhật</button>--%>
+<%--                                                                </div>--%>
                             </div>
                         </form>
 

@@ -103,7 +103,7 @@ public class SanPhamController {
     @ResponseBody
     public Page<SanPham> apiSanPham(@RequestParam Integer page , @RequestParam(required = false) String value) {
         Page listSanPham = null;
-        Pageable pageable = PageRequest.of(page - 1, 4);
+        Pageable pageable = PageRequest.of(page - 1, 10);
         if(value.isEmpty()){
             listSanPham = iSanPhamService.findAll(pageable);
         }else{
