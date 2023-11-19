@@ -343,4 +343,14 @@ public class HoaDonServiceImpl implements IHoaDonService {
     public HoaDon getHoaDonByKhachHang_idAndHoaDon_id(UUID idKH , UUID idHD) {
         return hoaDonRepository.findHoaDonByKhachHang(idKH , idHD);
     }
+
+    @Override
+    public Integer tongHoaDonHuy() {
+        return hoaDonRepository.tongHoaDonHuy();
+    }
+
+    @Override
+    public Integer tongHoaDonChoXacNhan() {
+        return hoaDonRepository.tongHoaDonChoXacNhan();
+    }
 }

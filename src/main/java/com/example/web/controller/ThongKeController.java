@@ -3,6 +3,7 @@ package com.example.web.controller;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.service.IChiTietSanPhamService;
 import com.example.web.service.IHoaDonChiTietService;
+import com.example.web.service.IHoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,9 @@ public class ThongKeController {
     private IHoaDonChiTietService iHoaDonChiTietService;
 
     @Autowired
+    private IHoaDonService iHoaDonService;
+
+    @Autowired
     private IChiTietSanPhamService chiTietSanPhamService;
 
     @GetMapping("")
@@ -35,6 +39,10 @@ public class ThongKeController {
         model.addAttribute("doanhThuTrongNgay",doanhThuTrongNgay);
         List<ChiTietSanPham> get5SanPhamBanChay = chiTietSanPhamService.getTop5SanPhamBanChay();
         model.addAttribute("sanPhamBanChay",get5SanPhamBanChay);
+        Integer tongHDHuy = iHoaDonService.tongHoaDonHuy();
+        model.addAttribute("tongHDHuy",tongHDHuy);
+        Integer tongHoaDonChoXacNhan = iHoaDonService.tongHoaDonChoXacNhan();
+        model.addAttribute("tongHoaDonChoXacNhan",tongHoaDonChoXacNhan);
         return "thongKe/thongKe";
     }
 
