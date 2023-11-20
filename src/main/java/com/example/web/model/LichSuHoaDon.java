@@ -43,4 +43,8 @@ public class LichSuHoaDon {
 
     @Column(name = "ngay_thao_tac")
     private Date ngayThaoTac;
+
+    @Nationalized
+    @Column(name = "ghi_chu")
+    private String ghiChu;
 }

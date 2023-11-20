@@ -35,7 +35,7 @@ public class LichSuHoaDonServiceImpl implements ILichSuHoaDonService {
     }
 
     @Override
-    public void add(String nguoiThaoTac, String thaoTac, HoaDon hoaDon, String chucVu) {
+    public void add(String nguoiThaoTac, String thaoTac, HoaDon hoaDon, String chucVu,String ghiChu) {
         Date date = java.util.Calendar.getInstance().getTime();
         LichSuHoaDon lshd;
         if (chucVu==null){
@@ -44,6 +44,7 @@ public class LichSuHoaDonServiceImpl implements ILichSuHoaDonService {
                     .nguoiThaoTac("Khách hàng: "+nguoiThaoTac)
                     .thaoTac(thaoTac)
                     .ngayThaoTac(date)
+                    .ghiChu(ghiChu)
                     .build();
         }else {
             lshd = LichSuHoaDon.builder()
@@ -51,6 +52,7 @@ public class LichSuHoaDonServiceImpl implements ILichSuHoaDonService {
                     .nguoiThaoTac(nguoiThaoTac+" ("+chucVu+")")
                     .thaoTac(thaoTac)
                     .ngayThaoTac(date)
+                    .ghiChu(ghiChu)
                     .build();
         }
         iLichSuHoaDonRepository.save(lshd);

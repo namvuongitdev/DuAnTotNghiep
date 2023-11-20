@@ -74,10 +74,34 @@
                         <td><fmt:formatNumber pattern="#,###"  value="${gh.tongTien+gh.phiVanChuyen}"/> VNĐ</td>
                         <td>${gh.moTa}</td>
                         <td>
-                            <a title="Đã giao cho đơn vị vận chuyển?" name="3" id="trangThai" style="text-decoration: none;font-size: 15px" onclick="xacNhan({idhd:`${gh.id}`})" class="badge text-bg-info text-white"><i class="bi bi-truck"></i></a>
+                            <a title="Đã giao cho đơn vị vận chuyển?" name="3" id="trangThai" style="text-decoration: none;font-size: 15px" data-bs-toggle="modal" data-bs-target="#exampleModal" class="badge text-bg-info text-white"><i class="bi bi-truck"></i></a>
                             <a title="Xem chi tiết" href="/admin/hoa-don/view-update/${gh.id}" style="font-size: 15px" class="badge text-bg-success text-white"><i class="bi bi-eye-fill"></i></a>
                         </td>
                     </tr>
+                    <%--    Modal Xác nhận--%>
+                    <div id="exampleModal" class="modal fade xacNhanModal" tabindex="-1" aria-labelledby="xacNhanModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="xacNhanModalLabel">Xác nhận đơn</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <b>${gh.trangThai==1?'Xác nhận đơn?':gh.trangThai==2?'Đơn hàng đã giao cho đơn vị vận chuyển?':gh.trangThai==3?'Đơn hàng đã giao thành công?':''}</b>
+                                    <div class="mt-3">
+                                        <label for="ghiChu" class="form-label">Ghi chú</label>
+                                        <textarea class="form-control" id="ghiChu" name="ghiChu" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" onclick="xacNhan({trangThai:`${gh.trangThai}`,idhd:`${gh.id}`})" class="btn btn-primary btn-dong-y">Đồng ý</button>
+                                    <button type="submit" class="btn btn-secondary btn-khong" data-bs-dismiss="modal">Không</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </c:forEach>
             </tbody>
         </table>
@@ -104,11 +128,8 @@
 <script>
     function xacNhan(data) {
         let trangThai = document.getElementById('trangThai').name;
-        if (confirm("Đơn hàng  đã được giao cho đơn vị vận chuyển?")===true){
-            window.location.href="/admin/hoa-don-onl/xac-nhan/"+data.idhd+"?trangThai="+trangThai;
-        }else {
-            return;
-        }
+        var ghiChu = document.getElementById('ghiChu').value;
+            window.location.href="/admin/hoa-don-onl/xac-nhan/"+data.idhd+"?trangThai="+trangThai+"&ghiChu="+ghiChu;
     }
 </script>
 </html>

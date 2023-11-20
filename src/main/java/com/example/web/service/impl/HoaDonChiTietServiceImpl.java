@@ -178,6 +178,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                         .nguoiThaoTac(nhanVien.getHoTen() + " (" + nhanVien.getChucVu().getTen() + ")")
                         .thaoTac("Thêm sản phẩm " + ctsp.get().getSanPham().getTen()+"["+ctsp.get().getSize().getTen()+"-"+ctsp.get().getSanPham().getChatLieu().getTen()+"-"+ctsp.get().getMauSac().getTen()+"] vào hóa đơn")
                         .ngayThaoTac(date)
+                        .ghiChu("ok")
                         .build();
                 lichSuHoaDonRepository.save(lshd);
                 hoaDonChiTietRepository.save(hdct);

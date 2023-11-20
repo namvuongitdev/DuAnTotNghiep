@@ -107,7 +107,7 @@ public class HoaDonCuaToiController {
         HoaDon hoaDon=hoaDonService.getOne(id);
         hoaDon.setTrangThai(6);
         hoaDonService.updateStatusHoaDonById(hoaDon,"6");
-        lichSuHoaDonService.add(principal.getName(),"Đơn hàng đã được giao thành công",hoaDon,null);
+        lichSuHoaDonService.add(principal.getName(),"Đơn hàng đã được giao thành công",hoaDon,null,"ok");
         return "redirect:/cuaToi/donHangAll";
     }
 
@@ -121,7 +121,7 @@ public class HoaDonCuaToiController {
         HoaDon hoaDon=hoaDonService.getOne(id);
         hoaDon.setTrangThai(5);
         hoaDonService.updateStatusHoaDonById(hoaDon,"5");
-        lichSuHoaDonService.add(principal.getName(),"Hủy hóa đơn",hoaDon,null);
+        lichSuHoaDonService.add(principal.getName(),"Hủy hóa đơn",hoaDon,null,"ok");
         return "redirect:/cuaToi/donHangAll";
     }
 }

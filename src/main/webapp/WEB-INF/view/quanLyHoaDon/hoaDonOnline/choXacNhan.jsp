@@ -74,11 +74,61 @@
                         <td><fmt:formatNumber pattern="#,###"  value="${xn.tongTien}"/> VNĐ</td>
                         <td>${xn.moTa}</td>
                         <td>
-                            <a title="Xác nhận đơn?" name="2" id="trangThai" onclick="xacNhan({idhd:`${xn.id}`})" style="text-decoration: none;font-size: 15px" class="badge text-bg-info text-white" ><i class="bi bi-check2"></i></a>
-                            <a title="Hủy đơn hàng" onclick="huyDonHang({idhd:`${xn.id}`})" style="text-decoration: none;font-size: 15px" class="badge text-bg-danger text-white" ><i class="bi bi-x-square"></i></a>
+                            <a title="Xác nhận đơn?" data-bs-toggle="modal" data-bs-target="#exampleModal" name="2" id="trangThai" style="text-decoration: none;font-size: 15px" class="badge text-bg-info text-white" ><i class="bi bi-check2"></i></a>
+                            <a title="Hủy đơn hàng" data-bs-toggle="modal" data-bs-target="#huyDonleModal" style="text-decoration: none;font-size: 15px" class="badge text-bg-danger text-white" ><i class="bi bi-x-square"></i></a>
                             <a title="Xem chi tiết" href="/admin/hoa-don/view-update/${xn.id}" style="font-size: 15px" class="badge text-bg-success text-white"><i class="bi bi-eye-fill"></i></a>
                         </td>
                     </tr>
+                    <%--    Modal Hủy hóa đơn--%>
+                    <div id="huyDonleModal" class="modal fade huyModal" tabindex="-1" aria-labelledby="huyDonModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="huyDonModalLabel">Hủy đơn hàng</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <b>Hủy đơn hàng?</b>
+                                    <div class="mt-3">
+                                        <label for="ghiChu2" class="form-label">Ghi chú</label>
+                                        <textarea class="form-control" id="ghiChu2" name="ghiChu2" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary btn-dong-y" onclick="huyDonHang({idhd:`${xn.id}`})">Đồng ý</button>
+                                    <button type="button" class="btn btn-secondary btn-khong"
+                                            data-bs-dismiss="modal">Không
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <%--    Modal Xác nhận--%>
+                    <div id="exampleModal" class="modal fade xacNhanModal" tabindex="-1" aria-labelledby="xacNhanModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="xacNhanModalLabel">Xác nhận đơn</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <b>${xn.trangThai==1?'Xác nhận đơn?':xn.trangThai==2?'Đơn hàng đã giao cho đơn vị vận chuyển?':xn.trangThai==3?'Đơn hàng đã giao thành công?':''}</b>
+                                    <div class="mt-3">
+                                        <label for="ghiChu" class="form-label">Ghi chú</label>
+                                        <textarea class="form-control" id="ghiChu" name="ghiChu" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" onclick="xacNhan({trangThai:`${xn.trangThai}`,idhd:`${xn.id}`})" class="btn btn-primary btn-dong-y">Đồng ý</button>
+                                    <button type="submit" class="btn btn-secondary btn-khong" data-bs-dismiss="modal">Không</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </c:forEach>
             </tbody>
         </table>
@@ -105,19 +155,12 @@
 <script>
     function xacNhan(data) {
         let trangThai = document.getElementById('trangThai').name;
-        if (confirm("Bạn có chắc chắn xác nhận đơn không ?")===true){
-            window.location.href="/admin/hoa-don-onl/xac-nhan/"+data.idhd+"?trangThai="+trangThai;
-        }else {
-            return;
-        }
+        var ghiChu = document.getElementById('ghiChu').value;
+            window.location.href="/admin/hoa-don-onl/xac-nhan/"+data.idhd+"?trangThai="+trangThai+"&ghiChu="+ghiChu;
     }
     function huyDonHang(data) {
-        if (confirm("Bạn có chắc chắn muốn hủy đơn không ?")===true){
-            window.location.href="/admin/hoa-don-onl/huy-don/"+data.idhd;
-        }else {
-            return;
-        }
-
+        var ghiChu = document.getElementById('ghiChu2').value;
+            window.location.href="/admin/hoa-don-onl/huy-don/"+data.idhd+"?ghiChu="+ghiChu;
     }
 </script>
 </html>

@@ -85,7 +85,7 @@
                                     </div>
 
                                 </div>
-                                <div style="display: ${hd.trangThai==1?'':hd.trangThai==2?'':'none'}"><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
+                                <div style="display: ${hd.trangThai==1?'':'none'}"><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
                                                                                                 name="1" onclick="getSanPham(this.name)" style="margin-left: 800px; margin-bottom: 20px">Thêm sản phẩm</button></div>
                                 <div class="table-wrapper">
                                     <table class="table">
@@ -96,7 +96,7 @@
                                             <th scope="col">Đơn giá</th>
                                             <th scope="col">Số lượng</th>
                                             <th scope="col">Thành tiền</th>
-<%--                                            <th scope="col" style="display: ${hd.trangThai==1?'':hd.trangThai==2?'':'none'}">Thao tác</th>--%>
+                                            <th scope="col" style="display: ${hd.trangThai==1?'':hd.trangThai==2?'':'none'}">Thao tác</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -124,7 +124,7 @@
                                                 <td><fmt:formatNumber pattern="#,###"  value="${hdct.donGia}"/></td>
                                                 <td><input type="number" class="form-control" id="soLuongSp" ${hd.trangThai==1?'':hd.trangThai==2?'':'disabled'}   onchange="myFunction({idhdct:`${hdct.id}`,soLuong:this.value,idhd:`${hd.id}`})" value="${hdct.soLuong}" min="0" style="width: 40%"></td>
                                                 <td><fmt:formatNumber pattern="#,###"  value="${hdct.soLuong * hdct.donGia}"/></td>
-                                               <td><a style="font-size: 20px;display: ${hd.trangThai==1?'block':hd.trangThai==2?'block':'none'}" onclick="xoaSp({idhdct:`${hdct.id}`,idhd:`${hd.id}`})" title="Xóa sản phẩm" type="button" class="badge text-bg-danger text-white"><i class="bi bi-trash3-fill"></i></a></td>
+                                               <td><a style="font-size: 20px;display: ${hd.trangThai==1?'block':'none'}" onclick="xoaSp({idhdct:`${hdct.id}`,idhd:`${hd.id}`})" title="Xóa sản phẩm" type="button" class="badge text-bg-danger text-white"><i class="bi bi-trash3-fill"></i></a></td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
@@ -157,7 +157,7 @@
                                                         <th scope="col">Ngày thực hiện</th>
                                                         <th scope="col">Người thực hiện</th>
                                                         <th scope="col">Thao tác</th>
-                                                        <th scope="col">Trạng thái</th>
+                                                        <th scope="col">Ghi chú</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -167,7 +167,7 @@
                                                             <td><fmt:formatDate value="${hd.ngayThaoTac}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
                                                             <td>${hd.nguoiThaoTac}</td>
                                                             <td>${hd.thaoTac}</td>
-                                                            <td>Thành công</td>
+                                                            <td>${hd.ghiChu}</td>
                                                         </tr>
                                                     </c:forEach>
                                                     </tbody>
@@ -276,7 +276,11 @@
                                                         aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                ${hd.trangThai==1?'Xác nhận đơn?':hd.trangThai==2?'Đơn hàng đã giao cho đơn vị vận chuyển?':hd.trangThai==3?'Đơn hàng đã giao thành công?':''}
+                                                <b>${hd.trangThai==1?'Xác nhận đơn?':hd.trangThai==2?'Đơn hàng đã giao cho đơn vị vận chuyển?':hd.trangThai==3?'Đơn hàng đã giao thành công?':''}</b>
+                                                <div class="mt-3">
+                                                    <label for="ghiChu" class="form-label">Ghi chú</label>
+                                                    <textarea class="form-control" id="ghiChu" name="ghiChu" rows="3"></textarea>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="submit" onclick="xacNhanGiao({trangThai:`${hd.trangThai}`,idhd:`${hd.id}`})" class="btn btn-primary btn-dong-y">Đồng ý</button>
@@ -300,7 +304,11 @@
                                                         aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                Hủy đơn hàng?
+                                                <b>Hủy đơn hàng?</b>
+                                                <div class="mt-3">
+                                                    <label for="ghiChu2" class="form-label">Ghi chú</label>
+                                                    <textarea class="form-control" id="ghiChu2" name="ghiChu2" rows="3"></textarea>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-primary btn-dong-y" onclick="huyDonHang({idhd:'${hd.id}'})">Đồng ý</button>

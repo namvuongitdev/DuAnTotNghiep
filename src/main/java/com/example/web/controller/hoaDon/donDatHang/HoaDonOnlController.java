@@ -189,7 +189,7 @@ public class HoaDonOnlController {
         lichSuHoaDonService.add(nhanVien.getHoTen(),
                 "Chỉnh sửa số lượng sản phẩm "+ hoaDonChiTiet.getChiTietSanPham().getSanPham().getTen()+"["+hoaDonChiTiet.getChiTietSanPham().getSize().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getSanPham().getChatLieu().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getMauSac().getTen()+"]",
                 hoaDon,
-                nhanVien.getChucVu().getTen());
+                nhanVien.getChucVu().getTen(),"ok");
         return url;
     }
 
@@ -212,7 +212,7 @@ public class HoaDonOnlController {
         hoaDonService.updateHoaDonById(hoaDon);
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietService.getOne(idHdct);
         lichSuHoaDonService.add(nhanVien.getHoTen(),
-                "Xóa sản phẩm " + hoaDonChiTiet.getChiTietSanPham().getSanPham().getTen()+"["+hoaDonChiTiet.getChiTietSanPham().getSize().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getSanPham().getChatLieu().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getMauSac().getTen()+"]",hoaDon,nhanVien.getChucVu().getTen());
+                "Xóa sản phẩm " + hoaDonChiTiet.getChiTietSanPham().getSanPham().getTen()+"["+hoaDonChiTiet.getChiTietSanPham().getSize().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getSanPham().getChatLieu().getTen()+"-"+hoaDonChiTiet.getChiTietSanPham().getMauSac().getTen()+"]",hoaDon,nhanVien.getChucVu().getTen(),"ok");
         if (lst.getContent().isEmpty()){
             hoaDonService.updateStatusHoaDonById(hoaDon,String.valueOf(HoaDonStatus.HUY));
         }
@@ -229,7 +229,8 @@ public class HoaDonOnlController {
 
     @GetMapping("xac-nhan/{id}")
     public String xacNhan(
-                          @PathVariable("id")String id){
+                          @PathVariable("id")String id,
+                          @RequestParam("ghiChu") String ghiChu){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         Integer status;
@@ -253,12 +254,13 @@ public class HoaDonOnlController {
             status=TrangThaiHoaDon.HUY_HOA_DON.getValue();
         }
         url=hoaDonService.updateStatusHoaDonById(hoaDon,String.valueOf(status));
-        lichSuHoaDonService.add(nhanVien.getHoTen(),thaoTac,hoaDon,nhanVien.getChucVu().getTen());
+        lichSuHoaDonService.add(nhanVien.getHoTen(),thaoTac,hoaDon,nhanVien.getChucVu().getTen(),ghiChu);
         return url;
     }
     @GetMapping("huy-don/{id}")
     public String huyDon(@RequestParam(defaultValue = "0") Integer page,
-                          @PathVariable("id")String id){
+                          @PathVariable("id")String id,
+                         @RequestParam("ghiChu")String ghiChu){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
@@ -268,7 +270,7 @@ public class HoaDonOnlController {
         HoaDon hoaDon=hoaDonService.getOne(id);
         hoaDon.setTongTien(BigDecimal.valueOf(0));
         url=hoaDonService.updateStatusHoaDonById(hoaDon,String.valueOf(HoaDonStatus.HUY));
-        lichSuHoaDonService.add(nhanVien.getHoTen(),"Hủy hóa đơn",hoaDon,nhanVien.getChucVu().getTen());
+        lichSuHoaDonService.add(nhanVien.getHoTen(),"Hủy hóa đơn",hoaDon,nhanVien.getChucVu().getTen(),ghiChu);
         return url;
     }
     @GetMapping("/update-thong-tin/{id}")
