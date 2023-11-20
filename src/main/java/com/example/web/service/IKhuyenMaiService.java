@@ -42,4 +42,6 @@ public interface IKhuyenMaiService {
 
     Integer validateTrangThai(KhuyenMai khuyenMai);
 
+    KhuyenMai getKhuyenMaiById(UUID uuid);
+
 }

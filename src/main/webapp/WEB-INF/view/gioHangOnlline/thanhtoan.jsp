@@ -36,8 +36,6 @@
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
     <link rel="stylesheet" href="../../../css/banHangOnline/thanhToan/thanhToan.css" type="text/css">
-
-    <script src="../../../js/banHangOnlline/thanhToan/thanhtoan.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -52,34 +50,36 @@
                         <li class="breadcrumb-item">Thông tin giao hàng</li>
                     </nav>
                 </div><!-- End Page Title -->
-               <form:form action="/checkouts/order" method="post" modelAttribute="checkoutRequest">
+                <form:form action="/checkouts/order" method="post" modelAttribute="checkoutRequest">
                     <div class="mb-3">
-                        <h5>Thông tin giao hàng</h5>
+                        <h5>Thông tin giao hàng / <a onclick="getAllDiaChiKhachHang()" style="color: #1da1f2;:hover">thay đổi địa chỉ</a></h5>
                     </div>
                     <div class="row">
-                      <jsp:include page="newDiaChi.jsp"></jsp:include>
+                        <jsp:include page="hienThiDiaChi.jsp"></jsp:include>
                     </div>
                     <div class="mt-5">
                         <h5>Phương thức thanh toán</h5>
                     </div>
                     <div class="mt-3 card-radio">
                         <div class="form-check radio">
-                            <input class="form-check-input" type="radio" name="phuongThucThanhToan" id="flexRadioDefault2"
+                            <input class="form-check-input" type="radio" name="phuongThucThanhToan"
+                                   id="flexRadioDefault2"
                                    checked value="3">
                             <label class="form-check-label" for="flexRadioDefault2">
                                 Thanh toán khi giao hàng (COD).
                             </label>
                         </div>
                     </div>
-                   <div class="mt-3 card-radio">
-                       <div class="form-check radio">
-                           <input class="form-check-input" type="radio" name="phuongThucThanhToan" id="flexRadioDefault3"
-                                  value="4">
-                           <label class="form-check-label" for="flexRadioDefault3">
-                               Thanh toán (VNPAY).
-                           </label>
-                       </div>
-                   </div>
+                    <div class="mt-3 card-radio">
+                        <div class="form-check radio">
+                            <input class="form-check-input" type="radio" name="phuongThucThanhToan"
+                                   id="flexRadioDefault3"
+                                   value="4">
+                            <label class="form-check-label" for="flexRadioDefault3">
+                                Thanh toán (VNPAY).
+                            </label>
+                        </div>
+                    </div>
 
                     <div class="row mt-5">
                         <div class="col-6">
@@ -155,24 +155,16 @@
                         <div class="row">
                             <label class="form-label ml">Tạm tính:</label>
                             <label class="form-label mr" id="tamTinh"><fmt:formatNumber pattern="#,###"
-                                                                           value="${tongTien}"></fmt:formatNumber>
+                                                                                        value="${tongTien}"></fmt:formatNumber>
                                 đ</label>
                         </div>
                     </div>
-
-<%--                    <div class="col-12">--%>
-<%--                        <div class="row">--%>
-<%--                            <label for="shippingFee" class="form-label ml">Phí vận chuyển:</label>--%>
-<%--                            <label type="text" id="shippingFee" readonly class="form-label mr">0 đ</label>--%>
-<%--                        </div>--%>
-<%--                        <hr>--%>
-<%--                    </div>--%>
-
                     <div class="col-12">
                         <div class="row">
                             <h6 class="form-label ml">Tổng cộng:</h6>
                             <h4 class="form-label mr" id="tongTien"><fmt:formatNumber pattern="#,###"
-                                                                        value="${tongTien}"></fmt:formatNumber> đ</h4>
+                                                                                      value="${tongTien}"></fmt:formatNumber>
+                                đ</h4>
                         </div>
                     </div>
                 </div>
@@ -181,5 +173,8 @@
         </div>
     </div>
 </div>
+<jsp:include page="modalNewDiaChi.jsp"></jsp:include>
+<jsp:include page="modalDiaChi.jsp"></jsp:include>
+<script src="/js/banHangOnlline/thanhToan/diaChiKhachHang.js"></script>
 </body>
 </html>

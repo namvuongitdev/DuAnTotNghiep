@@ -60,6 +60,18 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     }
 
     @Override
+    public KhuyenMai getKhuyenMaiById(UUID uuid) {
+        Optional<KhuyenMai> khuyenMai = repository.findById(uuid);
+        if (khuyenMai.isPresent()) {
+            KhuyenMai km = khuyenMai.get();
+            km.setTrangThai(KhuyenMaiStatus.HUY);
+            return repository.save(km);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public KhuyenMai updateKhuyenMai(KhuyenMaiRequest request, UUID idKM) {
         Optional<KhuyenMai> km = repository.findById(idKM);
         if (km.isPresent()) {

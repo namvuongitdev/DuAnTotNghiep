@@ -8,7 +8,7 @@
 
     <div class="row">
         <div class="col l-3">
-            <span style="color: #03AA28">Tìm kiếm</span>
+            <span>Tìm kiếm</span>
             <form action="" method="post">
                 <div class="input-group">
                     <input type="text" class="form-control" name="search" placeholder="Tìm kiếm" value="${filter.search}" aria-label="Tìm kiếm"/>
@@ -16,8 +16,8 @@
             </form>
         </div>
         <div class="col l-3">
-            <span style="color: #03AA28">Danh mục</span>
-            <select name="danhMuc" class="form-select">
+            <label for="danhMucFilter">Danh mục</label>
+            <select name="danhMuc" id="danhMucFilter" class="form-select">
                 <option value="">Tất cả</option>
                 <c:forEach items="${listDanhMuc}" var="danhMuc">
                     <option value="${danhMuc.id}" ${filter.danhMuc == danhMuc.id ? 'selected' : ''}>
@@ -27,8 +27,8 @@
             </select>
         </div>
         <div class="col l-3">
-            <span style="color: #03AA28">Chất liệu</span>
-            <select name="chatLieu" id="chatLieu" class="form-select">
+            <label for="chatLieuFilter">Chất liệu</label>
+            <select name="chatLieu" id="chatLieuFilter" class="form-select">
                 <option value="">Tất cả</option>
                 <c:forEach items="${listChatLieu}" var="chatLieu">
                     <option value="${chatLieu.id}" ${filter.chatLieu == chatLieu.id ? 'selected' : ''}>
@@ -38,8 +38,8 @@
             </select>
         </div>
         <div class="col l-3">
-            <span style="color: #03AA28">Kiểu dáng</span>
-            <select name="kieuDang" id="kieuDang" class="form-select">
+            <label for="kieuDangFilter">Kiểu dáng</label>
+            <select name="kieuDang" id="kieuDangFilter" class="form-select">
                 <option value="">Tất cả</option>
                 <c:forEach items="${listFromDang}" var="kieuDang" >
                     <option value="${kieuDang.id}" ${filter.kieuDang == kieuDang.id ? 'selected' : ''}>
@@ -49,8 +49,8 @@
             </select>
         </div>
         <div class="col l-3">
-            <span style="color: #03AA28">Màu sắc</span>
-            <select name="mauSac" id="mauSac" class="form-select">
+            <label for="mauSacFilter">Màu sắc</label>
+            <select name="mauSac" id="mauSacFilter" class="form-select">
                 <option value="">Tất cả</option>
                 <c:forEach items="${listMuaSac}" var="mauSac" >
                     <option value="${mauSac.id}" ${filter.mauSac == mauSac.id ? 'selected' : ''}>
@@ -63,8 +63,8 @@
     <%--        row2--%>
     <div class="row">
         <div class="col l-3">
-            <span style="color: #03AA28">Kích cỡ</span>
-            <select name="kichCo" id="kichCo" class="form-select">
+            <label for="kichCoFilter">Kích cỡ</label>
+            <select name="kichCo" id="kichCoFilter" class="form-select">
                 <option value="">Tất cả</option>
                 <c:forEach items="${listKichCo}" var="kichCo" >
                     <option value="${kichCo.id}" ${filter.kichCo == kichCo.id ? 'selected' : ''}>
@@ -74,8 +74,8 @@
             </select>
         </div>
         <div class="col l-3">
-            <span style="color: #03AA28">Trạng thái</span>
-            <select name="trangThai" id="trangThai" class="form-select">
+            <label for="trangThaiFilter">Trạng thái</label>
+            <select name="trangThai" id="trangThaiFilter" class="form-select">
                 <option value="">Tất cả</option>
                 <option value="0" ${filter.trangThai == 0 ? 'selected' : ''}>
                     Kinh doanh
@@ -86,8 +86,8 @@
             </select>
         </div>
         <div class="col l-3">
-            <span style="color: #03AA28">Sắp xếp theo giá</span>
-            <select name="sapXep" id="sapXep" class="form-select">
+            <label for="sapXepFilter">Sắp xếp theo giá</label>
+            <select name="sapXep" id="sapXepFilter" class="form-select">
                 <option value="">Tất cả</option>
                 <option value="ngayTao" ${filter.sapXep == 'ngayTao' ? 'selected' : ''}>Mới nhất</option>
                 <option value="price-asc" ${filter.sapXep == 'price-asc' ? 'selected' : ''}>
@@ -99,8 +99,8 @@
             </select>
         </div>
         <div class="col l-3">
-            <span style="color: #03AA28">Giới tính</span>
-            <select name="gioiTinh" id="gioiTinh" class="form-select">
+            <label for="gioiTinhFilter">Giới tính</label>
+            <select name="gioiTinh" id="gioiTinhFilter" class="form-select">
                 <option value="">Tất cả</option>
                 <option value="true" ${filter.gioiTinh == true ? 'selected' : ''}>
                     Dành cho nam

@@ -4,6 +4,7 @@ import com.example.web.model.DiaChi;
 import com.example.web.model.HoaDon;
 import com.example.web.model.KhachHang;
 import com.example.web.request.CheckoutRequest;
+import com.example.web.request.NewDiaChiOnline;
 import com.example.web.response.GioHangReponse;
 import com.example.web.service.CheckoutService;
 import com.example.web.service.IDiaChiService;
@@ -13,6 +14,7 @@ import com.example.web.service.IKhachHangService;
 import com.example.web.service.ILichSuHoaDonService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,10 +25,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,6 +55,9 @@ public class ThanhToanController {
     @Autowired
     private IDiaChiService diaChiService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     private CheckoutRequest checkout = null;
 
 
@@ -62,7 +65,10 @@ public class ThanhToanController {
     public String thanhToan(Model model, RedirectAttributes attributes) {
         KhachHang khachHang = khachHangService.getKhachHangLogin();
         List<GioHangReponse> response = gioHangOnllineService.findAll(khachHang.getId());
-        DiaChi diaChi = diaChiService.getDiaChiByKhachHang_idAndDiaChiMacDinh(khachHang.getId());
+        DiaChi diaChiMacDinh = diaChiService.getDiaChiByKhachHang_idAndDiaChiMacDinh(khachHang.getId());
+        if (diaChiMacDinh != null) {
+            model.addAttribute("diaChiMacDinh", diaChiMacDinh);
+        }
         if (!model.containsAttribute("checkoutRequest")) {
             model.addAttribute("checkoutRequest", new CheckoutRequest());
         }
@@ -73,9 +79,20 @@ public class ThanhToanController {
             BigDecimal tongTien = gioHangOnllineService.tongTienSanPhamTrongGioHang(khachHang.getId());
             model.addAttribute("sanPhamTrongGioHang", response);
             model.addAttribute("tongTien", tongTien);
-            model.addAttribute("diaChi", diaChi);
+            model.addAttribute("diaChis", khachHang.getDiaChis());
+            model.addAttribute("KhachHang", khachHang.getId());
+            model.addAttribute("newDiaChiOnline", new NewDiaChiOnline());
         }
         return "gioHangOnlline/thanhtoan";
+    }
+
+    @PostMapping("/new-dia-chi")
+    public String newDiaChi(@ModelAttribute("newDiaChiOnline") NewDiaChiOnline newDiaChiOnline, @RequestParam String idKH) {
+        KhachHang khachHang = khachHangService.getKhachHangById(idKH);
+        DiaChi diaChi = modelMapper.map(newDiaChiOnline, DiaChi.class);
+        diaChi.setKhachHang(khachHang);
+        diaChi.setDiaChiMacDinh(true);
+        return "redirect:/checkouts";
     }
 
     @PostMapping(value = "/order")
@@ -83,6 +100,7 @@ public class ThanhToanController {
         if (result.hasErrors()) {
             attributes.addFlashAttribute("org.springframework.validation.BindingResult.checkoutRequest", result);
             attributes.addFlashAttribute("checkoutRequest", checkoutRequest);
+            attributes.addFlashAttribute("error", "error");
             return "redirect:/checkouts";
         } else {
             checkout = checkoutRequest;
@@ -106,7 +124,7 @@ public class ThanhToanController {
         KhachHang khachHang = khachHangService.getKhachHangLogin();
         if (ischeck == 1) {
             HoaDon hoaDon = checkoutService.saveOrder(checkout, khachHang);
-            lichSuHoaDonService.add(khachHang.getHoTen(),"Tạo đơn hàng",hoaDon,null);
+            lichSuHoaDonService.add(khachHang.getHoTen(), "Tạo đơn hàng", hoaDon, null);
             return "redirect:/checkouts/success?idHD=" + hoaDon.getId();
         }
         return null;

@@ -2,18 +2,21 @@ package com.example.web.service.impl;
 
 import com.example.web.Config.status.HoaDonStatus;
 import com.example.web.Config.status.PhuongThucThanhToanStatus;
+import com.example.web.model.DiaChi;
 import com.example.web.model.GioHangChiTiet;
 import com.example.web.model.HoaDon;
 import com.example.web.model.KhachHang;
 import com.example.web.repository.IHoaDonRepository;
 import com.example.web.request.CheckoutRequest;
 import com.example.web.service.CheckoutService;
+import com.example.web.service.IDiaChiService;
 import com.example.web.service.IGioHangOnllineService;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.ILichSuHoaDonService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -29,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+
 import com.example.web.Config.VNPAY.Config;
 
 @Service
@@ -45,6 +49,9 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     @Autowired
     private ILichSuHoaDonService lichSuHoaDonService;
+
+    @Autowired
+    private IDiaChiService diaChiService;
 
 
     @Override
@@ -129,7 +136,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         }
         if (checkoutRequest.getPhuongThucThanhToan() == PhuongThucThanhToanStatus.THANH_TOAN_KHI_NHAN_HANG) {
             HoaDon hoaDon = saveOrder(checkoutRequest, khachHang);
-            lichSuHoaDonService.add(khachHang.getHoTen(),"Tạo đơn hàng",hoaDon,null);
+            lichSuHoaDonService.add(khachHang.getHoTen(), "Tạo đơn hàng", hoaDon, null);
             return "/checkouts/success?idHD=" + hoaDon.getId();
         }
         return null;
@@ -139,7 +146,18 @@ public class CheckoutServiceImpl implements CheckoutService {
     public HoaDon saveOrder(CheckoutRequest request, KhachHang khachHang) {
         BigDecimal tongTien = gioHangOnllineService.tongTienSanPhamTrongGioHang(khachHang.getId());
         Date date = java.util.Calendar.getInstance().getTime();
-        String diaChi = request.getDiaChi() + "," + request.getPhuongXa() + "," + request.getQuanHuyen() + "," + request.getThanhPho();
+        //+ "," + request.getPhuongXa() + "," + request.getQuanHuyen() + "," + request.getThanhPho()
+        if (khachHang.getDiaChis().isEmpty()) {
+            DiaChi dc = DiaChi.builder()
+                    .khachHang(khachHang)
+                    .sdt(request.getSdt())
+                    .hoTen(request.getHoTen())
+                    .diaChi(request.getDiaChi())
+                    .diaChiMacDinh(true)
+                    .build();
+            diaChiService.add(dc);
+        }
+        String diaChi = request.getDiaChi();
         HoaDon hoaDon = HoaDon.builder()
                 .trangThai(HoaDonStatus.CHO_XAC_NHAN)
                 .ngayTao(date)
@@ -148,7 +166,7 @@ public class CheckoutServiceImpl implements CheckoutService {
                 .hoTen(request.getHoTen())
                 .khachHang(khachHang)
                 .diaChi(diaChi)
-                .sdt(request.getSoDienThoai())
+                .sdt(request.getSdt())
                 .moTa(request.getGhiChu())
                 .phuongThucThanhToan(request.getPhuongThucThanhToan())
                 .tongTien(tongTien)

@@ -24,9 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.UUID;
 
 @Controller
@@ -158,6 +156,17 @@ public class KhuyenMaiController {
         } else {
             return "redirect:" + urlUpdate + pager;
         }
+    }
+
+    @PostMapping("delete")
+    public String delete(@RequestParam String idKM , RedirectAttributes attributes){
+        KhuyenMai khuyenMai = khuyenMaiService.getKhuyenMaiById(UUID.fromString(idKM));
+        if(khuyenMai != null){
+            attributes.addFlashAttribute("success" , "xoá thành công");
+        }else{
+            attributes.addFlashAttribute("error" , "không tìm thấy khuyến mại");
+        }
+        return "redirect:/admin/khuyen-mai/";
     }
 
     @PostMapping("/update-san-pham-khuyen-mai")

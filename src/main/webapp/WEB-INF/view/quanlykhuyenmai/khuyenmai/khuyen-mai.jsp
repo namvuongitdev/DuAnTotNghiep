@@ -36,11 +36,19 @@
     <jsp:include page="../../sidebar/sidebar.jsp"/>
     <div class="col py-3">
         <div class="container">
+            <c:if test="${success != null}">
+                <jsp:include page="../../notiface/success.jsp"></jsp:include>
+            </c:if>
+
+            <c:if test="${error != null}">
+                <jsp:include page="../../notiface/error.jsp"></jsp:include>
+            </c:if>
             <form class="row" action="/admin/khuyen-mai/filter" modelAttrubute="${khuyenMai}">
                 <div class="col-sm-2">
                     <div>
                         <label for="search">Tìm kiếm</label>
-                        <input class="form-control" type="text" name="search" id="search" placeholder="Tìm kiếm mã , tên" value="${filter.search}">
+                        <input class="form-control" type="text" name="search" id="search"
+                               placeholder="Tìm kiếm mã , tên" value="${filter.search}">
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -59,8 +67,10 @@
                     <div style="margin-top: 21px">
                         <button class="btn btn-primary">Tìm kiếm</button>
                         <a class="btn btn-outline-warning" href="/admin/khuyen-mai/">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                      d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
                                 <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
                             </svg>
                         </a>
@@ -90,7 +100,7 @@
                         <tr>
                             <th scope="row">${i.index+ (khuyenMais.number + 1 != 1 ? ((khuyenMais.number + 1) * khuyenMais.size) -(khuyenMais.size - 1) : khuyenMais.number + 1)}</th>
                             <td>
-                               ${khuyenMai.ma}
+                                    ${khuyenMai.ma}
                             </td>
                             <td>${khuyenMai.ten}</td>
                             <td>
@@ -100,23 +110,40 @@
                                 <fmt:formatDate value="${khuyenMai.ngayKetThuc}" pattern="yyyy-MM-dd"/>
                             </td>
 
-                                <c:choose>
-                                    <c:when test="${khuyenMai.trangThai == 1}">
-                                        <td style="color: #03AA28">Kích hoạt</td>
-                                    </c:when>
-                                    <c:when test="${khuyenMai.trangThai == 2}">
-                                        <td style="color: #005cbf">Chưa được kích hoạt</td>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <td style="color: red">Ngừng kích hoạt</td>
-                                    </c:otherwise>
-                                </c:choose>
+                            <c:choose>
+                                <c:when test="${khuyenMai.trangThai == 1}">
+                                    <td style="color: #03AA28">Kích hoạt</td>
+                                </c:when>
+                                <c:when test="${khuyenMai.trangThai == 2}">
+                                    <td style="color: #005cbf">Chưa được kích hoạt</td>
+                                </c:when>
+                                <c:when test="${khuyenMai.trangThai == 4}">
+                                    <td style="color: red">Đã xoá</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td style="color: red">Ngừng kích hoạt</td>
+                                </c:otherwise>
+                            </c:choose>
                             <td>
                                 <button type="button" class="btn btn-success" title="chi tiết"
                                         onclick="getKhuyenMaiById(`${khuyenMai.id}`)">
                                     <i class="bi bi-pencil"></i>
                                 </button>
                             </td>
+                            <c:if test="${khuyenMai.trangThai != 4}">
+                                <td>
+                                    <form action="/admin/khuyen-mai/delete?idKM=${khuyenMai.id}" method="post"
+                                          onsubmit="return function deleteKhuyenMai(){
+                                                 if(confirm('bạn có chắc muốn xoá không nếu xoá sẽ không khôi phục được')){
+                                                    return true;
+                                                 }else{
+                                                    return false;
+                                                  }
+                                               }">
+                                        <button class="btn btn-danger">Xoá</button>
+                                    </form>
+                                </td>
+                            </c:if>
                         </tr>
                     </c:forEach>
                     </tbody>
@@ -126,16 +153,17 @@
                         <nav aria-label="Page navigation example">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item ${(khuyenMais.number+1)<=1?"disabled":""}"><a class="page-link"
-                                                                                    href="${url}${(khuyenMais.number + 1) - 1}"><</a>
+                                                                                                   href="${url}${(khuyenMais.number + 1) - 1}"><</a>
                                 </li>
                                 <c:forEach begin="1" end="${khuyenMais.getTotalPages()}" var="i">
-                                    <li class="page-item"><a class="page-link ${i == (khuyenMais.number + 1) ? 'active ' : ''}"
-                                                             href="${url}${i}">${i}</a></li>
+                                    <li class="page-item"><a
+                                            class="page-link ${i == (khuyenMais.number + 1) ? 'active ' : ''}"
+                                            href="${url}${i}">${i}</a></li>
                                 </c:forEach>
                                 <li class="page-item ${khuyenMais.number + 1 >= khuyenMais.getTotalPages() ? "disabled" : ""}">
                                     <a
-                                        class="page-link"
-                                        href="${url}${(khuyenMais.number+1) + 1}">></a>
+                                            class="page-link"
+                                            href="${url}${(khuyenMais.number+1) + 1}">></a>
                                 </li>
                             </ul>
                         </nav>
@@ -146,7 +174,7 @@
     </div>
 </body>
 <script>
-    function getKhuyenMaiById(id){
-        window.location.href='/admin/khuyen-mai/detail?id='+id;
+    function getKhuyenMaiById(id) {
+        window.location.href = '/admin/khuyen-mai/detail?id=' + id;
     }
 </script>
