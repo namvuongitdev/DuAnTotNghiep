@@ -22,4 +22,15 @@ public interface IHoaDonChiTietService {
 
     List<HoaDonChiTiet> getAllByIdHoaDon(UUID idHD);
 
+    Integer soLuongSPDaBan();
+
+    Integer tongDoanhThu();
+
+    Integer tongHoaDon();
+
+    Double getDoanhThuTrongNgay();
+
+    Double getDoanhThuTheoThang(Integer thang);
+
+
 }

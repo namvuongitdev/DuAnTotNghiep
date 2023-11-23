@@ -64,4 +64,8 @@ public interface IHoaDonService {
 
     HoaDon getHoaDonByKhachHang_idAndHoaDon_id(UUID idKH, UUID idHD);
 
+    Integer tongHoaDonHuy();
+
+    Integer tongHoaDonChoXacNhan();
+
 }

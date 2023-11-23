@@ -38,4 +38,6 @@ public interface IChiTietSanPhamService {
     ChiTietResponse getChiTietSanPhamByMauSac_IdAndSize_IdAndIdSP(UUID mauSac_Id, String size, UUID sanPham_Id);
 
     List<Size> getSizeBySanPham_idAndMauSac_id(UUID idSP , UUID idMS);
+
+    List<ChiTietSanPham> getTop5SanPhamBanChay();
 }

@@ -1,5 +1,4 @@
 package com.example.web.service.impl;
-
 import com.example.web.Config.status.HoaDonChiTietStatus;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.HoaDon;
@@ -134,4 +133,28 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
         return hoaDonChiTietRepository.getAllByIdHoaDon(idHD);
     }
 
+    @Override
+    public Integer soLuongSPDaBan() {
+        return hoaDonChiTietRepository.soLuongSPDaBan();
+    }
+
+    @Override
+    public Integer tongDoanhThu() {
+        return hoaDonChiTietRepository.tongDoanhThu();
+    }
+
+    @Override
+    public Integer tongHoaDon() {
+        return hoaDonChiTietRepository.tongHoaDon();
+    }
+
+    @Override
+    public Double getDoanhThuTrongNgay() {
+        return hoaDonChiTietRepository.getDoanhThuTrongNgay();
+    }
+
+    @Override
+    public Double getDoanhThuTheoThang(Integer thang) {
+        return hoaDonChiTietRepository.getDoanhThuTheoThang(thang);
+    }
 }

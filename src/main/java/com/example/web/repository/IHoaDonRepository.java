@@ -64,6 +64,14 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
     @Query("select hd from HoaDon hd join hd.khachHang kh where kh.id = ?1 and hd.id = ?2")
     HoaDon findHoaDonByKhachHang(UUID idKH ,UUID idHD);
 
-    @Query(value = "select hd from HoaDon hd where hd.loaiHoaDon=true and hd.trangThai=?1")
-    Page<HoaDon> phanTrangOnl(String trangThai,Pageable pageable);
+    @Query(value = "\n" +
+            "  select COUNT(id) from hoa_don where trang_thai=5  and Id in (\n" +
+            " select id_hoa_don from lich_su_hoa_don where CONVERT(date,ngay_thao_tac) = CONVERT(date, GETDATE()))",nativeQuery = true)
+    Integer tongHoaDonHuy();
+
+    @Query(value = "\n" +
+            "  select COUNT(id) from hoa_don where trang_thai=1  and Id in (\n" +
+            " select id_hoa_don from lich_su_hoa_don where CONVERT(date,ngay_thao_tac) = CONVERT(date, GETDATE()))",nativeQuery = true)
+    Integer tongHoaDonChoXacNhan();
 }
+

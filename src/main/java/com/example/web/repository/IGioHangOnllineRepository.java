@@ -38,7 +38,7 @@ public interface IGioHangOnllineRepository extends JpaRepository<GioHangChiTiet,
 
     GioHang save(GioHang gioHang);
 
-    @Query(value = "select count(ctsp)from GioHangChiTiet ghct join ghct.gioHang gh join ghct.chiTietSanPham ctsp join gh.khachHang kh where kh.id = ?1")
+    @Query(value = "select sum(ghct.soLuong)from GioHangChiTiet ghct join ghct.gioHang gh join ghct.chiTietSanPham ctsp join gh.khachHang kh where kh.id = ?1")
     Integer countSanPhamTrongGioHangByKhachHang_id(UUID idKH);
 
     @Transactional

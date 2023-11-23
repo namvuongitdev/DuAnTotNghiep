@@ -44,7 +44,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -334,6 +333,16 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public HoaDon getHoaDonByKhachHang_idAndHoaDon_id(UUID idKH, UUID idHD) {
         return hoaDonRepository.findHoaDonByKhachHang(idKH, idHD);
+    }
+
+    @Override
+    public Integer tongHoaDonHuy() {
+        return hoaDonRepository.tongHoaDonHuy();
+    }
+
+    @Override
+    public Integer tongHoaDonChoXacNhan() {
+        return hoaDonRepository.tongHoaDonChoXacNhan();
     }
 
 }
