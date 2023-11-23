@@ -11,17 +11,12 @@ public interface IHoaDonChiTietService {
 
     HoaDonChiTiet deleteSanPhamHoaDon(String idHDCT);
 
-    String deleteSanPhamHoaDon2(String idHDCT);
-
     HoaDonChiTiet getHoaDonChiTiet(String id);
 
     HoaDonChiTiet updateHoaDonChiTiet(String idHDCT, String soLuong);
 
     HoaDonChiTiet getOne(String id);
 
-    String addSanPhamHoaDonChiTietKhiUpdate(String idCTSP, String idHD, Integer soLuong);
-
-    String updateSoLuongSanPhamHoaDonChiTietKhiUpdate(String idHDCT, String soLuong);
 
     BigDecimal tongTienHDCT(UUID idHD);
 

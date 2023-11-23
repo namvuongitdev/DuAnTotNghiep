@@ -1,11 +1,10 @@
 package com.example.web.repository;
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
+import com.example.web.response.HoaDonChiTietReponse;
 import com.example.web.response.HoaDonReponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -32,19 +31,22 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
     @Query(value = "select  sum(hdct.donGia * hdct.soLuong)  from HoaDon hd left join hd.hoaDonChiTiets hdct where hd.id = ?1 and hdct.trangThai = 0 ")
     BigDecimal tongTien(UUID idHD);
 
+    @Query(value = "select new com.example.web.response.HoaDonChiTietReponse(hdct.id , sp.ten , ms.ten , s.ten , hdct.trangThai , sp.img , hdct.soLuong , hdct.donGia , ctsp.soLuong) from HoaDon hd left join hd.hoaDonChiTiets hdct " +
+            "left join hdct.chiTietSanPham ctsp left join ctsp.sanPham sp left join" +
+            " ctsp.size s left join ctsp.mauSac ms where hd.id = ?1 and hdct.trangThai=0")
+    List<HoaDonChiTietReponse> findAllHoaDonChiTietByHoaDon_id(UUID id);
 
-    Page<HoaDon> findAll(Specification<HoaDon> hoaDonSpecification, Pageable pageable);
-
-    @Query(value = "select hdct from HoaDon hd left join hd.hoaDonChiTiets hdct " +
-            "left join hdct.chiTietSanPham ctsp where hd.id = ?1 and hdct.trangThai=0")
-    Page<HoaDonChiTiet> getHoaDonChiTiet(UUID id ,Pageable pageable);
+    @Query(value = "select new com.example.web.response.HoaDonChiTietReponse(hdct.id , sp.ten , ms.ten , s.ten , hdct.trangThai , sp.img , hdct.soLuong , hdct.donGia , ctsp.soLuong) from HoaDon hd left join hd.hoaDonChiTiets hdct " +
+            "left join hdct.chiTietSanPham ctsp left join ctsp.sanPham sp left join" +
+            " ctsp.size s left join ctsp.mauSac ms where hdct.id = ?1")
+    HoaDonChiTietReponse findHoaDonChiTietByHoaDon_id(UUID id);
 
     @Query(value = "select hdct from HoaDon hd left join hd.hoaDonChiTiets hdct " +
             "left join hdct.chiTietSanPham ctsp where hd.id = ?1 and hdct.trangThai=1")
     Page<HoaDonChiTiet> getHoaDonHuyChiTiet(UUID id ,Pageable pageable);
 
     @Query(value = "select hd from HoaDon hd where hd.trangThai<>0")
-    Page<HoaDon> findAll3(Pageable pageable);
+    Page<HoaDon> findAllHoaDonByTrangThaiKhacHoaDonCho(Pageable pageable);
 
     @Query("SELECT hd.id, hd.ma, hd.ngayTao, hd.tongTien, SUM(hdct.soLuong), hd.trangThai FROM HoaDon hd " +
             "JOIN HoaDonChiTiet hdct ON hdct.hoaDon.id = hd.id " +

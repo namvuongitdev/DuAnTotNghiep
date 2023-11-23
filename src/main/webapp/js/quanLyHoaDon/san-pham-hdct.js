@@ -30,7 +30,7 @@ function getSanPham(page) {
             for (let i = 0; i < data.content.length; i++) {
                 if (data.content[i].sanPhamKhuyenMais.length > 0) {
                     data.content[i].sanPhamKhuyenMais.map(function (e) {
-                        if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
+                        if (e.khuyenMai.trangThai === 1 && e.trangThai === 1) {
                             khuyenMai = e;
                         } else {
                             khuyenMai = null;
@@ -235,92 +235,4 @@ document.getElementById('clear').addEventListener('click', () => {
 
 function timKiem() {
     getSanPham(1);
-}
-
-async function tongTien() {
-    const tongTienTrongGioHang = document.getElementById("tongTienTrongGioHang");
-    const tienHang = document.getElementById("tienHang");
-    const tienKhachCanTra = document.getElementById("tienKhachCanTra");
-    let url_hoa_don = window.location.href;
-    let url_id_hd = new URL(url_hoa_don);
-    let paramValueIdHD = url_id_hd.searchParams.get("idHD");
-    const apiTongTienHDCT = await fetch(`/admin/hoa-don/tong-tien?idHD=${paramValueIdHD}`)
-    const data = await apiTongTienHDCT.json();
-    if (tongTienTrongGioHang != null) {
-        tongTienTrongGioHang.innerText = `Tổng tiền :${VND.format(data)}`
-    }
-    if (tienHang != null) {
-        tienHang.innerText = `Tiền Hàng :${VND.format(data)}`
-    }
-    if (tienKhachCanTra != null) {
-        tienKhachCanTra.innerText = `Khách cần trả :${VND.format(data)}`
-    }
-}
-
-
-function innnerHTMLTrByIdHDCT(data) {
-    document.getElementById(data.id).innerHTML = `
-                <td>
-                    <div class="row">
-                        <div class="col l-3">
-                            <img src="/image/${data.chiTietSanPham.sanPham.img}"
-                                 style="width: 80px; height: 80px">
-                        </div>
-                        <div class="col l-3">
-                            <h5>${data.chiTietSanPham.sanPham.ten}</h5>
-                            <p style="color: #03AA28">${VND.format(data.donGia)}</p>
-                            <p>size : ${data.chiTietSanPham.size.ten}</p>
-                            <p>màu sắc : ${data.chiTietSanPham.mauSac.ten}</p>
-                        </div>
-                    </div>
-                </td>
-                <td style="width: 110px ;"><input
-                        onchange="updateSoLuong(this.value , {id:\`${data.id}\`,
-                                soLuongHDCT:\`${data.soLuong}\`,
-                                soLuongCTSP:\`${data.chiTietSanPham.soLuong}\`,
-                               }
-                                )" type="number"
-                        name="soLuong" class="form-control" value="${data.soLuong}" min="1"
-                />
-                </td>
-                <td id="thanhTien">${VND.format(data.soLuong * data.donGia)}</td>
-                <td><a onclick="deleteSanPhamTrongGioHang('${data.id}')"
-                         class="btn btn-danger">Xoá khỏi giỏ</a></td>
-            </tr>
-        `
-}
-
-async function updateSoLuong(soLuong, sanPham) {
-    const soLuongTon = +sanPham.soLuongHDCT + +sanPham.soLuongCTSP;
-    if (soLuong < 0 || soLuong == 0) {
-        alert("số lượng phải  lớn hơn 0");
-        window.location.reload();
-    } else if (soLuong > soLuongTon) {
-        alert("số lượng hiện tại trong của hàng không đủ");
-        window.location.reload();
-    } else {
-        const options = {
-            method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-        };
-        const apiUpdateSoLuong = await fetch(`/admin/hoa-don/update-san-pham?idHD=${sanPham.id}&soLuong=${soLuong}`, options)
-        const data = await apiUpdateSoLuong.json();
-        innnerHTMLTrByIdHDCT(data);
-        await tongTien();
-    }
-}
-
-async function deleteSanPhamTrongGioHang(idHDCT) {
-    const options = {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-    };
-    if (confirm("Bạn có muốn xoá sản phẩm ra khỏi giỏ hàng không") == true) {
-        const apiDeleteSanPham = await fetch(`/admin/hoa-don/delete?idHDCT=${idHDCT}`, options)
-        const data = await apiDeleteSanPham.json();
-        document.getElementById(data.id).remove();
-        await tongTien();
-    } else {
-        return;
-    }
 }

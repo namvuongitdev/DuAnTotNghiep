@@ -13,7 +13,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
-
 import java.util.Date;
 import java.util.UUID;
 @Entity
@@ -43,4 +42,8 @@ public class LichSuHoaDon {
 
     @Column(name = "ngay_thao_tac")
     private Date ngayThaoTac;
+
+    @Nationalized
+    @Column(name = "ghi_chu" , length = 3000)
+    private String ghiChu;
 }

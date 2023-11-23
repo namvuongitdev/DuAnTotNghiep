@@ -6,14 +6,16 @@ import com.example.web.repository.ILichSuHoaDonRepository;
 import com.example.web.service.ILichSuHoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
 @Service
 public class LichSuHoaDonServiceImpl implements ILichSuHoaDonService {
+
     @Autowired
     private ILichSuHoaDonRepository iLichSuHoaDonRepository;
+
     @Override
     public List<LichSuHoaDon> getAll() {
         return iLichSuHoaDonRepository.findAll();
@@ -35,24 +37,16 @@ public class LichSuHoaDonServiceImpl implements ILichSuHoaDonService {
     }
 
     @Override
-    public void add(String nguoiThaoTac, String thaoTac, HoaDon hoaDon, String chucVu) {
+    public void add(String nguoiThaoTac, String thaoTac, HoaDon hoaDon,String ghiChu) {
         Date date = java.util.Calendar.getInstance().getTime();
-        LichSuHoaDon lshd;
-        if (chucVu==null){
-            lshd= LichSuHoaDon.builder()
+        LichSuHoaDon lshd = LichSuHoaDon.builder()
                     .hoaDon(hoaDon)
-                    .nguoiThaoTac("Khách hàng: "+nguoiThaoTac)
+                    .nguoiThaoTac(nguoiThaoTac)
                     .thaoTac(thaoTac)
                     .ngayThaoTac(date)
+                    .ghiChu(ghiChu)
                     .build();
-        }else {
-            lshd = LichSuHoaDon.builder()
-                    .hoaDon(hoaDon)
-                    .nguoiThaoTac(nguoiThaoTac+" ("+chucVu+")")
-                    .thaoTac(thaoTac)
-                    .ngayThaoTac(date)
-                    .build();
-        }
+
         iLichSuHoaDonRepository.save(lshd);
     }
 

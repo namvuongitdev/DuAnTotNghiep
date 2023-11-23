@@ -124,7 +124,6 @@ public class ThanhToanController {
         KhachHang khachHang = khachHangService.getKhachHangLogin();
         if (ischeck == 1) {
             HoaDon hoaDon = checkoutService.saveOrder(checkout, khachHang);
-            lichSuHoaDonService.add(khachHang.getHoTen(), "Tạo đơn hàng", hoaDon, null);
             return "redirect:/checkouts/success?idHD=" + hoaDon.getId();
         }
         return null;

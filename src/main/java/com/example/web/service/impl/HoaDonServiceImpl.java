@@ -14,6 +14,8 @@ import com.example.web.repository.IKhachHangRepository;
 import com.example.web.repository.ILichSuHoaDonRepository;
 import com.example.web.repository.INhanVienRepository;
 import com.example.web.request.HoaDonRequest;
+import com.example.web.request.ThongTinKhachHang;
+import com.example.web.response.HoaDonChiTietReponse;
 import com.example.web.response.HoaDonReponse;
 import com.example.web.service.IHoaDonService;
 import com.example.web.response.HoaDonFilter;
@@ -42,6 +44,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -66,9 +69,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
     @Autowired
     private INhanVienRepository nhanVienRepository;
-
-    @Autowired
-    private ILichSuHoaDonRepository lichSuHoaDonRepository;
 
     @Override
     public String addHoaDon() {
@@ -142,30 +142,13 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 HoaDon hd = hoaDon.get();
                 hd.setNhanVien(nhanVien);
                 if (hd.getLoaiHoaDon()) {
-                    Double tongTienDonDatHang = tongTienHoaDon.doubleValue() + request.getPhiVanChuyen().doubleValue();
                     hd.setTrangThai(TrangThaiHoaDon.DA_XAC_NHAN.getValue());
                     hd.setPhiVanChuyen(request.getPhiVanChuyen());
-                    hd.setTongTien(BigDecimal.valueOf(tongTienDonDatHang));
                     hd.setDiaChi(request.getDiaChi());
                     hd.setHoTen(request.getHoTen());
                     hd.setMoTa(request.getMoTa());
                     hd.setSdt(request.getSdt());
                     hd.setPhuongThucThanhToan(PhuongThucThanhToanStatus.THANH_TOAN_KHI_NHAN_HANG);
-                    Date date = java.util.Calendar.getInstance().getTime();
-                    LichSuHoaDon lshd = LichSuHoaDon.builder()
-                            .hoaDon(hoaDon.get())
-                            .nguoiThaoTac(nhanVien.getHoTen() + " (" + nhanVien.getChucVu().getTen() + ")")
-                            .thaoTac("Tạo đơn hàng")
-                            .ngayThaoTac(date)
-                            .build();
-                    LichSuHoaDon lshd2 = LichSuHoaDon.builder()
-                            .hoaDon(hoaDon.get())
-                            .nguoiThaoTac(nhanVien.getHoTen() + " (" + nhanVien.getChucVu().getTen() + ")")
-                            .thaoTac("Đơn hàng đã được xác nhận")
-                            .ngayThaoTac(date)
-                            .build();
-                    lichSuHoaDonRepository.save(lshd);
-                    lichSuHoaDonRepository.save(lshd2);
                 } else {
                     if (request.getSoTienThanhToan().isEmpty() || request.getSoTienThanhToan() == null) {
                         attributes.addFlashAttribute("error", "chưa nhập tiền khách đưa");
@@ -207,9 +190,15 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public Page<HoaDonChiTiet> getHoaDonChiTiet(UUID id, Integer pageNo, Integer size) {
-        Pageable pageable = PageRequest.of(pageNo, size);
-        return hoaDonRepository.getHoaDonChiTiet(id, pageable);
+    public List<HoaDonChiTietReponse> getHoaDonChiTiets(UUID id) {
+        List<HoaDonChiTietReponse> response = hoaDonRepository.findAllHoaDonChiTietByHoaDon_id(id);
+        return response;
+    }
+
+    @Override
+    public HoaDonChiTietReponse getHoaDonChiTiet(UUID idHDCT) {
+        HoaDonChiTietReponse response = hoaDonRepository.findHoaDonChiTietByHoaDon_id(idHDCT);
+        return response;
     }
 
     @Override
@@ -219,9 +208,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public Page<HoaDon> pagination(Integer pageNo, Integer size) {
-        Pageable pageable = PageRequest.of(pageNo, size, Sort.by("ngayTao").descending());
-        return hoaDonRepository.findAll3(pageable);
+    public Page<HoaDon> getAllHoaDonByTrangThaiKhachHoaDonCho(Integer page) {
+        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("ngayTao").descending());
+        return hoaDonRepository.findAllHoaDonByTrangThaiKhacHoaDonCho(pageable);
     }
 
     @Override
@@ -232,46 +221,23 @@ public class HoaDonServiceImpl implements IHoaDonService {
             public Predicate toPredicate(Root<HoaDon> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
                 if (!filter.getSearch().isBlank()) {
-                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("ma"), "%"+filter.getSearch()+"%"),
-                            criteriaBuilder.like(root.get("sdt"), "%"+filter.getSearch()+"%"),
-                            criteriaBuilder.like(root.get("hoTen"), "%"+filter.getSearch()+"%")));
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("trangThai"),0)));
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("ma"), "%" + filter.getSearch() + "%"),
+                            criteriaBuilder.like(root.get("sdt"), "%" + filter.getSearch() + "%"),
+                            criteriaBuilder.like(root.get("hoTen"), "%" + filter.getSearch() + "%")));
                 }
                 if (!filter.getDateBegin().isBlank() && !filter.getDateEnd().isBlank()) {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date1 = dateFormat.parse(filter.getDateBegin());
-                    Date date2 = dateFormat.parse(filter.getDateEnd());
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.between(root.get("ngayTao"), date1, date2)));
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("trangThai"),0)));
-                }if (!filter.getLoaiHoaDon().isBlank()) {
+                    Date ngayBatDau = dateFormat.parse(filter.getDateBegin());
+                    Date ngayKetThuc = dateFormat.parse(filter.getDateEnd());
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.between(root.get("ngayTao"), ngayBatDau, ngayKetThuc)));
+                }
+                if (!filter.getLoaiHoaDon().isBlank()) {
                     predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("loaiHoaDon"), Boolean.valueOf(filter.getLoaiHoaDon()))));
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("trangThai"),0)));
                 }
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-            }
-        }, pageable);
-    }
-
-    @Override
-    public Page<HoaDon> hoaDonFillter2(HoaDonFilter filter, Pageable pageable) {
-        return hoaDonRepository.findAll(new Specification<HoaDon>() {
-            @SneakyThrows
-            @Override
-            public Predicate toPredicate(Root<HoaDon> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> predicates = new ArrayList<>();
-                if (!filter.getSearch().isBlank()) {
-                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("ma"), "%"+filter.getSearch()+"%"),
-                            criteriaBuilder.like(root.get("sdt"), "%"+filter.getSearch()+"%"),
-                            criteriaBuilder.like(root.get("hoTen"), "%"+filter.getSearch()+"%")));
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("loaiHoaDon"), false)));
+                if (!filter.getTrangThai().isEmpty() && filter.getTrangThai() != null) {
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai"), Integer.parseInt(filter.getTrangThai()))));
                 }
-                if (!filter.getDateBegin().isBlank() && !filter.getDateEnd().isBlank()) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date1 = dateFormat.parse(filter.getDateBegin());
-                    Date date2 = dateFormat.parse(filter.getDateEnd());
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.between(root.get("ngayTao"), date1, date2)));
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("loaiHoaDon"), false)));
-                }
+                predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("trangThai"), HoaDonStatus.HOA_DON_CHO)));
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         }, pageable);
@@ -291,9 +257,19 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public String updateThongTin(HoaDon hoaDon) {
-        hoaDonRepository.save(hoaDon);
-        return "redirect:/admin/hoa-don-onl/detail/" + hoaDon.getId();
+    public HoaDon updateThongTinKhachHang(UUID idHD, ThongTinKhachHang thongTinKhachHang) {
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
+        if (hoaDon.isPresent()) {
+            HoaDon hd = hoaDon.get();
+            hd.setSdt(thongTinKhachHang.getSdt());
+            hd.setDiaChi(thongTinKhachHang.getDiaChi());
+            if (thongTinKhachHang.getPhiVanChuyen() != null) {
+                hd.setPhiVanChuyen(thongTinKhachHang.getPhiVanChuyen());
+            }
+            hd.setHoTen(thongTinKhachHang.getHoTen());
+            return hoaDonRepository.save(hd);
+        }
+        return null;
     }
 
     @Override
@@ -354,31 +330,10 @@ public class HoaDonServiceImpl implements IHoaDonService {
         return hoaDonRepository.findHoaDonByTrangThai(taiKhoan, trangThai, pageable);
     }
 
-    @Override
-    public String updateStatusHoaDonById(HoaDon hoaDon, String trangThai) {
-        hoaDon.setTrangThai(Integer.parseInt(trangThai));
-        hoaDonRepository.save(hoaDon);
-        if (Integer.parseInt(trangThai) == 1) {
-            return "redirect:/admin/hoa-don-onl/cho-xac-nhan/hien-thi";
-        } else if (Integer.parseInt(trangThai) == 2) {
-            return "redirect:/admin/hoa-don-onl/cho-giao-hang/hien-thi";
-        } else if (Integer.parseInt(trangThai) == 3) {
-            return "redirect:/admin/hoa-don-onl/dang-giao/hien-thi";
-        } else if (Integer.parseInt(trangThai) == 6) {
-            return "redirect:/admin/hoa-don-onl/da-giao/hien-thi";
-        } else {
-            return "redirect:/admin/hoa-don-onl/da-huy/hien-thi";
-        }
-    }
 
     @Override
     public HoaDon getHoaDonByKhachHang_idAndHoaDon_id(UUID idKH, UUID idHD) {
         return hoaDonRepository.findHoaDonByKhachHang(idKH, idHD);
     }
 
-    @Override
-    public Page<HoaDon> phanTrangOnl(String trangThai,Integer pageNo,Integer size) {
-        Pageable pageable = PageRequest.of(pageNo,size);
-        return hoaDonRepository.phanTrangOnl(trangThai,pageable);
-    }
 }

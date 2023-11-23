@@ -106,22 +106,21 @@ public class HoaDonCuaToiController {
     public String xacNhan(Principal principal, @PathVariable("id")String id){
         HoaDon hoaDon=hoaDonService.getOne(id);
         hoaDon.setTrangThai(6);
-        hoaDonService.updateStatusHoaDonById(hoaDon,"6");
-        lichSuHoaDonService.add(principal.getName(),"Đơn hàng đã được giao thành công",hoaDon,null);
+    //    hoaDonService.updateStatusHoaDonById(hoaDon,"6");
         return "redirect:/cuaToi/donHangAll";
     }
 
-    @GetMapping("/huy-don/{id}")
-    public String huyDon(Principal principal, @RequestParam(defaultValue = "0") Integer page,
-                         @PathVariable("id")String id){
-        Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
-        for (int i = 0; i <= lst.getContent().size()-1; i++) {
-            hoaDonChiTietService.deleteSanPhamHoaDon2(String.valueOf(lst.getContent().get(i).getId()));
-        }
-        HoaDon hoaDon=hoaDonService.getOne(id);
-        hoaDon.setTrangThai(5);
-        hoaDonService.updateStatusHoaDonById(hoaDon,"5");
-        lichSuHoaDonService.add(principal.getName(),"Hủy hóa đơn",hoaDon,null);
-        return "redirect:/cuaToi/donHangAll";
-    }
+//    @GetMapping("/huy-don/{id}")
+//    public String huyDon(Principal principal, @RequestParam(defaultValue = "0") Integer page,
+//                         @PathVariable("id")String id){
+//        Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
+//        for (int i = 0; i <= lst.getContent().size()-1; i++) {
+//            hoaDonChiTietService.deleteSanPhamHoaDon(String.valueOf(lst.getContent().get(i).getId()));
+//        }
+//        HoaDon hoaDon=hoaDonService.getOne(id);
+//        hoaDon.setTrangThai(5);
+//        hoaDonService.updateStatusHoaDonById(hoaDon,"5");
+//        lichSuHoaDonService.add(principal.getName(),"Hủy hóa đơn",hoaDon,null,"ok");
+//        return "redirect:/cuaToi/donHangAll";
+//    }
 }

@@ -4,22 +4,14 @@ import com.example.web.Config.status.HoaDonChiTietStatus;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
-import com.example.web.model.LichSuHoaDon;
-import com.example.web.model.NhanVien;
-import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.repository.IChiTietSanPhamRepository;
 import com.example.web.repository.IHoaDonChiTietRepository;
 import com.example.web.repository.IHoaDonRepository;
-import com.example.web.repository.ILichSuHoaDonRepository;
-import com.example.web.repository.INhanVienRepository;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IKhuyenMaiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,12 +27,6 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
 
     @Autowired
     private IChiTietSanPhamRepository chiTietSanPhamRepository;
-
-    @Autowired
-    private INhanVienRepository nhanVienRepository;
-
-    @Autowired
-    private ILichSuHoaDonRepository lichSuHoaDonRepository;
 
     @Autowired
     private IKhuyenMaiService khuyenMaiService;
@@ -136,108 +122,11 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
         return hoaDonChiTietRepository.getReferenceById(UUID.fromString(id));
     }
 
-    //--------------------------------------------------------------------------
-    @Override
-    public String addSanPhamHoaDonChiTietKhiUpdate(String idCTSP, String idHD, Integer soLuong) {
-        Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(idHD));
-        Optional<ChiTietSanPham> ctsp = chiTietSanPhamRepository.findById(UUID.fromString(idCTSP));
-        BigDecimal donGiaSauKhiGiam = khuyenMaiService.donGiaSauKhiGiam(ctsp.get().getSanPham().getSanPhamKhuyenMais());
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
-        HoaDonChiTiet hdct = null;
-        if (hoaDon.isEmpty() || ctsp.isEmpty()) {
-            return null;
-        } else {
-            ChiTietSanPham chiTietSanPham = ctsp.get();
-            if (chiTietSanPham.getSoLuong() < soLuong) {
-                return null;
-            } else {
-                Integer result = chiTietSanPham.getSoLuong() - soLuong;
-                chiTietSanPham.setSoLuong(result);
-                hdct = hoaDonChiTietRepository.findByChiTietSanPham_IdAndAndHoaDon_IdAndTrangThai(UUID.fromString(idCTSP), UUID.fromString(idHD), 0);
-                if (hdct != null) {
-                    Integer setSoLuongSanPhamTrongHDCT = hdct.getSoLuong() + soLuong;
-                    hdct.setSoLuong(setSoLuongSanPhamTrongHDCT);
-                    hdct.setChiTietSanPham(chiTietSanPham);
-                } else {
-                    hdct = HoaDonChiTiet.builder()
-                            .hoaDon(hoaDon.get())
-                            .soLuong(soLuong)
-                            .chiTietSanPham(chiTietSanPham)
-                            .trangThai(0)
-                            .build();
-                    if(donGiaSauKhiGiam == null){
-                        hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
-                    }else{
-                        hdct.setDonGia(donGiaSauKhiGiam);
-                    }
-                }
-                Date date = java.util.Calendar.getInstance().getTime();
-                LichSuHoaDon lshd = LichSuHoaDon.builder()
-                        .hoaDon(hoaDon.get())
-                        .nguoiThaoTac(nhanVien.getHoTen() + " (" + nhanVien.getChucVu().getTen() + ")")
-                        .thaoTac("Thêm sản phẩm " + ctsp.get().getSanPham().getTen()+"["+ctsp.get().getSize().getTen()+"-"+ctsp.get().getSanPham().getChatLieu().getTen()+"-"+ctsp.get().getMauSac().getTen()+"] vào hóa đơn")
-                        .ngayThaoTac(date)
-                        .build();
-                lichSuHoaDonRepository.save(lshd);
-                hoaDonChiTietRepository.save(hdct);
-                return "redirect:/admin/hoa-don-onl/detail/" + idHD;
-            }
-        }
-    }
-
-    @Override
-    public String updateSoLuongSanPhamHoaDonChiTietKhiUpdate(String idHDCT, String soLuong) {
-        Optional<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findById(UUID.fromString(idHDCT));
-        if (hoaDonChiTiet.isPresent()) {
-            HoaDonChiTiet hdct = hoaDonChiTiet.get();
-            ChiTietSanPham ctsp = hdct.getChiTietSanPham();
-            Integer soLuongTon = hdct.getSoLuong() + ctsp.getSoLuong();
-            if (Integer.parseInt(soLuong) > soLuongTon) {
-                return null;
-            } else {
-                ctsp.setSoLuong(soLuongTon - Integer.parseInt(soLuong));
-                hdct.setChiTietSanPham(ctsp);
-                if (Integer.parseInt(soLuong)<=0){
-                    hdct.setTrangThai(1);
-                    hdct.setSoLuong(hdct.getSoLuong());
-                }else {
-                    hdct.setTrangThai(0);
-                    hdct.setSoLuong(Integer.parseInt(soLuong));
-                }
-                hoaDonChiTietRepository.save(hdct);
-                return "redirect:/admin/hoa-don/view-update/" + hdct.getHoaDon().getId();
-            }
-        } else {
-            return null;
-        }
-    }
 
     @Override
     public BigDecimal tongTienHDCT(UUID idHD) {
         BigDecimal tongTien = hoaDonRepository.tongTien(idHD);
         return tongTien;
-    }
-
-    @Override
-    public String deleteSanPhamHoaDon2(String idHDCT) {
-        Optional<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findById(UUID.fromString(idHDCT));
-        if (hoaDonChiTiet.isPresent()) {
-            HoaDonChiTiet hdct = hoaDonChiTiet.get();
-            ChiTietSanPham ctsp = hdct.getChiTietSanPham();
-            Integer result = ctsp.getSoLuong() + hdct.getSoLuong();
-            ctsp.setSoLuong(result);
-            hdct.setChiTietSanPham(ctsp);
-            hdct.setTrangThai(HoaDonChiTietStatus.XOA);
-            hoaDonChiTietRepository.save(hdct);
-            if (hdct.getHoaDon().getLoaiHoaDon()){
-                return "redirect:/admin/hoa-don-onl/detail/" + hdct.getHoaDon().getId();
-            }else {
-                return "redirect:/admin/hoa-don/view-update/" + hdct.getHoaDon().getId();
-            }
-        } else {
-            return null;
-        }
     }
 
     @Override

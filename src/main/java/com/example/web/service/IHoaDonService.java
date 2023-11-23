@@ -1,7 +1,10 @@
 package com.example.web.service;
+
 import com.example.web.request.HoaDonRequest;
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
+import com.example.web.request.ThongTinKhachHang;
+import com.example.web.response.HoaDonChiTietReponse;
 import com.example.web.response.HoaDonFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,47 +19,49 @@ public interface IHoaDonService {
 
     String addHoaDon();
 
-    Page<Object[]> findByHoaDonCho(Integer trangThaiHD ,Pageable pageable);
+    Page<Object[]> findByHoaDonCho(Integer trangThaiHD, Pageable pageable);
 
-    String getHoaDonById(Model model ,  String id , RedirectAttributes attributes);
+    String getHoaDonById(Model model, String id, RedirectAttributes attributes);
 
     String updateHoaDonTrangThai(String id);
 
-    String thanhToan(HoaDonRequest request  , RedirectAttributes attributes);
+    String thanhToan(HoaDonRequest request, RedirectAttributes attributes);
 
     List<HoaDon> getAll();
 
     HoaDon getOne(String id);
 
-    Page<HoaDonChiTiet> getHoaDonChiTiet(UUID id,Integer pageNo , Integer size);
+    // hoá đơn
+    List<HoaDonChiTietReponse> getHoaDonChiTiets(UUID id);
 
-    Page<HoaDonChiTiet> getHoaDonHuyChiTiet(UUID id,Integer pageNo , Integer size);
+    HoaDonChiTietReponse getHoaDonChiTiet(UUID uuid);
 
-    Page<HoaDon> pagination(Integer pageNo , Integer size);
+    // hoá đơn
+    Page<HoaDonChiTiet> getHoaDonHuyChiTiet(UUID id, Integer pageNo, Integer size);
 
-    Page<HoaDon> hoaDonFillter(HoaDonFilter filter , Pageable pageable);
+    // hoá đơn
+    Page<HoaDon> getAllHoaDonByTrangThaiKhachHoaDonCho(Integer page);
 
-    Page<HoaDon> hoaDonFillter2(HoaDonFilter filter , Pageable pageable);
+    // hoá đơn
+    Page<HoaDon> hoaDonFillter(HoaDonFilter filter, Pageable pageable);
 
     HoaDon add(HoaDon hoaDon);
 
-   String updateHoaDonById(HoaDon hoaDon);
+    // hoá đơn
+    String updateHoaDonById(HoaDon hoaDon);
 
-    String updateThongTin(HoaDon hoaDon);
+    HoaDon updateThongTinKhachHang(UUID idHD , ThongTinKhachHang thongTinKhachHang);
 
+    // hoá đơn
     String updatePVC(HoaDon hoaDon);
 
-    String updateStatusHoaDonById(HoaDon hoaDon,String trangThai);
 
-//    HoaDon updateHoaDonById(HoaDon hoaDon);
-
-    String inHoaDon(String id,Page<HoaDonChiTiet> hoaDonChiTiets);
+    String inHoaDon(String id, Page<HoaDonChiTiet> hoaDonChiTiets);
 
     Page<Object[]> findHoaDonByTaiKhoan(String taiKhoan, Pageable pageable);
 
     Page<Object[]> findHoaDonByTrangThai(String taiKhoan, Integer trangThai, Pageable pageable);
 
-    HoaDon getHoaDonByKhachHang_idAndHoaDon_id(UUID idKH , UUID idHD );
+    HoaDon getHoaDonByKhachHang_idAndHoaDon_id(UUID idKH, UUID idHD);
 
-    Page<HoaDon> phanTrangOnl(String trangThai,Integer pageNo,Integer size);
 }

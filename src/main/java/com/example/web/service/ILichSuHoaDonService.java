@@ -16,7 +16,7 @@ public interface ILichSuHoaDonService {
 
     LichSuHoaDon getOneTao(String idHd,String thaoTac);
 
-    void add(String nguoiThaoTac, String thaoTac, HoaDon hoaDon, String chucVu);
+    void add(String nguoiThaoTac, String thaoTac, HoaDon hoaDon,String ghiChu);
 
     void update(LichSuHoaDon lshd);
 

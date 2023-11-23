@@ -136,7 +136,6 @@ public class CheckoutServiceImpl implements CheckoutService {
         }
         if (checkoutRequest.getPhuongThucThanhToan() == PhuongThucThanhToanStatus.THANH_TOAN_KHI_NHAN_HANG) {
             HoaDon hoaDon = saveOrder(checkoutRequest, khachHang);
-            lichSuHoaDonService.add(khachHang.getHoTen(), "Tạo đơn hàng", hoaDon, null);
             return "/checkouts/success?idHD=" + hoaDon.getId();
         }
         return null;

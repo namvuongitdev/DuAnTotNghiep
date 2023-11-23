@@ -12,7 +12,6 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
 </head>
 <body>
 <%--navbar--%>
@@ -63,9 +62,6 @@
                                         <label class="form-label" path="">Ngày thanh toán</label>
                                     </div>
                                 </div>
-<%--                                                                <div style="text-align: center">--%>
-<%--                                                                    <button type="submit" class="btn btn-outline-dark">Cập nhật</button>--%>
-<%--                                                                </div>--%>
                             </div>
                         </form>
 
@@ -106,7 +102,7 @@
                             </tbody>
                         </table>
                         <!-- End Table with stripped rows -->
-                        <%--                phân trang --%>
+                        <%--phân trang --%>
                         <div class="container-fluid mt-5">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
@@ -124,6 +120,5 @@
         </div>
     </div>
 </div>
-
 </body>
 </html>
