@@ -157,20 +157,20 @@
 
 <%--Filter Begin--%>
 <div class="modal-body">
-    <div class="row">
-        <div class="col-sm-3">
-            <input class="form-control" type="text" name="search" id="search-input"
-                   style="width: 915px;margin-left: 160px" placeholder="tìm kiếm tên , mã sản phẩm">
-        </div>
-        <div class="col-sm-2">
-            <button style="margin-left: 740px;width: 100px" class="btn btn-light" onclick="timKiem()">Tìm kiếm</button>
-        </div>
-        <div class="col-sm-2">
-            <button style="margin-left: 630px;width: 100px" class="btn btn-secondary" id="clear">Làm mới</button>
-        </div>
-    </div>
-    <br>
-    <div class="row">
+<%--    <div class="row">--%>
+<%--        <div class="col-sm-3">--%>
+<%--            <input class="form-control" type="text" name="search" id="search-input"--%>
+<%--                   style="width: 915px;margin-left: 160px" placeholder="Tìm kiếm ....">--%>
+<%--        </div>--%>
+<%--        <div class="col-sm-2">--%>
+<%--            <button style="margin-left: 740px;width: 100px" class="btn btn-light" onclick="timKiem()">Tìm kiếm</button>--%>
+<%--        </div>--%>
+<%--        <div class="col-sm-2">--%>
+<%--            <button style="margin-left: 630px;width: 100px" class="btn btn-secondary" id="clear">Làm mới</button>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--    <br>--%>
+    <div class="row" style="margin-left: 140px">
         <div class="row d-flex justify-content-center" style="margin-bottom: 10px;margin-left: 175px">
             <div class="col-sm-1.5">
                 <label for="size">Kích cỡ</label><br>
@@ -225,18 +225,6 @@
                                 ${kieuDang.ten}
                         </option>
                     </c:forEach>
-                </select>
-            </div>
-            <div class="col-sm-1.5" style="margin-left: 30px">
-                <label for="trangThai">Trang thái</label><br>
-                <select name="trangThai" id="trangThai" class="form-select" onchange="filterTrangThai(this.value)">
-                    <option value="">Tất cả</option>
-                    <option value="0">
-                        Kinh doanh
-                    </option>
-                    <option value="1">
-                        Ngừng Kinh doanh
-                    </option>
                 </select>
             </div>
             <div class="col-sm-1.5" style="margin-left: 30px">

@@ -57,7 +57,11 @@ function getSanPham(page) {
                                     <img class="img-thumbnail" src="/image/${data.content[i].img}" style="width:265px;height: 270px" >
                                     <ul class="product__hover">
                                     <form method="get" action="/index/chi-tiet-san-pham/${data.content[i].id}">
-                                        <li><a href="/index/chi-tiet-san-pham-onl?id=${data.content[i].id}"><img src="/anh/eye.png" width="40px" alt=""></a></li>
+                                        <li>
+                                         <a href="/index/chi-tiet-san-pham-onl?id=${data.content[i].id}" 
+   onclick="return checkAvailability(${data.content[i].trangThai})">
+    <img src="/anh/eye.png" width="40px" alt="">
+</a>
                                     </form>
                                     </ul>
                                 </div>
@@ -256,7 +260,13 @@ function getSanPhamThoiTrangNu(page) {
                           <a class="page-link" name="` + (Number.parseInt(page) + Number.parseInt(1)) + `" onclick="getSanPhamThoiTrangNu(this.name)" > > </a></li>`;
         });
 }
-
+function checkAvailability(trangThai) {
+    if (trangThai == 1) {
+        alert('Hiện sản phẩm này ngừng hoạt động');
+        return false; // Ngăn chặn hành động mặc định của liên kết
+    }
+    return true; // Cho phép thực hiện hành động mặc định của liên kết
+}
 let data = {
     search: "",
     danhMuc: "",
