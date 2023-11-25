@@ -16,7 +16,6 @@ import com.example.web.service.ILichSuHoaDonService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -143,7 +142,6 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     @Override
     public HoaDon saveOrder(CheckoutRequest request, KhachHang khachHang) {
-        BigDecimal tongTien = gioHangOnllineService.tongTienSanPhamTrongGioHang(khachHang.getId());
         Date date = java.util.Calendar.getInstance().getTime();
         //+ "," + request.getPhuongXa() + "," + request.getQuanHuyen() + "," + request.getThanhPho()
         if (khachHang.getDiaChis().isEmpty()) {
@@ -152,7 +150,7 @@ public class CheckoutServiceImpl implements CheckoutService {
                     .sdt(request.getSdt())
                     .hoTen(request.getHoTen())
                     .diaChi(request.getDiaChi())
-                    .diaChiMacDinh(true)
+                    .diaChiMacDinh(false)
                     .build();
             diaChiService.add(dc);
         }
@@ -168,7 +166,6 @@ public class CheckoutServiceImpl implements CheckoutService {
                 .sdt(request.getSdt())
                 .moTa(request.getGhiChu())
                 .phuongThucThanhToan(request.getPhuongThucThanhToan())
-                .tongTien(tongTien)
                 .build();
         if (request.getPhuongThucThanhToan() == PhuongThucThanhToanStatus.VNPAY) {
             hoaDon.setNgayThanhToan(date);

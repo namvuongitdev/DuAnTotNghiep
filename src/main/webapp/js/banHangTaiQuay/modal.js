@@ -16,9 +16,9 @@ scanner.addListener('scan' , function (c) {
     let url = new URL(url_string);
     let paramValue = url.searchParams.get("idHD");
     if(spanQrcode.accessKey != undefined){
-        window.location.href = "/admin/hoa-don/add-san-pham?ctsp="+c+"&soLuong=1"+"&idHD="+paramValue+"&idKhachHang="+spanQrcode.accessKey;
+        window.location.href = "/admin/hoa-don-chi-tiet/qrcode?qrCode="+c+"&soLuong=1"+"&idHD="+paramValue+"&idKhachHang="+spanQrcode.accessKey;
     }else{
-        window.location.href = "/admin/hoa-don/add-san-pham?ctsp="+c+"&soLuong=1"+"&idHD="+paramValue+"&idKhachHang=";
+        window.location.href = "/admin/hoa-don-chi-tiet /qrcode?qrCode="+c+"&soLuong=1"+"&idHD="+paramValue+"&idKhachHang=";
     }
 
 })

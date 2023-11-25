@@ -8,4 +8,6 @@ public class HoaDonStatus {
     public static final Integer GIAO_HANG_THANH_CONG = 6;
     public static final Integer DA_THANH_TOAN = 4;
     public static final Integer HUY = 5;
+    public static final Integer CHINH_SUA = 7;
+    public static final Integer NHAN_VIEN_TAO_HOA_DON = 8;
 }

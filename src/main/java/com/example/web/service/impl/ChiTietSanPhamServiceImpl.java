@@ -114,4 +114,14 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
     public List<ChiTietSanPham> getTop5SanPhamBanChay() {
         return iChiTietSanPhamRepository.getTop5SanPhamBanChay();
     }
+
+    @Override
+    public UUID getByQrcode(String qrCode) {
+        Optional<UUID> value = iChiTietSanPhamRepository.findByQrCode(qrCode);
+        if(value.isPresent()){
+            return value.get();
+        }else{
+            return null;
+        }
+    }
 }

@@ -39,5 +39,6 @@ public class HoaDonRequest {
     private BigDecimal tongTien;
     private Integer trangThai;
     private Date ngayThanhToan;
+    private String maGiaoDich;  
 
 }

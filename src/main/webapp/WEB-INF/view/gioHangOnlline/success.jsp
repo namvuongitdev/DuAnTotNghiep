@@ -79,7 +79,7 @@
                                 </div>
                                 <div style="margin-top: 15px">
                                     <h5 style="color: #95999c">Thông tin thanh toán</h5>
-                                    <p class="text-muted mb-0 big">Tạm tính : <fmt:formatNumber pattern="#,###" value="${hoaDon.tongTien}"></fmt:formatNumber></p>
+                                    <p class="text-muted mb-0 big">Tạm tính : <fmt:formatNumber pattern="#,###" value="${hoaDon.tongTien()}"></fmt:formatNumber></p>
                                 </div>
                             </div>
 

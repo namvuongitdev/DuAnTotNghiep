@@ -64,18 +64,20 @@
                             <td>${hd.loaiHoaDon==false?'Đơn tại quầy':'Đơn giao'}</td>
                             <td><fmt:formatDate value="${hd.ngayTao}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
                                 <c:choose>
-                                    <c:when test="${hd.hoTen == null}">
+                                    <c:when test="${hd.khachHang == null}">
                                         <td>
                                             <button class="btn btn-secondary rounded-pill">khách lẻ</button>
                                         </td>
                                     </c:when>
                                     <c:otherwise>
                                         <td>
-                                            ${hd.hoTen}
+                                            ${hd.khachHang.hoTen}
                                         </td>
                                     </c:otherwise>
                                 </c:choose>
-                            <td style="color:red;"><fmt:formatNumber pattern="#,###" value="${hd.tongTien}"/> đ</td>
+                            <td style="color:red;">
+                                 <fmt:formatNumber pattern="#,###" value="${hd.tongTien()}"/> đ
+                            </td>
                             <td>
                                 <c:if test="${hd.trangThai == 4}">
                                     <button class="btn btn-primary rounded-pill">Đã hoàn thành</button>

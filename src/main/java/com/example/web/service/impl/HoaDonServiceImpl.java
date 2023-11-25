@@ -6,12 +6,10 @@ import com.example.web.Config.status.PhuongThucThanhToanStatus;
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
 import com.example.web.model.KhachHang;
-import com.example.web.model.LichSuHoaDon;
 import com.example.web.model.NhanVien;
 import com.example.web.model.TrangThaiHoaDon;
 import com.example.web.repository.IHoaDonRepository;
 import com.example.web.repository.IKhachHangRepository;
-import com.example.web.repository.ILichSuHoaDonRepository;
 import com.example.web.repository.INhanVienRepository;
 import com.example.web.request.HoaDonRequest;
 import com.example.web.request.ThongTinKhachHang;
@@ -19,6 +17,7 @@ import com.example.web.response.HoaDonChiTietReponse;
 import com.example.web.response.HoaDonReponse;
 import com.example.web.service.IHoaDonService;
 import com.example.web.response.HoaDonFilter;
+import com.example.web.service.ILichSuHoaDonService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -44,6 +43,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -68,6 +68,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
     @Autowired
     private INhanVienRepository nhanVienRepository;
+
+    @Autowired
+    private ILichSuHoaDonService lichSuHoaDonService;
 
     @Override
     public String addHoaDon() {
@@ -113,10 +116,10 @@ public class HoaDonServiceImpl implements IHoaDonService {
             HoaDon hd = hoaDon.get();
             hd.setTrangThai(TrangThaiHoaDon.HUY_HOA_DON.getValue());
 
-            hd.getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() == 0).forEach(hoaDonChiTiet -> {
+            hd.getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() == HoaDonChiTietStatus.KICH_HOAT).forEach(hoaDonChiTiet -> {
                 Integer soLuong = hoaDonChiTiet.getSoLuong() + hoaDonChiTiet.getChiTietSanPham().getSoLuong();
                 hoaDonChiTiet.getChiTietSanPham().setSoLuong(soLuong);
-                hoaDonChiTiet.setTrangThai(1);
+                hoaDonChiTiet.setTrangThai(HoaDonChiTietStatus.XOA);
                 hoaDonRepository.save(hd);
             });
             return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
@@ -162,6 +165,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
                         hd.setTrangThai(TrangThaiHoaDon.DA_HOAN_THANH.getValue());
                         hd.setTongTien(tongTienHoaDon);
                         hd.setNgayThanhToan(date);
+                        if (request.getHinhThucThanhToan() == PhuongThucThanhToanStatus.CHUYEN_KHOAN) {
+                            hd.setMaGiaDich(request.getMaGiaoDich());
+                        }
                         hd.setPhuongThucThanhToan(request.getHinhThucThanhToan());
                     }
                 }
@@ -170,6 +176,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                     hd.setKhachHang(khachHang.get());
                 }
                 HoaDon response = hoaDonRepository.save(hd);
+                lichSuHoaDonService.add(HoaDonStatus.NHAN_VIEN_TAO_HOA_DON, response, "nhân viên tạo hoá đơn cho khách");
                 attributes.addFlashAttribute("success", "Hoá đơn " + response.getMa() + " tạo thành công");
                 return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
             } else {
@@ -345,4 +352,32 @@ public class HoaDonServiceImpl implements IHoaDonService {
         return hoaDonRepository.tongHoaDonChoXacNhan();
     }
 
+    @Override
+    public Integer xacNhanHoaDon(Integer trangThai, UUID idHD, String ghiChu) {
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
+        if (hoaDon.isPresent()) {
+            HoaDon hd = hoaDon.get();
+            if (trangThai == HoaDonStatus.DA_TIEP_NHAN) {
+                if(hd.getPhiVanChuyen() == null){
+                    return 2;
+                }
+            }
+            if (trangThai == HoaDonStatus.GIAO_HANG) {
+                BigDecimal tongTien = hoaDonRepository.tongTien(idHD);
+                hd.setTongTien(BigDecimal.valueOf(tongTien.intValue() + hd.getPhiVanChuyen().intValue()));
+            }
+            if (trangThai == HoaDonStatus.HUY) {
+                hd.getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() == HoaDonChiTietStatus.KICH_HOAT).forEach(hoaDonChiTiet -> {
+                    Integer soLuong = hoaDonChiTiet.getSoLuong() + hoaDonChiTiet.getChiTietSanPham().getSoLuong();
+                    hoaDonChiTiet.getChiTietSanPham().setSoLuong(soLuong);
+                });
+            }
+            hd.setTrangThai(trangThai);
+            lichSuHoaDonService.add(trangThai, hd, ghiChu);
+            return 1;
+
+        } else {
+            return -1;
+        }
+    }
 }

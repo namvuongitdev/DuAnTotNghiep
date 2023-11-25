@@ -29,4 +29,6 @@ public interface INhanVienService {
     UUID findIdByEmail(String email);
 
     String findEmailToPass(String taiKhoan);
+
+    NhanVien getNhanVienLogin();
 }

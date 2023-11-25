@@ -68,4 +68,6 @@ public interface IHoaDonService {
 
     Integer tongHoaDonChoXacNhan();
 
+    Integer xacNhanHoaDon(Integer trangThai , UUID idHD , String ghiChu);
+
 }

@@ -15,8 +15,9 @@ public interface IHoaDonChiTietService {
 
     HoaDonChiTiet updateHoaDonChiTiet(String idHDCT, String soLuong);
 
-    HoaDonChiTiet getOne(String id);
+    Integer traHang(UUID idCTSP , Integer soLuong);
 
+    HoaDonChiTiet getOne(String id);
 
     BigDecimal tongTienHDCT(UUID idHD);
 

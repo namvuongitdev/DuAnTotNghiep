@@ -61,7 +61,7 @@
         </div>
         <div style="text-align: center" class="mt-3">
             <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-            <a href="/admin/hoa-don/hien-thi" class="btn btn-warning">Tìm kiếm</a>
+            <a href="/admin/hoa-don/hien-thi" class="btn btn-warning">Làm mới</a>
         </div>
 
     </div>

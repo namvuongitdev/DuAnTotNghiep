@@ -1,9 +1,8 @@
 package com.example.web.controller;
 
-import com.example.web.controller.SanPhamController;
+import com.example.web.Config.status.HoaDonStatus;
 import com.example.web.model.HoaDon;
 import com.example.web.model.KhachHang;
-import com.example.web.model.LichSuHoaDon;
 import com.example.web.model.TrangThaiHoaDon;
 import com.example.web.request.ThongTinKhachHang;
 import com.example.web.response.HoaDonChiTietReponse;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
@@ -192,10 +189,12 @@ public class HoDonController {
     @GetMapping("/chi-tiet-hoa-dons/{id}")
     public String getAllChiTietHoaDonByHoaDon_id(Model model, @PathVariable("id") String id) {
         List<HoaDonChiTietReponse> response = hoaDonService.getHoaDonChiTiets(UUID.fromString(id));
+        BigDecimal tongTien = hoaDonChiTietService.tongTienHDCT(UUID.fromString(id));
         HoaDon hoaDon = hoaDonService.getOne(id);
-        model.addAttribute("hd", hoaDon);
+        model.addAttribute("hoaDon", hoaDon);
         model.addAttribute("listHoaDonChiTiet", response);
         model.addAttribute("thongTinKhachHang", new ThongTinKhachHang());
+        model.addAttribute("tongTien" , tongTien);
         return "quanLyHoaDon/chiTietHoaDonOnline/CTChoXacNhan";
     }
 
@@ -210,12 +209,26 @@ public class HoDonController {
         HoaDon hd = hoaDonService.updateThongTinKhachHang(UUID.fromString(idHD), request);
         if (hd != null) {
             attributes.addFlashAttribute("success", "update thông tin khách hàng thành công");
-            lichSuHoaDonService.add(principal.getName(), "chỉnh sửa hoá đơn", hd,"Chỉ sửa thông tin khách hàng." +request.getGhiChu());
+            lichSuHoaDonService.add(HoaDonStatus.CHINH_SUA, hd,"Chỉ sửa thông tin khách hàng." +request.getGhiChu());
         } else {
             attributes.addFlashAttribute("error", "không tìm thấy hoá đơn");
         }
         return "redirect:/admin/hoa-don/chi-tiet-hoa-dons/" + hd.getId();
     }
+
+    @PostMapping("/update-trang-thai")
+    public String updateTrangThaiDonHang(@RequestParam Integer trangThai , @RequestParam String idHD , @RequestParam String ghiChuXacNhan , RedirectAttributes attributes){
+        Integer isCheck = hoaDonService.xacNhanHoaDon(trangThai , UUID.fromString(idHD) , ghiChuXacNhan);
+        if(isCheck == 1){
+            attributes.addFlashAttribute("success", "xác nhận hoá đơn thành công");
+        }else if (isCheck == 2){
+            attributes.addFlashAttribute("error", "bạn chưa nhập phí vận chuyển");
+        }else{
+            attributes.addFlashAttribute("error", "không tìm thấy hoá đơn");
+        }
+         return "redirect:/admin/hoa-don/chi-tiet-hoa-dons/" + idHD;
+    }
+
 
     @GetMapping("/in-hoa-don/{id}")
     public String generateAndSaveInvoice(@PathVariable("id") String id) {

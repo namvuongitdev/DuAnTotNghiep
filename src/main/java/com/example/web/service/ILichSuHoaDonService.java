@@ -2,8 +2,6 @@ package com.example.web.service;
 
 import com.example.web.model.HoaDon;
 import com.example.web.model.LichSuHoaDon;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +14,7 @@ public interface ILichSuHoaDonService {
 
     LichSuHoaDon getOneTao(String idHd,String thaoTac);
 
-    void add(String nguoiThaoTac, String thaoTac, HoaDon hoaDon,String ghiChu);
+    void add(Integer thaoTac, HoaDon hoaDon,String ghiChu);
 
     void update(LichSuHoaDon lshd);
 

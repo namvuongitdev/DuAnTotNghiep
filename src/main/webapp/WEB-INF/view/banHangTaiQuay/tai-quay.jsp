@@ -21,7 +21,7 @@
     </div>
     <div>
         <h6>Hình thức thanh toán : </h6>
-        <select class="form-select" name="hinhThucThanhToan" style="width: 200px">
+        <select class="form-select" name="hinhThucThanhToan" style="width: 200px" onchange="phuongThucThanhToan(this.value)">
             <option value="1">Tiền mặt</option>
             <option value="2">Chuyển Khoản</option>
         </select>
@@ -39,6 +39,9 @@
             </c:if>
             <span id="tienThuaCuaKhach" name="tienThuaTraKhach"
                   style="color: #03AA28"></span>
+
+        </div>
+        <div class="mb-3 form-floating" id="maGiaDichCK">
         </div>
     </div>
 
@@ -47,7 +50,7 @@
                                       style="width: 50%"></textarea>
         <label for="moTa">Mô Tả</label>
     </div>
-    <div>
+    <div style="margin-bottom: 20px">
         <button class="btn btn-primary" id="xacNhanThanhToan"
         >Xác nhận thanh toán
         </button>

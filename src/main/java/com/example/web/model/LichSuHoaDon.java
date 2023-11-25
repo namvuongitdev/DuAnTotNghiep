@@ -46,4 +46,5 @@ public class LichSuHoaDon {
     @Nationalized
     @Column(name = "ghi_chu" , length = 3000)
     private String ghiChu;
+
 }

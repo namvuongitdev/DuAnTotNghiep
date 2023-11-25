@@ -32,7 +32,6 @@
             border-bottom: 1px solid #ddd;
             font-weight: 600;
         }
-
     </style>
 </head>
 <body>
@@ -67,10 +66,16 @@
                 <div class="row">
                     <div class="card">
                         <div class="card-body row">
-                            <div>
-                                <button class="btn btn-light" onclick="getAllLichHoaDon(`${hd.id}`)">
-                                    Lịch sử hoá đơn
-                                </button>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <jsp:include page=".././trangThai/thay-doi-trang-thai.jsp"></jsp:include>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn btn-light" style="float: right"
+                                            onclick="getAllLichHoaDon(`${hoaDon.id}`)">
+                                        Lịch sử hoá đơn
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -102,52 +107,78 @@
     </div>
 </div>
 <!-- Sửa thông tin -->
-<c:if test="${hd.loaiHoaDon}">
+<c:if test="${hoaDon.loaiHoaDon}">
     <jsp:include page="modal-update-thong-tin-khach-hang.jsp"></jsp:include>
 </c:if>
-<%--thêm sản phẩm--%>
-<%--chi tiết sản phẩm--%>
-<jsp:include page="../../banHangTaiQuay/modal-hien-thi-san-pham.jsp"></jsp:include>
-<jsp:include page="../../banHangTaiQuay/chi-tiet-san-pham.jsp"></jsp:include>
 <%--modal lịch sử hoá đơn--%>
 <jsp:include page="modal-lich-su-hoa-don.jsp"></jsp:include>
-<%--modal xoá sản phẩm--%>
-<jsp:include page="modal-xoa-san-pham.jsp"></jsp:include>
-<%--modal update số lượng sản phẩm--%>
-<jsp:include page="modal-update-so-luong.jsp"></jsp:include>
+<c:if test="${hoaDon.trangThai == 1 || hoaDon.trangThai == 2}">
+    <%--thêm sản phẩm--%>
+    <%--chi tiết sản phẩm--%>
+    <jsp:include page="../../banHangTaiQuay/modal-hien-thi-san-pham.jsp"></jsp:include>
+    <jsp:include page="../../banHangTaiQuay/chi-tiet-san-pham.jsp"></jsp:include>
+    <%--modal xoá sản phẩm--%>
+    <jsp:include page="modal-xoa-san-pham.jsp"></jsp:include>
+    <%--modal update số lượng sản phẩm--%>
+    <jsp:include page="modal-update-so-luong.jsp"></jsp:include>
+</c:if>
+<%--modal xác nhân hoá đơn--%>
+<c:if test="${hoaDon.trangThai != 4}">
+    <jsp:include page="modal-xac-nhan-hoa-don.jsp"></jsp:include>
+</c:if>
+<%--modal tra hàng--%>
+<c:if test="${hoaDon.trangThai == 4}">
+    <jsp:include page="modal-tra-hang.jsp"></jsp:include>
+</c:if>
 </body>
+
+<%--   javasctipt--%>
 <script>
     const VND = new Intl.NumberFormat('vi-VN', {
         style: 'currency',
         currency: 'VND',
     });
-    let modal = document.getElementById("myModal");
-
-    let btn = document.getElementById("myBtn");
-
-    let span = document.getElementById("close_ctsp");
-    span.onclick = function () {
-        colorSP.innerHTML = ""
-        sizeSP.innerHTML = ""
-        document.getElementById("soLuong").innerHTML = "";
-        document.getElementById("themVaoGioHang").name = "";
-        document.getElementById("soLuongTon").value = 1;
-        document.getElementById("sp").innerHTML = "";
-        document.getElementById("img").innerHTML = "";
-        mauSac = undefined;
-        sanPham = undefined;
-        kichCo = undefined;
-        dataCTSP = undefined;
-        modal.style.display = "none";
-    }
 </script>
-<script src="/js/quanLyHoaDon/san-pham-hdct.js">
-</script>
-<script src="/js/quanLyHoaDon/chi-tiet-san-pham-hdct.js"></script>
-<c:if test="${hd.loaiHoaDon}">
+
+<c:if test="${hoaDon.loaiHoaDon}">
     <script src="/js/quanLyHoaDon/modal-update-thong-tin-khach-hang.js"></script>
 </c:if>
+
 <script src="/js/quanLyHoaDon/modal-lich-su-hoa-don.js"></script>
-<script src="/js/quanLyHoaDon/modal-xoa-san-pham.js"></script>
-<script src="/js/quanLyHoaDon/modal-update-so-luong.js"></script>
+<c:if test="${hoaDon.trangThai == 1 || hoaDon.trangThai == 2}">
+    <script>
+        let modal = document.getElementById("myModal");
+
+        let btn = document.getElementById("myBtn");
+
+        let span = document.getElementById("close_ctsp");
+        span.onclick = function () {
+            colorSP.innerHTML = ""
+            sizeSP.innerHTML = ""
+            document.getElementById("soLuong").innerHTML = "";
+            document.getElementById("themVaoGioHang").name = "";
+            document.getElementById("soLuongTon").value = 1;
+            document.getElementById("sp").innerHTML = "";
+            document.getElementById("img").innerHTML = "";
+            mauSac = undefined;
+            sanPham = undefined;
+            kichCo = undefined;
+            dataCTSP = undefined;
+            modal.style.display = "none";
+        }
+    </script>
+    <script src="/js/quanLyHoaDon/san-pham-hdct.js">
+    </script>
+    <script src="/js/quanLyHoaDon/chi-tiet-san-pham-hdct.js"></script>
+    <script src="/js/quanLyHoaDon/modal-xoa-san-pham.js"></script>
+    <script src="/js/quanLyHoaDon/modal-update-so-luong.js"></script>
+</c:if>
+
+<c:if test="${hoaDon.trangThai != 4}">
+    <script src="/js/quanLyHoaDon/modal-xac-nhan-hoa-don.js"></script>
+</c:if>
+
+<c:if test="${hoaDon.trangThai == 4}">
+    <script src="/js/quanLyHoaDon/modal-tra-hang.js"></script>
+</c:if>
 </html>

@@ -116,7 +116,7 @@ function getCTSP(id) {
     }
 }
 
-async function themSanPhamVaoGioHang(data) {
+function themSanPhamVaoGioHang(data) {
     let soLuong = document.getElementById("soLuongTon").value;
     let idHD = document.getElementById("soLuongTon").name;
     if (data.idCTSP === "") {
@@ -130,7 +130,7 @@ async function themSanPhamVaoGioHang(data) {
                 }
             }
         }
-        window.location.href = "/admin/hoa-don/add-san-pham?ctsp=" + data.idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD + "&idKhachHang=" + data.idKhachHang;
+       window.location.href = "/admin/hoa-don-chi-tiet/add?idCTSP=" + data.idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD;
     }
 }
 

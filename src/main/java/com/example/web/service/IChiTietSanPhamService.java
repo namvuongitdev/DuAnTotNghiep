@@ -40,4 +40,6 @@ public interface IChiTietSanPhamService {
     List<Size> getSizeBySanPham_idAndMauSac_id(UUID idSP , UUID idMS);
 
     List<ChiTietSanPham> getTop5SanPhamBanChay();
+
+    UUID getByQrcode(String qrCode);
 }

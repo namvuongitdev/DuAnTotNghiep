@@ -6,25 +6,25 @@
     <div class="modal-content-1" style="width: 50%">
         <span class="close" id="close_modalUpdateThongTinKhachHang">&times;</span>
         <div class="row">
-            <form:form action="/admin/hoa-don/update-thong-tin-khach-hang?idHD=${hd.id}" method="post" modelAttribute="thongTinKhachHang">
+            <form:form action="/admin/hoa-don/update-thong-tin-khach-hang?idHD=${hoaDon.id}" method="post" modelAttribute="thongTinKhachHang">
                 <div class="row">
                     <div class="col-md-4">
                         <label for="hoTenKhach">Họ tên khách hàng</label>
-                        <input id="hoTenKhach" value="${hd.hoTen}" type="text" name="hoTen" class="form-control"/>
+                        <input id="hoTenKhach" value="${hoaDon.hoTen}" type="text" name="hoTen" class="form-control"/>
                     </div>
                     <div class="col-md-4">
                         <label for="sdtKhach">Số điện thoại</label>
-                        <input id="sdtKhach" value="${hd.sdt}" type="number" name="sdt" class="form-control"/>
+                        <input id="sdtKhach" value="${hoaDon.sdt}" type="number" name="sdt" class="form-control"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-4">
                         <label for="phiVanChuyen">Phí vận chuyển</label>
-                        <input id="phiVanChuyen" style="height: 60px" value="${hd.phiVanChuyen}" name="phiVanChuyen" type="number" class="form-control"/>
+                        <input id="phiVanChuyen" style="height: 60px" value="${hoaDon.phiVanChuyen}" name="phiVanChuyen" type="number" class="form-control"/>
                     </div>
                     <div class="col-md-6">
                         <label for="diaChiMoi">Địa chỉ</label>
-                        <textarea id="diaChiMoi" name="diaChi"  class="form-control">${hd.diaChi}</textarea>
+                        <textarea id="diaChiMoi" name="diaChi"  class="form-control">${hoaDon.diaChi}</textarea>
                     </div>
                 </div>
                 <div class="row">

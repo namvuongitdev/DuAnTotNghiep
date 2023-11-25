@@ -35,4 +35,7 @@ public class HoaDonReponse {
     private String email;
 
     private Integer soLuongSanPham;
+
 }
+
+

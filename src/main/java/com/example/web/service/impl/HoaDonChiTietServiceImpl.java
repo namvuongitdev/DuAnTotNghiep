@@ -1,4 +1,5 @@
 package com.example.web.service.impl;
+
 import com.example.web.Config.status.HoaDonChiTietStatus;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.HoaDon;
@@ -10,6 +11,7 @@ import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IKhuyenMaiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -55,9 +57,9 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                         .chiTietSanPham(chiTietSanPham)
                         .trangThai(HoaDonChiTietStatus.KICH_HOAT)
                         .build();
-                if(donGiaSauKhiGiam == null){
-                     hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
-                }else{
+                if (donGiaSauKhiGiam == null) {
+                    hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
+                } else {
                     hdct.setDonGia(donGiaSauKhiGiam);
                 }
             }
@@ -113,6 +115,47 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
             }
         } else {
             return null;
+        }
+    }
+
+    @Override
+    public Integer traHang(UUID idHDCT, Integer soLuong) {
+        Optional<HoaDonChiTiet> hdct = hoaDonChiTietRepository.findById(idHDCT);
+        if (hdct.isPresent()) {
+            HoaDonChiTiet hoaDonChiTiet = hdct.get();
+            //check số lượng
+            if (soLuong > hoaDonChiTiet.getSoLuong()) {
+                return 1;
+            }
+            if (soLuong <= 0) {
+                return 1;
+            }
+            // update lại số lượng sản phẩm
+            ChiTietSanPham ctsp = chiTietSanPhamRepository.findById(hoaDonChiTiet.getChiTietSanPham().getId()).get();
+            Integer updateSoLuong = ctsp.getSoLuong() + soLuong;
+            Integer soLuongConLai = hoaDonChiTiet.getSoLuong() - soLuong;
+            ctsp.setSoLuong(updateSoLuong);
+            // nếu là trả hết thì cập nhập lại trạng thái luôn
+            if (soLuong == hoaDonChiTiet.getSoLuong()) {
+                hoaDonChiTiet.setTrangThai(HoaDonChiTietStatus.TRA_HANG);
+            }
+            if (soLuong < hoaDonChiTiet.getSoLuong()) {
+                // insert thêm một hoá đơn chi tiết có trạng thái trả hàng
+                HoaDonChiTiet newHDCT = HoaDonChiTiet.builder()
+                        .hoaDon(hoaDonChiTiet.getHoaDon())
+                        .trangThai(HoaDonChiTietStatus.TRA_HANG)
+                        .chiTietSanPham(hoaDonChiTiet.getChiTietSanPham())
+                        .donGia(hoaDonChiTiet.getDonGia())
+                        .soLuong(soLuong)
+                        .build();
+                hoaDonChiTiet.setSoLuong(soLuongConLai);
+                hoaDonChiTietRepository.save(newHDCT);
+                hoaDonChiTietRepository.save(hoaDonChiTiet);
+            }
+            chiTietSanPhamRepository.save(ctsp);
+            return 2;
+        } else {
+            return 0;
         }
     }
 

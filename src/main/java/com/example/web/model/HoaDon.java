@@ -1,8 +1,8 @@
 package com.example.web.model;
+import com.example.web.Config.status.HoaDonChiTietStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -80,6 +80,9 @@ public class HoaDon {
     @Column(name = "phuongThucThanhToan")
     private Integer phuongThucThanhToan;
 
+    @Column(name = "ma_giao_dich")
+    private String maGiaDich;
+
     @OneToMany(mappedBy = "hoaDon")
     @JsonIgnore
     private List<HoaDonChiTiet> hoaDonChiTiets;
@@ -91,5 +94,17 @@ public class HoaDon {
     @ManyToOne
     @JoinColumn(name = "idKhachHang")
     private KhachHang khachHang;
+
+
+    public BigDecimal tongTien(){
+        Integer tongTien = 0;
+          for(HoaDonChiTiet hoaDonChiTiet : this.hoaDonChiTiets){
+              if(hoaDonChiTiet.getTrangThai() == HoaDonChiTietStatus.KICH_HOAT){
+                    tongTien += (hoaDonChiTiet.getDonGia().intValue() * hoaDonChiTiet.getSoLuong().intValue());
+              }
+          }
+           Integer phiVanChuyen = this.getPhiVanChuyen() != null ? this.getPhiVanChuyen().intValue() : 0;
+          return BigDecimal.valueOf(tongTien + phiVanChuyen);
+    }
 
 }

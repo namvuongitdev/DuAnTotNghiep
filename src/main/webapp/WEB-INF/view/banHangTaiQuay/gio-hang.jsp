@@ -97,13 +97,6 @@
                                             chọn
                                         </button>
                                     </div>
-                                    <c:if test="${hoaDon.loaiHoaDon}">
-                                        <div class="col-sm-2" style="width: 14%">
-                                            <button class="btn btn-secondary" id="diaChiKhachHang">
-                                                Đia Chỉ
-                                            </button>
-                                        </div>
-                                    </c:if>
                                 </c:if>
                             </div>
                             <hr>
@@ -155,7 +148,7 @@
     </div>
 </div>
 <%-- địa chỉ khách hàng--%>
-<jsp:include page="hien-thi-dia-chi.jsp"></jsp:include>
+<%--<jsp:include page="hien-thi-dia-chi.jsp"></jsp:include>--%>
 <%--thêm khách hàng--%>
 <jsp:include page="them-khach-hang.jsp"></jsp:include>
 </body>
@@ -165,5 +158,5 @@
 <script src="/js/banHangTaiQuay/chiTietSanPham.js"></script>
 <script src="/js/banHangTaiQuay/thanhToan.js"></script>
 <script src="/js/banHangTaiQuay/khachHang.js"></script>
-<script src="/js/banHangTaiQuay/diaChiKhachHang.js"></script>
+<%--<script src="/js/banHangTaiQuay/diaChiKhachHang.js"></script>--%>
 </html>

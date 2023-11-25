@@ -8,18 +8,17 @@
     <div>
         <p style="float: right">
             <b>Tiền hàng:</b>
-            <span><fmt:formatNumber pattern="#,###" value="${hdc}"/> đ</span>
+            <span><fmt:formatNumber pattern="#,###" value="${tongTien}"/> đ</span>
         </p>
     </div>
     <div>
-        <p style="float: right"><b>Phí vận chuyển:</b> <input id="PVC" type="text"
-                                                              style="border: none;width: 100px;display: ${hd.trangThai==5?'none':''}" ${hd.trangThai==1?'':hd.trangThai==2?'':'disabled'}
-                                                              onblur="doiPhiShip({ship:this.value,idhd:`${hd.id}`})"
-                                                              value="<fmt:formatNumber pattern="#,###"  value="${hd.phiVanChuyen}"/>"/> đ
+        <p style="float: right"><b>Phí vận chuyển:</b>
+            <span><fmt:formatNumber pattern="#,###" value="${hoaDon.phiVanChuyen == null ? 0 : hoaDon.phiVanChuyen}"/> đ</span>
         </p>
     </div>
     <div>
-        <p style="float: right"><b>Tổng số tiền :</b> <span style="color: red"><fmt:formatNumber pattern="#,###" value="${hd.tongTien}"/> đ</span>
+        <p style="float: right"><b>Tổng số tiền :</b> <span style="color: red"><fmt:formatNumber pattern="#,###"
+                                                                                                 value="${hoaDon.phiVanChuyen + tongTien}"/> đ</span>
         </p>
     </div>
 </div>

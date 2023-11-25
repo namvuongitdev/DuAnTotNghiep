@@ -52,4 +52,7 @@ public interface IChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,
             "  select top 5 idctsp from hoa_don_chi_tiet group by idctsp order by  sum(so_luong) desc)",nativeQuery = true)
     List<ChiTietSanPham> getTop5SanPhamBanChay();
 
+    @Query(value = "select ctsp.id from ChiTietSanPham ctsp where ctsp.qrCode = ?1")
+    Optional<UUID> findByQrCode(String qrCode);
+
 }

@@ -4,12 +4,17 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div class="container">
-    <div class="row">
-        <div><a style="float: right ; margin-bottom: 20px" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
-                name="1" onclick="getSanPham(this.name)">
-            Thêm sản phẩm
-        </a></div>
-    </div>
+    <c:if test="${hoaDon.trangThai == 1 || hoaDon.trangThai == 2}">
+     <c:if test="${hoaDon.phuongThucThanhToan != 4}">
+         <div class="row">
+             <div><a style="float: right ; margin-bottom: 20px" class="btn btn-primary" data-bs-toggle="modal"
+                     data-bs-target="#extraLargeModal"
+                     name="1" onclick="getSanPham(this.name)">
+                 Thêm sản phẩm
+             </a></div>
+         </div>
+     </c:if>
+    </c:if>
     <div class="row">
         <table class="table">
             <thead>
@@ -47,12 +52,22 @@
                     <td>${hdct.soLuong}</td>
                     <td style="color: red"><fmt:formatNumber pattern="#,###" value="${hdct.soLuong * hdct.donGia}"/> đ
                     </td>
-                    <td>
-                        <button class="btn btn-outline-primary" onclick="updateSoLuong(`${hdct.id}`)">Cập nhập</button>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-danger" onclick="xoaSanPham(`${hdct.id}`)">Huỷ</button>
-                    </td>
+                    <c:if test="${hoaDon.trangThai == 4}">
+                        <td>
+                            <button class="btn btn-outline-danger" onclick="getHDCT(`${hdct.id}` , `${hoaDon.id}`)">Trả hàng</button>
+                        </td>
+                    </c:if>
+                    <c:if test="${hoaDon.trangThai == 1 || hoaDon.trangThai == 2}">
+                        <c:if test="${hoaDon.phuongThucThanhToan != 4}">
+                            <td>
+                                <button class="btn btn-outline-primary" onclick="updateSoLuong(`${hdct.id}`)">Cập nhập
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-danger" onclick="xoaSanPham(`${hdct.id}`)">Huỷ</button>
+                            </td>
+                        </c:if>
+                    </c:if>
                 </tr>
             </c:forEach>
             </tbody>

@@ -10,7 +10,7 @@
                 <div class="row">
                     <div class="col-sm-3">
                         <input class="form-control" type="text" name="search" id="search-input"
-                               placeholder="tìm kiếm tên , mã sản phẩm">
+                               placeholder="tìm kiếm">
                     </div>
                     <div class="col-sm-2">
                         <button class="btn btn-primary" onclick="timKiem()">Tìm kiếm</button>
