@@ -72,6 +72,11 @@ public class    TrangChuController {
         return "banHangOnlline/index";
     }
 
+    @GetMapping("/gioi-thieu")
+    public String gioiThieu(){
+        return "banHangOnlline/home";
+    }
+
     public void danhSachThuocTinhSanPham(Model model) {
         model.addAttribute("listChatLieu", iChatLieuService.getAll());
         model.addAttribute("listFormDang", iFormDangService.getAll());
