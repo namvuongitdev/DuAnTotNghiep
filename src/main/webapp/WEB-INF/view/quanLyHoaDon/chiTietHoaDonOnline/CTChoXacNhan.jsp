@@ -123,9 +123,7 @@
     <jsp:include page="modal-update-so-luong.jsp"></jsp:include>
 </c:if>
 <%--modal xác nhân hoá đơn--%>
-<c:if test="${hoaDon.trangThai != 4}">
     <jsp:include page="modal-xac-nhan-hoa-don.jsp"></jsp:include>
-</c:if>
 <%--modal tra hàng--%>
 <c:if test="${hoaDon.trangThai == 4}">
     <jsp:include page="modal-tra-hang.jsp"></jsp:include>
@@ -173,11 +171,7 @@
     <script src="/js/quanLyHoaDon/modal-xoa-san-pham.js"></script>
     <script src="/js/quanLyHoaDon/modal-update-so-luong.js"></script>
 </c:if>
-
-<c:if test="${hoaDon.trangThai != 4}">
     <script src="/js/quanLyHoaDon/modal-xac-nhan-hoa-don.js"></script>
-</c:if>
-
 <c:if test="${hoaDon.trangThai == 4}">
     <script src="/js/quanLyHoaDon/modal-tra-hang.js"></script>
 </c:if>

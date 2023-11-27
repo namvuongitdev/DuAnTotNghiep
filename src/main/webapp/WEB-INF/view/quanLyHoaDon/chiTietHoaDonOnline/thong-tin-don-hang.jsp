@@ -24,6 +24,12 @@
         <span>Hình thức thanh toán : ${hoaDon.phuongThucThanhToan==3?'Thanh toán khi nhận hàng':hoaDon.phuongThucThanhToan==2?'Chuyển khoản':hoaDon.phuongThucThanhToan==4?'Thanh toán VNPay':'Tiền mặt'}</span>
     </div>
     <br>
+    <c:if test="${hoaDon.phuongThucThanhToan == 2 || hoaDon.phuongThucThanhToan == 4}">
+        <div>
+            <span>Mã giao dịch : ${hoaDon.maGiaoDich}</span>
+        </div>
+        <br>
+    </c:if>
     <div>
         <span value="${hoaDon.ma}">Mã hoá đơn : ${hoaDon.ma}</span>
     </div>

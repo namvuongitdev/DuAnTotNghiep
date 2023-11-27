@@ -119,10 +119,11 @@ public class ThanhToanController {
     }
 
     @GetMapping(value = "/payment/return")
-    public String payment() {
+    public String payment(@RequestParam(name = "vnp_TransactionNo") String maGiaDich) {
         Integer ischeck = checkoutService.orderReturn(request);
         KhachHang khachHang = khachHangService.getKhachHangLogin();
         if (ischeck == 1) {
+            checkout.setMaGiaDich(maGiaDich);
             HoaDon hoaDon = checkoutService.saveOrder(checkout, khachHang);
             return "redirect:/checkouts/success?idHD=" + hoaDon.getId();
         }

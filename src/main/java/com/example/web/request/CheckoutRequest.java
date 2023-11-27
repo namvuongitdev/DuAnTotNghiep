@@ -31,4 +31,6 @@ public class CheckoutRequest {
     private String ghiChu;
 
     private String ngayThanhToan;
+
+    private String maGiaDich;
 }

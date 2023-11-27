@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,6 +43,9 @@ public class HoaDonChiTiet {
     @ManyToOne
     @JoinColumn(name = "idHoaDon")
     private HoaDon hoaDon;
+
+    @Column(name = "ngay_tao")
+    private Date ngayTao;
 
     @ManyToOne
     @JoinColumn(name = "idCTSP")

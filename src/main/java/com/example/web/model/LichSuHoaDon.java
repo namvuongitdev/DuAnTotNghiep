@@ -1,5 +1,6 @@
 package com.example.web.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +14,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 @Entity
@@ -30,6 +33,7 @@ public class LichSuHoaDon {
 
     @ManyToOne
     @JoinColumn(name = "id_hoa_don")
+    @JsonIgnore
     private HoaDon hoaDon;
 
     @Nationalized
@@ -46,5 +50,10 @@ public class LichSuHoaDon {
     @Nationalized
     @Column(name = "ghi_chu" , length = 3000)
     private String ghiChu;
+
+    public String formatDate(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        return formatter.format(this.ngayThaoTac);
+    }
 
 }

@@ -76,9 +76,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${hoaDons.getContent()}" var="hoaDon" varStatus="i">
+                    <c:forEach items="${hoaDons}" var="hoaDon" varStatus="i">
                         <tr>
-                            <th scope="row">${i.index+page}</th>
+                            <th scope="row">${i.index+ 1}</th>
                             <td>${hoaDon[1]}</td>
                             <td><fmt:formatDate value="${hoaDon[2]}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                             <td>
@@ -95,18 +95,6 @@
                     </c:forEach>
                     </tbody>
                 </table>
-                <%--                phân trang --%>
-                <div class="container-fluid mt-5">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item ${pageNo<=1?"disabled":""}"><a class="page-link" href="/hoa-don/hien-thi-hoa-cho?page=${pageNo-1}"><</a></li>
-                            <c:forEach begin="1" end="${hoaDons.getTotalPages()}" var="i">
-                                <li class="page-item" ><a class="page-link ${i == pageNo ? 'active ' : ''}" href="/hoa-don/hien-thi-hoa-cho?page=${i}">${i}</a></li>
-                            </c:forEach>
-                          <li class="page-item ${pageNo>=hoaDons.getTotalPages()?"disabled":""}"><a class="page-link" href="/hoa-don/hien-thi-hoa-cho?page=${pageNo+1}"> > </a></li>
-                        </ul>
-                    </nav>
-                </div>
             </div>
         </div>
     </div>
@@ -114,9 +102,10 @@
 </body>
 <script>
    function  deleteHoaDonCho(idHD) {
+       console.log(idHD)
        let check = confirm("Bạn có chắc muốn xoá không!");
        if(check){
-            window.location.href = "/hoa-don/huy?idHD="+idHD;
+            window.location.href = "/admin/hoa-don/huy?idHD="+idHD;
        }else{
            return;
        }

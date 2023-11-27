@@ -52,11 +52,8 @@ public class HoaDon {
     @Column(name = "ngayTao")
     private Date ngayTao;
 
-    @Column(name = "ngaySua")
-    private Date ngaySua;
-
-    @Column(name = "ngayShip")
-    private Date ngayShip;
+    @Column(name = "ngay_nhan_hang")
+    private Date ngayNhanHang;
 
     @Column(name = "ngay_thanh_toan")
     private Date ngayThanhToan;
@@ -81,7 +78,7 @@ public class HoaDon {
     private Integer phuongThucThanhToan;
 
     @Column(name = "ma_giao_dich")
-    private String maGiaDich;
+    private String maGiaoDich;
 
     @OneToMany(mappedBy = "hoaDon")
     @JsonIgnore
@@ -107,4 +104,23 @@ public class HoaDon {
           return BigDecimal.valueOf(tongTien + phiVanChuyen);
     }
 
+    public BigDecimal tongTienTraHang(){
+        Integer tongTienTraHang = 0;
+        for(HoaDonChiTiet hoaDonChiTiet : this.hoaDonChiTiets){
+            if(hoaDonChiTiet.getTrangThai() == HoaDonChiTietStatus.TRA_HANG){
+                tongTienTraHang += (hoaDonChiTiet.getDonGia().intValue() * hoaDonChiTiet.getSoLuong().intValue());
+            }
+        }
+        return BigDecimal.valueOf(tongTienTraHang);
+    }
+
+    public BigDecimal tongTienHang(){
+        Integer tongTien = 0;
+        for(HoaDonChiTiet hoaDonChiTiet : this.hoaDonChiTiets){
+            if(hoaDonChiTiet.getTrangThai() == HoaDonChiTietStatus.KICH_HOAT || hoaDonChiTiet.getTrangThai() == HoaDonChiTietStatus.TRA_HANG){
+                tongTien += (hoaDonChiTiet.getDonGia().intValue() * hoaDonChiTiet.getSoLuong().intValue());
+            }
+        }
+        return BigDecimal.valueOf(tongTien);
+    }
 }

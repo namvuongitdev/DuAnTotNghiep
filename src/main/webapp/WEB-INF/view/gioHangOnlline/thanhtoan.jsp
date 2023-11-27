@@ -64,7 +64,7 @@
                         <div class="form-check radio">
                             <input class="form-check-input" type="radio" name="phuongThucThanhToan"
                                    id="flexRadioDefault2"
-                                   checked value="3">
+                                   checked value="3" ${checkoutRequest.phuongThucThanhToan == 3 ? "checked" : ""}>
                             <label class="form-check-label" for="flexRadioDefault2">
                                 Thanh toán khi giao hàng (COD).
                             </label>
@@ -74,7 +74,7 @@
                         <div class="form-check radio">
                             <input class="form-check-input" type="radio" name="phuongThucThanhToan"
                                    id="flexRadioDefault3"
-                                   value="4">
+                                   value="4" ${checkoutRequest.phuongThucThanhToan == 4 ? "checked" : ""}>
                             <label class="form-check-label" for="flexRadioDefault3">
                                 Thanh toán (VNPAY).
                             </label>

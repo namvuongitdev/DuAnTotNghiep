@@ -86,8 +86,8 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public Page<Object[]> findByHoaDonCho(Integer trangThai, Pageable pageable) {
-        return hoaDonRepository.findAllByHoaDonCho(trangThai, pageable);
+    public List<Object[]> findByHoaDonCho(Integer trangThai) {
+        return hoaDonRepository.findAllByHoaDonCho(trangThai);
     }
 
     @Override
@@ -112,16 +112,21 @@ public class HoaDonServiceImpl implements IHoaDonService {
     public String updateHoaDonTrangThai(String id) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(id));
         if (hoaDon.isPresent()) {
-
             HoaDon hd = hoaDon.get();
-            hd.setTrangThai(TrangThaiHoaDon.HUY_HOA_DON.getValue());
-
-            hd.getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() == HoaDonChiTietStatus.KICH_HOAT).forEach(hoaDonChiTiet -> {
-                Integer soLuong = hoaDonChiTiet.getSoLuong() + hoaDonChiTiet.getChiTietSanPham().getSoLuong();
-                hoaDonChiTiet.getChiTietSanPham().setSoLuong(soLuong);
-                hoaDonChiTiet.setTrangThai(HoaDonChiTietStatus.XOA);
+            hd.setTrangThai(HoaDonStatus.HUY);
+            List<HoaDonChiTiet> listHDCT = hd.getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() == HoaDonChiTietStatus.KICH_HOAT).collect(Collectors.toList());
+            if (hd.getHoaDonChiTiets().isEmpty()) {
                 hoaDonRepository.save(hd);
-            });
+            } else if (listHDCT.isEmpty()) {
+                hoaDonRepository.save(hd);
+            } else {
+                listHDCT.forEach(hoaDonChiTiet -> {
+                    Integer soLuong = hoaDonChiTiet.getSoLuong() + hoaDonChiTiet.getChiTietSanPham().getSoLuong();
+                    hoaDonChiTiet.getChiTietSanPham().setSoLuong(soLuong);
+                    hoaDonChiTiet.setTrangThai(HoaDonChiTietStatus.XOA);
+                    hoaDonRepository.save(hd);
+                });
+            }
             return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
 
         } else {
@@ -164,9 +169,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
                         hd.setMoTa(request.getMoTa());
                         hd.setTrangThai(TrangThaiHoaDon.DA_HOAN_THANH.getValue());
                         hd.setTongTien(tongTienHoaDon);
-                        hd.setNgayThanhToan(date);
+                        hd.setNgayNhanHang(date);
                         if (request.getHinhThucThanhToan() == PhuongThucThanhToanStatus.CHUYEN_KHOAN) {
-                            hd.setMaGiaDich(request.getMaGiaoDich());
+                            hd.setMaGiaoDich(request.getMaGiaoDich());
                         }
                         hd.setPhuongThucThanhToan(request.getHinhThucThanhToan());
                     }
@@ -176,7 +181,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                     hd.setKhachHang(khachHang.get());
                 }
                 HoaDon response = hoaDonRepository.save(hd);
-                lichSuHoaDonService.add(HoaDonStatus.NHAN_VIEN_TAO_HOA_DON, response, "nhân viên tạo hoá đơn cho khách");
+                lichSuHoaDonService.add(HoaDonStatus.NHAN_VIEN_TAO_HOA_DON, response.getId(), "nhân viên tạo hoá đơn cho khách");
                 attributes.addFlashAttribute("success", "Hoá đơn " + response.getMa() + " tạo thành công");
                 return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
             } else {
@@ -196,9 +201,24 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
+    public HoaDon updateThoiGianTraHang() {
+        HoaDon hoaDon = hoaDonRepository.ngayHetHanTraHang();
+        return hoaDon;
+    }
+
+    @Override
     public List<HoaDonChiTietReponse> getHoaDonChiTiets(UUID id) {
         List<HoaDonChiTietReponse> response = hoaDonRepository.findAllHoaDonChiTietByHoaDon_id(id);
         return response;
+    }
+
+    @Override
+    public Boolean kiemTraConTrongHDCT(UUID idHD) {
+        List<HoaDonChiTietReponse> isCheck = hoaDonRepository.isCheckSanPhamTrongHoaDon(idHD);
+        if(isCheck.isEmpty()){
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -358,7 +378,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
         if (hoaDon.isPresent()) {
             HoaDon hd = hoaDon.get();
             if (trangThai == HoaDonStatus.DA_TIEP_NHAN) {
-                if(hd.getPhiVanChuyen() == null){
+                if (hd.getPhiVanChuyen() == null) {
                     return 2;
                 }
             }
@@ -372,8 +392,11 @@ public class HoaDonServiceImpl implements IHoaDonService {
                     hoaDonChiTiet.getChiTietSanPham().setSoLuong(soLuong);
                 });
             }
+            if (trangThai == HoaDonStatus.DA_THANH_TOAN) {
+                hd.setNgayNhanHang(java.util.Calendar.getInstance().getTime());
+            }
             hd.setTrangThai(trangThai);
-            lichSuHoaDonService.add(trangThai, hd, ghiChu);
+            lichSuHoaDonService.add(trangThai, hd.getId(), ghiChu);
             return 1;
 
         } else {

@@ -8,7 +8,7 @@
     <div>
         <p style="float: right">
             <b>Tiền hàng:</b>
-            <span><fmt:formatNumber pattern="#,###" value="${tongTien}"/> đ</span>
+            <span><fmt:formatNumber pattern="#,###" value="${hoaDon.tongTienHang()}"/> đ</span>
         </p>
     </div>
     <div>
@@ -16,9 +16,16 @@
             <span><fmt:formatNumber pattern="#,###" value="${hoaDon.phiVanChuyen == null ? 0 : hoaDon.phiVanChuyen}"/> đ</span>
         </p>
     </div>
+    <c:if test="${hoaDon.tongTienTraHang() != 0}">
+        <div>
+            <p style="float: right"><b>Hoàn trả :</b> <span style="color: red"><fmt:formatNumber pattern="#,###"
+                                                                                                 value="${hoaDon.tongTienTraHang()}"/> đ</span>
+            </p>
+        </div>
+    </c:if>
     <div>
         <p style="float: right"><b>Tổng số tiền :</b> <span style="color: red"><fmt:formatNumber pattern="#,###"
-                                                                                                 value="${hoaDon.phiVanChuyen + tongTien}"/> đ</span>
+             value="${hoaDon.phiVanChuyen + tongTien}"/> đ</span>
         </p>
     </div>
 </div>

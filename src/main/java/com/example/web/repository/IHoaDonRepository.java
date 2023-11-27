@@ -20,7 +20,7 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
     <S extends HoaDon> S save(S entity);
 
     @Query(value = "select hd.id , hd.ma  , hd.ngayTao  ,hd.trangThai from HoaDon hd  where hd.trangThai = :trangThaiHD")
-    Page<Object[]> findAllByHoaDonCho(@Param("trangThaiHD") Integer trangThaiHD , Pageable pageable);
+    List<Object[]> findAllByHoaDonCho(@Param("trangThaiHD") Integer trangThaiHD);
 
     @Query(value = "select new com.example.web.response.HoaDonReponse(hdct.id ,  sp.ten ,sp.img ,  hdct.donGia , hdct.soLuong , ctsp.mauSac.ten , ctsp.size.ten , hd.hoTen , hd.sdt ,hd.diaChi , kh.email , ctsp.soLuong) from HoaDon hd left join  hd.hoaDonChiTiets hdct left join hdct.chiTietSanPham ctsp left join  ctsp.sanPham sp left join hd.khachHang kh where hd.id = ?1 and hdct.trangThai = ?2 and hd.trangThai = 0")
     List<HoaDonReponse> getSanPhamHD(UUID id , Integer trangThai);
@@ -33,8 +33,13 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
 
     @Query(value = "select new com.example.web.response.HoaDonChiTietReponse(hdct.id , sp.ten , ms.ten , s.ten , hdct.trangThai , sp.img , hdct.soLuong , hdct.donGia , ctsp.soLuong) from HoaDon hd left join hd.hoaDonChiTiets hdct " +
             "left join hdct.chiTietSanPham ctsp left join ctsp.sanPham sp left join" +
-            " ctsp.size s left join ctsp.mauSac ms where hd.id = ?1 and hdct.trangThai=0")
+            " ctsp.size s left join ctsp.mauSac ms where hd.id = ?1 and hdct.trangThai <> 1  order by hdct.ngayTao asc")
     List<HoaDonChiTietReponse> findAllHoaDonChiTietByHoaDon_id(UUID id);
+
+    @Query(value = "select new com.example.web.response.HoaDonChiTietReponse(hdct.id , sp.ten , ms.ten , s.ten , hdct.trangThai , sp.img , hdct.soLuong , hdct.donGia , ctsp.soLuong) from HoaDon hd left join hd.hoaDonChiTiets hdct " +
+            "left join hdct.chiTietSanPham ctsp left join ctsp.sanPham sp left join" +
+            " ctsp.size s left join ctsp.mauSac ms where hd.id = ?1 and hdct.trangThai = 0")
+    List<HoaDonChiTietReponse> isCheckSanPhamTrongHoaDon(UUID id);
 
     @Query(value = "select new com.example.web.response.HoaDonChiTietReponse(hdct.id , sp.ten , ms.ten , s.ten , hdct.trangThai , sp.img , hdct.soLuong , hdct.donGia , ctsp.soLuong) from HoaDon hd left join hd.hoaDonChiTiets hdct " +
             "left join hdct.chiTietSanPham ctsp left join ctsp.sanPham sp left join" +
@@ -44,6 +49,9 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
     @Query(value = "select hdct from HoaDon hd left join hd.hoaDonChiTiets hdct " +
             "left join hdct.chiTietSanPham ctsp where hd.id = ?1 and hdct.trangThai=1")
     Page<HoaDonChiTiet> getHoaDonHuyChiTiet(UUID id ,Pageable pageable);
+
+    @Query(value = "select * from hoa_Don where getDate() >= cast(ngay_nhan_hang as datetime) + 4" , nativeQuery = true)
+    HoaDon ngayHetHanTraHang();
 
     @Query(value = "select hd from HoaDon hd where hd.trangThai<>0")
     Page<HoaDon> findAllHoaDonByTrangThaiKhacHoaDonCho(Pageable pageable);

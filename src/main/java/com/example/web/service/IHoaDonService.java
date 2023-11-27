@@ -19,7 +19,7 @@ public interface IHoaDonService {
 
     String addHoaDon();
 
-    Page<Object[]> findByHoaDonCho(Integer trangThaiHD, Pageable pageable);
+    List<Object[]> findByHoaDonCho(Integer trangThaiHD);
 
     String getHoaDonById(Model model, String id, RedirectAttributes attributes);
 
@@ -31,8 +31,12 @@ public interface IHoaDonService {
 
     HoaDon getOne(String id);
 
+    HoaDon updateThoiGianTraHang();
+
     // hoá đơn
     List<HoaDonChiTietReponse> getHoaDonChiTiets(UUID id);
+
+    Boolean kiemTraConTrongHDCT(UUID idHD);
 
     HoaDonChiTietReponse getHoaDonChiTiet(UUID uuid);
 

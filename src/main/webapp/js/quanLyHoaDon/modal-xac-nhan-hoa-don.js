@@ -1,13 +1,16 @@
 let modalXacNhanHoaDon = document.getElementById("modalXacNhanHoaDon");
 let close_modalXacNhanHoaDon = document.getElementById("close_modalXacNhanHoaDon");
+const xacNhan = document.getElementById("xacNhanHoaDon");
 
-document.getElementById("xacNhanHoaDon").onclick = function () {
-    modalXacNhanHoaDon.style.display = "block";
+if (xacNhan != null) {
+    xacNhan.onclick = function () {
+        modalXacNhanHoaDon.style.display = "block";
+    }
 }
-
 close_modalXacNhanHoaDon.onclick = function () {
     modalXacNhanHoaDon.style.display = "none";
 }
+
 
 let modalXacNhanHuyHoaDon = document.getElementById("modalXacNhanHuyHoaDon");
 let close_modalXacNhanHuyHoaDon = document.getElementById("close_modalXacNhanHuyHoaDon");

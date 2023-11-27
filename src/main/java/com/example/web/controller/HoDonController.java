@@ -65,18 +65,19 @@ public class HoDonController {
 
 
     @GetMapping("/hien-thi-hoa-cho")
-    public String hoaDon(Model model, @RequestParam(defaultValue = "1") Integer page) {
-        if (page < 1) page = 1;
-        Pageable pageable = PageRequest.of(page - 1, 5);
-        Page<Object[]> hoaDons = hoaDonService.findByHoaDonCho(TrangThaiHoaDon.HOA_DON_CHO.getValue(), pageable);
-        model.addAttribute("pageNo", page);
+    public String hoaDon(Model model) {
+        List<Object[]> hoaDons = hoaDonService.findByHoaDonCho(TrangThaiHoaDon.HOA_DON_CHO.getValue());
         model.addAttribute("hoaDons", hoaDons);
-        model.addAttribute("page", page != 1 ? page * 5 - 4 : page);
         return "banHangTaiQuay/hoa-don-cho";
     }
 
     @PostMapping(value = "/create")
-    public String creatHoaDon() {
+    public String creatHoaDon(RedirectAttributes attributes) {
+        List<Object[]> listHoaDonCho = hoaDonService.findByHoaDonCho(TrangThaiHoaDon.HOA_DON_CHO.getValue());
+        if(listHoaDonCho.size() >= 5){
+            attributes.addFlashAttribute("error" , "không được tạo quá 5 hoá đơn chờ");
+            return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
+        }
         url = hoaDonService.addHoaDon();
         return url;
     }
@@ -189,12 +190,16 @@ public class HoDonController {
     @GetMapping("/chi-tiet-hoa-dons/{id}")
     public String getAllChiTietHoaDonByHoaDon_id(Model model, @PathVariable("id") String id) {
         List<HoaDonChiTietReponse> response = hoaDonService.getHoaDonChiTiets(UUID.fromString(id));
+        Boolean isCheck = hoaDonService.kiemTraConTrongHDCT(UUID.fromString(id));
         BigDecimal tongTien = hoaDonChiTietService.tongTienHDCT(UUID.fromString(id));
+        HoaDon updateTrangThaiTraHang = hoaDonService.updateThoiGianTraHang();
         HoaDon hoaDon = hoaDonService.getOne(id);
         model.addAttribute("hoaDon", hoaDon);
         model.addAttribute("listHoaDonChiTiet", response);
         model.addAttribute("thongTinKhachHang", new ThongTinKhachHang());
         model.addAttribute("tongTien" , tongTien);
+        model.addAttribute("trangThaiTraHang" , updateTrangThaiTraHang);
+        model.addAttribute("isChecks" , isCheck);
         return "quanLyHoaDon/chiTietHoaDonOnline/CTChoXacNhan";
     }
 
@@ -209,7 +214,7 @@ public class HoDonController {
         HoaDon hd = hoaDonService.updateThongTinKhachHang(UUID.fromString(idHD), request);
         if (hd != null) {
             attributes.addFlashAttribute("success", "update thông tin khách hàng thành công");
-            lichSuHoaDonService.add(HoaDonStatus.CHINH_SUA, hd,"Chỉ sửa thông tin khách hàng." +request.getGhiChu());
+            lichSuHoaDonService.add(HoaDonStatus.CHINH_SUA, hd.getId(),"Chỉ sửa thông tin khách hàng." +request.getGhiChu());
         } else {
             attributes.addFlashAttribute("error", "không tìm thấy hoá đơn");
         }

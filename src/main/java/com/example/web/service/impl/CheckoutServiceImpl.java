@@ -135,6 +135,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         }
         if (checkoutRequest.getPhuongThucThanhToan() == PhuongThucThanhToanStatus.THANH_TOAN_KHI_NHAN_HANG) {
             HoaDon hoaDon = saveOrder(checkoutRequest, khachHang);
+            lichSuHoaDonService.add(HoaDonStatus.KHACH_TAO_HOA_DON , hoaDon.getId() , checkoutRequest.getGhiChu());
             return "/checkouts/success?idHD=" + hoaDon.getId();
         }
         return null;
@@ -142,8 +143,6 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     @Override
     public HoaDon saveOrder(CheckoutRequest request, KhachHang khachHang) {
-        Date date = java.util.Calendar.getInstance().getTime();
-        //+ "," + request.getPhuongXa() + "," + request.getQuanHuyen() + "," + request.getThanhPho()
         if (khachHang.getDiaChis().isEmpty()) {
             DiaChi dc = DiaChi.builder()
                     .khachHang(khachHang)
@@ -157,7 +156,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         String diaChi = request.getDiaChi();
         HoaDon hoaDon = HoaDon.builder()
                 .trangThai(HoaDonStatus.CHO_XAC_NHAN)
-                .ngayTao(date)
+                .ngayTao(java.util.Calendar.getInstance().getTime())
                 .ma("HD" + (hoaDonRepository.findAll().size() + 1))
                 .loaiHoaDon(true)
                 .hoTen(request.getHoTen())
@@ -167,16 +166,17 @@ public class CheckoutServiceImpl implements CheckoutService {
                 .moTa(request.getGhiChu())
                 .phuongThucThanhToan(request.getPhuongThucThanhToan())
                 .build();
-        if (request.getPhuongThucThanhToan() == PhuongThucThanhToanStatus.VNPAY) {
-            hoaDon.setNgayThanhToan(date);
+        if(hoaDon.getPhuongThucThanhToan() == PhuongThucThanhToanStatus.VNPAY){
+             hoaDon.setMaGiaoDich(request.getMaGiaDich());
         }
-        hoaDonRepository.save(hoaDon);
+       HoaDon hd =  hoaDonRepository.save(hoaDon);
         List<GioHangChiTiet> response = gioHangOnllineService.getGHCTByKhachHang_id(khachHang.getId());
         response.forEach(o -> {
-            hoaDonChiTietService.addHoaDonChiTiet(o.getChiTietSanPham().getId(), hoaDon.getId(), o.getSoLuong());
+            hoaDonChiTietService.addHoaDonChiTiet(o.getChiTietSanPham().getId(), hd.getId(), o.getSoLuong());
         });
+        lichSuHoaDonService.add(HoaDonStatus.KHACH_TAO_HOA_DON , hd.getId() , request.getGhiChu());
         gioHangOnllineService.clearAllGioHangChiTietByKhachHang_id(khachHang.getId());
-        return hoaDon;
+        return hd;
     }
 
     @Override

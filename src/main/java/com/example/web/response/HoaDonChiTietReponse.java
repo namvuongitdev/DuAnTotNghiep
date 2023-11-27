@@ -1,5 +1,6 @@
 package com.example.web.response;
 
+import com.example.web.model.HoaDon;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

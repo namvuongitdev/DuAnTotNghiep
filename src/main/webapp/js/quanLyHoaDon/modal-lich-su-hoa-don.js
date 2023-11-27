@@ -5,18 +5,18 @@ async function getAllLichHoaDon(idHD) {
     modalLichSuHoaDon.style.display = "block";
     const api = await fetch(`/admin/lich-su-hoa-don?idHD=${idHD}`)
     const data = await api.json();
+    console.log(data);
     for (let i = 0; i < data.length; i++) {
         document.getElementById("bodyLichSu").innerHTML += `
     <tr>
-    <td><p>${data[i].thaoTac}</p></td>
-    <td><p>${data[i].ngayThaoTac}</p></td>
-    <td><p>${data[i].nguoiThaoTac}</p></td>
-    <td><p>${data[i].ghiChu}</p></td>
+    <td>${data[i].thaoTac}</td>
+    <td>${new Date(data[i].ngayThaoTac).toLocaleString("en-US")}</td>
+    <td>${data[i].nguoiThaoTac}</td>
+    <td>${data[i].ghiChu}</td>
     </tr>
     `
     }
 }
-
 close_modalLichSuHoaDon.onclick = function () {
     modalLichSuHoaDon.style.display = "none";
 }

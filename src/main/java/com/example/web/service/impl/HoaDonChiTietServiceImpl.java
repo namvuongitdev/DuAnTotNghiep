@@ -11,8 +11,8 @@ import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IKhuyenMaiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -56,6 +56,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                         .soLuong(soLuong)
                         .chiTietSanPham(chiTietSanPham)
                         .trangThai(HoaDonChiTietStatus.KICH_HOAT)
+                        .ngayTao(java.util.Calendar.getInstance().getTime())
                         .build();
                 if (donGiaSauKhiGiam == null) {
                     hdct.setDonGia(chiTietSanPham.getSanPham().getGiaBan());
@@ -133,6 +134,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
             // update lại số lượng sản phẩm
             ChiTietSanPham ctsp = chiTietSanPhamRepository.findById(hoaDonChiTiet.getChiTietSanPham().getId()).get();
             Integer updateSoLuong = ctsp.getSoLuong() + soLuong;
+            Integer updateLaiTongTien = hoaDonChiTiet.getHoaDon().getTongTien().intValue() - (hoaDonChiTiet.getDonGia().intValue() * soLuong);
             Integer soLuongConLai = hoaDonChiTiet.getSoLuong() - soLuong;
             ctsp.setSoLuong(updateSoLuong);
             // nếu là trả hết thì cập nhập lại trạng thái luôn
@@ -146,13 +148,14 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
                         .trangThai(HoaDonChiTietStatus.TRA_HANG)
                         .chiTietSanPham(hoaDonChiTiet.getChiTietSanPham())
                         .donGia(hoaDonChiTiet.getDonGia())
+                        .ngayTao(Calendar.getInstance().getTime())
                         .soLuong(soLuong)
                         .build();
                 hoaDonChiTiet.setSoLuong(soLuongConLai);
                 hoaDonChiTietRepository.save(newHDCT);
-                hoaDonChiTietRepository.save(hoaDonChiTiet);
             }
-            chiTietSanPhamRepository.save(ctsp);
+            hoaDonChiTiet.getHoaDon().setTongTien(BigDecimal.valueOf(updateLaiTongTien));
+            hoaDonChiTietRepository.save(hoaDonChiTiet);
             return 2;
         } else {
             return 0;
