@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div id="extraLargeModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="modalHienThiSanPham" class="modal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">

@@ -6,8 +6,10 @@ import com.example.web.model.KhuyenMai;
 import com.example.web.model.SanPham;
 import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.repository.IKhuyenMaiRepository;
+import com.example.web.repository.ISanPhamRepository;
 import com.example.web.repository.SanPhamKhuyenMaiRepository;
 import com.example.web.request.KhuyenMaiRequest;
+import com.example.web.request.KhuyenMaiSanPhamRequest;
 import com.example.web.response.FilterKhuyenMai;
 import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.service.IKhuyenMaiService;
@@ -39,6 +41,9 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
 
     @Autowired
     private SanPhamKhuyenMaiRepository sanPhamKhuyenMaiRepository;
+
+    @Autowired
+    private ISanPhamRepository sanPhamRepository;
 
     @Override
     public KhuyenMai addKhuyenMai(KhuyenMai khuyenMai) {
@@ -178,37 +183,27 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     }
 
     @Override
-    public Boolean addSanPhamKhuyenMai(SanPhamKhuyenMai sanPhamKhuyenMai, String idKM) {
-        Optional<KhuyenMai> khuyenMai = repository.findById(UUID.fromString(idKM));
-        if (sanPhamKhuyenMai.getSanPhams() == null) {
-            return false;
-        } else {
-            if (khuyenMai.isPresent()) {
-                sanPhamKhuyenMai.getSanPhams().forEach(o -> {
-                    if (sanPhamKhuyenMaiRepository.kiemTraDaTonTai(o.getId(), khuyenMai.get().getId()) != null) {
-                        return;
-                    }
-                    SanPhamKhuyenMai spkm = SanPhamKhuyenMai.builder()
-                            .khuyenMai(khuyenMai.get())
-                            .sanPhamKM(o)
-                            .trangThai(KhuyenMaiStatus.KICH_HOAT)
-                            .mucGiam(sanPhamKhuyenMai.getMucGiam())
-                            .loaiGiamGia(sanPhamKhuyenMai.getLoaiGiamGia())
-                            .build();
-                    if (sanPhamKhuyenMai.getLoaiGiamGia()) {
-                        Integer donGiaKhiGiamPhanTram = spkm.getSanPhamKM().getGiaBan().intValue() - (spkm.getSanPhamKM().getGiaBan().intValue() / 100) * sanPhamKhuyenMai.getMucGiam().intValue();
-                        spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamPhanTram));
-                    } else {
-                        Integer donGiaKhiGiamVND = spkm.getSanPhamKM().getGiaBan().intValue() - sanPhamKhuyenMai.getMucGiam().intValue();
-                        spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamVND));
-                    }
-                    sanPhamKhuyenMaiRepository.save(spkm);
-                });
+    public SanPham addSanPhamKhuyenMai(KhuyenMaiSanPhamRequest request) {
+        Optional<KhuyenMai> khuyenMai = repository.findById(UUID.fromString(request.getIdKM()));
+        Optional<SanPham> sanPham = sanPhamRepository.findById(UUID.fromString(request.getIdSanPham()));
+        if (khuyenMai.isPresent()) {
+            SanPhamKhuyenMai spkm = SanPhamKhuyenMai.builder()
+                    .khuyenMai(khuyenMai.get())
+                    .sanPhamKM(sanPham.get())
+                    .trangThai(KhuyenMaiStatus.KICH_HOAT)
+                    .mucGiam(request.getMucGiam())
+                    .loaiGiamGia(request.getLoaiGiamGia())
+                    .build();
+            if (spkm.getLoaiGiamGia()) {
+                Integer donGiaKhiGiamPhanTram = spkm.getSanPhamKM().getGiaBan().intValue() - (spkm.getSanPhamKM().getGiaBan().intValue() / 100) * spkm.getMucGiam().intValue();
+                spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamPhanTram));
             } else {
-                return false;
+                Integer donGiaKhiGiamVND = spkm.getSanPhamKM().getGiaBan().intValue() - spkm.getMucGiam().intValue();
+                spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamVND));
             }
+            sanPhamKhuyenMaiRepository.save(spkm);
         }
-        return true;
+        return sanPham.get();
     }
 
     @Override

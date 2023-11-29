@@ -1,7 +1,7 @@
 let modalTranHang = document.getElementById("modalTranHang");
 let close_modalTranHang = document.getElementById("close_modalTranHang");
 
-async function getHDCT(idHDCT , idHD) {
+async function getHDCT(idHDCT, idHD) {
     modalTranHang.style.display = "block";
     const api = await fetch(`/admin/hoa-don/chi-tiet-hoa-don/${idHDCT}`)
     const data = await api.json();
@@ -37,12 +37,29 @@ async function getHDCT(idHDCT , idHD) {
         <textarea name="ghiChuKhiTraHang" class="form-control" id="ghiChuKhiTraHang"></textarea>
     </div>
     <div>
-        <button class="btn btn-danger">Xác nhận</button>
+        <button class="btn btn-danger" onclick="return checkSoLuongKhiTraHang('${data.soLuong}')">Xác nhận</button>
     </div>
 </form>
     `
 }
 
-close_modalTranHang.onclick = function (){
+close_modalTranHang.onclick = function () {
     modalTranHang.style.display = "none"
+}
+
+function checkSoLuongKhiTraHang(soLuong) {
+    const soLuongUpdate = document.getElementById("soLuongUpdate").value;
+    const ghiChuKhiTraHang = document.getElementById("ghiChuKhiTraHang").value;
+    if (soLuongUpdate.trim() == "") {
+        alert("không được để trống số lượng trả");
+        return false;
+    } else if (soLuong < soLuongUpdate) {
+        alert("số lượng đổi không phù hợp");
+        return false;
+    } else if (ghiChuKhiTraHang.trim() == "") {
+        alert("không được để trống ghi chú");
+        return false;
+    } else {
+        return true;
+    }
 }

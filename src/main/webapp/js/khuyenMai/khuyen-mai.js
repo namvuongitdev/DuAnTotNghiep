@@ -2,6 +2,7 @@ const VND = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
 });
+let modalSanPham = document.getElementById("modalSanPham");
 
 let data = {
     search: "",
@@ -16,9 +17,8 @@ let data = {
 
 };
 
-const arrayChecked = [];
-
 function getSanPham(page) {
+    modalSanPham.style.display = "block";
     const value = document.querySelector("#search-input").value;
     data.search = value;
     let url = `/admin/san-pham/api-hien-thi?page=${page}&value=${value}`;
@@ -33,20 +33,36 @@ function getSanPham(page) {
             let pageSize = page >= data.totalPages ? "disabled" : "";
             let sanPham = "";
             let phanTrang = "";
+            let khuyenMai = null;
             for (let i = 0; i < data.content.length; i++) {
-                console.log(arrayChecked[i]);
-                sanPham += `<tr><td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img}"></td>
+
+                if (data.content[i].sanPhamKhuyenMais.length > 0) {
+                    data.content[i].sanPhamKhuyenMais.map(function (e) {
+                        if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
+                            khuyenMai = e;
+                        } else {
+                            khuyenMai = null;
+                        }
+                    })
+                } else {
+                    khuyenMai = null;
+                }
+
+                sanPham += `<tr id="${data.content[i].ma}"><td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img}"></td>
                   <td>${data.content[i].ma}</td>
                   <td>${data.content[i].ten}</td>
                   <td>${VND.format(data.content[i].giaBan)}</td>
-                 ${data.content[i].sanPhamKhuyenMais.length > 0 ?
+                 ${khuyenMai != null ?
                     `<td style="color: #03AA28"> Đã được áp dụng</td>` :
                     `<td>
-                     <input type="checkbox" onchange="checkeds(this.value)"
-                     name="sanPhams" id="${data.content[i].id}"} 
-                     value="${data.content[i].id}">
+                    <button type="button" class="btn btn-primary" onclick="modalThemSanPhamKhuyenMai('${data.content[i].id}' ,
+                    '${data.content[i].ma}',
+                     '${data.content[i].ten}',
+                     '${data.content[i].giaBan}')">
+                     <i class="bi bi-plus-circle"></i>
+                     </button>
                     </td>`
-                  }
+                }
                   </tr>`
             }
 
@@ -80,12 +96,34 @@ function api(page, data) {
             let pageSize = page >= data.totalPages ? "disabled" : "";
             let sanPham = "";
             let phanTrang = "";
+            let khuyenMai = null;
             for (let i = 0; i < data.content.length; i++) {
+
+                if (data.content[i].sanPhamKhuyenMais.length > 0) {
+                    data.content[i].sanPhamKhuyenMais.map(function (e) {
+                        if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
+                            khuyenMai = e;
+                        } else {
+                            khuyenMai = null;
+                        }
+                    })
+                } else {
+                    khuyenMai = null;
+                }
+
                 sanPham += `<tr><td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img}"></td>
                   <td>${data.content[i].ma}</td>
                   <td>${data.content[i].ten}</td>
                   <td>${VND.format(data.content[i].giaBan)}</td>
-                 ${data.content[i].sanPhamKhuyenMais.length > 0 ? `<td style="color: #03AA28"> Đã được áp dụng</td>` : `<td><input type="checkbox" name="sanPhams" value="${data.content[i].id}"></td>`}
+                 ${khuyenMai != null ? `<td style="color: #03AA28"> Đã được áp dụng</td>` :
+                    `<td>
+                      <button type="button" class="btn btn-primary" onclick="modalThemSanPhamKhuyenMai('${data.content[i].id}' ,
+                    '${data.content[i].ma}',
+                     '${data.content[i].ten}'
+                     )">
+                     <i class="bi bi-plus-circle"></i>
+                     </button>
+                     </td>`}
                    </tr>`
             }
 
@@ -179,7 +217,9 @@ document.getElementById('clear').addEventListener('click', () => {
 function timKiem() {
     getSanPham(1);
 }
-
-function checkeds(id) {
-    arrayChecked.push(id);
+window.onclick = function(event) {
+    if (event.target == modalSanPham) {
+        modalSanPham.style.display = "none";
+        window.location.reload();
+    }
 }

@@ -40,16 +40,6 @@ public class LichSuHoaDonServiceImpl implements ILichSuHoaDonService {
     }
 
     @Override
-    public LichSuHoaDon getOne(String idHd, String Thaotac) {
-        return iLichSuHoaDonRepository.getOne(UUID.fromString(idHd), Thaotac);
-    }
-
-    @Override
-    public LichSuHoaDon getOneTao(String idHd, String thaoTac) {
-        return iLichSuHoaDonRepository.getOneTao(UUID.fromString(idHd), thaoTac);
-    }
-
-    @Override
     public void add(Integer thaoTac, UUID idHD, String ghiChu) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
@@ -94,15 +84,4 @@ public class LichSuHoaDonServiceImpl implements ILichSuHoaDonService {
         }
         iLichSuHoaDonRepository.save(lshd);
     }
-
-    @Override
-    public void update(LichSuHoaDon lshd) {
-        iLichSuHoaDonRepository.save(lshd);
-    }
-
-    @Override
-    public void delete(UUID id) {
-
-    }
-
 }

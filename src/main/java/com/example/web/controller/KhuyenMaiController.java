@@ -1,8 +1,10 @@
 package com.example.web.controller;
 
 import com.example.web.model.KhuyenMai;
+import com.example.web.model.SanPham;
 import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.request.KhuyenMaiRequest;
+import com.example.web.request.KhuyenMaiSanPhamRequest;
 import com.example.web.response.FilterKhuyenMai;
 import com.example.web.response.SanPhamAsKhuyenMai;
 import com.example.web.service.IKhuyenMaiService;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -138,14 +141,10 @@ public class KhuyenMaiController {
     }
 
     @PostMapping("/khuyen-mai-san-pham")
-    public String addSanPhamKhuyenMai(@ModelAttribute("sanPhamKhuyenMai") SanPhamKhuyenMai sanPhamKhuyenMai, @RequestParam String idKM, RedirectAttributes attributes) {
-        Boolean spkm = khuyenMaiService.addSanPhamKhuyenMai(sanPhamKhuyenMai, idKM);
-        if (spkm) {
-            attributes.addFlashAttribute("success", "thêm thành công");
-        } else {
-            attributes.addFlashAttribute("error", "chưa chọn sản phẩm thêm vào khuyến mại");
-        }
-        return "redirect:/admin/khuyen-mai/detail?id=" + idKM;
+    @ResponseBody
+    public SanPham addSanPhamKhuyenMai(@RequestBody KhuyenMaiSanPhamRequest request) {
+        SanPham spkm = khuyenMaiService.addSanPhamKhuyenMai(request);
+        return spkm;
     }
 
     @GetMapping("/update-trang-thai-san-pham")

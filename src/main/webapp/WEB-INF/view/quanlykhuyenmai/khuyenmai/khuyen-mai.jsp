@@ -63,16 +63,14 @@
                         </option>
                     </select>
                 </div>
-                <div class="col-sm-3">
-                    <div class="row" style="margin-top: 21px">
-                        <div class="col-sm-6">
-                            <button class="btn btn-primary">Tìm kiếm</button>
-                        </div>
-                        <div class="col-sm-6">
-                            <a class="btn btn-warning" href="/admin/khuyen-mai/">
-                                Làm mới
-                            </a>
-                        </div>
+                <div class="col-sm-3" style="margin-top: 21px ; display: flex">
+                    <div>
+                        <button class="btn btn-primary">Tìm kiếm</button>
+                    </div>
+                    <div style="margin-left: 6px">
+                        <a class="btn btn-warning" href="/admin/khuyen-mai/">
+                            Làm mới
+                        </a>
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -130,15 +128,8 @@
                             </td>
                             <c:if test="${khuyenMai.trangThai != 4}">
                                 <td>
-                                    <form action="/admin/khuyen-mai/delete?idKM=${khuyenMai.id}" method="post"
-                                          onsubmit="return function deleteKhuyenMai(){
-                                                 if(confirm('bạn có chắc muốn xoá không nếu xoá sẽ không khôi phục được')){
-                                                    return true;
-                                                 }else{
-                                                    return false;
-                                                  }
-                                               }">
-                                        <button class="btn btn-danger">Xoá</button>
+                                    <form action="/admin/khuyen-mai/delete?idKM=${khuyenMai.id}" method="post">
+                                        <button class="btn btn-danger" onclick="return deleteKhuyenMai()">Huỷ</button>
                                     </form>
                                 </td>
                             </c:if>
@@ -175,5 +166,13 @@
 <script>
     function getKhuyenMaiById(id) {
         window.location.href = '/admin/khuyen-mai/detail?id=' + id;
+    }
+
+    function deleteKhuyenMai() {
+        if (confirm('bạn có chắc muốn xoá không nếu xoá sẽ không khôi phục được')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 </script>
