@@ -124,4 +124,9 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
             return null;
         }
     }
+
+    public ChiTietSanPham checkSizeMauSac(UUID mauSac, String kichCo, UUID idSanPham) {
+        return iChiTietSanPhamRepository.checkSizeMauSac(mauSac, kichCo, idSanPham);
+    }
+
 }

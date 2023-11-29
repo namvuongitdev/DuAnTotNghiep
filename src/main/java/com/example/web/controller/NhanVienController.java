@@ -141,6 +141,7 @@ public class NhanVienController {
             nhanVien.setId(nv.getId());
             nhanVien.setNgayTao(nv.getNgayTao());
             nhanVien.setNgaySua(date);
+            nhanVien.setMatKhau(nv.getMatKhau());
             nhanVienService.update(UUID.fromString(id), nhanVien);
             return "redirect:/admin/nhan-vien/hien-thi";
         }

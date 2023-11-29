@@ -230,7 +230,7 @@
                                                 <td style="width: 110px">
                                                     <label for="soLuongCTSP"></label>
                                                     <input type="number" class="form-control" value="${ctsp.soLuong}"
-                                                         id="soLuongCTSP" name="soLuong" />
+                                                         id="soLuongCTSP" name="soLuong" min="1" required/>
                                                 </td>
                                                 <td>
                                                     <button style="--bs-btn-padding-y: .56rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
@@ -241,7 +241,7 @@
                                                     </button>
                                                 </td>
                                                 <td style="text-align: center">
-                                                    <button class="btn btn-secondary" onclick="if(confirm('Bạn có muốn sửa không')){alert('Sửa thành công')
+                                                    <button class="btn btn-secondary" onclick="if(confirm('Bạn có muốn sửa không')){
                                                         return true;
                                                         }else{
                                                         return false;}">Sửa
@@ -284,7 +284,7 @@
                                             <div class="row">
                                                 <div class="mb-3">
                                                     <label class="form-label">Kích cỡ :</label>
-                                                    <select name="size" class="form-select">
+                                                    <select id="size" name="size" class="form-select">
                                                         <c:forEach items="${listKichCo}" var="kichCo">
                                                             <option value="${kichCo.id}">${kichCo.ten}</option>
                                                         </c:forEach>
@@ -294,7 +294,7 @@
                                             <div class="row">
                                                 <div class="mb-3">
                                                     <label class="form-label">Màu sắc:</label>
-                                                    <select name="mauSac" class="form-select">
+                                                    <select id="mauSac" name="mauSac" class="form-select">
                                                         <c:forEach items="${listMuaSac}" var="mauSac">
                                                             <option value="${mauSac.id}">
                                                                     ${mauSac.ten}
@@ -312,7 +312,7 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <button class="btn btn-primary">Xác Nhận</button>
+                                            <button class="btn btn-primary" onclick="checkMauSacKichCo()">Xác Nhận</button>
                                         </div>
                                     </form>
                                 </div>
@@ -322,7 +322,7 @@
                 </div>
             </div>
             <%--                thêm ảnh sản phẩm --%>
-            <div class="modal fade" id="exampleModalAnh" tabindex="-1" aria-labelledby="exampleModalLabelAnh"
+            <div class="modal" id="exampleModalAnh" tabindex="-1" aria-labelledby="exampleModalLabelAnh"
                  aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -332,13 +332,13 @@
                         </div>
                         <div class="modal-body" id="themAnh">
                             <input type='file' name='file' id="fileAnh">
-                            <button class='btn btn-primary' onclick="themAnhMauSac()">Xác Nhận</button>
+                            <button class='btn btn-primary' onclick="themAnhMauSac()" data-bs-dismiss="modal">Xác nhận</button>
                         </div>
                     </div>
                 </div>
             </div>
             <%-- thêm nhanh chất liệu--%>
-            <div class="modal fade" id="exampleModalChatLieu" tabindex="-1">
+            <div class="modal" id="exampleModalChatLieu" tabindex="-1">
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -367,7 +367,7 @@
                 </div>
             </div>
             <%--thêm nhanh danh mục--%>
-            <div class="modal fade" id="exampleModalDanhMuc" tabindex="-1">
+            <div class="modal" id="exampleModalDanhMuc" tabindex="-1">
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -396,7 +396,7 @@
                 </div>
             </div>
             <%--thêm nhanh kiểu dáng--%>
-            <div class="modal fade" id="exampleModalKieuDang" tabindex="-1">
+            <div class="modal" id="exampleModalKieuDang" tabindex="-1">
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -425,21 +425,21 @@
                 </div>
             </div>
             <%--thêm nhanh kích cỡ--%>
-            <div class="modal fade" id="exampleModalKichCo" tabindex="-1">
+            <div class="modal" id="exampleModalKichCo" tabindex="-1">
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/admin/san-pham/modal-add-size" modelAttribute="size"
+                        <form:form method="post" action="/admin/san-pham/modal-add-size?id=${sp.id}" modelAttribute="size"
                                    class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
                                     <form:input type="text" path="ten" class="form-control" id="floatingName"
                                                 placeholder="Kích cỡ"/>
                                     <form:label for="floatingName" path="ten">Kích cỡ</form:label>
-                                    <form:errors path="ten" cssStyle="color: red"/>
+                                    <p style="color: red">${errorSize}</p>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -455,21 +455,21 @@
                 </div>
             </div>
             <%--thêm nhanh màu sắc--%>
-            <div class="modal fade" id="exampleModalMauSac" tabindex="-1">
+            <div class="modal" id="exampleModalMauSac" tabindex="-1">
                 <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/admin/san-pham/modal-add-mau-sac" modelAttribute="mauSac"
+                        <form:form method="post" action="/admin/san-pham/modal-add-mau-sac?id=${sp.id}" modelAttribute="mauSac"
                                    class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
                                     <form:input type="text" path="ten" class="form-control" id="floatingName"
                                                 placeholder="Tên màu"/>
                                     <form:label for="floatingName" path="ten">Tên màu</form:label>
-                                    <form:errors path="ten" cssStyle="color: red"/>
+                                    <p style="color: red">${errorMauSac}</p>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -541,6 +541,18 @@
         } else {
             alert('Cập nhật thất bại!')
             return;
+        }
+    }
+
+    function checkMauSacKichCo(){
+        var check  = '${checkError}';
+        console.log(check);
+        if(check !== ''){
+            alert('Thêm dữ liệu thành công.');
+            return true;
+        }else{
+            alert('Thêm thất bại! Dữ liệu đã tồn tại.');
+            return false;
         }
     }
 </script>

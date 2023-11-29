@@ -83,7 +83,10 @@
                             <p>
                                 <b style="color: red">
                                     <fmt:formatNumber pattern="#,###" value="${hd[3]}"/>
-                                    <span style="visibility: ${hd[3]!=null?'':'hidden'}">đ</span>
+                                    <c:if test="${hd[3]==null}">
+                                        <span>0</span>
+                                    </c:if>
+                                    <span>đ</span>
                                 </b>
                             </p>
                         </td>

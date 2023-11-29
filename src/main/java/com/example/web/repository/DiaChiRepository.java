@@ -10,6 +10,6 @@ public interface DiaChiRepository extends JpaRepository<DiaChi , UUID> {
     @Query(value = "select diaChi from DiaChi diaChi join diaChi.khachHang kh where kh.id = ?1 and diaChi.diaChiMacDinh = false")
      DiaChi findDiaChiByKhachHang_idAndDiaChiMacDinh(UUID idKH);
 
-    @Query(value = "select diaChi from DiaChi diaChi join KhachHang kh where kh.id = ?1")
+    @Query(value = "select diaChi from DiaChi diaChi where diaChi.khachHang.id = ?1")
     List<DiaChi> findDiaChiByKhachHang_id(UUID idKH);
 }
