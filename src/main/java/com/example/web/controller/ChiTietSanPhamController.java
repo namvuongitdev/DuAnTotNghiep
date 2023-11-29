@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,32 +60,41 @@ public class ChiTietSanPhamController {
 
 
     @PostMapping(value = "/add")
-    public String addCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham
-            , @RequestParam("id") String idSanPham, RedirectAttributes redirectAttributes) throws IOException, WriterException {
+    public String addCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham , Model model ,
+                          @RequestParam("id") String idSanPham, RedirectAttributes redirectAttributes ,
+                          @RequestParam("size") String kichCo, @RequestParam("mauSac") UUID mauSac) throws IOException, WriterException {
 
         Random random = new Random();
         SanPham sanPham = sanPhamService.getOne(UUID.fromString(idSanPham));
-        chiTietSanPham.setSanPham(sanPham);
-        chiTietSanPham.setQrCode(String.valueOf(random.nextInt(1000000000)));
-        chiTietSanPham.setTrangThai(1);
-        List<ChiTietSanPham> listChiTietSanPham = chiTietSanPhamService.getChiTietSanPham(idSanPham);
-        chiTietSanPhamService.save(chiTietSanPham);
-        redirectAttributes.addFlashAttribute("listChiTietSanPhamBySP", listChiTietSanPham);
 
-        int width = 300;
-        int height = 300;
-        String format = "png";
-        String fileName = chiTietSanPham.getSanPham().getMa() + "-" + chiTietSanPham.getQrCode() + "." + format;
+        ChiTietSanPham checkMauSacSize = chiTietSanPhamService.checkSizeMauSac(mauSac, kichCo, UUID.fromString(idSanPham));
 
-        Map<EncodeHintType, Object> hints = new HashMap<>();
-        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+        if(checkMauSacSize != null){
+            redirectAttributes.addFlashAttribute("checkError", checkMauSacSize);
+            return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
+        }else{
+            chiTietSanPham.setSanPham(sanPham);
+            chiTietSanPham.setQrCode(String.valueOf(random.nextInt(1000000000)));
+            chiTietSanPham.setTrangThai(1);
+            List<ChiTietSanPham> listChiTietSanPham = chiTietSanPhamService.getChiTietSanPham(idSanPham);
+            chiTietSanPhamService.save(chiTietSanPham);
+            redirectAttributes.addFlashAttribute("listChiTietSanPhamBySP", listChiTietSanPham);
 
-        BitMatrix bitMatrix = new MultiFormatWriter().encode(chiTietSanPham.getQrCode(), BarcodeFormat.QR_CODE, width, height, hints);
-        Path filePath = FileSystems.getDefault().getPath(qrcodeDirectory, fileName);
+            int width = 300;
+            int height = 300;
+            String format = "png";
+            String fileName = chiTietSanPham.getSanPham().getMa() + "-" + chiTietSanPham.getQrCode() + "." + format;
 
-        MatrixToImageWriter.writeToPath(bitMatrix, format, filePath);
+            Map<EncodeHintType, Object> hints = new HashMap<>();
+            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
 
-        return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
+            BitMatrix bitMatrix = new MultiFormatWriter().encode(chiTietSanPham.getQrCode(), BarcodeFormat.QR_CODE, width, height, hints);
+            Path filePath = FileSystems.getDefault().getPath(qrcodeDirectory, fileName);
+
+            MatrixToImageWriter.writeToPath(bitMatrix, format, filePath);
+            return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
+        }
+
     }
 
     @PostMapping(value = "/add-anh", consumes = "multipart/form-data")

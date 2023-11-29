@@ -111,4 +111,9 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
         return iChiTietSanPhamRepository.findSizeBySanPham_idAndMauSac_id(idSP, idMS);
     }
 
+    @Override
+    public ChiTietSanPham checkSizeMauSac(UUID mauSac, String kichCo, UUID idSanPham) {
+        return iChiTietSanPhamRepository.checkSizeMauSac(mauSac, kichCo, idSanPham);
+    }
+
 }

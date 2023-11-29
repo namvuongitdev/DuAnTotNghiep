@@ -3,9 +3,12 @@ import com.example.web.model.SanPham;
 import com.example.web.response.SanPhamAndKhuyenMai;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.lang.Nullable;
+
 import java.util.UUID;
 
 public interface    ISanPhamRepository extends JpaRepository<SanPham, UUID>, JpaSpecificationExecutor<SanPham> {
@@ -30,8 +33,9 @@ public interface    ISanPhamRepository extends JpaRepository<SanPham, UUID>, Jpa
 
     @Query(value = """
         select new com.example.web.response.SanPhamAndKhuyenMai(s.id,s.ma,s.ten,s.img,s.trangThai,s.ngayTao,s.ngaySua,
-        s.giaNhap,s.giaBan,s.moTa,s.gioiTinh,s.kieuDang,s.chatLieu,s.danhMuc,spkm.donGiaSauKhiGiam) from SanPham s 
+        s.giaNhap,s.giaBan,s.moTa,s.gioiTinh,s.kieuDang,s.chatLieu,s.danhMuc,spkm.donGiaSauKhiGiam, spkm.trangThai, spkm.loaiGiamGia, spkm.mucGiam, km.trangThai) from SanPham s 
         left join SanPhamKhuyenMai spkm on s.id=spkm.sanPhamKM.id
+        left join KhuyenMai km on km.id = spkm.khuyenMai.id
 """)
     Page<SanPhamAndKhuyenMai> getALL(Pageable pageable);
 }

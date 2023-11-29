@@ -42,4 +42,7 @@ public interface IKhachHangRepository extends JpaRepository<KhachHang , UUID> {
 
     @Query(value = "select kh.id from KhachHang kh where kh.email = ?1")
     UUID findIdByEmail(String email);
+
+    @Query(value = "select kh from KhachHang kh where kh.taiKhoan = ?1")
+    KhachHang findKhachHangByTaiKhoan(String taiKhoan);
 }

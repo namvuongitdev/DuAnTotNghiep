@@ -1,0 +1,15 @@
+.h3-title{
+    padding-top: 40px;
+    padding-bottom: 40px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.row .left{
+    width: 55%;
+}
+
+.row .right{
+    width: 45%;
+}

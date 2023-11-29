@@ -121,4 +121,9 @@ public class KhachHangServiceImpl implements IKhachHangService {
     public UUID findIdByEmail(String email) {
         return khachHangRepository.findIdByEmail(email);
     }
+
+    @Override
+    public KhachHang findKhachHangByTaiKhoan(String taiKhoan) {
+        return khachHangRepository.findKhachHangByTaiKhoan(taiKhoan);
+    }
 }

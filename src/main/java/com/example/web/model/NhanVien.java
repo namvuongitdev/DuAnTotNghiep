@@ -86,4 +86,9 @@ public class NhanVien {
     @JoinColumn(name = "idChucVu")
     private ChucVu chucVu;
 
+    @NotBlank(message = "Vui lòng không để trống thông tin.")
+    @Pattern(regexp = "\\d{12}$", message = "Số CCCD không đúng định dạng.")
+    @Column(name="cccd")
+    private String cccd;
+
 }
