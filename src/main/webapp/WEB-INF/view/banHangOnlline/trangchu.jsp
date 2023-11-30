@@ -31,6 +31,8 @@
     <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/css/banHangOnline/trangchu/trangchu.css" type="text/css">
+
 
 
 </head>
@@ -122,120 +124,74 @@
     </div>
 </section>
 <!-- Hero Section End -->
- <br> <br>
-<%--Filter Begin--%>
-<div class="modal-body">
-<%--    <div class="row">--%>
-<%--        <div class="col-sm-3">--%>
-<%--            <input class="form-control" type="text" name="search" id="search-input"--%>
-<%--                   style="width: 915px;margin-left: 160px" placeholder="Tìm kiếm ....">--%>
-<%--        </div>--%>
-<%--        <div class="col-sm-2">--%>
-<%--            <button style="margin-left: 740px;width: 100px" class="btn btn-light" onclick="timKiem()">Tìm kiếm</button>--%>
-<%--        </div>--%>
-<%--        <div class="col-sm-2">--%>
-<%--            <button style="margin-left: 630px;width: 100px" class="btn btn-secondary" id="clear">Làm mới</button>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--    <br>--%>
-    <div class="row" style="margin-left: 140px">
-        <div class="row d-flex justify-content-center" style="margin-bottom: 10px;margin-left: 175px">
-            <div class="col-sm-1.5">
-                <label for="size">Kích cỡ</label><br>
-                <select name="kichCo" id="size" class="form-select" onchange="filterSize(this.value)">
-                    <option value="">Tất cả</option>
-                    <c:forEach items="${listKichCo}" var="kichCo">
-                        <option value="${kichCo.id}">
-                                ${kichCo.ten}
-                        </option>
-                    </c:forEach>
-                </select>
+
+<!-- Men , Woman fashion Begin -->
+<section class="banner spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 offset-lg-4">
+                <div class="banner__item">
+                    <div class="banner__item__pic">
+                        <img src="/anh/se1.jpg" alt="">
+                    </div>
+                    <div class="banner__item__text">
+                        <h2>Men</h2>
+                        <a onclick="getSanPhamThoiTrangNam(1)">Shop now</a>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-1.5" style="margin-left: 30px">
-                <%--@declare id="mausac"--%><label for="mauSac">Màu sắc</label><br>
-                <select name="mauSac" id="color" class="form-select" onchange="filterColor(this.value)">
-                    <option value="">Tất cả</option>
-                    <c:forEach items="${listMuaSac}" var="mauSac">
-                        <option value="${mauSac.id}">
-                                ${mauSac.ten}
-                        </option>
-                    </c:forEach>
-                </select>
+            <div class="col-lg-5">
+                <div class="banner__item banner__item--middle">
+                    <div class="banner__item__pic">
+                        <img src="/anh/se2.png" alt="">
+                    </div>
+                    <div class="banner__item__text">
+                        <h2>Woman</h2>
+                        <a onclick="getSanPhamThoiTrangNu(1)">Shop now</a>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-1.5" style="margin-left: 30px">
-                <label for="danhMuc">Danh mục</label><br>
-                <select name="danhMuc" id="danhMuc" class="form-select" onchange="filterDanhMuc(this.value)">
-                    <option value="">Tất cả</option>
-                    <c:forEach items="${listDanhMuc}" var="danhMuc">
-                        <option value="${danhMuc.id}">
-                                ${danhMuc.ten}
-                        </option>
-                    </c:forEach>
-                </select>
-            </div>
-            <div class="col-sm-1.5" style="margin-left: 30px">
-                <label for="chatLieu">Chất liệu</label><br>
-                <select name="chatLieu" id="chatLieu" class="form-select" onchange="filterChatLieu(this.value)">
-                    <option value="">Tất cả</option>
-                    <c:forEach items="${listChatLieu}" var="chatLieu">
-                        <option value="${chatLieu.id}">
-                                ${chatLieu.ten}
-                        </option>
-                    </c:forEach>
-                </select>
-            </div>
-            <div class="col-sm-1.5" style="margin-left: 30px">
-                <label for="kieuDang">Kiểu dáng</label><br>
-                <select name="kieuDang" id="kieuDang" class="form-select" onchange="filterKieuDang(this.value)">
-                    <option value="">Tất cả</option>
-                    <c:forEach items="${listFormDang}" var="kieuDang">
-                        <option value="${kieuDang.id}">
-                                ${kieuDang.ten}
-                        </option>
-                    </c:forEach>
-                </select>
-            </div>
-            <div class="col-sm-1.5" style="margin-left: 30px">
-                <label for="sapXep">Sắp xếp</label><br>
-                <select name="sapXep" id="sapXep" class="form-select" onchange="filterSapXep(this.value)">
-                    <option value="">Tất cả</option>
-                    <option value="ngayTao">Mới nhất</option>
-                    <option value="price-asc">
-                        Thứ tự theo giá: thấp đến cao
-                    </option>
-                    <option value="price-desc">
-                        Thứ tự theo giá: cao xuống thấp
-                    </option>
-                </select>
-            </div>
-            <div class="col-sm-1.5" style="margin-left: 30px">
-                <label for="gioiTinh">Giới tính</label><br>
-                <select name="gioiTih" id="gioiTinh" class="form-select" onchange="filterTrangThai(this.value)">
-                    <option value="">Tất cả</option>
-                    <option value="0">
-                        Nam
-                    </option>
-                    <option value="1">
-                        Nữ
-                    </option>
-                </select>
-            </div>
+
         </div>
     </div>
-    <br>
-</div>
-<%--Filter End--%>
+</section>
+<!-- Men , Woman fashion End -->
+<H4 style="margin-left: 650px"><b>DANH MỤC SẢN PHẨM</b></H4>
+<br>
+<%-- danh mục sản phẩm begin --%>
+<section class="section">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+        <!-- Content Row -->
+        <div class="row">
+            <c:forEach items="${danhMuc}" var="danhMuc">
+                <!-- Earnings (Monthly) Card Example -->
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="height: 30px">
+                                     <a onclick="danhMucFilter('${danhMuc.id}')" style="color: black"> ${danhMuc.ten} </a> </div>
+                                </div>
+                                <div class="col-auto">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+
+
+        </div>
+    </div>
+</section>
+<%-- danh mục sản phẩm end--%>
 
 <%--hiển thị sản phẩm begin--%>
 <section class="product spad">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <ul class="filter__controls">
-                    <li class="active" data-filter="*">ALL</li>
-                </ul>
-            </div>
-        </div>
         <div class="row product__filter">
             <div id="body">
 
@@ -253,7 +209,6 @@
     </nav>
 </div>
 <%--phân trang end--%>
-<br>
 <br>
 
 <!-- Instagram Section Begin -->
@@ -346,10 +301,44 @@
 <script src="/js/banHangOnlline/sanPham.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        // sanPhamNhieuNguoiMua()
         // Gọi hàm getSanPham khi trang web được tải
-        getSanPham(1); // Thay số 1 bằng trang mặc định mà bạn muốn hiển thị ban đầu.
+        // getSanPham(1); // Thay số 1 bằng trang mặc định mà bạn muốn hiển thị ban đầu.
         // Các xử lý khác nếu cần
     });
+
+    function active_course() {
+        if ($(".active_course").length) {
+            $(".active_course").owlCarousel({
+                loop: true,
+                margin: 20,
+                items: 3,
+                nav: true,
+                autoplay: 2500,
+                smartSpeed: 1500,
+                dots: false,
+                responsiveClass: true,
+                thumbs: true,
+                thumbsPrerendered: true,
+                navText: ["<img src='https://colorlib.com/preview/theme/edustage/img/prev.png'>", "<img src='https://colorlib.com/preview/theme/edustage/img/next.png'>"],
+                responsive: {
+                    0: {
+                        items: 1,
+                        margin: 0
+                    },
+                    991: {
+                        items: 2,
+                        margin: 30
+                    },
+                    1200: {
+                        items: 3,
+                        margin: 30
+                    }
+                }
+            });
+        }
+    }
+    active_course();
 </script>
 </body>
 </html>

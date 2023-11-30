@@ -23,8 +23,12 @@ public interface ISanPhamService {
 
     Page<SanPham> findAllGender(Pageable pageable,boolean gioi_tinh);
 
+    Page<SanPham> findAllDanhMuc(Pageable pageable, String id);
+
     SanPham getSanPhamTheoCTSP(UUID idCTSP);
 
     Page<SanPhamAndKhuyenMai> getALL(Pageable pageable);
+
+    List<SanPham> sanPhamNhieuNguoiMua ();
 
 }

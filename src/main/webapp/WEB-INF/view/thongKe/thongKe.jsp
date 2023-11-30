@@ -89,8 +89,8 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                Số lượng sản phẩm đã bán</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">${soLuongDaBan}</div>
+                                                Số lượng sản phẩm đã bán hôm nay</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">${soLuongDaBan== null ? 0 : soLuongDaBan}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="bi bi-box-seam"></i>
@@ -107,7 +107,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Tổng số hóa đơn</div>
+                                                Tổng số hóa đơn hôm nay</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">${tongHoaDon}</div>
                                         </div>
                                         <div class="col-auto">
@@ -171,8 +171,8 @@
                                         <thead>
                                         <tr>
                                             <th scope="col">STT</th>
+                                            <th scope="col">Ảnh</th>
                                             <th scope="col">Tên Sản Phẩm</th>
-                                            <th scope="col">Màu Sắc</th>
                                             <th scope="col">Danh Mục</th>
                                         </tr>
                                         </thead>
@@ -180,8 +180,8 @@
                                         <c:forEach items="${sanPhamBanChay}" var="sp" varStatus="i">
                                             <tr>
                                                 <th scope="row">${i.index+1}</th>
+                                                <td> <img class="img-thumbnail" src="/image/${sp.sanPham.img}" style="width:50px;height: 50px" ></td>
                                                 <td>${sp.sanPham.ten}</td>
-                                                <td>${sp.mauSac.ten}</td>
                                                 <td>${sp.sanPham.danhMuc.ten}</td>
                                             </tr>
                                         </c:forEach>

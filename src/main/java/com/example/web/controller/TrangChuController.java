@@ -53,7 +53,7 @@ public class    TrangChuController {
 
     private Page<SanPhamAndKhuyenMai> sanPhamKhuyenMaiPage = null;
 
-    @GetMapping("/home")
+    @GetMapping("/shop")
     public String hienThi(Principal principal, HttpSession session, Model model, @RequestParam(defaultValue = "1") int page) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (principal != null){
@@ -72,8 +72,32 @@ public class    TrangChuController {
         return "banHangOnlline/index";
     }
 
+    @GetMapping("/home")
+    public String trangChu(Principal principal, HttpSession session, Model model, @RequestParam(defaultValue = "1") int page) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (principal != null){
+            String username = principal.getName();
+            session.setAttribute("username", username);
+            KhachHang khachHang = khachHangService.findByEmailOrAndTaiKhoan(authentication.getName());
+            model.addAttribute("count" , iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
+        }
+        List<DanhMuc> getAll1 = danhMucService.getAll1();
+        model.addAttribute("danhMuc",getAll1);
+        List<SanPham> sanPhamNhieuNguoiMua =  iSanPhamService.sanPhamNhieuNguoiMua();
+        model.addAttribute("listsanpham",sanPhamNhieuNguoiMua);
+
+        return "banHangOnlline/trangchu";
+    }
+
     @GetMapping("/gioi-thieu")
-    public String gioiThieu(){
+    public String gioiThieu(Principal principal, HttpSession session, Model model, @RequestParam(defaultValue = "1") int page) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (principal != null){
+            String username = principal.getName();
+            session.setAttribute("username", username);
+            KhachHang khachHang = khachHangService.findByEmailOrAndTaiKhoan(authentication.getName());
+            model.addAttribute("count" , iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
+        }
         return "banHangOnlline/home";
     }
 
@@ -98,6 +122,13 @@ public class    TrangChuController {
         return listSanPham;
     }
 
+    @GetMapping("/api-san-pham-nhieu-nguoi-mua")
+    @ResponseBody
+    public List<SanPham> apiSanPhamNhieuNguoiMua() {
+        List<SanPham> sanPhamNhieuNguoiMua =  iSanPhamService.sanPhamNhieuNguoiMua();
+        return sanPhamNhieuNguoiMua;
+    }
+
     @PostMapping("/api-filter")
     @ResponseBody
     public Page<SanPham> filterSanPham(@RequestParam Integer page , @RequestBody SanPhamFilter filter) {
@@ -118,11 +149,20 @@ public class    TrangChuController {
 
     @GetMapping("/thoi-trang-nu")
     @ResponseBody
-    public Page<SanPhamAndKhuyenMai> thoiTrangNu(Model model, @RequestParam(defaultValue = "1") int page) {
+    public Page<SanPham> thoiTrangNu(Model model, @RequestParam(defaultValue = "1") int page) {
         boolean gioiTinh = false;
         Page listSanPham = null;
         Pageable pageable = PageRequest.of(page - 1, 5);
         listSanPham= iSanPhamService.findAllGender(pageable,gioiTinh);
+        return listSanPham;
+    }
+
+    @GetMapping("/danh-muc-san-pham/{id}")
+    @ResponseBody
+    public Page<SanPham> danhMuc(Model model, @RequestParam(defaultValue = "1") int page,@PathVariable(name = "id") String id) {
+        Page listSanPham = null;
+        Pageable pageable = PageRequest.of(page - 1, 5);
+        listSanPham= iSanPhamService.findAllDanhMuc(pageable,id);
         return listSanPham;
     }
 

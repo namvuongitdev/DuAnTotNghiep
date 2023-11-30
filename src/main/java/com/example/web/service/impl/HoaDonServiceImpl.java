@@ -403,4 +403,24 @@ public class HoaDonServiceImpl implements IHoaDonService {
             return -1;
         }
     }
+
+    @Override
+    public Integer tongDoanhThu() {
+        return hoaDonRepository.tongDoanhThu();
+    }
+
+    @Override
+    public Double getDoanhThuTrongNgay() {
+        return hoaDonRepository.getDoanhThuTrongNgay();
+    }
+
+    @Override
+    public Integer tongHoaDon() {
+        return hoaDonRepository.tongHoaDon();
+    }
+
+    @Override
+    public Double getDoanhThuTheoThang(Integer thang) {
+        return hoaDonRepository.getDoanhThuTheoThang(thang);
+    }
 }

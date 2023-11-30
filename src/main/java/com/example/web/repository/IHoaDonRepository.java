@@ -81,5 +81,20 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
             "  select COUNT(id) from hoa_don where trang_thai=1  and Id in (\n" +
             " select id_hoa_don from lich_su_hoa_don where CONVERT(date,ngay_thao_tac) = CONVERT(date, GETDATE()))",nativeQuery = true)
     Integer tongHoaDonChoXacNhan();
+
+    @Query(value = "\n" +
+            "\t\t\tselect sum(tong_tien) from hoa_don where trang_thai = 4",nativeQuery = true)
+    Integer tongDoanhThu();
+
+    @Query(value = """
+			select sum(tong_tien) from hoa_don where trang_thai = 4 and CONVERT(DATE,hoa_don.ngay_thanh_toan) = CONVERT(DATE,GETDATE())
+""",nativeQuery = true)
+    Double getDoanhThuTrongNgay();
+
+    @Query(value = "select count(Id) from hoa_don where CONVERT(DATE,hoa_don.ngay_tao) = CONVERT(DATE,GETDATE())",nativeQuery = true)
+    Integer tongHoaDon();
+
+    @Query(value = "select sum(tong_tien) from hoa_don where trang_thai = 4 and MONTH(hoa_don.ngay_thanh_toan) = ?1",nativeQuery = true)
+    Double getDoanhThuTheoThang(Integer thang);
 }
 
