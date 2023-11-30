@@ -99,9 +99,12 @@ public class HoDonController {
     @GetMapping("/add-san-pham")
     public String addSanPham(@RequestParam("ctsp") String idCTSP, @RequestParam("soLuong") String soLuong,
                              @RequestParam("idHD") String idHD,
-                             @RequestParam(value = "idKhachHang") String idKhachHang) {
+                             @RequestParam(value = "idKhachHang") String idKhachHang , RedirectAttributes attributes) {
 
         HoaDonChiTiet hdct = hoaDonChiTietService.addHoaDonChiTiet(UUID.fromString(idCTSP), UUID.fromString(idHD), Integer.parseInt(soLuong));
+        if(hdct == null){
+            attributes.addFlashAttribute("error" , "số lượng sản phẩm thêm vào không thảo mãn cần xem lại số lượng sản phẩm");
+        }
         if (idKhachHang != null && !idKhachHang.isEmpty()) {
             return "redirect:/hoa-don/detail?idHD=" + idHD + "&idKhachHang=" + idKhachHang;
         }

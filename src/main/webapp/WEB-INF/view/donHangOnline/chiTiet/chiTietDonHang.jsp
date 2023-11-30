@@ -97,6 +97,7 @@
                     <div class="trai">
                         <h5 style="padding-bottom: 15px"><b>Thông tin giao hàng</b></h5>
                         <p><b>Họ tên:</b> ${hd.hoTen}</p>
+                        <p><b>Số điện thoại:</b> ${hd.sdt}</p>
                         <p><b>Địa chỉ:</b> ${hd.diaChi}</p>
                     </div>
                     <div class="phai">
@@ -111,14 +112,14 @@
             <div class="container">
                 <div class="row">
                     <div class="left">
-                        <p>Tạm tính:</p>
+                        <p>Tiền hàng:</p>
                         <p>Phí vận chuyển:</p>
                         <p><b>Tổng cộng:</b></p>
                     </div>
                     <div class="right">
                         <p>
-                            <fmt:formatNumber pattern="#,###" value="${thanhTien}"/>
-                            <c:if test="${thanhTien==null}">
+                            <fmt:formatNumber pattern="#,###" value="${hd.tongTienHang()}"/>
+                            <c:if test="${hd.tongTienHang()==null}">
                                 <span>0</span>
                             </c:if>
                             <span>đ</span>
@@ -132,8 +133,8 @@
                         </p>
                         <p>
                             <b>
-                                <fmt:formatNumber pattern="#,###" value="${hd.tongTien}"/>
-                                <c:if test="${hd.tongTien==null}">
+                                <fmt:formatNumber pattern="#,###" value="${hd.tongTien()}"/>
+                                <c:if test="${hd.tongTien()==null}">
                                     <span>0</span>
                                 </c:if>
                                 <span>đ</span>

@@ -119,8 +119,7 @@
                             </c:forEach>
                             </tbody>
                         </table>
-                        <!-- End Table with stripped rows -->
-                        <%--                  phân trang--%>
+                        <%--phân trang--%>
                         <div class="container-fluid mt-5">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
@@ -144,6 +143,5 @@
         </div>
     </div>
 </div>
-
 </body>
 </html>

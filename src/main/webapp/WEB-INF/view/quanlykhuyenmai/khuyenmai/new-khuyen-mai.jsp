@@ -132,7 +132,7 @@
                     </div>
                     <div class="row">
                         <div>
-                            <button class="btn btn-primary">Xác nhận</button>
+                            <button class="btn btn-primary">${dataKhuyenMai != null ? "Cập nhập" : "Thêm"}</button>
                         </div>
                     </div>
                     <div class="col-sm-3">

@@ -33,32 +33,20 @@ public interface IHoaDonService {
 
     HoaDon updateThoiGianTraHang();
 
-    // hoá đơn
     List<HoaDonChiTietReponse> getHoaDonChiTiets(UUID id);
 
     Boolean kiemTraConTrongHDCT(UUID idHD);
 
     HoaDonChiTietReponse getHoaDonChiTiet(UUID uuid);
 
-    // hoá đơn
-    Page<HoaDonChiTiet> getHoaDonHuyChiTiet(UUID id, Integer pageNo, Integer size);
-
-    // hoá đơn
     Page<HoaDon> getAllHoaDonByTrangThaiKhachHoaDonCho(Integer page);
 
-    // hoá đơn
     Page<HoaDon> hoaDonFillter(HoaDonFilter filter, Pageable pageable);
 
     HoaDon add(HoaDon hoaDon);
 
-    // hoá đơn
-    String updateHoaDonById(HoaDon hoaDon);
 
     HoaDon updateThongTinKhachHang(UUID idHD , ThongTinKhachHang thongTinKhachHang);
-
-    // hoá đơn
-    String updatePVC(HoaDon hoaDon);
-
 
     String inHoaDon(String id, Page<HoaDonChiTiet> hoaDonChiTiets);
 

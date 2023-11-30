@@ -1,6 +1,5 @@
 package com.example.web.repository;
 import com.example.web.model.HoaDon;
-import com.example.web.model.HoaDonChiTiet;
 import com.example.web.response.HoaDonChiTietReponse;
 import com.example.web.response.HoaDonReponse;
 import org.springframework.data.domain.Page;
@@ -46,21 +45,16 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon , UUID> , JpaSpe
             " ctsp.size s left join ctsp.mauSac ms where hdct.id = ?1")
     HoaDonChiTietReponse findHoaDonChiTietByHoaDon_id(UUID id);
 
-    @Query(value = "select hdct from HoaDon hd left join hd.hoaDonChiTiets hdct " +
-            "left join hdct.chiTietSanPham ctsp where hd.id = ?1 and hdct.trangThai=1")
-    Page<HoaDonChiTiet> getHoaDonHuyChiTiet(UUID id ,Pageable pageable);
-
     @Query(value = "select * from hoa_Don where getDate() >= cast(ngay_nhan_hang as datetime) + 4" , nativeQuery = true)
     HoaDon ngayHetHanTraHang();
 
     @Query(value = "select hd from HoaDon hd where hd.trangThai<>0")
     Page<HoaDon> findAllHoaDonByTrangThaiKhacHoaDonCho(Pageable pageable);
 
-    @Query("SELECT hd.id, hd.ma, hd.ngayTao, hd.tongTien, SUM(hdct.soLuong), hd.trangThai FROM HoaDon hd " +
-            "JOIN HoaDonChiTiet hdct ON hdct.hoaDon.id = hd.id " +
-            "WHERE hd.khachHang.taiKhoan = ?1 AND hd.loaiHoaDon = true " +
-            "GROUP BY hd.ma, hd.ngayTao, hd.id, hd.tongTien, hd.trangThai,hdct.soLuong "+
-            "HAVING hdct.soLuong in(SELECT hdct.soLuong from HoaDonChiTiet hdct where hdct.trangThai=0)")
+    @Query("SELECT hd.id, hd.ma, hd.ngayTao, SUM(hdct.donGia * hdct.soLuong), SUM(hdct.soLuong), hd.trangThai , hd.phiVanChuyen FROM HoaDon hd " +
+            "JOIN hd.hoaDonChiTiets hdct join hd.khachHang kh " +
+            "WHERE kh.taiKhoan = ?1 AND hd.loaiHoaDon = true AND hdct.trangThai=0" +
+            "group by hd.id, hd.ma, hd.ngayTao, hd.trangThai , hd.phiVanChuyen")
     Page<Object[]> findHoaDonByTaiKhoan(String taiKhoan, Pageable pageable);
 
     @Query("SELECT hd.id, hd.ma, hd.ngayTao, hd.tongTien, SUM(hdct.soLuong), hd.trangThai FROM HoaDon hd " +

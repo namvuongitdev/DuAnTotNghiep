@@ -61,6 +61,12 @@
                         <option value="0" ${filter.trangThai == "0" ? 'selected' : ''}>
                             Ngừng kích hoạt
                         </option>
+                        <option value="2" ${filter.trangThai == "2" ? 'selected' : ''}>
+                            Chưa được kích hoạt
+                        </option>
+                        <option value="3" ${filter.trangThai == "3" ? 'selected' : ''}>
+                            Hết hạn
+                        </option>
                     </select>
                 </div>
                 <div class="col-sm-3" style="margin-top: 21px ; display: flex">

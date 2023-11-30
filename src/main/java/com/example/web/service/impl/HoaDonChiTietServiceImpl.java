@@ -40,7 +40,7 @@ public class HoaDonChiTietServiceImpl implements IHoaDonChiTietService {
         HoaDonChiTiet hdct = null;
         ChiTietSanPham chiTietSanPham = ctsp.get();
         BigDecimal donGiaSauKhiGiam = khuyenMaiService.donGiaSauKhiGiam(chiTietSanPham.getSanPham().getSanPhamKhuyenMais());
-        if (chiTietSanPham.getSoLuong() < soLuong) {
+        if (chiTietSanPham.getSoLuong() < soLuong || soLuong <= 0) {
             return null;
         } else {
             Integer result = chiTietSanPham.getSoLuong() - soLuong;

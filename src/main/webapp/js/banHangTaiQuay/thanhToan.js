@@ -30,7 +30,7 @@ mySwitch.addEventListener('click', (e) => {
     }
 })
 
-function phuongThucThanhToan(value) {
+function phuongThucThanhToan(value , tongTien) {
     const maGiaDich = document.getElementById("maGiaDichCK");
     if (value === "1") {
         if (maGiaDich != null) {
@@ -39,7 +39,10 @@ function phuongThucThanhToan(value) {
         }
         return;
     } else if (value === "2") {
-        maGiaDich.innerHTML = ` <input class="form-control" type="text" style="width: 50% "
+        if(tongTien.trim() != ""){
+            document.getElementById("tienKhachDua").value = Number.parseInt(tongTien);
+        }
+        maGiaDich.innerHTML = ` <input class="form-control" type="text" style="width: 50%"
                    name="maGiaoDich"
                    id="maGiaoDich"
                   >

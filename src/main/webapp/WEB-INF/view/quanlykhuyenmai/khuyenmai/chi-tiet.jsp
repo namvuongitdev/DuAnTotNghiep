@@ -11,7 +11,7 @@
                   modelAttribute="${sanPhamAsKhuyeMai}">
                 <div class="col-sm-3" style="margin-top: 25px">
                     <input type="text" class="form-control" name="tenSanPham" id="tenSanPhamKhuyenMai"
-                           placeholder="tên sản phẩm , mã" value="${sanPhamKhuyenMaiFilter.tenSanPham}"/>
+                           placeholder="tìm kiếm" value="${sanPhamKhuyenMaiFilter.tenSanPham}"/>
                 </div>
                 <div class="col-sm-2">
                     <label for="loaiGiamGiaSanPhamKhuyenMai">Loại giảm giá</label>

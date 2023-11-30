@@ -169,12 +169,12 @@
                             <%--                         Hiển thị ảnh chi tiết sản phẩm--%>
                             <c:if test="${listChiTietSanPhamBySP != null}">
                                 <div class="col l-5" style="margin-bottom: 30px">
-                                    <p class="text-center"><b>Ảnh</b></p>
+                                    <p class="text-center"><b>Thêm ảnh theo màu sắc</b></p>
                                     <div class="row">
                                         <select name="mauSacAnh" class="form-select"
                                                 style="width: 50%;margin-left: 90px"
                                                 onchange="findAnhMauSac(`${sp.id}` , this.value)">
-                                            <option value="">Thêm ảnh màu sắc</option>
+                                            <option value="">Màu sắc</option>
                                             <c:forEach items="${listMauSacCTSP}" var="mauSacCTSP">
                                                 <option value="${mauSacCTSP.id}">
                                                         ${mauSacCTSP.ten}
@@ -312,7 +312,7 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <button class="btn btn-primary" onclick="checkMauSacKichCo()">Xác Nhận</button>
+                                            <button class="btn btn-primary" onclick="return checkMauSacKichCo()">Xác Nhận</button>
                                         </div>
                                     </form>
                                 </div>
@@ -545,9 +545,9 @@
     }
 
     function checkMauSacKichCo(){
-        var check  = '${checkError}';
+        let check  = '${checkError}';
         console.log(check);
-        if(check !== ''){
+        if(check !== null){
             alert('Thêm dữ liệu thành công.');
             return true;
         }else{

@@ -228,12 +228,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public Page<HoaDonChiTiet> getHoaDonHuyChiTiet(UUID id, Integer pageNo, Integer size) {
-        Pageable pageable = PageRequest.of(pageNo, size);
-        return hoaDonRepository.getHoaDonHuyChiTiet(id, pageable);
-    }
-
-    @Override
     public Page<HoaDon> getAllHoaDonByTrangThaiKhachHoaDonCho(Integer page) {
         Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("ngayTao").descending());
         return hoaDonRepository.findAllHoaDonByTrangThaiKhacHoaDonCho(pageable);
@@ -275,14 +269,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public String updateHoaDonById(HoaDon hoaDon) {
-        Optional<HoaDon> hd = hoaDonRepository.findById(hoaDon.getId());
-        hd.get().setTongTien(hoaDon.getTongTien());
-        hoaDonRepository.save(hd.get());
-        return "redirect:/admin/hoa-don-onl/detail/" + hoaDon.getId();
-    }
-
-    @Override
     public HoaDon updateThongTinKhachHang(UUID idHD, ThongTinKhachHang thongTinKhachHang) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
         if (hoaDon.isPresent()) {
@@ -296,12 +282,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
             return hoaDonRepository.save(hd);
         }
         return null;
-    }
-
-    @Override
-    public String updatePVC(HoaDon hoaDon) {
-        hoaDonRepository.save(hoaDon);
-        return "redirect:/admin/hoa-don-onl/detail/" + hoaDon.getId();
     }
 
     @Override

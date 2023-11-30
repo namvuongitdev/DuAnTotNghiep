@@ -8,7 +8,7 @@
             <div class="row" style="margin-bottom: 30px">
                 <div class="col-sm-4">
                     <input class="form-control" type="text" name="search" id="search-khachHang"
-                           placeholder="tìm kiếm tên ,sđt,tài khoản">
+                           placeholder="tìm kiếm">
                 </div>
                 <div class="col-sm-2">
                     <button class="btn btn-primary" onclick="timKiemKhachHang()">Tìm kiếm</button>

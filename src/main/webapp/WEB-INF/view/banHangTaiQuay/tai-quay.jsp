@@ -13,15 +13,16 @@
     </div>
     <div>
       <span id="tienHang">Tiền Hàng : <fmt:formatNumber pattern="#,###"
-                                                                    value="${tongTien}"></fmt:formatNumber></span>
+                                                        value="${tongTien}"></fmt:formatNumber></span>
     </div>
     <div>
         <h6 id="tienKhachCanTra">Khách cần trả : <fmt:formatNumber pattern="#,###"
-                                              value="${tongTien}"></fmt:formatNumber></h6>
+                                                                   value="${tongTien}"></fmt:formatNumber></h6>
     </div>
     <div>
         <h6>Hình thức thanh toán : </h6>
-        <select class="form-select" name="hinhThucThanhToan" style="width: 200px" onchange="phuongThucThanhToan(this.value)">
+        <select class="form-select" name="hinhThucThanhToan" style="width: 200px"
+                onchange="phuongThucThanhToan(this.value,`${tongTien}`)">
             <option value="1">Tiền mặt</option>
             <option value="2">Chuyển Khoản</option>
         </select>
@@ -32,7 +33,8 @@
             <input class="form-control" type="number" style="width: 50%"
                    name="soTienThanhToan"
                    id="tienKhachDua"
-                   onkeydown="getTienKhachDua({tienKhacDua:this.value , tongTien:`${tongTien}`})" value="${soTienKhachTra}">
+                   onkeydown="getTienKhachDua({tienKhacDua:this.value , tongTien:`${tongTien}`})"
+                   value="${soTienKhachTra}">
             <label for="tienKhachDua">Tiền khách đưa</label>
             <c:if test="${message != null}">
                 <span style="color: #E43535">${message}</span>
