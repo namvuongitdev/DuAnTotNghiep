@@ -72,8 +72,8 @@ public class SanPhamServiceImpl implements ISanPhamService {
                 List<Predicate> predicates = new ArrayList<>();
                 Join<SanPhamKhuyenMai, SanPham> sanPhamKhuyenMais = root.join("sanPhamKhuyenMais", JoinType.LEFT);
                 if (!filter.getSearch().isEmpty() && filter.getSearch() != null) {
-                    predicates.add(criteriaBuilder.or(criteriaBuilder.equal(root.get("ma"), filter.getSearch()),
-                            criteriaBuilder.equal(root.get("ten"), filter.getSearch())));
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("ma"), filter.getSearch()),
+                            criteriaBuilder.like(root.get("ten"), filter.getSearch())));
                 }
                 if (!filter.getDanhMuc().isEmpty() && filter.getDanhMuc() != null) {
                     DanhMuc danhMuc = DanhMuc.builder().id(String.valueOf(filter.getDanhMuc())).build();

@@ -34,7 +34,7 @@
         <jsp:include page="../sidebar/sidebar.jsp"/>
         <div class="col py-3">
             <%--code giao diện chất liệu --%>
-            <a style="float: right" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#extraLargeModal"
+            <a style="float: right" class="btn btn-primary"
                name="1" onclick="getSanPham(this.name)">
                 Thêm sản phẩm
             </a>

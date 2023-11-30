@@ -32,4 +32,9 @@ public class DiaChiServiceImpl implements IDiaChiService {
         List<DiaChi> diaChis = diaChiRepository.findDiaChiByKhachHang_id(idKH);
         return diaChis;
     }
+
+    @Override
+    public void delete(UUID id) {
+        diaChiRepository.deleteById(id);
+    }
 }

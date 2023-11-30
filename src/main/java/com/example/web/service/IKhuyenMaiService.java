@@ -1,7 +1,9 @@
 package com.example.web.service;
 import com.example.web.model.KhuyenMai;
+import com.example.web.model.SanPham;
 import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.request.KhuyenMaiRequest;
+import com.example.web.request.KhuyenMaiSanPhamRequest;
 import com.example.web.response.FilterKhuyenMai;
 import com.example.web.response.SanPhamAsKhuyenMai;
 import org.springframework.data.domain.Page;
@@ -20,7 +22,7 @@ public interface IKhuyenMaiService {
 
     Page<SanPhamKhuyenMai> getKhuyenMaiById(UUID id , Integer page);
 
-    Boolean addSanPhamKhuyenMai(SanPhamKhuyenMai sanPhamKhuyenMai , String idKM);
+    SanPham addSanPhamKhuyenMai(KhuyenMaiSanPhamRequest request);
 
     KhuyenMai getById(UUID uuid);
 

@@ -40,4 +40,6 @@ public interface IKhachHangService {
 
     UUID findIdByEmail(String email);
 
+    KhachHang findKhachHangByTaiKhoan(String taiKhoan);
+
 }

@@ -10,8 +10,10 @@ let data = {
     gioiTinh: ""
 
 };
+let modalHienThiSanPham = document.getElementById("modalHienThiSanPham");
 
 function getSanPham(page) {
+    modalHienThiSanPham.style.display = "block";
     const value = document.querySelector("#search-input").value;
     data.search = value;
     let url = "/admin/san-pham/api-hien-thi?page=" + page + "&value=" + value;
@@ -322,5 +324,11 @@ async function deleteSanPhamTrongGioHang(idHDCT) {
         await tongTien();
     } else {
         return;
+    }
+}
+
+window.onclick = function(event) {
+    if (event.target == modalHienThiSanPham) {
+        modalHienThiSanPham.style.display = "none";
     }
 }

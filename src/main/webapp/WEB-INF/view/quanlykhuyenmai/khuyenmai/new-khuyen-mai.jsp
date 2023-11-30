@@ -148,6 +148,5 @@
         <jsp:include page="modal-san-pham.jsp"></jsp:include>
     <script src="/js/khuyenMai/khuyen-mai.js"></script>
     <script src="/js/khuyenMai/modal.js"></script>
-    <script src="/js/khuyenMai/validateForm.js"></script>
     </c:if>
 </body>

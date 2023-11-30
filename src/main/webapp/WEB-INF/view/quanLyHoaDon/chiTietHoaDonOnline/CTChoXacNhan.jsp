@@ -136,6 +136,12 @@
         style: 'currency',
         currency: 'VND',
     });
+    const modalHienThiSanPham = document.getElementById("modalHienThiSanPham");
+    window.onclick = function(event) {
+        if (event.target == modalHienThiSanPham) {
+            modalHienThiSanPham.style.display = "none";
+        }
+    }
 </script>
 
 <c:if test="${hoaDon.loaiHoaDon}">

@@ -41,16 +41,13 @@
                         </option>
                     </select>
                 </div>
-                <div class="col-sm-2" style="margin-top: 25px">
-                    <button class="btn btn-primary">Tìm kiếm</button>
-                </div>
-                <div class="col-sm-2" style="margin-top: 25px">
+                <div class="col-sm-3" style="margin-top: 25px; display: flex">
+                    <button class="btn btn-primary" style="margin-right: 6px">Tìm kiếm</button>
                     <a href="/admin/khuyen-mai/detail?id=${dataKhuyenMai.id}" class="btn btn-warning">Làm mới</a>
                 </div>
             </form>
             <div class="col-sm-2" style="margin-top: 15px ;float: left">
-                <button style="float: right" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#extraLargeModal"
+                <button style="float: right" class="btn btn-primary"
                         name="1" onclick="getSanPham(this.name)">
                     Thêm sản phẩm
                 </button>

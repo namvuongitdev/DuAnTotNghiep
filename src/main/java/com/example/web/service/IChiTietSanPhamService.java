@@ -42,4 +42,6 @@ public interface IChiTietSanPhamService {
     List<ChiTietSanPham> getTop5SanPhamBanChay();
 
     UUID getByQrcode(String qrCode);
+
+    ChiTietSanPham checkSizeMauSac(UUID mauSac, String kichCo, UUID idSanPham);
 }

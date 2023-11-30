@@ -87,6 +87,11 @@
                                         <form:input type="text" class="form-control" path="sdt" id="sdt"/>
                                         <form:errors path="sdt" cssStyle="color: red"/>
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="cccd" class="form-label">Số CCCD</label>
+                                        <form:input type="text" class="form-control" path="cccd" id="cccd"/>
+                                        <form:errors path="cccd" cssStyle="color: red"/>
+                                    </div>
                                     <div class="row mb-3">
                                         <div class="col-11">
                                             <label for="chucVu" class="form-label">Chức vụ</label>

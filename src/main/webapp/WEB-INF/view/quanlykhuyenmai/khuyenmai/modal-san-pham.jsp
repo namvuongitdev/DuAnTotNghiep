@@ -2,7 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<div id="extraLargeModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="modalSanPham" class="modal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -127,50 +127,19 @@
                 </div>
                 <br>
                 <div class="row">
-                    <form name="myForm" action="/admin/khuyen-mai/khuyen-mai-san-pham?idKM=${dataKhuyenMai.id}" method="post" onsubmit="return formCreate()"
-                          modelAttribute="${sanPhamKhuyenMai}">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th scope="col">Ảnh</th>
-                                <th scope="col">Mã</th>
-                                <th scope="col">Tên Sản Phẩm</th>
-                                <th scope="col">giá</th>
-                                <th scope="col">Thao tác</th>
-                            </tr>
-                            </thead>
-                            <tbody id="body">
-                            </tbody>
-                            <div id="modalKhuyenMai" class="modal">
-                                <div class="modal-content-1">
-                                    <span class="close" id="close_khuyenMai">&times;</span>
-                                    <div class="row">
-                                        <div class="col-sm-6" style="width: 25%">
-                                            <input type="radio" class="btn-check" name="loaiGiamGia"
-                                                   id="success-outlined" autocomplete="off" value="true" checked>
-                                            <label class="btn btn-outline-secondary" for="success-outlined">%</label>
-
-                                            <input type="radio" class="btn-check" name="loaiGiamGia"
-                                                   id="danger-outlined" autocomplete="off" value="false">
-                                            <label class="btn btn-outline-secondary" for="danger-outlined">VND</label>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="mb-3 form-floating">
-                                                <input type="number" class="form-control" name="mucGiam" id="mucGiam">
-                                                <label for="mucGiam">Mức giảm</label>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <button class="btn btn-primary">Xác nhận</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </table>
-                    </form>
-                </div>
-                <div style="float: right">
-                    <button class="btn btn-primary" id="btnKhuyenMai">Xác nhận</button>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th scope="col">Ảnh</th>
+                            <th scope="col">Mã</th>
+                            <th scope="col">Tên Sản Phẩm</th>
+                            <th scope="col">giá</th>
+                            <th scope="col">Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody id="body">
+                        </tbody>
+                    </table>
                 </div>
                 <div class="container-fluid mt-5">
                     <nav aria-label="Page navigation example">
@@ -182,3 +151,6 @@
         </div>
     </div>
 </div>
+<jsp:include page="modal-them-san-pham-khuyen-mai.jsp"></jsp:include>
+
+
