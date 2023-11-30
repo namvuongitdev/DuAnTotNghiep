@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,8 @@ public class ThongKeController {
         model.addAttribute("tongHDHuy",tongHDHuy);
         Integer tongHoaDonChoXacNhan = iHoaDonService.tongHoaDonChoXacNhan();
         model.addAttribute("tongHoaDonChoXacNhan",tongHoaDonChoXacNhan);
+        int nam = Year.now().getValue();
+        model.addAttribute("nam",nam);
         return "thongKe/thongKe";
     }
 
