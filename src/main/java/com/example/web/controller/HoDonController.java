@@ -245,4 +245,10 @@ public class HoDonController {
         return url;
     }
 
+    @GetMapping("/admin/hoa-don/hoan-tien")
+    public String findHoaDonHoanTien(@RequestParam(defaultValue = "1") Integer page){
+         Page<Object[]> listHoaDonHoanHien = hoaDonService.getAllHoaDonHoanTien(page);
+         return "";
+    }
+
 }

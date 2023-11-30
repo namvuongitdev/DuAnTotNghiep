@@ -146,6 +146,11 @@ public class SanPhamServiceImpl implements ISanPhamService {
     }
 
     @Override
+    public Page<SanPham> findAllDanhMuc(Pageable pageable, String id) {
+        return iSanPhamRepository.findAllDanhMuc(pageable,id);
+    }
+
+    @Override
     public SanPham getSanPhamTheoCTSP(UUID idCTSP) {
         return iSanPhamRepository.getSanPhamTheoCTSP(idCTSP);
     }
@@ -153,6 +158,11 @@ public class SanPhamServiceImpl implements ISanPhamService {
     @Override
     public Page<SanPhamAndKhuyenMai> getALL(Pageable pageable) {
         return iSanPhamRepository.getALL(pageable);
+    }
+
+    @Override
+    public List<SanPham> sanPhamNhieuNguoiMua() {
+        return iSanPhamRepository.sanPhamNhieuNguoiMua();
     }
 
 }

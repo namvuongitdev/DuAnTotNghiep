@@ -1,5 +1,4 @@
 package com.example.web.service.impl;
-import com.example.web.model.KhachHang;
 import com.example.web.model.NhanVien;
 import com.example.web.repository.INhanVienRepository;
 import com.example.web.response.NhanVienFilter;
@@ -115,6 +114,11 @@ public class NhanVienServiceImpl implements INhanVienService  {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         NhanVien nhanVien = iNhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         return nhanVien;
+    }
+
+    @Override
+    public NhanVien getByEmailOrTaiKhoan(String usename) {
+        return iNhanVienRepository.findByEmailOrTaiKhoan(usename);
     }
 
 }

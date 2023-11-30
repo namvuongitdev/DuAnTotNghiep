@@ -34,7 +34,7 @@ public class UserDetailsImpl implements UserDetailsService {
             grantedAuthorities.add(new SimpleGrantedAuthority(nhanVien.getChucVu().getTen()));
             return new User(username, nhanVien.getMatKhau(), grantedAuthorities);
         }
-        if (khachHang != null) {
+        if(khachHang != null) {
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
             grantedAuthorities.add(new SimpleGrantedAuthority("CLIENT"));
             return new User(username, khachHang.getMatKhau(), grantedAuthorities);

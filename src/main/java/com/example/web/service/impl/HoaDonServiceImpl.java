@@ -215,7 +215,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public Boolean kiemTraConTrongHDCT(UUID idHD) {
         List<HoaDonChiTietReponse> isCheck = hoaDonRepository.isCheckSanPhamTrongHoaDon(idHD);
-        if(isCheck.isEmpty()){
+        if (isCheck.isEmpty()) {
             return true;
         }
         return false;
@@ -382,5 +382,31 @@ public class HoaDonServiceImpl implements IHoaDonService {
         } else {
             return -1;
         }
+    }
+
+    @Override
+    public Integer tongDoanhThu() {
+        return hoaDonRepository.tongDoanhThu();
+    }
+
+    @Override
+    public Page<Object[]> getAllHoaDonHoanTien(Integer page) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        return hoaDonRepository.findHoaDonHoanTien(pageable);
+    }
+
+    @Override
+    public Double getDoanhThuTrongNgay() {
+        return hoaDonRepository.getDoanhThuTrongNgay();
+    }
+
+    @Override
+    public Integer tongHoaDon() {
+        return hoaDonRepository.tongHoaDon();
+    }
+
+    @Override
+    public Double getDoanhThuTheoThang(Integer thang) {
+        return hoaDonRepository.getDoanhThuTheoThang(thang);
     }
 }

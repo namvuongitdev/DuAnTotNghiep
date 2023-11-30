@@ -19,16 +19,16 @@ public class AuthenticationSuccessHandlers implements AuthenticationSuccessHandl
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-      authorities.forEach(authori -> {
+         authorities.forEach(authori -> {
           if(authori.getAuthority().equals("ADMIN")){
               try {
-                  redirectStrategy.sendRedirect(request , response , "/admin/trang-chu");
+                  redirectStrategy.sendRedirect(request , response , "/admin/thong-ke");
               } catch (IOException e) {
                   e.printStackTrace();
               }
           }else if(authori.getAuthority().equals("STAFF")){
               try {
-                  redirectStrategy.sendRedirect(request , response , "/admin/trang-chu");
+                  redirectStrategy.sendRedirect(request , response , "/admin/thong-ke");
               } catch (IOException e) {
                   e.printStackTrace();
               }

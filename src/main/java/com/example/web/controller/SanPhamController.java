@@ -21,6 +21,7 @@ import com.example.web.service.ISanPhamService;
 import com.example.web.service.SizeService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.eclipse.jdt.internal.compiler.util.Sorting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -106,7 +107,7 @@ public class SanPhamController {
     @ResponseBody
     public Page<SanPham> apiSanPham(@RequestParam Integer page , @RequestParam(required = false) String value) {
         Page listSanPham = null;
-        Pageable pageable = PageRequest.of(page - 1, 10);
+        Pageable pageable = PageRequest.of(page - 1, 10 , Sort.by("ngayTao").descending());
         if(value.isEmpty()){
             listSanPham = iSanPhamService.findAll(pageable);
         }else{
@@ -154,7 +155,7 @@ public class SanPhamController {
                 sanPham.setImg(sp.getImg());
                 sanPham.setNgaySua(date);
                 iSanPhamService.save(sanPham);
-                SanPhamKhuyenMai spkm = khuyenMaiService.getSanPhamById(sp.getId());
+ //               SanPhamKhuyenMai spkm = khuyenMaiService.getSanPhamById(sp.getId());
             } else {
                 String maKM = "SP" + (iSanPhamService.getAll().size() + 1);
                 sanPham.setMa(maKM);

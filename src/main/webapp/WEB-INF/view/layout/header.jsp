@@ -31,19 +31,22 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-2 col-md-2">
-                <div class="header__logo">
+                <div class="header__logo"  >
                     <a href="./index.html"><img src="/anh/logochu.png" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-7 col-md-7">
                 <nav class="header__menu mobile-menu">
                     <ul class="d-flex align-items-center"> <!-- Add the "d-flex align-items-center" classes here -->
-                        <li class="active"><a href="/index/gioi-thieu">Home</a></li>
-                        <li><a href="/index/home">Shop</a></li>
+
+                        <li class="active"><a style="width: 80px" href="/index/gioi-thieu">About us</a></li>
+                        <li class="active"><a href="/index/home">Home</a></li>
+                        <li class="active"><a href="/index/shop">Shop</a></li>
+                        <li class="active"><a href="">Policy</a></li>
 
                         <li class="d-flex align-items-center"> <!-- Add the "d-flex align-items-center" classes here -->
                             <input class="form-control" type="text" name="search" id="search-input" style="width: 300px;" placeholder="Tìm kiếm ....">
-                            <button class="btn btn-light ml-2" onclick="timKiem()">Tìm kiếm</button> <!-- Add Bootstrap margin class "ml-2" for spacing -->
+                            <button style="width: 100px" class="btn btn-light ml-2" onclick="timKiem()">Tìm kiếm</button> <!-- Add Bootstrap margin class "ml-2" for spacing -->
                         </li>
                     </ul>
                 </nav>

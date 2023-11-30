@@ -8,6 +8,7 @@ import com.example.web.response.HoaDonChiTietReponse;
 import com.example.web.response.HoaDonFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -61,5 +62,15 @@ public interface IHoaDonService {
     Integer tongHoaDonChoXacNhan();
 
     Integer xacNhanHoaDon(Integer trangThai , UUID idHD , String ghiChu);
+
+    Integer tongDoanhThu();
+
+    Page<Object[]> getAllHoaDonHoanTien(Integer page);
+
+    Double getDoanhThuTrongNgay();
+
+    Integer tongHoaDon();
+
+    Double getDoanhThuTheoThang(Integer thang);
 
 }
