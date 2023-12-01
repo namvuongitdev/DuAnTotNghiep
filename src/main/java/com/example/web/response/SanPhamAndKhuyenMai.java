@@ -52,18 +52,7 @@ public class SanPhamAndKhuyenMai {
 
     private BigDecimal donGiaSauKhiGiam;
 
-    private Integer trangThaiSPKM;
-
-    private Boolean loaiGiamGia;
-
-    private BigDecimal mucGiam;
-
-    private Integer trangThaiKM;
-
-    public SanPhamAndKhuyenMai() {
-    }
-
-    public SanPhamAndKhuyenMai(UUID id, String ma, String ten, String img, Integer trangThai, Date ngayTao, Date ngaySua, BigDecimal giaNhap, BigDecimal giaBan, String moTa, Boolean gioiTinh, KieuDang kieuDang, ChatLieu chatLieu, DanhMuc danhMuc, BigDecimal donGiaSauKhiGiam, Integer trangThaiSPKM, Boolean loaiGiamGia, BigDecimal mucGiam, Integer trangThaiKM) {
+    public SanPhamAndKhuyenMai(UUID id, String ma, String ten, String img, Integer trangThai, Date ngayTao, Date ngaySua, BigDecimal giaNhap, BigDecimal giaBan, String moTa, Boolean gioiTinh, KieuDang kieuDang, ChatLieu chatLieu, DanhMuc danhMuc, BigDecimal donGiaSauKhiGiam) {
         this.id = id;
         this.ma = ma;
         this.ten = ten;
@@ -79,9 +68,5 @@ public class SanPhamAndKhuyenMai {
         this.chatLieu = chatLieu;
         this.danhMuc = danhMuc;
         this.donGiaSauKhiGiam = donGiaSauKhiGiam;
-        this.trangThaiSPKM = trangThaiSPKM;
-        this.loaiGiamGia = loaiGiamGia;
-        this.mucGiam = mucGiam;
-        this.trangThaiKM = trangThaiKM;
     }
 }
