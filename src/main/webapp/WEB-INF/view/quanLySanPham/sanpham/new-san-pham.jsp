@@ -25,8 +25,10 @@
           href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css"/>
     <link rel="stylesheet" href="/css/modal.css">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
 </head>
-<body>
+<body ng-app="app" ng-controller="controller">
 <%--navbar--%>
 <jsp:include page="../../sidebar/navbar.jsp"/>
 <%--sidebar--%>
@@ -88,9 +90,9 @@
                                     <div class="row mb-3">
                                         <div class="col-11">
                                             <label for="chatLieu" class="form-label">Chất liệu</label>
-                                            <select name="chatLieu" class="form-select" id="chatLieu" style="">
+                                            <select name="chatLieu" class="form-select" id="chatLieu">
                                                 <c:forEach items="${listChatLieu}" var="chatLieu">
-                                                    <option value="${chatLieu.id}" ${sp.chatLieu.id == chatLieu.id ? 'selected' : '' }>${chatLieu.ten}</option>
+                                                    <option value="${chatLieu.id}" ${sp.chatLieu.id==chatLieu.id?'selected':''}>${chatLieu.ten}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -104,8 +106,8 @@
                                         <div class="col-11">
                                             <label for="kieuDang" class="form-label">Kiểu dáng</label>
                                             <select name="kieuDang" class="form-select" id="kieuDang">
-                                                <c:forEach items="${listFromDang}" var="dang">
-                                                    <option value="${dang.id}" ${sp.kieuDang.id == dang.id ? 'selected' : '' }>${dang.ten}</option>
+                                                <c:forEach items="${listFromDang}" var="kieuDang">
+                                                    <option value="${kieuDang.id}" ${sp.kieuDang.id==kieuDang.id?'selected':''}>${kieuDang.ten}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -119,8 +121,8 @@
                                         <div class="col-11">
                                             <label for="danhMuc" class="form-label">Danh mục</label>
                                             <select name="danhMuc" class="form-select" id="danhMuc">
-                                                <c:forEach items="${listDanhMuc}" var="dm">
-                                                    <option value="${dm.id}" ${sp.danhMuc.id == dm.id ? 'selected' : '' }>${dm.ten}</option>
+                                                <c:forEach items="${listDanhMuc}" var="danhMuc">
+                                                    <option value="${danhMuc.id}" ${sp.danhMuc.id==danhMuc.id?'selected':''}>${danhMuc.ten}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -145,7 +147,12 @@
                             </div>
                             <br>
                             <div style="text-align: center">
-                                <button class="btn btn-primary" onclick="clearLocalStorage()">Xác nhận
+                                <c:if test="${sp.id == null}">
+                                    <button class="btn btn-success" onclick="saveInputValues()">Xác nhận
+                                </c:if>
+                                <c:if test="${sp.id != null}">
+                                    <button class="btn btn-primary" onclick="saveInputValues()">Cập nhật
+                                </c:if>
                                 </button>
                                 <a href="/admin/san-pham/new" class="btn btn-warning" onclick="clearLocalStorage()">Làm
                                     Mới</a>
@@ -162,6 +169,7 @@
                             <a type="button" class="btn btn-primary" data-bs-toggle="modal"
                                data-bs-target="#exampleModal">Thêm
                             </a>
+                            <p style="color: red">${loiAdd}</p>
                         </div>
                         <br><br>
                         <div class="row">
@@ -211,19 +219,15 @@
                                             <tr style="text-align: center">
                                                 <td>
                                                     <select name="size" class="form-select">
-                                                        <c:forEach items="${listKichCo}" var="kichCo">
-                                                            <option value="${kichCo.id}" ${kichCo.id == ctsp.size.id ? 'selected' : ''}>
-                                                                    ${kichCo.ten}
-                                                            </option>
+                                                        <c:forEach items="${listKichCo}" var="kichCo" >
+                                                            <option value="${kichCo.id}" ${ctsp.size.id==kichCo.id?'selected':''}>${kichCo.ten}</option>
                                                         </c:forEach>
                                                     </select>
                                                 </td>
                                                 <td>
                                                     <select name="mauSac" class="form-select">
                                                         <c:forEach items="${listMuaSac}" var="mauSac">
-                                                            <option value="${mauSac.id}" ${mauSac.id == ctsp.mauSac.id ? 'selected' : ''}>
-                                                                    ${mauSac.ten}
-                                                            </option>
+                                                            <option value="${mauSac.id}" ${ctsp.mauSac.id==mauSac.id?'selected':''}>${mauSac.ten}</option>
                                                         </c:forEach>
                                                     </select>
                                                 </td>
@@ -266,7 +270,7 @@
                 </div>
             </section>
             <%--            thêm chi tiết sản phẩm--%>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -278,16 +282,13 @@
                             <div class="row">
                                 <div class="col l-3">
                                     <form action="/admin/chi-tiet-san-pham/add?id=${sp.id}" method="post"
-                                          enctype="multipart/form-data"
-                                          modelAttribute="${chiTietSanPham}">
+                                          enctype="multipart/form-data" modelAttribute="${chiTietSanPham}">
                                         <div class="row">
                                             <div class="row">
                                                 <div class="mb-3">
                                                     <label class="form-label">Kích cỡ :</label>
                                                     <select id="size" name="size" class="form-select">
-                                                        <c:forEach items="${listKichCo}" var="kichCo">
-                                                            <option value="${kichCo.id}">${kichCo.ten}</option>
-                                                        </c:forEach>
+                                                        <option ng-repeat="kichCo in lstKichCo" value="{{kichCo.id}}" >{{kichCo.ten}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -295,11 +296,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Màu sắc:</label>
                                                     <select id="mauSac" name="mauSac" class="form-select">
-                                                        <c:forEach items="${listMuaSac}" var="mauSac">
-                                                            <option value="${mauSac.id}">
-                                                                    ${mauSac.ten}
-                                                            </option>
-                                                        </c:forEach>
+                                                        <option ng-repeat="mauSac in lstMauSac" value="{{mauSac.id}}" >{{mauSac.ten}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -345,24 +342,21 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/admin/san-pham/modal-add-chat-lieu" modelAttribute="chatLieu"
-                                   class="row g-3">
+                        <form method="post" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <form:input type="text" path="ten" class="form-control" id="floatingName"
+                                    <input ng-model="chatLieu.ten" type="text" name="ten" class="form-control" id="floatingName"
                                                 placeholder="Chất liệu"/>
-                                    <form:label for="floatingName" path="ten">Chất liệu</form:label>
-                                    <form:errors path="ten" cssStyle="color: red"/>
+                                    <label for="floatingName">Chất liệu</label>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary"
-                                             onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; } saveInputValues()">
+                                <button ng-click="addChatLieu()" type="submit" class="btn btn-primary">
                                     Xác nhận
-                                </form:button>
+                                </button>
                             </div>
-                        </form:form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -374,24 +368,22 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/admin/san-pham/modal-add-danh-muc" modelAttribute="danhMuc"
-                                   class="row g-3">
+                        <form method="post" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <form:input type="text" path="ten" class="form-control" id="floatingName"
-                                                placeholder="Tên danh mục"/>
-                                    <form:label for="floatingName" path="ten">Tên danh mục</form:label>
-                                    <form:errors path="ten" cssStyle="color: red"/>
+                                    <input ng-model="danhMuc.ten" type="text" name="ten" class="form-control" id="floatingDanhMuc"
+                                           placeholder="Danh mục"/>
+                                    <label for="floatingDanhMuc">Danh mục</label>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary"
-                                             onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; } saveInputValues()">
+                                <button ng-click="addDanhMuc()" type="submit" class="btn btn-primary"
+                                        onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){}else{return false; }">
                                     Xác nhận
-                                </form:button>
+                                </button>
                             </div>
-                        </form:form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -403,24 +395,22 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/admin/san-pham/modal-add-kieu-dang" modelAttribute="kieuDang"
-                                   class="row g-3">
+                        <form method="post" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <form:input type="text" path="ten" class="form-control" id="floatingName"
-                                                placeholder="Kiểu dáng"/>
-                                    <form:label for="floatingName" path="ten">Kiểu dáng</form:label>
-                                    <form:errors path="ten" cssStyle="color: red"/>
+                                    <input ng-model="kieuDang.ten" type="text" name="ten" class="form-control" id="floatingKieuDang"
+                                           placeholder="Kiểu dáng"/>
+                                    <label for="floatingKieuDang">Kiểu dáng</label>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary"
-                                             onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; } saveInputValues()">
+                                <button ng-click="addKieuDang()" type="submit" class="btn btn-primary"
+                                        onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){}else{return false; }">
                                     Xác nhận
-                                </form:button>
+                                </button>
                             </div>
-                        </form:form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -432,24 +422,22 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/admin/san-pham/modal-add-size?id=${sp.id}" modelAttribute="size"
-                                   class="row g-3">
+                        <form method="post" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <form:input type="text" path="ten" class="form-control" id="floatingName"
-                                                placeholder="Kích cỡ"/>
-                                    <form:label for="floatingName" path="ten">Kích cỡ</form:label>
-                                    <p style="color: red">${errorSize}</p>
+                                    <input ng-model="kichCo.ten" type="text" name="ten" class="form-control" id="floatingKichCo"
+                                           placeholder="Kích cỡ"/>
+                                    <label for="floatingKichCo">Kích cỡ</label>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary"
-                                             onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; }">
+                                <button ng-click="addKichCo()" type="submit" class="btn btn-primary"
+                                        onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){}else{return false; }">
                                     Xác nhận
-                                </form:button>
+                                </button>
                             </div>
-                        </form:form>
+                        </form>
                         <!-- End floating Labels Form -->
                     </div>
                 </div>
@@ -462,24 +450,22 @@
                             <h5 class="modal-title">Thêm dữ liệu</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form:form method="post" action="/admin/san-pham/modal-add-mau-sac?id=${sp.id}" modelAttribute="mauSac"
-                                   class="row g-3">
+                        <form method="post" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <form:input type="text" path="ten" class="form-control" id="floatingName"
-                                                placeholder="Tên màu"/>
-                                    <form:label for="floatingName" path="ten">Tên màu</form:label>
-                                    <p style="color: red">${errorMauSac}</p>
+                                    <input ng-model="mauSac.ten" type="text" name="ten" class="form-control" id="floatingMauSac"
+                                           placeholder="Màu sắc"/>
+                                    <label for="floatingMauSac">Màu sắc</label>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary"
-                                             onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; }">
+                                <button ng-click="addMauSac()" type="submit" class="btn btn-primary"
+                                        onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){}else{return false; }">
                                     Xác nhận
-                                </form:button>
+                                </button>
                             </div>
-                        </form:form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -490,7 +476,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="/js/sanPham/quanLySanPham.js"></script>
+<script src="../../../../js/sanPham/quanLySanPham.js"></script>
 <script type="text/javascript">
     // Lấy giá trị từ tất cả các ô input và textarea, và lưu chúng vào localStorage
     function saveInputValues() {
@@ -532,6 +518,12 @@
         $('#danhMuc').select2({
             theme: 'bootstrap-5'
         });
+        $('#size').select2({
+            theme: 'bootstrap-5'
+        });
+        $('#mauSac').select2({
+            theme: 'bootstrap-5'
+        });
 
     });
 
@@ -541,18 +533,6 @@
         } else {
             alert('Cập nhật thất bại!')
             return;
-        }
-    }
-
-    function checkMauSacKichCo(){
-        var check  = '${checkError}';
-        console.log(check);
-        if(check !== ''){
-            alert('Thêm dữ liệu thành công.');
-            return true;
-        }else{
-            alert('Thêm thất bại! Dữ liệu đã tồn tại.');
-            return false;
         }
     }
 </script>

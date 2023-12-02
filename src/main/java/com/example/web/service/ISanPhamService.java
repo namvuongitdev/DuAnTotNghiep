@@ -27,4 +27,5 @@ public interface ISanPhamService {
 
     Page<SanPhamAndKhuyenMai> getALL(Pageable pageable);
 
+    boolean isProductExists(String productName);
 }
