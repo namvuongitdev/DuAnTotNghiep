@@ -23,7 +23,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +39,9 @@ public class SanPhamServiceImpl implements ISanPhamService {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public Page<SanPham> findAll(Pageable pageable) {
@@ -147,7 +152,7 @@ public class SanPhamServiceImpl implements ISanPhamService {
 
     @Override
     public Page<SanPham> findAllDanhMuc(Pageable pageable, String id) {
-        return iSanPhamRepository.findAllDanhMuc(pageable,id);
+        return iSanPhamRepository.findAllDanhMuc(pageable, id);
     }
 
     @Override
@@ -163,6 +168,13 @@ public class SanPhamServiceImpl implements ISanPhamService {
     @Override
     public List<SanPham> sanPhamNhieuNguoiMua() {
         return iSanPhamRepository.sanPhamNhieuNguoiMua();
+
+    }
+
+    public boolean isProductExists(String productName) {
+        String sql = "SELECT COUNT(*) FROM san_pham WHERE san_pham.ten = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, productName);
+        return count > 0;
     }
 
 }

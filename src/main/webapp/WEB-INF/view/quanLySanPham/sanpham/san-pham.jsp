@@ -66,7 +66,7 @@
                             </div>
                         </div>
                         <!-- Table with stripped rows -->
-                        <table class="table">
+                        <table class="table" style="font-size: 15px">
                             <thead style="text-align: center">
                             <tr>
                                 <th scope="col">STT</th>
@@ -74,6 +74,7 @@
                                 <th scope="col">Mã sản phẩm</th>
                                 <th scope="col">Tên sản phẩm</th>
                                 <th scope="col">Giá</th>
+                                <th scope="col">Giảm giá</th>
                                 <th scope="col">Ngày tạo</th>
                                 <th scope="col">Ngày sửa</th>
                                 <th scope="col">Trang thái</th>
@@ -98,6 +99,27 @@
                                     <td>${sanPham.ten}</td>
                                     <td>
                                         <fmt:formatNumber pattern="#,###" value="${sanPham.giaBan}"></fmt:formatNumber> ₫
+                                    </td>
+                                    <td>
+                                        <c:forEach items="${sanPham.sanPhamKhuyenMais}" var="sanPhamKhuyenMai">
+                                            <c:if test="${sanPhamKhuyenMai != null}">
+                                                <c:if test="${sanPhamKhuyenMai.khuyenMai.trangThai == 1}">
+                                                    <c:if test="${sanPhamKhuyenMai.trangThai == 1}">
+                                                        <p>
+                                                            <c:if test="${sanPhamKhuyenMai.loaiGiamGia == true}">
+                                                                <span style="color: #E43535">-<fmt:formatNumber pattern="####" value="${sanPhamKhuyenMai.mucGiam}"></fmt:formatNumber>%</span>
+                                                            </c:if>
+                                                            <c:if test="${sanPhamKhuyenMai.loaiGiamGia == false}">
+                                                                <span style="color: #E43535">-<fmt:formatNumber pattern="#,###" value="${sanPhamKhuyenMai.mucGiam}"></fmt:formatNumber> ₫</span>
+                                                            </c:if>
+                                                        </p>
+                                                        <p style="color: red;">
+                                                            <fmt:formatNumber pattern="#,###" value="${sanPhamKhuyenMai.donGiaSauKhiGiam}"></fmt:formatNumber> ₫
+                                                        </p>
+                                                    </c:if>
+                                                </c:if>
+                                            </c:if>
+                                        </c:forEach>
                                     </td>
                                     <td>
                                         <fmt:formatDate value="${sanPham.ngayTao}" pattern="yyyy-MM-dd HH:mm:ss"/>

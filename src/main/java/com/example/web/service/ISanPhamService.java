@@ -31,4 +31,5 @@ public interface ISanPhamService {
 
     List<SanPham> sanPhamNhieuNguoiMua ();
 
+    boolean isProductExists(String productName);
 }

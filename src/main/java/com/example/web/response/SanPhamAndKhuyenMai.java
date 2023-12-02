@@ -1,6 +1,4 @@
 package com.example.web.response;
-
-
 import com.example.web.model.ChatLieu;
 import com.example.web.model.DanhMuc;
 import com.example.web.model.KieuDang;
@@ -67,9 +65,5 @@ public class SanPhamAndKhuyenMai {
         this.chatLieu = chatLieu;
         this.danhMuc = danhMuc;
         this.donGiaSauKhiGiam = donGiaSauKhiGiam;
-        this.trangThaiSPKM = trangThaiSPKM;
-        this.loaiGiamGia = loaiGiamGia;
-        this.mucGiam = mucGiam;
-        this.trangThaiKM = trangThaiKM;
     }
 }

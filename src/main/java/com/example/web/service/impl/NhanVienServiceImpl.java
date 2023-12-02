@@ -1,5 +1,6 @@
 package com.example.web.service.impl;
 import com.example.web.model.NhanVien;
+import com.example.web.repository.IKhachHangRepository;
 import com.example.web.repository.INhanVienRepository;
 import com.example.web.response.NhanVienFilter;
 import com.example.web.service.INhanVienService;
@@ -7,6 +8,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +31,9 @@ import java.util.UUID;
 public class NhanVienServiceImpl implements INhanVienService  {
     @Autowired
     private INhanVienRepository iNhanVienRepository;
+
+    @Autowired
+    private IKhachHangRepository iKhachHangRepository;
 
     @Override
     public Page<NhanVien> getAll(Pageable pageable) {
@@ -45,7 +51,12 @@ public class NhanVienServiceImpl implements INhanVienService  {
     }
 
     @Override
+    @Transactional
     public NhanVien add(NhanVien nhanVien) {
+        UUID id = UUID.randomUUID();
+        Date date = java.util.Calendar.getInstance().getTime();
+        iKhachHangRepository.insertKhachHang(id, nhanVien.getHoTen(), nhanVien.getEmail(), nhanVien.getTaiKhoan(), nhanVien.getMatKhau(),
+                nhanVien.getSdt(), date, nhanVien.getDiaChi(), 0);
         return iNhanVienRepository.save(nhanVien);
     }
 
