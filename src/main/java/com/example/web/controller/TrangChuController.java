@@ -13,9 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
-import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,9 +51,6 @@ public class TrangChuController {
     @Autowired
     private IKhachHangService khachHangService;
 
-    @Autowired
-    private INhanVienService nhanVienService;
-
     private Page<SanPham> sanPhamPage = null;
 
     private Page<SanPhamAndKhuyenMai> sanPhamKhuyenMaiPage = null;
@@ -81,12 +76,12 @@ public class TrangChuController {
 
     @GetMapping("/home")
     public String trangChu(Principal principal, HttpSession session, Model model, @RequestParam(defaultValue = "1") int page) {
-//        if (principal != null) {
-//            String username = principal.getName();
-//            session.setAttribute("username", username);
-//            KhachHang khachHang = khachHangService.findByEmailOrAndTaiKhoan(username);
-//            model.addAttribute("count", iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
-//        }
+        if (principal != null) {
+            String username = principal.getName();
+            session.setAttribute("username", username);
+            KhachHang khachHang = khachHangService.findByEmailOrAndTaiKhoan(username);
+            model.addAttribute("count", iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
+        }
         List<DanhMuc> getAll1 = danhMucService.getAll1();
         model.addAttribute("danhMuc", getAll1);
         List<SanPham> sanPhamNhieuNguoiMua = iSanPhamService.sanPhamNhieuNguoiMua();

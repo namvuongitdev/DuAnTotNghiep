@@ -12,22 +12,6 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
 </head>
-<style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-
-    tr:hover {
-        background-color: #f5f5f5;
-    }
-</style>
 <body>
 <%--navbar--%>
 <jsp:include page="../../sidebar/navbar.jsp"/>
@@ -86,7 +70,7 @@
                 </div>
             </form>
             <div class="row" style="margin-top: 60px">
-                <table>
+                <table class="table">
                     <thead>
                     <tr>
                         <th scope="col">STT</th>
@@ -95,6 +79,7 @@
                         <th scope="col">Ngày bắt đầu</th>
                         <th scope="col">Ngày kết thúc</th>
                         <th scope="col">Trang Thái</th>
+                        <th scope="col">Thao tác</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -114,31 +99,34 @@
 
                             <c:choose>
                                 <c:when test="${khuyenMai.trangThai == 1}">
-                                    <td style="color: #03AA28">Kích hoạt</td>
+                                   <td> <button class="btn btn-success rounded-pill">kích hoạt</button></td>
                                 </c:when>
                                 <c:when test="${khuyenMai.trangThai == 2}">
-                                    <td style="color: #005cbf">Chưa được kích hoạt</td>
+                                   <td> <button class="btn btn-warning rounded-pill">chưa bắt đầu</button></td>
                                 </c:when>
                                 <c:when test="${khuyenMai.trangThai == 4}">
                                     <td style="color: red">Đã xoá</td>
                                 </c:when>
                                 <c:otherwise>
-                                    <td style="color: red">Ngừng kích hoạt</td>
+                                    <td> <button class="btn btn-danger rounded-pill">hết hạn</button></td>
                                 </c:otherwise>
                             </c:choose>
-                            <td>
-                                <button type="button" class="btn btn-success" title="chi tiết"
-                                        onclick="getKhuyenMaiById(`${khuyenMai.id}`)">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
+                            <td style="display: flex">
+                                <div>
+                                    <button style="margin-right: 10px" type="button" class="btn btn-success" title="chi tiết"
+                                            onclick="getKhuyenMaiById(`${khuyenMai.id}`)">
+                                        chi tiết
+                                    </button>
+                                </div>
+                                <div>
+                                    <c:if test="${khuyenMai.trangThai != 4}">
+                                        <form action="/admin/khuyen-mai/delete?idKM=${khuyenMai.id}" method="post">
+                                            <button class="btn btn-danger" onclick="return deleteKhuyenMai()">Huỷ</button>
+                                        </form>
+                                    </c:if>
+                                </div>
                             </td>
-                            <c:if test="${khuyenMai.trangThai != 4}">
-                                <td>
-                                    <form action="/admin/khuyen-mai/delete?idKM=${khuyenMai.id}" method="post">
-                                        <button class="btn btn-danger" onclick="return deleteKhuyenMai()">Huỷ</button>
-                                    </form>
-                                </td>
-                            </c:if>
+
                         </tr>
                     </c:forEach>
                     </tbody>

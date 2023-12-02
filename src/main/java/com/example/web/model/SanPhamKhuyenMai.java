@@ -53,7 +53,4 @@ public class SanPhamKhuyenMai {
     @Column(name = "don_gia_sau_khi_giam")
     private BigDecimal donGiaSauKhiGiam;
 
-    @Transient
-    private List<SanPham> sanPhams;
-
 }

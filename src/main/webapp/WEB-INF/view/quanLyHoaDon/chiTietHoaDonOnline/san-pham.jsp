@@ -24,6 +24,7 @@
                 <th scope="col">Đơn giá</th>
                 <th scope="col">Số lượng</th>
                 <th scope="col">Thành tiền</th>
+                <th scope="col">Thao tác</th>
             </tr>
             </thead>
             <tbody>
@@ -75,10 +76,9 @@
                                <td>
                                    <button class="btn btn-outline-primary" onclick="updateSoLuong(`${hdct.id}`)">Cập nhập
                                    </button>
-                               </td>
-                               <td>
                                    <button class="btn btn-outline-danger" onclick="xoaSanPham(`${hdct.id}`)">Huỷ</button>
                                </td>
+
                            </c:if>
                        </c:if>
                    </tr>

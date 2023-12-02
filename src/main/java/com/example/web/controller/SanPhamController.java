@@ -149,13 +149,17 @@ public class SanPhamController {
             Date date = java.util.Calendar.getInstance().getTime();
             if (!id.isEmpty()) {
                 SanPham sp = iSanPhamService.getOne(UUID.fromString(id));
-                sanPham.setId(sp.getId());
-                sanPham.setMa(sp.getMa());
-                sanPham.setNgayTao(sp.getNgayTao());
-                sanPham.setImg(sp.getImg());
-                sanPham.setNgaySua(date);
-                iSanPhamService.save(sanPham);
- //               SanPhamKhuyenMai spkm = khuyenMaiService.getSanPhamById(sp.getId());
+                sp.setNgaySua(date);
+                sp.setChatLieu(sanPham.getChatLieu());
+                sp.setGiaBan(sanPham.getGiaBan());
+                sp.setMoTa(sanPham.getMoTa());
+                sp.setGioiTinh(sanPham.getGioiTinh());
+                sp.setTrangThai(sanPham.getTrangThai());
+                sp.setDanhMuc(sanPham.getDanhMuc());
+                sp.setKieuDang(sanPham.getKieuDang());
+                sp.setTen(sanPham.getTen());
+                iSanPhamService.save(sp);
+                khuyenMaiService.getSanPhamById(sp.getId());
             } else {
                 String maKM = "SP" + (iSanPhamService.getAll().size() + 1);
                 sanPham.setMa(maKM);

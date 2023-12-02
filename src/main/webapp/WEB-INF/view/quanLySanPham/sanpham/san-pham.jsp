@@ -95,7 +95,7 @@
                                         </c:if>
                                     </td>
                                     <td>${sanPham.ma}</td>
-                                    <td class="tenSP" onclick="window.location.href='/admin/san-pham/hien-thi/${sanPham.id}'">${sanPham.ten}</td>
+                                    <td>${sanPham.ten}</td>
                                     <td>
                                         <fmt:formatNumber pattern="#,###" value="${sanPham.giaBan}"></fmt:formatNumber> ₫
                                     </td>
@@ -114,6 +114,9 @@
                                         <button type="button" class="btn btn-danger" title="Ngừng kinh doanh" onclick="if(confirm('Bạn có chắc chắn muốn ngừng kinh doanh không?')){window.location.href = '/admin/san-pham/stop/${sanPham.id}';}
                                                 else{alert('Ngừng kinh doanh thất bại!')}"><i class="bi bi-sign-stop"></i>
                                         </button>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/san-pham/hien-thi/${sanPham.id}" class="btn btn-warning"><i class="bi bi-eye-fill"></i></a>
                                     </td>
                                 </tr>
                             </c:forEach>

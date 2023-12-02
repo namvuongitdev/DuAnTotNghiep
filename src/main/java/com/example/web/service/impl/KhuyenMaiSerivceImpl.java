@@ -116,19 +116,19 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     }
 
     @Override
-    public SanPhamKhuyenMai getSanPhamById(UUID idSP) {
-        SanPhamKhuyenMai spkm = repository.findBySanPham_id(idSP);
-        if(spkm != null){
-            if (spkm.getLoaiGiamGia()) {
-                Integer donGiaKhiGiamPhanTram = spkm.getSanPhamKM().getGiaBan().intValue() - (spkm.getSanPhamKM().getGiaBan().intValue() / 100) * spkm.getMucGiam().intValue();
-                spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamPhanTram));
+    public void getSanPhamById(UUID idSP) {
+        Optional<SanPhamKhuyenMai> spkm = repository.findBySanPham_id(idSP);
+        Integer donGiaGiam = 0;
+        if(spkm.isPresent()){
+            SanPhamKhuyenMai sanPhamKhuyenMai = spkm.get();
+            if (!sanPhamKhuyenMai.getLoaiGiamGia()) {
+                donGiaGiam = sanPhamKhuyenMai.getSanPhamKM().getGiaBan().intValue() - sanPhamKhuyenMai.getMucGiam().intValue();
             } else {
-                Integer donGiaKhiGiamVND = spkm.getSanPhamKM().getGiaBan().intValue() - spkm.getMucGiam().intValue();
-                spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamVND));
+                donGiaGiam = sanPhamKhuyenMai.getSanPhamKM().getGiaBan().intValue() - (sanPhamKhuyenMai.getSanPhamKM().getGiaBan().intValue() / 100) * sanPhamKhuyenMai.getMucGiam().intValue();
             }
+            sanPhamKhuyenMai.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaGiam));
+            sanPhamKhuyenMaiRepository.save(sanPhamKhuyenMai);
         }
-        sanPhamKhuyenMaiRepository.save(spkm);
-        return spkm;
     }
 
     @Override

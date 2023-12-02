@@ -63,6 +63,7 @@
                     <th scope="col">Giá ban đầu</th>
                     <th scope="col">Sau khi giảm</th>
                     <th scope="col">Trạng thái</th>
+                    <th scope="col">Thao tác</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -90,11 +91,11 @@
                                 <a href="/admin/khuyen-mai/update-trang-thai-san-pham?idSPKM=${km.id}&trangThai=${km.trangThai == 1 ? 0 : 1}"
                                    class="btn btn-success">Kích hoạt</a>
                             </c:otherwise>
-                        </c:choose></td>
-                        <td>
+
+                        </c:choose>
                             <button type="button" class="btn btn-success" title="chi tiết"
                                     onclick="getSanPhamKhuyenMai(`${km.id}`)">
-                                <i class="bi bi-pencil"></i>
+                                chi tiết
                             </button>
                         </td>
                     </tr>
