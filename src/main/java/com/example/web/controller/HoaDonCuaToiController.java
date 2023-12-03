@@ -6,7 +6,6 @@ import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
 import com.example.web.service.ILichSuHoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -29,9 +28,6 @@ public class HoaDonCuaToiController {
 
     @Autowired
     private IHoaDonChiTietService hoaDonChiTietService;
-
-    @Autowired
-    private ILichSuHoaDonService lichSuHoaDonService;
 
 
     @GetMapping("/donHangAll")
@@ -91,13 +87,7 @@ public class HoaDonCuaToiController {
     @GetMapping("/chiTietDonHang/{idHD}")
     public String chiTietDonHang(@PathVariable UUID idHD, Model model){
         List<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietService.getAllByIdHoaDon(idHD);
-        Double thanhTien = 0.0;
-        for (int i = 0; i < hoaDonChiTietService.getAllByIdHoaDon(idHD).size(); i++) {
-            thanhTien += hoaDonChiTiet.get(i).getSoLuong() * hoaDonChiTiet.get(i).getChiTietSanPham().getSanPham().getGiaBan().doubleValue();
-        }
-        model.addAttribute("thanhTien", thanhTien);
         model.addAttribute("listHDCT", hoaDonChiTiet);
-
         model.addAttribute("hd", hoaDonService.getOne(String.valueOf(idHD)));
         return "donHangOnline/chiTiet/chiTietDonHang";
     }

@@ -70,8 +70,8 @@ public class ChiTietSanPhamController {
         ChiTietSanPham checkMauSacSize = chiTietSanPhamService.checkSizeMauSac(mauSac, kichCo, UUID.fromString(idSanPham));
 
         if(checkMauSacSize != null){
-            redirectAttributes.addFlashAttribute("checkError", checkMauSacSize);
-            return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
+            System.out.println(checkMauSacSize);
+            redirectAttributes.addFlashAttribute("loiAdd", "Dữ liệu này đã tồn tại");
         }else{
             chiTietSanPham.setSanPham(sanPham);
             chiTietSanPham.setQrCode(String.valueOf(random.nextInt(1000000000)));
@@ -83,18 +83,14 @@ public class ChiTietSanPhamController {
             int width = 300;
             int height = 300;
             String format = "png";
-            String fileName = chiTietSanPham.getSanPham().getMa() + "-" + chiTietSanPham.getQrCode() + "." + format;
-
+            String fileName = chiTietSanPham.getSanPham().getMa() + "-" + chiTietSanPham.getMauSac().getTen() + "-" + chiTietSanPham.getSize().getTen() + "." + format;
             Map<EncodeHintType, Object> hints = new HashMap<>();
             hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-
             BitMatrix bitMatrix = new MultiFormatWriter().encode(chiTietSanPham.getQrCode(), BarcodeFormat.QR_CODE, width, height, hints);
             Path filePath = FileSystems.getDefault().getPath(qrcodeDirectory, fileName);
-
             MatrixToImageWriter.writeToPath(bitMatrix, format, filePath);
-            return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
         }
-
+        return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
     }
 
     @PostMapping(value = "/add-anh", consumes = "multipart/form-data")

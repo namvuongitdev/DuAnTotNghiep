@@ -12,7 +12,7 @@ function getModal(dataSanPham) {
         .then(response => response.json())
         .then(data => {
             dataCTSP = data;
-            document.getElementById("img").innerHTML = `<img src="/image/${dataSanPham.img}">`
+            document.getElementById("img").innerHTML = `<img src="/image/${dataSanPham.img}" alt="">`
             document.getElementById("sp").innerHTML = `<div>
              <h3>${dataSanPham.tenSanPham}</h3>
                </div>
@@ -123,13 +123,17 @@ async function themSanPhamVaoGioHang(data) {
         alert("lựa chon các thuộc tính sản phẩm")
     } else {
         for (let i = 0; i < dataCTSP.length; i++) {
-           if (data.idCTSP === dataCTSP[i].soLuong) {
+            if (data.idCTSP === dataCTSP[i].id) {
+                if(soLuong <= 0){
+                    alert("số lượng không thoả mãn");
+                    return;
+                }
                 if (soLuong > dataCTSP[i].soLuong) {
                     alert("số lượng sản phẩm không đủ");
                     return;
                 }
             }
         }
-        window.location.href = "/admin/hoa-don/add-san-pham?ctsp=" + data.idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD + "&idKhachHang=" + data.idKhachHang;
+       window.location.href = "/admin/hoa-don/add-san-pham?ctsp=" + data.idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD + "&idKhachHang=" + data.idKhachHang;
     }
 }

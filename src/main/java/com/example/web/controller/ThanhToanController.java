@@ -87,11 +87,13 @@ public class ThanhToanController {
     }
 
     @PostMapping("/new-dia-chi")
-    public String newDiaChi(@ModelAttribute("newDiaChiOnline") NewDiaChiOnline newDiaChiOnline, @RequestParam String idKH) {
+    public String newDiaChi(@ModelAttribute("newDiaChiOnline") NewDiaChiOnline newDiaChiOnline, @RequestParam String idKH , RedirectAttributes attributes) {
         KhachHang khachHang = khachHangService.getKhachHangById(idKH);
         DiaChi diaChi = modelMapper.map(newDiaChiOnline, DiaChi.class);
         diaChi.setKhachHang(khachHang);
         diaChi.setDiaChiMacDinh(true);
+        DiaChi response =  diaChiService.add(diaChi);
+        attributes.addFlashAttribute("diaChiMacDinh" , response);
         return "redirect:/checkouts";
     }
 

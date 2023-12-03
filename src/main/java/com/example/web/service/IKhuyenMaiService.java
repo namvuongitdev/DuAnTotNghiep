@@ -38,7 +38,7 @@ public interface IKhuyenMaiService {
 
     Page<SanPhamKhuyenMai> filterSanPhamKhuyeMai(SanPhamAsKhuyenMai filter , Pageable pageable , UUID idKM);
 
-    SanPhamKhuyenMai getSanPhamById(UUID idSP);
+    void getSanPhamById(UUID idSP);
 
     BigDecimal donGiaSauKhiGiam(List<SanPhamKhuyenMai> sanPhamKhuyenMais);
 

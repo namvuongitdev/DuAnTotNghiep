@@ -215,7 +215,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
     @Override
     public Boolean kiemTraConTrongHDCT(UUID idHD) {
         List<HoaDonChiTietReponse> isCheck = hoaDonRepository.isCheckSanPhamTrongHoaDon(idHD);
-        if(isCheck.isEmpty()){
+        if (isCheck.isEmpty()) {
             return true;
         }
         return false;
@@ -225,12 +225,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
     public HoaDonChiTietReponse getHoaDonChiTiet(UUID idHDCT) {
         HoaDonChiTietReponse response = hoaDonRepository.findHoaDonChiTietByHoaDon_id(idHDCT);
         return response;
-    }
-
-    @Override
-    public Page<HoaDonChiTiet> getHoaDonHuyChiTiet(UUID id, Integer pageNo, Integer size) {
-        Pageable pageable = PageRequest.of(pageNo, size);
-        return hoaDonRepository.getHoaDonHuyChiTiet(id, pageable);
     }
 
     @Override
@@ -275,14 +269,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public String updateHoaDonById(HoaDon hoaDon) {
-        Optional<HoaDon> hd = hoaDonRepository.findById(hoaDon.getId());
-        hd.get().setTongTien(hoaDon.getTongTien());
-        hoaDonRepository.save(hd.get());
-        return "redirect:/admin/hoa-don-onl/detail/" + hoaDon.getId();
-    }
-
-    @Override
     public HoaDon updateThongTinKhachHang(UUID idHD, ThongTinKhachHang thongTinKhachHang) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
         if (hoaDon.isPresent()) {
@@ -296,12 +282,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
             return hoaDonRepository.save(hd);
         }
         return null;
-    }
-
-    @Override
-    public String updatePVC(HoaDon hoaDon) {
-        hoaDonRepository.save(hoaDon);
-        return "redirect:/admin/hoa-don-onl/detail/" + hoaDon.getId();
     }
 
     @Override
@@ -402,5 +382,31 @@ public class HoaDonServiceImpl implements IHoaDonService {
         } else {
             return -1;
         }
+    }
+
+    @Override
+    public Integer tongDoanhThu() {
+        return hoaDonRepository.tongDoanhThu();
+    }
+
+    @Override
+    public Page<Object[]> getAllHoaDonHoanTien(Integer page) {
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        return hoaDonRepository.findHoaDonHoanTien(pageable);
+    }
+
+    @Override
+    public Double getDoanhThuTrongNgay() {
+        return hoaDonRepository.getDoanhThuTrongNgay();
+    }
+
+    @Override
+    public Integer tongHoaDon() {
+        return hoaDonRepository.tongHoaDon();
+    }
+
+    @Override
+    public Double getDoanhThuTheoThang(Integer thang) {
+        return hoaDonRepository.getDoanhThuTheoThang(thang);
     }
 }

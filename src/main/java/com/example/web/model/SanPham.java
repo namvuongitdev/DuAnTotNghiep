@@ -62,10 +62,6 @@ public class SanPham {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ngaySua;
 
-    //@NotNull(message = "Vui lòng điền giá nhập.")
-    @Column(name = "gianhap")
-    private BigDecimal giaNhap;
-
     @NotNull(message = "Vui lòng điền giá bán.")
     @Column(name = "giaban")
     private BigDecimal giaBan;

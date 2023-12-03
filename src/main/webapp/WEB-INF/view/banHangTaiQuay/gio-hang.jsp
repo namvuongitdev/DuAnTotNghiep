@@ -68,63 +68,31 @@
                             </div>
                         </div>
                     </c:if>
-                    <div class="row" style="margin-bottom: 50px">
-                         <jsp:include page="hien-thi-gio-hang.jsp"></jsp:include>
+                    <div class="row" style="margin-bottom: 20px">
+                        <jsp:include page="hien-thi-gio-hang.jsp"></jsp:include>
                     </div>
                     <div class="row" style="margin-bottom: 20px">
-                        <div class="col l-3" style="background-color: white">
-                            <br>
-                            <div class="row">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <h4>Thông tin khách hàng</h4>
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <button class="btn btn-light" id="btnThemKhachHang">+</button>
-                                    </div>
-                                </div>
-                                <div class="col-sm-2" style="width: 16%">
-                                    <button type="button" class="btn btn-secondary"
-                                            id="btnKhachHang"
-                                    >
-                                        Chọn tài khoản
-                                    </button>
-                                </div>
-                                <c:if test="${khachHang != null}">
-                                    <div class="col-sm-2" style="width: 11%">
-                                        <button class="btn btn-danger"
-                                                onclick="window.location.href = '/admin/hoa-don/detail?idHD=${hoaDon.id}'">Huỷ
-                                            chọn
-                                        </button>
-                                    </div>
-                                </c:if>
-                            </div>
-                            <hr>
-                            <div class="col l-3" id="thongTinKhachHang" style="margin-bottom: 10px">
-                                <c:if test="${khachHang != null}">
-                                    <div><p>Họ tên khách hàng : ${khachHang.hoTen}</p></div>
-                                    <div><p>Số điện thoại :${khachHang.sdt}</p></div>
-                                </c:if>
-                                <c:if test="${khachHang == null}">
-                                    <div><p>Họ tên khách hàng : Khách bán lẻ</p></div>
-                                </c:if>
-                            </div>
-                        </div>
+                        <jsp:include page="hien-thi-khach-hang.jsp"></jsp:include>
                     </div>
                     <%-- thông tin thanh toán--%>
-                    <form class="row" style="background-color: white"
-                          action="/admin/hoa-don/thanh-toan?idHD=${hoaDon.id}&idKhachHang=${khachHang.id}" method="post"
+                    <form class="row"
+                          action="/admin/hoa-don/thanh-toan?idHD=${hoaDon.id}&idKhachHang=${khachHang.id}"
+                          method="post"
                           modelAtrribute="${request}">
-                        <c:choose>
-                            <%-- đặt hàng--%>
-                            <c:when test="${hoaDon.loaiHoaDon}">
-                                <jsp:include page="dat-hang.jsp"></jsp:include>
-                            </c:when>
-                            <%--tại quầy--%>
-                            <c:otherwise>
-                                <jsp:include page="tai-quay.jsp"></jsp:include>
-                            </c:otherwise>
-                        </c:choose>
+                        <div class="card">
+                            <div class="card-body row">
+                                <c:choose>
+                                    <%-- đặt hàng--%>
+                                    <c:when test="${hoaDon.loaiHoaDon}">
+                                        <jsp:include page="dat-hang.jsp"></jsp:include>
+                                    </c:when>
+                                    <%--tại quầy--%>
+                                    <c:otherwise>
+                                        <jsp:include page="tai-quay.jsp"></jsp:include>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -158,5 +126,4 @@
 <script src="/js/banHangTaiQuay/chiTietSanPham.js"></script>
 <script src="/js/banHangTaiQuay/thanhToan.js"></script>
 <script src="/js/banHangTaiQuay/khachHang.js"></script>
-<%--<script src="/js/banHangTaiQuay/diaChiKhachHang.js"></script>--%>
 </html>

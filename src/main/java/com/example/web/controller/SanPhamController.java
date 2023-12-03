@@ -3,13 +3,10 @@ import com.beust.jcommander.Parameter;
 import com.example.web.model.ChatLieu;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.DanhMuc;
-import com.example.web.model.KhuyenMai;
 import com.example.web.model.KieuDang;
 import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
-import com.example.web.model.SanPhamKhuyenMai;
 import com.example.web.model.Size;
-import com.example.web.response.SanPhamAndKhuyenMai;
 import com.example.web.response.SanPhamFilter;
 import com.example.web.service.DanhMucService;
 import com.example.web.service.IChatLieuService;
@@ -25,9 +22,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +37,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -78,7 +77,7 @@ public class SanPhamController {
 
     @GetMapping(value = "/hien-thi")
     public String hienThi(Model model, @RequestParam(defaultValue = "1") Integer page) {
-        Pageable pageable = PageRequest.of(page - 1, 10);
+        Pageable pageable = PageRequest.of(page - 1, 10 , Sort.by("ngayTao").descending());
         sanPhamPage = iSanPhamService.findAll(pageable);
         model.addAttribute("listSanPham", sanPhamPage);
         danhSachThuocTinhSanPham(model);
@@ -91,7 +90,7 @@ public class SanPhamController {
     public String filterSanPham(@RequestParam(defaultValue = "1") Integer page,
                                 @ModelAttribute("filterSanPham") SanPhamFilter filter,
                                 Model model) {
-        Pageable pageable = PageRequest.of(page - 1, 10);
+        Pageable pageable = PageRequest.of(page - 1, 10 ,  Sort.by("ngayTao").descending());
         sanPhamPage = iSanPhamService.sanPhamFilter(filter, pageable);
         String url = "/admin/san-pham/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
         model.addAttribute("filter", filter);
@@ -105,7 +104,7 @@ public class SanPhamController {
     @ResponseBody
     public Page<SanPham> apiSanPham(@RequestParam Integer page , @RequestParam(required = false) String value) {
         Page listSanPham = null;
-        Pageable pageable = PageRequest.of(page - 1, 10);
+        Pageable pageable = PageRequest.of(page - 1, 10 , Sort.by("ngayTao").descending());
         if(value.isEmpty()){
             listSanPham = iSanPhamService.findAll(pageable);
         }else{
@@ -123,59 +122,62 @@ public class SanPhamController {
     }
 
     @GetMapping("/new")
-    public String viewAddSanPham(Model model, @ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                                 @ModelAttribute("chatLieu")ChatLieu chatLieu, @ModelAttribute("mauSac")MauSac mauSac,
-                                 @ModelAttribute("size")Size size) {
+    public String viewAddSanPham(Model model) {
         model.addAttribute("title", "Tạo mới");
-        danhSachThuocTinhSanPham(model);
         model.addAttribute("sanPham", new SanPham());
+        danhSachThuocTinhSanPham(model);
         return "quanLySanPham/sanpham/new-san-pham";
     }
 
     @PostMapping(value = "/add")
-    public String addSanPham(@Valid @ModelAttribute("sanPham") SanPham sanPham, BindingResult result, @RequestParam(required = false) String id, Model model) {
+    public String addSanPham(@Valid @ModelAttribute("sanPham") SanPham sanPham, BindingResult result, @RequestParam(required = false) String id,
+                             Model model, @RequestParam("ten") String ten) {
+        boolean checkTenSP = iSanPhamService.isProductExists(ten);
+
         if (result.hasErrors()) {
-            model.addAttribute("chatLieu", new ChatLieu());
-            model.addAttribute("mauSac", new MauSac());
-            model.addAttribute("kieuDang", new KieuDang());
-            model.addAttribute("size", new Size());
-            model.addAttribute("danhMuc", new DanhMuc());
             model.addAttribute("title", "Tạo mới");
             danhSachThuocTinhSanPham(model);
             return "quanLySanPham/sanpham/new-san-pham";
-        } else {
+        }else {
             Date date = java.util.Calendar.getInstance().getTime();
             if (!id.isEmpty()) {
                 SanPham sp = iSanPhamService.getOne(UUID.fromString(id));
-                sanPham.setId(sp.getId());
-                sanPham.setMa(sp.getMa());
-                sanPham.setNgayTao(sp.getNgayTao());
-                sanPham.setImg(sp.getImg());
-                sanPham.setNgaySua(date);
-                iSanPhamService.save(sanPham);
-                SanPhamKhuyenMai spkm = khuyenMaiService.getSanPhamById(sp.getId());
+                sp.setNgaySua(date);
+                sp.setChatLieu(sanPham.getChatLieu());
+                sp.setGiaBan(sanPham.getGiaBan());
+                sp.setMoTa(sanPham.getMoTa());
+                sp.setGioiTinh(sanPham.getGioiTinh());
+                sp.setTrangThai(sanPham.getTrangThai());
+                sp.setDanhMuc(sanPham.getDanhMuc());
+                sp.setKieuDang(sanPham.getKieuDang());
+                sp.setTen(sanPham.getTen());
+                iSanPhamService.save(sp);
+                khuyenMaiService.getSanPhamById(sp.getId());
             } else {
+                if(checkTenSP) {
+                    result.rejectValue("ten", "error.sanPham", "Sản phẩm này đã tồn tại.");
+                    model.addAttribute("title", "Tạo mới");
+                    danhSachThuocTinhSanPham(model);
+                    return "quanLySanPham/sanpham/new-san-pham";
+                }
                 String maKM = "SP" + (iSanPhamService.getAll().size() + 1);
                 sanPham.setMa(maKM);
                 sanPham.setNgayTao(date);
-                iSanPhamService.save(sanPham);
             }
+            iSanPhamService.save(sanPham);
         }
         return "redirect:/admin/san-pham/hien-thi/" + sanPham.getId();
     }
 
     @GetMapping(value = "/hien-thi/{id}")
-    public String getSanPham(@PathVariable String id, Model model,
-                             @ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                             @ModelAttribute("chatLieu")ChatLieu chatLieu, @ModelAttribute("mauSac")MauSac mauSac,
-                             @ModelAttribute("size")Size size) {
+    public String getSanPham(@PathVariable String id, Model model) {
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(id));
-        danhSachThuocTinhSanPham(model);
         model.addAttribute("title", "Sửa dữ liệu");
         model.addAttribute("listChiTietSanPhamBySP", chiTietSanPhamService.getChiTietSanPham(id));
         model.addAttribute("sanPham", new SanPham());
         model.addAttribute("chiTietSanPham", new ChiTietSanPham());
         model.addAttribute("sp", sanPham);
+        danhSachThuocTinhSanPham(model);
         model.addAttribute("listMauSacCTSP" , mauSacService.getTheoCTSP(UUID.fromString(id)));
         return "quanLySanPham/sanpham/new-san-pham";
     }
@@ -197,89 +199,107 @@ public class SanPhamController {
         model.addAttribute("listDanhMuc", danhMucService.getAll1());
     }
 
-    @PostMapping("/modal-add-chat-lieu")
-    public String addChatLieu(@ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                              @Valid @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
-                              @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
+    @GetMapping("/hienThi-chatLieu")
+    @ResponseBody
+    public List<ChatLieu> getChatLieu(){
+        return  iChatLieuService.getAll1();
+    }
+    @PostMapping("/add-chatLieu")
+    @ResponseBody
+    public ChatLieu addChatLieu(@RequestBody @Valid ChatLieu chatLieu, BindingResult result){
         if(result.hasErrors()){
-            model.addAttribute("title", "Tạo mới");
-            danhSachThuocTinhSanPham(model);
-            return "quanLySanPham/sanpham/new-san-pham";
+            List<ObjectError> list = result.getAllErrors();
+        }else {
+            UUID uuid = UUID.randomUUID();
+            chatLieu.setId(uuid);
+            chatLieu.setTrangThai(1);
+            chatLieu.setNgayTao(java.util.Calendar.getInstance().getTime());
+            iChatLieuService.add(chatLieu);
         }
-        UUID uuid = UUID.randomUUID();
-        chatLieu.setId(uuid);
-        chatLieu.setTrangThai(1);
-        chatLieu.setNgayTao(java.util.Calendar.getInstance().getTime());
-        iChatLieuService.add(chatLieu);
-        return "redirect:/admin/san-pham/new";
+        return chatLieu;
     }
 
-    @PostMapping("/modal-add-danh-muc")
-    public String addDanhMuc(@Valid @ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                             @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
-                             @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
+    @GetMapping("/hienThi-danhMuc")
+    @ResponseBody
+    public List<DanhMuc> getDanhMuc(){
+        return  danhMucService.getAll1();
+    }
+    @PostMapping("/add-danhMuc")
+    @ResponseBody
+    public DanhMuc addDanhMuc(@RequestBody @Valid DanhMuc danhMuc, BindingResult result){
         if(result.hasErrors()){
-            model.addAttribute("title", "Tạo mới");
-            danhSachThuocTinhSanPham(model);
-            return "quanLySanPham/sanpham/new-san-pham";
+            List<ObjectError> list = result.getAllErrors();
+        }else {
+            UUID uuid = UUID.randomUUID();
+            danhMuc.setId(String.valueOf(uuid));
+            danhMuc.setTrangThai(1);
+            danhMuc.setNgayTao(java.util.Calendar.getInstance().getTime());
+            danhMucService.add(danhMuc);
         }
-        UUID uuid = UUID.randomUUID();
-        danhMuc.setId(String.valueOf(uuid));
-        danhMuc.setTrangThai(1);
-        danhMuc.setNgayTao(java.util.Calendar.getInstance().getTime());
-        danhMucService.add(danhMuc);
-        return "redirect:/admin/san-pham/new";
+        return danhMuc;
     }
 
-    @PostMapping("/modal-add-kieu-dang")
-    public String addKieuDang(@ModelAttribute("danhMuc") DanhMuc danhMuc, @Valid @ModelAttribute("kieuDang")KieuDang kieuDang,
-                              @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, Model model,
-                              @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size){
+    @GetMapping("/hienThi-kieuDang")
+    @ResponseBody
+    public List<KieuDang> getKieuDang(){
+        return iFormDangService.getAll1();
+    }
+    @PostMapping("/add-kieuDang")
+    @ResponseBody
+    public KieuDang addKieuDang(@RequestBody @Valid KieuDang kieuDang, BindingResult result){
         if(result.hasErrors()){
-            model.addAttribute("title", "Tạo mới");
-            danhSachThuocTinhSanPham(model);
-            return "quanLySanPham/sanpham/new-san-pham";
+            List<ObjectError> list = result.getAllErrors();
+        }else {
+            UUID uuid = UUID.randomUUID();
+            kieuDang.setId(uuid);
+            kieuDang.setTrangThai(1);
+            kieuDang.setNgayTao(java.util.Calendar.getInstance().getTime());
+            iFormDangService.add(kieuDang);
         }
-        UUID uuid = UUID.randomUUID();
-        kieuDang.setId(uuid);
-        kieuDang.setTrangThai(1);
-        kieuDang.setNgayTao(java.util.Calendar.getInstance().getTime());
-        iFormDangService.add(kieuDang);
-        return "redirect:/admin/san-pham/new";
+
+        return kieuDang;
     }
 
-    @PostMapping("/modal-add-size")
-    public String addSize(@ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                          @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, RedirectAttributes redirectAttributes,
-                          @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size,
-                          @RequestParam(required = false) String id){
-        if(size.getTen().equals("")){
-            redirectAttributes.addFlashAttribute("errorSize", "Không được để trống");
-            return "redirect:/admin/san-pham/hien-thi/" + id;
+    @GetMapping("/hienThi-kichCo")
+    @ResponseBody
+    public List<Size> getKichCo(){
+        return sizeService.getAll1();
+    }
+    @PostMapping("/add-kichCo")
+    @ResponseBody
+    public Size addSize(@RequestBody @Valid Size size, BindingResult result){
+        if(result.hasErrors()){
+            List<ObjectError> list = result.getAllErrors();
+        }else {
+            UUID uuid = UUID.randomUUID();
+            size.setId(String.valueOf(uuid));
+            size.setNgayTao(java.util.Calendar.getInstance().getTime());
+            size.setTrangThai(1);
+            sizeService.add(size);
         }
-        UUID uuid = UUID.randomUUID();
-        size.setId(String.valueOf(uuid));
-        size.setNgayTao(java.util.Calendar.getInstance().getTime());
-        size.setTrangThai(1);
-        sizeService.add(size);
-        return "redirect:/admin/san-pham/hien-thi/" + id;
+
+        return size;
     }
 
-    @PostMapping("/modal-add-mau-sac")
-    public String addMauSac(@ModelAttribute("danhMuc") DanhMuc danhMuc, @ModelAttribute("kieuDang")KieuDang kieuDang,
-                            @ModelAttribute("chatLieu")ChatLieu chatLieu, BindingResult result, RedirectAttributes redirectAttributes,
-                            @ModelAttribute("mauSac")MauSac mauSac, @ModelAttribute("size")Size size,
-                            @RequestParam(required = false) String id){
-        if(mauSac.getTen().equals("")){
-            redirectAttributes.addFlashAttribute("errorMauSac", "Không được để trống");
-            return "redirect:/admin/san-pham/hien-thi/" + id;
+    @GetMapping("/hienThi-mauSac")
+    @ResponseBody
+    public List<MauSac> getMauSac(){
+        return mauSacService.getAll1();
+    }
+    @PostMapping("/add-mauSac")
+    @ResponseBody
+    public MauSac addMauSac(@RequestBody @Valid MauSac mauSac, BindingResult result){
+        if(result.hasErrors()){
+            List<ObjectError> list = result.getAllErrors();
+        }else {
+            UUID uuid = UUID.randomUUID();
+            mauSac.setId(uuid);
+            mauSac.setTrangThai(1);
+            mauSac.setNgayTao(java.util.Calendar.getInstance().getTime());
+            mauSacService.add(mauSac);
         }
-        UUID uuid = UUID.randomUUID();
-        mauSac.setId(uuid);
-        mauSac.setTrangThai(1);
-        mauSac.setNgayTao(java.util.Calendar.getInstance().getTime());
-        mauSacService.add(mauSac);
-        return "redirect:/admin/san-pham/hien-thi/" + id;
+
+        return mauSac;
     }
 
     @GetMapping("/stop/{id}")

@@ -25,13 +25,5 @@ public interface IHoaDonChiTietService {
 
     Integer soLuongSPDaBan();
 
-    Integer tongDoanhThu();
-
-    Integer tongHoaDon();
-
-    Double getDoanhThuTrongNgay();
-
-    Double getDoanhThuTheoThang(Integer thang);
-
 
 }

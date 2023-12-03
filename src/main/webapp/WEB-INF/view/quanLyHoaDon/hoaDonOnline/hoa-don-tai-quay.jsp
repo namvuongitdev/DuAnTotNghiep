@@ -15,22 +15,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
-<style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-
-    tr:hover {
-        background-color: #f5f5f5;
-    }
-</style>
 <body>
 <%--navbar--%>
 <jsp:include page="../../sidebar/navbar.jsp"/>
@@ -44,7 +28,7 @@
             </div>
             <div class="row">
                 <!-- Table with stripped rows -->
-                <table>
+                <table class="table">
                     <thead>
                     <tr>
                         <th scope="col">STT</th>
@@ -54,11 +38,12 @@
                         <th scope="col">Tên Khách hàng</th>
                         <th scope="col">Tổng tiền</th>
                         <th scope="col">Tình trạng</th>
+                        <th scope="col">Thao tác</th>
                     </tr>
                     </thead>
                     <tbody>
                     <c:forEach items="${hoaDons.content}" var="hd" varStatus="i">
-                        <tr onclick="window.location.href = '/admin/hoa-don/chi-tiet-hoa-dons/${hd.id}'">
+                        <tr>
                             <td>${i.index+ (khuyenMais.number + 1 != 1 ? ((khuyenMais.number + 1) * khuyenMais.size) -(khuyenMais.size - 1) : khuyenMais.number + 1)}</td>
                             <td>${hd.ma}</td>
                             <td>${hd.loaiHoaDon==false?'Đơn tại quầy':'Đơn giao'}</td>
@@ -102,6 +87,9 @@
                                 <c:if test="${hd.trangThai == 6}">
                                     <button class="btn btn-success rounded-pill">Giao hàng thành công</button>
                                 </c:if>
+                            </td>
+                            <td>
+                                <a href="/admin/hoa-don/chi-tiet-hoa-dons/${hd.id}" class="btn btn-warning"><i class="bi bi-eye-fill"></i></a>
                             </td>
                         </tr>
                     </c:forEach>

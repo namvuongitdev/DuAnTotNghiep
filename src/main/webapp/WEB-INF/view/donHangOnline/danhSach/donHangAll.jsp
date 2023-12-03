@@ -49,7 +49,7 @@
                 <ul>
                     <li class="active"><a href="/cuaToi/donHangAll">Tất cả đơn hàng</a></li>|
                     <li><a href="/cuaToi/donHangChoXacNhan">Chờ xác nhận</a></li>|
-                    <li><a href="/cuaToi/donHangChoGiaoHang">Đã tiếp nhận</a></li>|
+                    <li><a href="/cuaToi/donHangChoGiaoHang">Đã xác nhận</a></li>|
                     <li><a href="/cuaToi/donHangDangGiao">Đang giao</a></li>|
                     <li><a href="/cuaToi/donHangDaNhan">Đã nhận</a></li>|
                     <li><a href="/cuaToi/donHangDaHuy">Đã hủy</a></li>
@@ -83,7 +83,15 @@
                         <td style="width: 300px">
                             <p>
                                 <b style="color: red">
-                                    <fmt:formatNumber pattern="#,###" value="${hd[3]}"/>
+                                    <c:choose>
+                                        <c:when test="${hd[6] != null}">
+                                            <fmt:formatNumber pattern="#,###" value="${hd[3] + hd[6]}"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <fmt:formatNumber pattern="#,###" value="${hd[3]}"/>
+                                        </c:otherwise>
+
+                                    </c:choose>
                                     <c:if test="${hd[3]==null}">
                                         <span>0</span>
                                     </c:if>
@@ -92,7 +100,31 @@
                             </p>
                         </td>
                         <td>
-                            <div style="margin-top: 30px">${hd[5]==4?'Đã thanh toán':(hd[5]==3)?'Đang giao hàng':(hd[5]==0)?'Đang chờ':(hd[5]==1)?'Chờ xác nhận':(hd[5]==2)?'Đã tiếp nhận':(hd[5]==6)?'Đã nhận hàng':(hd[5]==5)?'Hủy đơn hàng':''}</div>
+                            <div style="margin-top: 30px">
+                                <c:if test="${hd[5] == 4}">
+                                    Đã hoàn thành
+                                </c:if>
+
+                                <c:if test="${hd[5] == 1}">
+                                   Chờ xác nhận
+                                </c:if>
+
+                                <c:if test="${hd[5] == 2}">
+                                    Đã xác nhận
+                                </c:if>
+
+                                <c:if test="${hd[5] == 3}">
+                                   Đang giao hàng
+                                </c:if>
+
+                                <c:if test="${hd[5] == 5}">
+                                    Đã huỷ
+                                </c:if>
+
+                                <c:if test="${hd[5] == 6}">
+                                    Giao hàng thành công
+                                </c:if>
+                            </div>
                             <div style="margin-top: 10px">
                                 <a class="text-primary" href="/cuaToi/chiTietDonHang/${hd[0]}">Chi tiết đơn hàng</a>
                             </div>

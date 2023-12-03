@@ -2,7 +2,6 @@ let modalKhuyenMai = document.getElementById("modalKhuyenMai");
 
 let spanKhuyenMai = document.getElementById("close_khuyenMai");
 
-
 let modalSanPhamKhuyenMai = document.getElementById("modalSanPhamKhuyenMai");
 
 let spanSanPhamKhuyenMai = document.getElementById("close_sanPhamKhuyenMai");

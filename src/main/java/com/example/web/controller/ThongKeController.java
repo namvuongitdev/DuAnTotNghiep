@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,11 +32,11 @@ public class ThongKeController {
     public String hienThi(Model model){
         Integer soLuongDaBan = iHoaDonChiTietService.soLuongSPDaBan();
         model.addAttribute("soLuongDaBan",soLuongDaBan);
-        Integer tongDoanhThu = iHoaDonChiTietService.tongDoanhThu();
+        Integer tongDoanhThu = iHoaDonService.tongDoanhThu();
         model.addAttribute("tongDoanhThu",tongDoanhThu);
-        Integer tongHoaDon = iHoaDonChiTietService.tongHoaDon();
+        Integer tongHoaDon = iHoaDonService.tongHoaDon();
         model.addAttribute("tongHoaDon",tongHoaDon);
-        Double doanhThuTrongNgay = iHoaDonChiTietService.getDoanhThuTrongNgay();
+        Double doanhThuTrongNgay = iHoaDonService.getDoanhThuTrongNgay();
         model.addAttribute("doanhThuTrongNgay",doanhThuTrongNgay);
         List<ChiTietSanPham> get5SanPhamBanChay = chiTietSanPhamService.getTop5SanPhamBanChay();
         model.addAttribute("sanPhamBanChay",get5SanPhamBanChay);
@@ -43,6 +44,8 @@ public class ThongKeController {
         model.addAttribute("tongHDHuy",tongHDHuy);
         Integer tongHoaDonChoXacNhan = iHoaDonService.tongHoaDonChoXacNhan();
         model.addAttribute("tongHoaDonChoXacNhan",tongHoaDonChoXacNhan);
+        int nam = Year.now().getValue();
+        model.addAttribute("nam",nam);
         return "thongKe/thongKe";
     }
 
@@ -50,18 +53,18 @@ public class ThongKeController {
     @GetMapping("/doanh-thu")
     public List<Double> doanhThu(){
         List<Double> listTongDoanhThu = new ArrayList<>();
-        listTongDoanhThu.add( iHoaDonChiTietService.getDoanhThuTheoThang(1));
-        listTongDoanhThu.add(iHoaDonChiTietService.getDoanhThuTheoThang(2));
-        listTongDoanhThu.add(iHoaDonChiTietService.getDoanhThuTheoThang(3));
-        listTongDoanhThu.add(iHoaDonChiTietService.getDoanhThuTheoThang(4));
-        listTongDoanhThu.add(iHoaDonChiTietService.getDoanhThuTheoThang(5));
-        listTongDoanhThu.add(iHoaDonChiTietService.getDoanhThuTheoThang(6));
-        listTongDoanhThu.add(iHoaDonChiTietService.getDoanhThuTheoThang(7));
-        listTongDoanhThu.add(iHoaDonChiTietService.getDoanhThuTheoThang(8));
-        listTongDoanhThu.add(iHoaDonChiTietService.getDoanhThuTheoThang(9));
-        listTongDoanhThu.add( iHoaDonChiTietService.getDoanhThuTheoThang(10));
-        listTongDoanhThu.add( iHoaDonChiTietService.getDoanhThuTheoThang(11));
-        listTongDoanhThu.add( iHoaDonChiTietService.getDoanhThuTheoThang(12));
+        listTongDoanhThu.add(iHoaDonService.getDoanhThuTheoThang(1));
+        listTongDoanhThu.add(iHoaDonService.getDoanhThuTheoThang(2));
+        listTongDoanhThu.add(iHoaDonService.getDoanhThuTheoThang(3));
+        listTongDoanhThu.add(iHoaDonService.getDoanhThuTheoThang(4));
+        listTongDoanhThu.add(iHoaDonService.getDoanhThuTheoThang(5));
+        listTongDoanhThu.add(iHoaDonService.getDoanhThuTheoThang(6));
+        listTongDoanhThu.add(iHoaDonService.getDoanhThuTheoThang(7));
+        listTongDoanhThu.add(iHoaDonService.getDoanhThuTheoThang(8));
+        listTongDoanhThu.add(iHoaDonService.getDoanhThuTheoThang(9));
+        listTongDoanhThu.add( iHoaDonService.getDoanhThuTheoThang(10));
+        listTongDoanhThu.add( iHoaDonService.getDoanhThuTheoThang(11));
+        listTongDoanhThu.add( iHoaDonService.getDoanhThuTheoThang(12));
         return listTongDoanhThu;
     }
 
