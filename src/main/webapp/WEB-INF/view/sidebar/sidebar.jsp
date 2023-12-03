@@ -63,7 +63,7 @@
                             <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z"/>
                         </svg>
                         <span class="ms-1 d-none d-sm-inline"><font
-                                color="black">Hoá đơn hoàn tiền</font></span>
+                                color="black">Hoá Đơn Hoàn Tiền</font></span>
                     </a>
                 </li>
             </sec:authorize>
@@ -75,7 +75,7 @@
                             <path d="M13 6.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zm0 3a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zm-.5 2.5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1h5z"/>
                             <path d="M14 0a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12zM2 1a1 1 0 0 0-1 1v1h14V2a1 1 0 0 0-1-1H2zM1 4v10a1 1 0 0 0 1 1h2V4H1zm4 0v11h9a1 1 0 0 0 1-1V4H5z"/>
                         </svg>
-                        <span class="ms-1 d-none d-sm-inline"><font color="black">Quản lý Sản Phẩm</font></span></a>
+                        <span class="ms-1 d-none d-sm-inline"><font color="black">Quản Lý Sản Phẩm</font></span></a>
                     <ul class="collapse nav flex-column ms-1 coll <%= request.getRequestURI().contains("quanLySanPham") ? "collapsed show" : ""  %>"
                         id="submenu1" data-bs-parent="#menu">
                         <li class="w-100" style="margin-left: 15px">
@@ -138,6 +138,7 @@
                         </li>
                     </ul>
                 </li>
+            </sec:authorize>
                 <li>
                     <a href="#submenu4" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -147,16 +148,18 @@
                         <span class="ms-1 d-none d-sm-inline"><font color="black">Quản Lý Tài Khoản</font></span></a>
                     <ul class="collapse nav flex-column ms-1 col <%= request.getRequestURI().contains("quanLyTaiKhoan") ? "collapsed show" : ""  %>"
                         id="submenu4" data-bs-parent="#menu">
-                        <li class="w-100" style="margin-left: 15px">
-                            <a href="/admin/nhan-vien/hien-thi" class="nav-link px-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                     class="bi bi-person" viewBox="0 0 16 16">
-                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
-                                </svg>
-                                <span class="d-none d-sm-inline"><font
-                                        color="black">Nhân Viên</font></span>
-                            </a>
-                        </li>
+                        <sec:authorize access="hasAuthority('ADMIN')">
+                            <li class="w-100" style="margin-left: 15px">
+                                <a href="/admin/nhan-vien/hien-thi" class="nav-link px-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-caret-right" viewBox="0 0 16 16">
+                                        <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
+                                    </svg>
+                                    <span class="d-none d-sm-inline"><font
+                                            color="black">Nhân Viên</font></span>
+                                </a>
+                            </li>
+                        </sec:authorize>
                         <li style="margin-left: 15px">
                             <a href="/admin/khach-hang/hien-thi" class="nav-link px-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -168,6 +171,7 @@
                         </li>
                     </ul>
                 </li>
+            <sec:authorize access="hasAuthority('ADMIN')">
                 <li>
                     <a href="/admin/khuyen-mai/" class="nav-link px-0 align-middle">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -179,7 +183,6 @@
                     </a>
                 </li>
             </sec:authorize>
-
         </ul>
         <hr>
     </div>
