@@ -1,8 +1,12 @@
 package com.example.web.controller;
 import com.example.web.Config.BcryptedPasswordEncoderConfig;
+import com.example.web.model.DiaChi;
 import com.example.web.model.KhachHang;
+import com.example.web.request.NewDiaChiOnline;
 import com.example.web.response.KhachHangFilter;
 import com.example.web.service.IKhachHangService;
+import com.example.web.service.impl.DiaChiServiceImpl;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import com.example.web.service.MailService;
@@ -44,6 +48,12 @@ public class KhachHangController {
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    private DiaChiServiceImpl diaChiService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping("/detail")
     public String getKhachHangs(@RequestParam String id , @RequestParam String idHD , RedirectAttributes attributes){
@@ -140,8 +150,8 @@ public class KhachHangController {
         }
             Date date = java.util.Calendar.getInstance().getTime();
             khachHang.setId(kh.getId());
-            khachHang.setTrangThai(0);
-            khachHang.setMatKhau(passwordEncoder.encode(khachHang.getMatKhau()));
+            khachHang.setTrangThai(kh.getTrangThai());
+            khachHang.setMatKhau(kh.getMatKhau());
             khachHang.setNgayTao(kh.getNgayTao());
             khachHang.setNgaySua(date);
             khachHangService.update(khachHang);
@@ -152,6 +162,7 @@ public class KhachHangController {
     public String hienThi(@PathVariable String id, Model model){
         KhachHang kh = khachHangService.findById(UUID.fromString(id));
         model.addAttribute("khachHang", kh);
+        model.addAttribute("lstdChi", diaChiService.getDiaChiByKhachHang_id(UUID.fromString(id)));
         return "quanLyTaiKhoan/khachHang/update";
     }
 
@@ -159,10 +170,36 @@ public class KhachHangController {
     @GetMapping("/stop/{id}")
     public String stop(@PathVariable("id") UUID id){
         KhachHang kh = khachHangService.findById(id);
-        kh.setTrangThai(1);
+        if (kh.getTrangThai()==0){
+            kh.setTrangThai(1);
+        }else {
+            kh.setTrangThai(0);
+        }
+
         kh.setNgaySua(java.util.Calendar.getInstance().getTime());
         khachHangService.update(kh);
         return "redirect:/admin/khach-hang/hien-thi";
     }
 
+    @GetMapping("/them-dia-chi/{id}")
+    public String newDiaChi(@RequestParam String hoTen, @PathVariable("id") String idKH,
+                            @RequestParam String sdt,
+                            @RequestParam("diaChi") String diaChiNhan) {
+        KhachHang khachHang = khachHangService.getKhachHangById(idKH);
+        DiaChi diaChi = new DiaChi();
+        diaChi.setHoTen(hoTen);
+        diaChi.setDiaChi(diaChiNhan);
+        diaChi.setSdt(sdt);
+        diaChi.setHoTen(hoTen);
+        diaChi.setKhachHang(khachHang);
+        diaChi.setDiaChiMacDinh(false);
+        diaChiService.add(diaChi);
+        return "redirect:/admin/khach-hang/view-update/"+khachHang.getId();
+    }
+    @GetMapping("/xoa-dia-chi/{id}")
+    public String xoaDiaChi(@PathVariable("id") String id,
+                            @RequestParam String idKH) {
+        diaChiService.delete(UUID.fromString(id));
+        return "redirect:/admin/khach-hang/view-update/"+idKH;
+    }
 }

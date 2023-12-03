@@ -181,7 +181,11 @@ public class NhanVienController {
     @GetMapping("/stop/{id}")
     public String stop(@PathVariable("id") UUID id){
         NhanVien sp = nhanVienService.findById(id);
-        sp.setTrangThai(1);
+        if (sp.getTrangThai()==0){
+            sp.setTrangThai(1);
+        }else {
+            sp.setTrangThai(0);
+        }
         sp.setNgaySua(java.util.Calendar.getInstance().getTime());
         nhanVienService.update(id, sp);
         return "redirect:/admin/nhan-vien/hien-thi";
