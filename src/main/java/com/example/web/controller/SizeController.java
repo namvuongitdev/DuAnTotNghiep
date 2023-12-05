@@ -1,20 +1,23 @@
 package com.example.web.controller;
 import com.example.web.model.Size;
 import com.example.web.service.impl.SizeServiceImpl;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Date;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Controller
@@ -24,84 +27,65 @@ public class SizeController {
     @Autowired
     private SizeServiceImpl sizeService;
 
-    @GetMapping("hien-thi")
-    public String hienThi(Model model,@RequestParam(value = "p",defaultValue = "0")Integer pageNo){
-        model.addAttribute("size",new Size());
-        model.addAttribute("list",sizeService.pagination(pageNo,5).getContent());
-        model.addAttribute("currentPage",pageNo);
-        model.addAttribute("totalPage",sizeService.pagination(pageNo,5).getTotalPages());
+    private Page<Size> sizePage = null;
+
+    @GetMapping("/hien-thi")
+    public String hienThi(Model model, @RequestParam(defaultValue = "1") Integer page){
+        Pageable pageable = PageRequest.of(page - 1, 5 , Sort.by("ngayTao").descending());
+        sizePage = sizeService.findAll(pageable);
+        model.addAttribute("list", sizePage);
+        model.addAttribute("url", "/admin/size/hien-thi?page=");
         return "quanLySanPham/kichco/kichco";
     }
 
-    @PostMapping("add")
-    public String add(@ModelAttribute("size") @Valid  Size size, BindingResult result, Model model,
-                      @RequestParam(value = "p", defaultValue = "0") Integer pageNo) {
-        if (result.hasErrors()){
-            model.addAttribute("list",sizeService.pagination(pageNo,5).getContent());
-            model.addAttribute("currentPage",pageNo);
-            model.addAttribute("totalPage",sizeService.pagination(pageNo,5).getTotalPages());
-            return "quanLySanPham/kichco/kichco";
-        }else {
-            UUID id = UUID.randomUUID();
-            size.setId(String.valueOf(id));
-            size.setNgayTao(java.util.Calendar.getInstance().getTime());
-            size.setTrangThai(1);
-            sizeService.add(size);
-            return "redirect:/admin/size/hien-thi";
-        }
-    }
-
-    @PostMapping("update/{id}")
-    public String update(@RequestParam(name = "ten") String ten, @ModelAttribute("size")Size size, @PathVariable("id")String id,
-                         @RequestParam(value = "p", defaultValue = "0") Integer pageNo, Model model) {
-        if(ten.equals("")){
-            model.addAttribute("erro", "Không được để trống");
-            model.addAttribute("list",sizeService.pagination(pageNo,5).getContent());
-            model.addAttribute("currentPage",pageNo);
-            model.addAttribute("totalPage",sizeService.pagination(pageNo,5).getTotalPages());
-            return "quanLySanPham/kichco/kichco";
-        }else{
-            Size s = sizeService.getOne(id);
-            size.setId(id);
-            size.setNgayTao(s.getNgayTao());
-            size.setTrangThai(s.getTrangThai());
-            size.setNgaySua(java.util.Calendar.getInstance().getTime());
-            sizeService.update(size);
-            return "redirect:/admin/size/hien-thi";
-        }
-
-    }
-
-    @GetMapping("stop/{id}")
-    public String delete(@PathVariable("id")String id){
-        Size s = sizeService.getOne(id);
-        s.setTrangThai(0);
-        s.setNgaySua(java.util.Calendar.getInstance().getTime());
-        sizeService.update(s);
+    @PostMapping("/save")
+    public String save(@ModelAttribute("size") Size size){
+        Date date = java.util.Calendar.getInstance().getTime();
+        UUID uuid = UUID.randomUUID();
+        size.setId(String.valueOf(uuid));
+        size.setTrangThai(1);
+        size.setNgayTao(date);
+        sizeService.save(size);
         return "redirect:/admin/size/hien-thi";
     }
-    @GetMapping("view-update/{id}")
-    public String viewUpdate(@PathVariable("id")String id,Model model,@ModelAttribute("size")Size size,
-                             @RequestParam(value = "p", defaultValue = "0") Integer pageNo){
-        size=sizeService.getOne(id);
-        model.addAttribute("size",size);
-        model.addAttribute("list",sizeService.pagination(pageNo,5).getContent());
-        model.addAttribute("currentPage",pageNo);
-        model.addAttribute("totalPage",sizeService.pagination(pageNo,5).getTotalPages());
-        return "quanLySanPham/kichco/kichco";
+
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable("id") String id, @ModelAttribute("size") Size size){
+        Size data = sizeService.getOne(id);
+        Date date = java.util.Calendar.getInstance().getTime();
+        size.setId(id);
+        size.setTrangThai(data.getTrangThai());
+        size.setNgayTao(data.getNgayTao());
+        size.setNgaySua(date);
+        sizeService.save(size);
+        return "redirect:/admin/size/hien-thi";
     }
-    @GetMapping("hien-thi/{p}")
-    public String phanTrang(@PathVariable("p")Integer p,Model model){
-        model.addAttribute("size",new Size());
-        model.addAttribute("list",sizeService.pagination(p,5).getContent());
-        model.addAttribute("currentPage",p);
-        model.addAttribute("totalPage",sizeService.pagination(p,5).getTotalPages());
-        return "quanLySanPham/kichco/kichco";
+
+    @GetMapping("/hien-thi/{id}")
+    public String hienThiDuLieu(@PathVariable String id, Model model, @RequestParam(defaultValue = "1") Integer page){
+        Size size = sizeService.getOne(id);
+        Pageable pageable = PageRequest.of(page - 1, 5 , Sort.by("ngayTao").descending());
+        sizePage = sizeService.findAll(pageable);
+        model.addAttribute("list", sizePage);
+        model.addAttribute("url", "/admin/size/hien-thi/"+id+"?page=");
+        model.addAttribute("size", new Size());
+        model.addAttribute("dl", size);
+        return "quanLySanPham/kichco/update";
     }
+
     @GetMapping("/update-status/{id}")
-    public String page(@PathVariable("id") String id,
+    public String page(@PathVariable("id") String id, RedirectAttributes redirectAttributes,
                        @RequestParam(name = "trangThai")Integer trangThai ){
+        redirectAttributes.addFlashAttribute("size", new Size());
         String url = sizeService.updateStatus(id,trangThai);
         return url;
+    }
+
+    @PostMapping("/check")
+    @ResponseBody
+    public String checkDuplicate(@RequestParam("ten") String value) {
+        boolean isDuplicate = sizeService.isExists(value);
+        System.out.println(isDuplicate);
+        return String.valueOf(isDuplicate);
     }
 }

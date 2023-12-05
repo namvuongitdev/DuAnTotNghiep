@@ -33,27 +33,25 @@
                 </nav>
             </div><!-- End Page Title -->
             <section class="section">
-                <!-- Add -->
-                <div class="card" id="cardAdd" style="display: none;">
+                <!-- Update -->
+                <div class="card" id="cardUpdate">
                     <div class="card-body row">
-                        <h5 class="card-title col-10">Tạo dữ liệu</h5>
+                        <h5 class="card-title col-10">Sửa dữ liệu</h5>
                         <div class="col-2 card-title">
-                            <button type="button" class="btn btn-danger" onclick="location.reload()">
-                                <i class="bi bi-x"></i>
-                            </button>
+                            <a class="btn btn-danger text-white" title="Sửa dữ liệu" style="text-decoration: none" href="/admin/danh-muc/hien-thi"><i class="bi bi-x"></i></a>
                         </div>
                         <!-- Floating Labels Form -->
-                        <form id="colorForm" method="post" action="/admin/danh-muc/save" modelAttribute="danhMuc" class="row g-3">
+                        <form id="colorForm" method="post" action="/admin/danh-muc/update/${dl.id}" modelAttribute="danhMuc" class="row g-3">
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <input type="text" name="ten" class="form-control" id="floatingName" placeholder="Tên danh mục"/>
-                                    <label for="floatingName">Tên danh mục</label>
+                                    <input type="text" name="ten" class="form-control" id="floating" placeholder="Tên danh mục" value="${dl.ten}"/>
+                                    <label for="floating">Tên danh mục</label>
                                     <div id="nameError" style="color: red"></div>
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary" onclick="return validateForm()">
-                                    Xác nhận
+                                <button  type="submit" class="btn btn-success" onclick="return validateForm()">
+                                    Cập nhật
                                 </button>
                             </div>
                         </form>
@@ -68,16 +66,11 @@
                         <div class="card">
                             <div class="card-body row">
                                 <h5 class="card-title col-10">Danh sách</h5>
-                                <div class="col-2 card-title">
-                                    <button type="button" class="btn btn-primary" title="Tạo dữ liệu" id="showCardButton">
-                                        <i class="bi bi-plus-circle"></i>
-                                    </button>
-                                </div>
 
                                 <!-- Table with stripped rows -->
                                 <table class="table">
-                                    <thead style="text-align: center">
-                                    <tr>
+                                    <thead>
+                                    <tr style="text-align: center">
                                         <th scope="col">STT</th>
                                         <th scope="col">Danh mục</th>
                                         <th scope="col">Ngày tạo</th>
@@ -150,8 +143,8 @@
     }
 
     function validateForm() {
-        if(confirm('Bạn có muốn tạo dữ liệu không')==true){
-            var input = document.getElementById('floatingName').value.trim();
+        if(confirm('Bạn có muốn sửa dữ liệu không')==true){
+            var input = document.getElementById('floating').value.trim();
             var errorDiv = document.getElementById('nameError');
             var regex = /^[^\d!"@#\$%\^&\*\(\)_\+=\[\]\{\}\|;:'",<>\?\/\\`~]+$/; // Chỉ chấp nhận chữ cái và khoảng trắng
 
@@ -160,7 +153,7 @@
                 return false; // Ngăn cản form được submit
             }else {
                 errorDiv.textContent = ''; // Xóa thông báo lỗi
-                alert('Tạo dữ liệu thành công');
+                alert('Sửa dữ liệu thành công');
                 return true; // Cho phép form được submit
             }
         }else{

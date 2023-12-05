@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,28 +34,17 @@ public class SizeServiceImpl implements SizeService {
     }
 
     @Override
-    public Size getOne1(UUID id) {
-        return sizeRepository.getOne1(id);
-    }
-
-    @Override
     public void add(Size size) {
         sizeRepository.save(size);
     }
 
     @Override
-    public void update(Size size) {
-        sizeRepository.save(size);
+    public Size save(Size size) {
+        return sizeRepository.save(size);
     }
 
     @Override
-    public void delete(String id) {
-        sizeRepository.deleteById(id);
-    }
-
-    @Override
-    public Page<Size> pagination(Integer pageNo, Integer size) {
-        Pageable pageable = PageRequest.of(pageNo, size);
+    public Page<Size> findAll(Pageable pageable) {
         return sizeRepository.findAll(pageable);
     }
 
@@ -66,13 +56,20 @@ public class SizeServiceImpl implements SizeService {
     @Override
     public String updateStatus(String id, Integer trangThai) {
         Size size =sizeRepository.getReferenceById(id);
+        Date date = java.util.Calendar.getInstance().getTime();
         if (trangThai==0){
             size.setTrangThai(1);
         }else {
             size.setTrangThai(0);
         }
+        size.setNgaySua(date);
         sizeRepository.save(size);
         return "redirect:/admin/size/hien-thi";
+    }
+
+    @Override
+    public boolean isExists(String value) {
+        return false;
     }
 
 

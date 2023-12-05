@@ -163,8 +163,8 @@ public class SanPhamController {
                 String maKM = "SP" + (iSanPhamService.getAll().size() + 1);
                 sanPham.setMa(maKM);
                 sanPham.setNgayTao(date);
+                iSanPhamService.save(sanPham);
             }
-            iSanPhamService.save(sanPham);
         }
         return "redirect:/admin/san-pham/hien-thi/" + sanPham.getId();
     }

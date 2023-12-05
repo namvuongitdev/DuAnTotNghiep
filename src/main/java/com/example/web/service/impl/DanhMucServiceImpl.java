@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,30 +44,31 @@ public class DanhMucServiceImpl implements DanhMucService {
     }
 
     @Override
-    public void update(DanhMuc danhMuc) {
-        danhMucRepository.save(danhMuc);
+    public DanhMuc save(DanhMuc danhMuc) {
+        return danhMucRepository.save(danhMuc);
     }
 
     @Override
-    public void delete(String id) {
-        danhMucRepository.deleteById(id);
-    }
-
-    @Override
-    public Page<DanhMuc> page(Integer pageNo, Integer size) {
-        Pageable pageable = PageRequest.of(pageNo, size);
+    public Page<DanhMuc> findAll(Pageable pageable) {
         return danhMucRepository.findAll(pageable);
     }
 
     @Override
     public String updateStatus(String id, Integer trangThai) {
         DanhMuc danhMuc = danhMucRepository.getReferenceById(id);
+        Date date = java.util.Calendar.getInstance().getTime();
         if (trangThai==0){
             danhMuc.setTrangThai(1);
         }else {
             danhMuc.setTrangThai(0);
         }
+        danhMuc.setNgaySua(date);
         danhMucRepository.save(danhMuc);
         return "redirect:/admin/danh-muc/hien-thi";
+    }
+
+    @Override
+    public boolean isExists(String value) {
+        return false;
     }
 }

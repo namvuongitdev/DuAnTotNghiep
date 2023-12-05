@@ -75,10 +75,10 @@
                     <tr>
                         <th scope="col">STT</th>
                         <th scope="col">Mã</th>
-                        <th scope="col">Tên Khuyến mãi</th>
+                        <th scope="col">Tên khuyến mại</th>
                         <th scope="col">Ngày bắt đầu</th>
                         <th scope="col">Ngày kết thúc</th>
-                        <th scope="col">Trang Thái</th>
+                        <th scope="col">Trạng thái</th>
                         <th scope="col">Thao tác</th>
                     </tr>
                     </thead>

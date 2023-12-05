@@ -1,5 +1,6 @@
 package com.example.web.service;
 import com.example.web.model.MauSac;
+import com.example.web.model.SanPham;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,15 +14,15 @@ public interface IMauSacService {
 
     void add(MauSac mauSac);
 
-    void update(MauSac mauSac);
+    MauSac save(MauSac mauSac);
 
-    void delete(String id);
-
-    Page<MauSac> page(Integer pageNo, Integer size);
+    Page<MauSac> findAll(Pageable pageable);
 
     List<MauSac> getAll1();
 
     List<MauSac> getTheoCTSP(UUID idSP);
 
     String updateStatus(String id,Integer trangThai);
+
+    boolean isExists(String value);
 }

@@ -1,17 +1,23 @@
 package com.example.web.controller;
 import com.example.web.model.MauSac;
 import com.example.web.service.IMauSacService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Date;
 import java.util.UUID;
 
 @Controller
@@ -20,81 +26,66 @@ public class MauSacController {
     @Autowired
     private IMauSacService iMauSacService;
 
+    private Page<MauSac> mauSacPage = null;
+
     @GetMapping("/hien-thi")
-    public String hienThi(Model model, @RequestParam(value = "p", defaultValue = "0") Integer pageNo){
-
-        model.addAttribute("mauSac", new MauSac());
-        model.addAttribute("list", iMauSacService.page(pageNo, 5).getContent());
-        model.addAttribute("totalPage", iMauSacService.page(pageNo, 5).getTotalPages());
-        model.addAttribute("currentPage", pageNo);
+    public String hienThi(Model model, @RequestParam(defaultValue = "1") Integer page){
+        Pageable pageable = PageRequest.of(page - 1, 5 , Sort.by("ngayTao").descending());
+        mauSacPage = iMauSacService.findAll(pageable);
+        model.addAttribute("list", mauSacPage);
+        model.addAttribute("url", "/admin/mau-sac/hien-thi?page=");
         return "quanLySanPham/qlimausac/mausac";
     }
 
-    @GetMapping("/view-update/{id}")
-    public String viewUpdate(@PathVariable("id") String id, Model model, @ModelAttribute("mauSac") MauSac mauSac,
-                             @RequestParam(value = "p", defaultValue = "0") Integer pageNo){
-        mauSac = iMauSacService.getOne(id);
-        model.addAttribute("mauSac", mauSac);
-        model.addAttribute("list", iMauSacService.page(pageNo, 5).getContent());
-        model.addAttribute("totalPage", iMauSacService.page(pageNo, 5).getTotalPages());
-        model.addAttribute("currentPage", pageNo);
-        return "quanLySanPham/qlimausac/mausac";
-    }
-
-    @GetMapping("/stop/{id}")
-    public String delete(@PathVariable("id") String id){
-        MauSac ms = iMauSacService.getOne(id);
-        ms.setTrangThai(0);
-        ms.setNgaySua(java.util.Calendar.getInstance().getTime());
-        iMauSacService.update(ms);
+    @PostMapping("/save")
+    public String save(@ModelAttribute("mauSac") MauSac mauSac){
+        Date date = java.util.Calendar.getInstance().getTime();
+        UUID uuid = UUID.randomUUID();
+        mauSac.setId(uuid);
+        mauSac.setTrangThai(1);
+        mauSac.setNgayTao(date);
+        iMauSacService.save(mauSac);
         return "redirect:/admin/mau-sac/hien-thi";
     }
 
-    @GetMapping("/hien-thi/{p}")
-    public String page(@PathVariable("p") Integer p, Model model){
-        model.addAttribute("mauSac", new MauSac());
-        model.addAttribute("list", iMauSacService.page(p, 5).getContent());
-        model.addAttribute("totalPage", iMauSacService.page(p, 5).getTotalPages());
-        model.addAttribute("currentPage", p);
-        return "quanLySanPham/qlimausac/mausac";
-    }
-
-    @PostMapping("/add")
-    public String add(@Valid @ModelAttribute("mauSac") MauSac mauSac, BindingResult result,
-                      @RequestParam(value = "p", defaultValue = "0") Integer pageNo, Model model){
-        if(result.hasErrors()){
-            model.addAttribute("list", iMauSacService.page(pageNo, 5).getContent());
-            model.addAttribute("totalPage", iMauSacService.page(pageNo, 5).getTotalPages());
-            model.addAttribute("currentPage", pageNo);
-            return "quanLySanPham/qlimausac/mausac";
-        }else{
-            UUID uuid = UUID.randomUUID();
-            mauSac.setId(uuid);
-            mauSac.setTrangThai(1);
-            mauSac.setNgayTao(java.util.Calendar.getInstance().getTime());
-            iMauSacService.add(mauSac);
-            return "redirect:/admin/mau-sac/hien-thi";
-        }
-    }
-
     @PostMapping("/update/{id}")
-    public String update(@RequestParam(name = "ten") String ten,
-                         @PathVariable("id") String id,@Valid @ModelAttribute("mauSac") MauSac mauSac, BindingResult result,
-                         @RequestParam(value = "p", defaultValue = "0") Integer pageNo, Model model){
-        if(ten.equals("")){
-            model.addAttribute("erro", "Không được để trống");
-            model.addAttribute("list", iMauSacService.page(pageNo, 5).getContent());
-            model.addAttribute("totalPage", iMauSacService.page(pageNo, 5).getTotalPages());
-            model.addAttribute("currentPage", pageNo);
-            return "quanLySanPham/qlimausac/mausac";
-        }else{
-            MauSac ms = iMauSacService.getOne(id);
-            mauSac.setId(UUID.fromString(id));
-            mauSac.setNgayTao(ms.getNgayTao());
-            mauSac.setTrangThai(ms.getTrangThai());
-            mauSac.setNgaySua(java.util.Calendar.getInstance().getTime());
-            iMauSacService.update(mauSac);
-            return "redirect:/admin/mau-sac/hien-thi";
-        }
+    public String update(@PathVariable("id") String id, @ModelAttribute("mauSac") MauSac mauSac){
+        MauSac data = iMauSacService.getOne(id);
+        Date date = java.util.Calendar.getInstance().getTime();
+        mauSac.setId(UUID.fromString(id));
+        mauSac.setTrangThai(data.getTrangThai());
+        mauSac.setNgayTao(data.getNgayTao());
+        mauSac.setNgaySua(date);
+        iMauSacService.save(mauSac);
+        return "redirect:/admin/mau-sac/hien-thi";
     }
+
+    @GetMapping("/hien-thi/{id}")
+    public String hienThiDuLieu(@PathVariable String id, Model model, @RequestParam(defaultValue = "1") Integer page){
+        MauSac mauSac = iMauSacService.getOne(id);
+        Pageable pageable = PageRequest.of(page - 1, 5 , Sort.by("ngayTao").descending());
+        mauSacPage = iMauSacService.findAll(pageable);
+        model.addAttribute("list", mauSacPage);
+        model.addAttribute("url", "/admin/mau-sac/hien-thi/"+id+"?page=");
+        model.addAttribute("mauSac", new MauSac());
+        model.addAttribute("dl", mauSac);
+        return "quanLySanPham/qlimausac/update";
+    }
+
+    @GetMapping("/update-status/{id}")
+    public String page(@PathVariable("id") String id, RedirectAttributes redirectAttributes,
+                       @RequestParam(name = "trangThai")Integer trangThai ){
+        redirectAttributes.addFlashAttribute("mauSac", new MauSac());
+        String url = iMauSacService.updateStatus(id,trangThai);
+        return url;
+    }
+
+    @PostMapping("/check")
+    @ResponseBody
+    public String checkDuplicate(@RequestParam("ten") String value) {
+        boolean isDuplicate = iMauSacService.isExists(value);
+        System.out.println(isDuplicate);
+        return String.valueOf(isDuplicate);
+    }
+
 }

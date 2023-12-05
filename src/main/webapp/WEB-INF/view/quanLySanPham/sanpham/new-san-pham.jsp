@@ -197,6 +197,7 @@
                                 <table class="table">
                                     <thead>
                                     <tr style="text-align: center">
+                                        <th></th>
                                         <th scope="col">Kích cỡ
                                             <a data-bs-toggle="modal" data-bs-target="#exampleModalKichCo">
                                                 <i class="bi bi-plus-circle"></i>
@@ -217,15 +218,20 @@
                                         <form action="/admin/chi-tiet-san-pham/update-chi-tiet-san-pham?idCTSP=${ctsp.id}&idSP=${sp.id}"
                                               method="post" modelAttribute="${chiTietSanPham}">
                                             <tr style="text-align: center">
+                                                <td style="padding-top: 20px">
+                                                    <input type="checkbox" id="checkbox${ctsp.id}" class="checkbox">
+                                                </td>
                                                 <td>
-                                                    <select name="size" class="form-select">
+                                                    <p id="pKichCo${ctsp.id}" style="display: block;">${ctsp.size.ten}</p>
+                                                    <select name="size" class="form-select" id="selectKichCo${ctsp.id}" style="display: none;">
                                                         <c:forEach items="${listKichCo}" var="kichCo" >
                                                             <option value="${kichCo.id}" ${ctsp.size.id==kichCo.id?'selected':''}>${kichCo.ten}</option>
                                                         </c:forEach>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select name="mauSac" class="form-select">
+                                                    <p id="pMauSac${ctsp.id}" style="display: block;">${ctsp.mauSac.ten}</p>
+                                                    <select name="mauSac" class="form-select" id="selectMauSac${ctsp.id}" style="display: none;">
                                                         <c:forEach items="${listMuaSac}" var="mauSac">
                                                             <option value="${mauSac.id}" ${ctsp.mauSac.id==mauSac.id?'selected':''}>${mauSac.ten}</option>
                                                         </c:forEach>
@@ -234,7 +240,7 @@
                                                 <td style="width: 110px">
                                                     <label for="soLuongCTSP"></label>
                                                     <input type="number" class="form-control" value="${ctsp.soLuong}"
-                                                         id="soLuongCTSP" name="soLuong" min="1" required/>
+                                                           id="soLuongCTSP" name="soLuong" min="1" required/>
                                                 </td>
                                                 <td>
                                                     <button style="--bs-btn-padding-y: .56rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
@@ -546,6 +552,30 @@
             return false;
         }
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var checkboxes = document.querySelectorAll('.checkbox');
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                var ctspId = this.id.replace('checkbox', '');
+                var pKichCo = document.getElementById('pKichCo' + ctspId);
+                var pMauSac = document.getElementById('pMauSac' + ctspId);
+                var selectKichCo = document.getElementById('selectKichCo' + ctspId);
+                var selectMauSac = document.getElementById('selectMauSac' + ctspId);
+                if (this.checked) {
+                    selectKichCo.style.display = 'block';
+                    selectMauSac.style.display = 'block';
+                    pMauSac.style.display = 'none';
+                    pKichCo.style.display = 'none';
+                } else {
+                    selectKichCo.style.display = 'none';
+                    selectMauSac.style.display = 'none';
+                    pMauSac.style.display = 'block';
+                    pKichCo.style.display = 'block';
+                }
+            });
+        });
+    });
 </script>
 </body>
 </html>
