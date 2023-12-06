@@ -32,7 +32,7 @@ public interface IHoaDonService {
 
     HoaDon getOne(String id);
 
-    HoaDon updateThoiGianTraHang();
+    HoaDon updateThoiGianTraHang(String idHD);
 
     List<HoaDonChiTietReponse> getHoaDonChiTiets(UUID id);
 
@@ -47,7 +47,7 @@ public interface IHoaDonService {
     HoaDon add(HoaDon hoaDon);
 
 
-    HoaDon updateThongTinKhachHang(UUID idHD , ThongTinKhachHang thongTinKhachHang);
+    HoaDon updateThongTinKhachHang(UUID idHD, ThongTinKhachHang thongTinKhachHang);
 
     String inHoaDon(String id, Page<HoaDonChiTiet> hoaDonChiTiets);
 
@@ -61,7 +61,7 @@ public interface IHoaDonService {
 
     Integer tongHoaDonChoXacNhan();
 
-    Integer xacNhanHoaDon(Integer trangThai , UUID idHD , String ghiChu);
+    Integer xacNhanHoaDon(Integer trangThai, UUID idHD, String ghiChu);
 
     Integer tongDoanhThu();
 
@@ -71,6 +71,8 @@ public interface IHoaDonService {
 
     Integer tongHoaDon();
 
-    Double getDoanhThuTheoThang(Integer thang);
+    Double getDoanhThuTheoThang(Integer thang ,Integer nam);
+
+    List<Integer> getNams();
 
 }

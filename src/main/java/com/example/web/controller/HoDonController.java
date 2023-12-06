@@ -195,7 +195,7 @@ public class HoDonController {
         List<HoaDonChiTietReponse> response = hoaDonService.getHoaDonChiTiets(UUID.fromString(id));
         Boolean isCheck = hoaDonService.kiemTraConTrongHDCT(UUID.fromString(id));
         BigDecimal tongTien = hoaDonChiTietService.tongTienHDCT(UUID.fromString(id));
-        HoaDon updateTrangThaiTraHang = hoaDonService.updateThoiGianTraHang();
+        HoaDon updateTrangThaiTraHang = hoaDonService.updateThoiGianTraHang(id);
         HoaDon hoaDon = hoaDonService.getOne(id);
         model.addAttribute("hoaDon", hoaDon);
         model.addAttribute("listHoaDonChiTiet", response);

@@ -44,38 +44,37 @@ public class LichSuHoaDonServiceImpl implements ILichSuHoaDonService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         NhanVien nhanVien = nhanVienRepository.findByEmailOrTaiKhoan(authentication.getName());
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
-        String thoaTacHoaDon = null;
-        if (thaoTac == HoaDonStatus.DA_TIEP_NHAN) {
-            thoaTacHoaDon = "xác nhận hoá đơn";
-        }
-        if (thaoTac == HoaDonStatus.GIAO_HANG) {
-            thoaTacHoaDon = "xác nhận giao hàng";
-        }
-        if (thaoTac == HoaDonStatus.GIAO_HANG_THANH_CONG) {
-            thoaTacHoaDon = "xác nhận giao hàng thành công";
-        }
-        if (thaoTac == HoaDonStatus.DA_THANH_TOAN) {
-            thoaTacHoaDon = "xác nhận hoàn thành";
-        }
-        if (thaoTac == HoaDonStatus.CHINH_SUA) {
-            thoaTacHoaDon = "chỉnh sửa hoá đơn";
-        }
-        if (thaoTac == HoaDonStatus.NHAN_VIEN_TAO_HOA_DON) {
-            thoaTacHoaDon = "nhân viên tạo hoá đơn cho khách";
-        }
-        if (thaoTac == HoaDonStatus.KHACH_TAO_HOA_DON) {
-            thoaTacHoaDon = "khách hàng tạo hoá đơn";
-        }
-        if (thaoTac == HoaDonStatus.HUY) {
-            thoaTacHoaDon = "huỷ hoá đơn";
-        }
-        if (thaoTac == HoaDonStatus.HOAN_TRA) {
-            thoaTacHoaDon = "hoàn trả";
-        }
+//        if (thaoTac == HoaDonStatus.DA_TIEP_NHAN) {
+//            thoaTacHoaDon = "xác nhận hoá đơn";
+//        }
+//        if (thaoTac == HoaDonStatus.GIAO_HANG) {
+//            thoaTacHoaDon = "xác nhận giao hàng";
+//        }
+//        if (thaoTac == HoaDonStatus.GIAO_HANG_THANH_CONG) {
+//            thoaTacHoaDon = "xác nhận giao hàng thành công";
+//        }
+//        if (thaoTac == HoaDonStatus.DA_THANH_TOAN) {
+//            thoaTacHoaDon = "xác nhận hoàn thành";
+//        }
+//        if (thaoTac == HoaDonStatus.CHINH_SUA) {
+//            thoaTacHoaDon = "chỉnh sửa hoá đơn";
+//        }
+//        if (thaoTac == HoaDonStatus.NHAN_VIEN_TAO_HOA_DON) {
+//            thoaTacHoaDon = "nhân viên tạo hoá đơn cho khách";
+//        }
+//        if (thaoTac == HoaDonStatus.KHACH_TAO_HOA_DON) {
+//            thoaTacHoaDon = "khách hàng tạo hoá đơn";
+//        }
+//        if (thaoTac == HoaDonStatus.HUY) {
+//            thoaTacHoaDon = "huỷ hoá đơn";
+//        }
+//        if (thaoTac == HoaDonStatus.HOAN_TRA) {
+//            thoaTacHoaDon = "hoàn trả";
+//        }
         Date date = java.util.Calendar.getInstance().getTime();
         LichSuHoaDon lshd = LichSuHoaDon.builder()
                 .hoaDon(hoaDon.get())
-                .thaoTac(thoaTacHoaDon)
+                .thaoTac(thaoTac)
                 .ngayThaoTac(date)
                 .ghiChu(ghiChu)
                 .build();

@@ -19,4 +19,8 @@ public class SanPhamAsKhuyenMai {
     private BigDecimal mucGiam;
     private Integer trangThai;
 
+    public SanPhamAsKhuyenMai(UUID id, BigDecimal mucGiam) {
+        this.id = id;
+        this.mucGiam = mucGiam;
+    }
 }

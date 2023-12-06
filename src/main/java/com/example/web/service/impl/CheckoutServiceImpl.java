@@ -24,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -173,7 +172,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         response.forEach(o -> {
             hoaDonChiTietService.addHoaDonChiTiet(o.getChiTietSanPham().getId(), hd.getId(), o.getSoLuong());
         });
-        lichSuHoaDonService.add(HoaDonStatus.KHACH_TAO_HOA_DON , hd.getId() , request.getGhiChu());
+        lichSuHoaDonService.add(HoaDonStatus.CHO_XAC_NHAN, hd.getId() , request.getGhiChu());
         gioHangOnllineService.clearAllGioHangChiTietByKhachHang_id(khachHang.getId());
         return hd;
     }

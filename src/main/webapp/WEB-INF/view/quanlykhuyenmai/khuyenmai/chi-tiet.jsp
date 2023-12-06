@@ -84,11 +84,11 @@
                         <td style="${km.trangThai == 1 ? 'color: #03AA28' : 'color:red'}">${km.trangThai == 1 ? 'kích hoạt' : 'ngừng hoạt động'}</td>
                         <td><c:choose>
                             <c:when test="${km.trangThai == 1}">
-                                <a href="/admin/khuyen-mai/update-trang-thai-san-pham?idSPKM=${km.id}&trangThai=${km.trangThai == 1 ? 0 : 1}"
-                                   class="btn btn-danger">huỷ</a>
+                                <a href="/admin/khuyen-mai/update-trang-thai-san-pham?idSPKM=${km.id}"
+                                   class="btn btn-danger">Xoá</a>
                             </c:when>
                             <c:otherwise>
-                                <a href="/admin/khuyen-mai/update-trang-thai-san-pham?idSPKM=${km.id}&trangThai=${km.trangThai == 1 ? 0 : 1}"
+                                <a href="/admin/khuyen-mai/update-trang-thai-san-pham?idSPKM=${km.id}"
                                    class="btn btn-success">Kích hoạt</a>
                             </c:otherwise>
 
@@ -145,14 +145,14 @@
                     </div>
                 </div>
             </div>
-            <form id="updateSanPhamKhuyenMai" method="post" modelAttribute="${sanPhamKhuyenMai}" name="formUpdate">
+            <form id="updateSanPhamKhuyenMai" method="post" modelAttribute="${sanPhamKhuyenMai}">
                 <div class="row">
                     <div class="col-sm-6">
                         <input type="radio" class="btn-check loaiGiamGia" name="loaiGiamGia"
-                               id="success-outlined__1" autocomplete="off" value="true">
+                               id="success-outlined__1" autocomplete="off" value="true" onchange="loaiGiamGiaUpdate(this.value)">
                         <label class="btn btn-outline-secondary" for="success-outlined__1">%</label>
 
-                        <input type="radio" class="btn-check loaiGiamGia" name="loaiGiamGia"
+                        <input type="radio" class="btn-check loaiGiamGia" name="loaiGiamGia" onchange="loaiGiamGiaUpdate(this.value)"
                                id="danger-outlined__1" autocomplete="off" value="false">
                         <label class="btn btn-outline-secondary" for="danger-outlined__1">VND</label>
                     </div>
@@ -164,7 +164,7 @@
                     </div>
                 </div>
                 <div>
-                    <button class="btn btn-primary">Lưu</button>
+                    <button class="btn btn-primary" onclick="return validateUpdate()">Lưu</button>
                 </div>
             </form>
         </div>

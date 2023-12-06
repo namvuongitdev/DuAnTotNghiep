@@ -23,78 +23,88 @@
     <div class="row flex-nowrap">
         <jsp:include page="../../sidebar/sidebar.jsp"/>
         <div class="col py-3">
-            <div class="row">
-                 <jsp:include page="filter-hoa-don.jsp"></jsp:include>
+            <div class="card">
+                <div class="card-body row">
+                    <div class="row">
+                        <jsp:include page="filter-hoa-don.jsp"></jsp:include>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <!-- Table with stripped rows -->
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">STT</th>
-                        <th scope="col">Mã hóa đơn</th>
-                        <th scope="col">Loại hóa đơn</th>
-                        <th scope="col">Ngày tạo</th>
-                        <th scope="col">Tên Khách hàng</th>
-                        <th scope="col">Tổng tiền</th>
-                        <th scope="col">Tình trạng</th>
-                        <th scope="col">Thao tác</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${hoaDons.content}" var="hd" varStatus="i">
-                        <tr>
-                            <td>${i.index+ (khuyenMais.number + 1 != 1 ? ((khuyenMais.number + 1) * khuyenMais.size) -(khuyenMais.size - 1) : khuyenMais.number + 1)}</td>
-                            <td>${hd.ma}</td>
-                            <td>${hd.loaiHoaDon==false?'Đơn tại quầy':'Đơn giao'}</td>
-                            <td><fmt:formatDate value="${hd.ngayTao}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
-                                <c:choose>
-                                    <c:when test="${hd.khachHang == null}">
-                                        <td>
-                                            <button class="btn btn-secondary rounded-pill">khách lẻ</button>
-                                        </td>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <td>
-                                            ${hd.khachHang.hoTen}
-                                        </td>
-                                    </c:otherwise>
-                                </c:choose>
-                            <td style="color:red;">
-                                 <fmt:formatNumber pattern="#,###" value="${hd.tongTien()}"/> đ
-                            </td>
-                            <td>
-                                <c:if test="${hd.trangThai == 4}">
-                                    <button class="btn btn-primary rounded-pill">Đã hoàn thành</button>
-                                </c:if>
+            <br>
+            <div class="card">
+                <div class="card-body row">
+                    <div class="row">
+                        <!-- Table with stripped rows -->
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Mã hóa đơn</th>
+                                <th scope="col">Loại hóa đơn</th>
+                                <th scope="col">Ngày tạo</th>
+                                <th scope="col">Tên Khách hàng</th>
+                                <th scope="col">Tổng tiền</th>
+                                <th scope="col">Tình trạng</th>
+                                <th scope="col">Thao tác</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${hoaDons.content}" var="hd" varStatus="i">
+                                <tr>
+                                    <td>${i.index+ (khuyenMais.number + 1 != 1 ? ((khuyenMais.number + 1) * khuyenMais.size) -(khuyenMais.size - 1) : khuyenMais.number + 1)}</td>
+                                    <td>${hd.ma}</td>
+                                    <td>${hd.loaiHoaDon==false?'Đơn tại quầy':'Đơn giao'}</td>
+                                    <td><fmt:formatDate value="${hd.ngayTao}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
+                                    <c:choose>
+                                        <c:when test="${hd.khachHang == null}">
+                                            <td>
+                                                <button class="btn btn-secondary rounded-pill">khách lẻ</button>
+                                            </td>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <td>
+                                                    ${hd.khachHang.hoTen}
+                                            </td>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <td style="color:red;">
+                                        <fmt:formatNumber pattern="#,###" value="${hd.tongTien()}"/> đ
+                                    </td>
+                                    <td>
+                                        <c:if test="${hd.trangThai == 4}">
+                                            <button class="btn btn-primary rounded-pill">Đã hoàn thành</button>
+                                        </c:if>
 
-                                <c:if test="${hd.trangThai == 1}">
-                                    <button class="btn btn-warning rounded-pill">Chờ xác nhận</button>
-                                </c:if>
+                                        <c:if test="${hd.trangThai == 1}">
+                                            <button class="btn btn-warning rounded-pill">Chờ xác nhận</button>
+                                        </c:if>
 
-                                <c:if test="${hd.trangThai == 2}">
-                                    <button class="btn btn-success rounded-pill">Đã xác nhận</button>
-                                </c:if>
+                                        <c:if test="${hd.trangThai == 2}">
+                                            <button class="btn btn-success rounded-pill">Đã xác nhận</button>
+                                        </c:if>
 
-                                <c:if test="${hd.trangThai == 3}">
-                                    <button class="btn btn-primary rounded-pill">Đang giao hàng</button>
-                                </c:if>
+                                        <c:if test="${hd.trangThai == 3}">
+                                            <button class="btn btn-primary rounded-pill">Đang giao hàng</button>
+                                        </c:if>
 
-                                <c:if test="${hd.trangThai == 5}">
-                                    <button class="btn btn-danger rounded-pill">Đã huỷ</button>
-                                </c:if>
+                                        <c:if test="${hd.trangThai == 5}">
+                                            <button class="btn btn-danger rounded-pill">Đã huỷ</button>
+                                        </c:if>
 
-                                <c:if test="${hd.trangThai == 6}">
-                                    <button class="btn btn-success rounded-pill">Giao hàng thành công</button>
-                                </c:if>
-                            </td>
-                            <td>
-                                <a href="/admin/hoa-don/chi-tiet-hoa-dons/${hd.id}" class="btn btn-warning"><i class="bi bi-eye-fill"></i></a>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
+                                        <c:if test="${hd.trangThai == 6}">
+                                            <button class="btn btn-success rounded-pill">Giao hàng thành công</button>
+                                        </c:if>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/hoa-don/chi-tiet-hoa-dons/${hd.id}" class="btn btn-warning"><i
+                                                class="bi bi-eye-fill"></i></a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
             <%--  phân trang --%>
             <div class="container-fluid mt-5">

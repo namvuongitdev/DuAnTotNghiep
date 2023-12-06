@@ -169,7 +169,7 @@ public class KhuyenMaiController {
     }
 
     @PostMapping("/update-san-pham-khuyen-mai")
-    public String updateSanPhamKhuyenMai(@RequestParam String idSPKM, @ModelAttribute("sanPhamKhuyenMai") SanPhamKhuyenMai sanPhamKhuyenMai) {
+    public String updateSanPhamKhuyenMai(@RequestParam String idSPKM, @ModelAttribute("sanPhamKhuyenMai") SanPhamKhuyenMai sanPhamKhuyenMai , RedirectAttributes attributes) {
         SanPhamKhuyenMai spkm = khuyenMaiService.getSanPhamKhuyenMaiById(UUID.fromString(idSPKM));
         if (sanPhamKhuyenMai.getLoaiGiamGia()) {
             Integer donGiaKhiGiamPhanTram = spkm.getSanPhamKM().getGiaBan().intValue() - (spkm.getSanPhamKM().getGiaBan().intValue() / 100) * sanPhamKhuyenMai.getMucGiam().intValue();
@@ -180,7 +180,12 @@ public class KhuyenMaiController {
         }
         spkm.setLoaiGiamGia(sanPhamKhuyenMai.getLoaiGiamGia());
         spkm.setMucGiam(sanPhamKhuyenMai.getMucGiam());
-        khuyenMaiService.updateSanPhamKhuyenMai(spkm);
+        SanPhamKhuyenMai kmsp =  khuyenMaiService.updateSanPhamKhuyenMai(spkm);
+        if(kmsp != null){
+            attributes.addFlashAttribute("success" , "update thành công");
+        }else{
+            attributes.addFlashAttribute("error" , "update không thành công");
+        }
         if (urlUpdate == null) {
             return "redirect:/admin/khuyen-mai/detail?id=" + spkm.getKhuyenMai().getId();
         } else {

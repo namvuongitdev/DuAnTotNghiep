@@ -42,7 +42,7 @@ public class LichSuHoaDon {
 
     @Nationalized
     @Column(name = "thao_tac")
-    private String thaoTac;
+    private Integer thaoTac;
 
     @Column(name = "ngay_thao_tac")
     private Date ngayThaoTac;
@@ -50,10 +50,5 @@ public class LichSuHoaDon {
     @Nationalized
     @Column(name = "ghi_chu" , length = 3000)
     private String ghiChu;
-
-    public String formatDate(){
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-        return formatter.format(this.ngayThaoTac);
-    }
 
 }

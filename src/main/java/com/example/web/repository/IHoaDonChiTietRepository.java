@@ -25,15 +25,8 @@ public interface IHoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet , 
     @Query(value = "Select hdct From HoaDonChiTiet hdct where hdct.hoaDon.id = ?1 and hdct.trangThai=0")
     List<HoaDonChiTiet> getAllByIdHoaDon(UUID idHD);
 
-    @Query(value = """
-			select Sum(so_luong) from hoa_don_chi_tiet,hoa_don
-			 where hoa_don_chi_tiet.trang_thai = 4 and hoa_don.trang_thai=4 
-			 and hoa_don.id =hoa_don_chi_tiet.id_hoa_don 
-			 and CONVERT(DATE,hoa_don.ngay_thanh_toan) = CONVERT(DATE,GETDATE())
-""",nativeQuery = true)
+    @Query(value = "select sum(hdct.so_luong) from hoa_don hd join hoa_don_chi_tiet hdct on hd.id = hdct.id_hoa_don  where hdct.trang_thai = 0 and MONTH(hd.ngay_tao) = MONTH(GETDATE()) and  hd.trang_thai <> 0 and hd.trang_thai <> 5" , nativeQuery = true)
     Integer soLuongSPDaBan();
 
-    @Query(value = " select count(Id) from hoa_don where CONVERT(DATE,hoa_don.ngay_tao) = CONVERT(DATE,GETDATE())",nativeQuery = true)
-    Integer tongHoaDon();
 }
 

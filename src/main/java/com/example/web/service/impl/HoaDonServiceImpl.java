@@ -149,7 +149,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 HoaDon hd = hoaDon.get();
                 hd.setNhanVien(nhanVien);
                 if (hd.getLoaiHoaDon()) {
-                    hd.setTrangThai(TrangThaiHoaDon.DA_XAC_NHAN.getValue());
+                    hd.setTrangThai(HoaDonStatus.CHO_XAC_NHAN);
                     hd.setPhiVanChuyen(request.getPhiVanChuyen());
                     hd.setDiaChi(request.getDiaChi());
                     hd.setHoTen(request.getHoTen());
@@ -181,7 +181,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                     hd.setKhachHang(khachHang.get());
                 }
                 HoaDon response = hoaDonRepository.save(hd);
-                lichSuHoaDonService.add(HoaDonStatus.NHAN_VIEN_TAO_HOA_DON, response.getId(), "nhân viên tạo hoá đơn cho khách");
+                lichSuHoaDonService.add(response.getLoaiHoaDon() ? HoaDonStatus.CHO_XAC_NHAN : HoaDonStatus.DA_THANH_TOAN , response.getId(), "nhân viên tạo hoá đơn cho khách");
                 attributes.addFlashAttribute("success", "Hoá đơn " + response.getMa() + " tạo thành công");
                 return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
             } else {
@@ -201,8 +201,8 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public HoaDon updateThoiGianTraHang() {
-        HoaDon hoaDon = hoaDonRepository.ngayHetHanTraHang();
+    public HoaDon updateThoiGianTraHang(String idHD) {
+        HoaDon hoaDon = hoaDonRepository.ngayHetHanTraHang(idHD);
         return hoaDon;
     }
 
@@ -406,7 +406,12 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public Double getDoanhThuTheoThang(Integer thang) {
-        return hoaDonRepository.getDoanhThuTheoThang(thang);
+    public Double getDoanhThuTheoThang(Integer thang ,Integer nam) {
+        return hoaDonRepository.getDoanhThuTheoThang(thang , nam);
+    }
+
+    @Override
+    public List<Integer> getNams() {
+        return hoaDonRepository.getNam();
     }
 }

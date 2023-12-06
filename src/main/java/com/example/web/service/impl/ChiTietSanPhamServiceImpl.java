@@ -111,7 +111,7 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
     }
 
     @Override
-    public List<ChiTietSanPham> getTop5SanPhamBanChay() {
+    public List<Object[]> getTop5SanPhamBanChay() {
         return iChiTietSanPhamRepository.getTop5SanPhamBanChay();
     }
 

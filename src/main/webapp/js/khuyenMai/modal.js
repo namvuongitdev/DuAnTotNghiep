@@ -24,13 +24,14 @@ function modalThemSanPhamKhuyenMai(idSanPham, maSanPham, tenSanPham , giaBanSP) 
 spanSanPhamKhuyenMai.onclick = function () {
     modalSanPhamKhuyenMai.style.display = "none";
 }
-
+let updateLoaiGiamGia = "";
 function getSanPhamKhuyenMai(id) {
     modalSanPhamKhuyenMai.style.display = "block";
     fetch('/admin/khuyen-mai/api-san-pham-khuyen-mai/' + id)
         .then(response => response.json())
         .then(data => {
             const loaiGiamGiaSanPham = document.getElementsByClassName("btn-check loaiGiamGia");
+            updateLoaiGiamGia = data.loaiGiamGia;
             if (data.loaiGiamGia) {
                 loaiGiamGiaSanPham[0].checked = "checked";
             } else {
@@ -42,6 +43,31 @@ function getSanPhamKhuyenMai(id) {
             document.getElementById("updateSanPhamKhuyenMai").action = "/admin/khuyen-mai/update-san-pham-khuyen-mai?idSPKM=" + id;
         })
 }
+
+
+function loaiGiamGiaUpdate(valueLoaiGiamGia){
+    updateLoaiGiamGia = valueLoaiGiamGia;
+}
+
+function validateUpdate(){
+    const mucGiam = document.getElementById("mucGiamSanPham").value.trim();
+    if (mucGiam === "") {
+        alert("mức giảm không được để trống")
+        return false;
+    } else if (mucGiam <= 0) {
+        alert("mức giảm không thoả mãn")
+        return false;
+    }else{
+        if(updateLoaiGiamGia === "true"){
+           if(mucGiam >= 100){
+                alert("mức giảm giá phải nhỏ hơn 100%");
+                return false;
+           }
+        }
+        return true;
+    }
+}
+
 
 function selectLoaiGiamGia(value) {
     if (value != null) {
@@ -101,9 +127,19 @@ async function addKhuyenMaiCT(idKM) {
                     <td><img style="width: 60px ; height: 60px" src="/image/${response.img}"></td>
                      <td>${response.ma}</td>
                      <td>${response.ten}</td>
-                    <td>${VND.format(response.giaBan)}</td>
+                    <td>
+                          ${khuyenMai !== null ?
+                    `<div><span style="color: #03AA28">${VND.format(khuyenMai.donGiaSauKhiGiam)}</span></div>
+
+                     <div style="display: flex">
+                     <strike>${VND.format(response.giaBan)}</strike>
+                     <p style="color: #E43535">${khuyenMai.loaiGiamGia === true ? '-' + khuyenMai.mucGiam + '%' : '-' + VND.format(khuyenMai.mucGiam)}</p>
+                     </div>`
+
+                    : `<span style="color: #03AA28">${VND.format(response.giaBan)}</span>`} 
+                    </td>
                      ${khuyenMai != null ?
-                    `<td style="color: #03AA28"> Đã được áp dụng</td>` :
+                    `<td style="color: #03AA28"> Đã được áp dụng ${khuyenMai.khuyenMai.ma}</td>` :
                     `<td>
                     <button type="button" class="btn btn-primary" onclick="modalThemSanPhamKhuyenMai('${response.id}' ,
                    '${response.ma}',

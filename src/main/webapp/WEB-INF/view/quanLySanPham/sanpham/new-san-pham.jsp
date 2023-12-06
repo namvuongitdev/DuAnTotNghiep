@@ -26,6 +26,12 @@
     <link rel="stylesheet" href="/css/modal.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+     <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
 
 </head>
 <body ng-app="app" ng-controller="controller">
@@ -148,14 +154,14 @@
                             <br>
                             <div style="text-align: center">
                                 <c:if test="${sp.id == null}">
-                                    <button class="btn btn-success" onclick="saveInputValues()">Xác nhận
-                                </c:if>
-                                <c:if test="${sp.id != null}">
+                                <button class="btn btn-success" onclick="saveInputValues()">Xác nhận
+                                    </c:if>
+                                    <c:if test="${sp.id != null}">
                                     <button class="btn btn-primary" onclick="saveInputValues()">Cập nhật
-                                </c:if>
-                                </button>
-                                <a href="/admin/san-pham/new" class="btn btn-warning" onclick="clearLocalStorage()">Làm
-                                    Mới</a>
+                                        </c:if>
+                                    </button>
+                                    <a href="/admin/san-pham/new" class="btn btn-warning" onclick="clearLocalStorage()">Làm
+                                        Mới</a>
                             </div>
                         </form:form>
                     </div>
@@ -219,7 +225,7 @@
                                             <tr style="text-align: center">
                                                 <td>
                                                     <select name="size" class="form-select">
-                                                        <c:forEach items="${listKichCo}" var="kichCo" >
+                                                        <c:forEach items="${listKichCo}" var="kichCo">
                                                             <option value="${kichCo.id}" ${ctsp.size.id==kichCo.id?'selected':''}>${kichCo.ten}</option>
                                                         </c:forEach>
                                                     </select>
@@ -234,7 +240,7 @@
                                                 <td style="width: 110px">
                                                     <label for="soLuongCTSP"></label>
                                                     <input type="number" class="form-control" value="${ctsp.soLuong}"
-                                                         id="soLuongCTSP" name="soLuong" min="1" required/>
+                                                           id="soLuongCTSP" name="soLuong" min="1" required/>
                                                 </td>
                                                 <td>
                                                     <button style="--bs-btn-padding-y: .56rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
@@ -262,7 +268,8 @@
                             </div>
                             <div class="row" id="anhMacDinhSanPham" style="margin-top: 20px">
                                 <div class="pagination justify-content-center">
-                                    <img src="/image/${sp.img}" alt="" class="img-thumbnail" style="width: 200px;height: 200px">
+                                    <img src="/image/${sp.img}" alt="" class="img-thumbnail"
+                                         style="width: 200px;height: 200px">
                                 </div>
                             </div>
                         </div>
@@ -288,7 +295,9 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Kích cỡ :</label>
                                                     <select id="size" name="size" class="form-select">
-                                                        <option ng-repeat="kichCo in lstKichCo" value="{{kichCo.id}}" >{{kichCo.ten}}</option>
+                                                        <option ng-repeat="kichCo in lstKichCo" value="{{kichCo.id}}">
+                                                            {{kichCo.ten}}
+                                                        </option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -296,7 +305,9 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Màu sắc:</label>
                                                     <select id="mauSac" name="mauSac" class="form-select">
-                                                        <option ng-repeat="mauSac in lstMauSac" value="{{mauSac.id}}" >{{mauSac.ten}}</option>
+                                                        <option ng-repeat="mauSac in lstMauSac" value="{{mauSac.id}}">
+                                                            {{mauSac.ten}}
+                                                        </option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -309,7 +320,9 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <button class="btn btn-primary" onclick="return checkMauSacKichCo()">Xác Nhận</button>
+                                            <button class="btn btn-primary" onclick="return checkMauSacKichCo()">Xác
+                                                Nhận
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -329,7 +342,8 @@
                         </div>
                         <div class="modal-body" id="themAnh">
                             <input type='file' name='file' id="fileAnh">
-                            <button class='btn btn-primary' onclick="themAnhMauSac()" data-bs-dismiss="modal">Xác nhận</button>
+                            <button class='btn btn-primary' onclick="themAnhMauSac()" data-bs-dismiss="modal">Xác nhận
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -345,8 +359,9 @@
                         <form method="post" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <input ng-model="chatLieu.ten" type="text" name="ten" class="form-control" id="floatingName"
-                                                placeholder="Chất liệu"/>
+                                    <input ng-model="chatLieu.ten" type="text" name="ten" class="form-control"
+                                           id="floatingName"
+                                           placeholder="Chất liệu"/>
                                     <label for="floatingName">Chất liệu</label>
                                 </div>
                             </div>
@@ -371,7 +386,8 @@
                         <form method="post" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <input ng-model="danhMuc.ten" type="text" name="ten" class="form-control" id="floatingDanhMuc"
+                                    <input ng-model="danhMuc.ten" type="text" name="ten" class="form-control"
+                                           id="floatingDanhMuc"
                                            placeholder="Danh mục"/>
                                     <label for="floatingDanhMuc">Danh mục</label>
                                 </div>
@@ -398,7 +414,8 @@
                         <form method="post" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <input ng-model="kieuDang.ten" type="text" name="ten" class="form-control" id="floatingKieuDang"
+                                    <input ng-model="kieuDang.ten" type="text" name="ten" class="form-control"
+                                           id="floatingKieuDang"
                                            placeholder="Kiểu dáng"/>
                                     <label for="floatingKieuDang">Kiểu dáng</label>
                                 </div>
@@ -425,7 +442,8 @@
                         <form method="post" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <input ng-model="kichCo.ten" type="text" name="ten" class="form-control" id="floatingKichCo"
+                                    <input ng-model="kichCo.ten" type="text" name="ten" class="form-control"
+                                           id="floatingKichCo"
                                            placeholder="Kích cỡ"/>
                                     <label for="floatingKichCo">Kích cỡ</label>
                                 </div>
@@ -453,7 +471,8 @@
                         <form method="post" class="row g-3">
                             <div class="modal-body">
                                 <div class="form-floating">
-                                    <input ng-model="mauSac.ten" type="text" name="ten" class="form-control" id="floatingMauSac"
+                                    <input ng-model="mauSac.ten" type="text" name="ten" class="form-control"
+                                           id="floatingMauSac"
                                            placeholder="Màu sắc"/>
                                     <label for="floatingMauSac">Màu sắc</label>
                                 </div>
@@ -535,16 +554,24 @@
             return;
         }
     }
-    function checkMauSacKichCo(){
-        let check  = '${checkError}';
+
+    function checkMauSacKichCo() {
+        let check = '${checkError}';
         console.log(check);
-        if(check !== null){
+        if (check !== null) {
             alert('Thêm dữ liệu thành công.');
             return true;
-        }else{
+        } else {
             alert('Thêm thất bại! Dữ liệu đã tồn tại.');
             return false;
         }
+    }
+    if(${success != null}){
+        Swal.fire({
+            title: "thêm mới!",
+            text: "${success}!",
+            icon: "success"
+        });
     }
 </script>
 </body>

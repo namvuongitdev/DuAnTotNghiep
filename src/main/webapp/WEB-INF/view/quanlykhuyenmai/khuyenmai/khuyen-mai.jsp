@@ -76,6 +76,7 @@
                         <th scope="col">STT</th>
                         <th scope="col">Mã</th>
                         <th scope="col">Tên Khuyến mãi</th>
+                        <th scope="col">Mô tả</th>
                         <th scope="col">Ngày bắt đầu</th>
                         <th scope="col">Ngày kết thúc</th>
                         <th scope="col">Trang Thái</th>
@@ -90,6 +91,7 @@
                                     ${khuyenMai.ma}
                             </td>
                             <td>${khuyenMai.ten}</td>
+                            <td>${khuyenMai.moTa}</td>
                             <td>
                                 <fmt:formatDate value="${khuyenMai.ngayBatDau}" pattern="yyyy-MM-dd"/>
                             </td>

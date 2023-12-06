@@ -119,7 +119,7 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     public void getSanPhamById(UUID idSP) {
         Optional<SanPhamKhuyenMai> spkm = repository.findBySanPham_id(idSP);
         Integer donGiaGiam = 0;
-        if(spkm.isPresent()){
+        if (spkm.isPresent()) {
             SanPhamKhuyenMai sanPhamKhuyenMai = spkm.get();
             if (!sanPhamKhuyenMai.getLoaiGiamGia()) {
                 donGiaGiam = sanPhamKhuyenMai.getSanPhamKM().getGiaBan().intValue() - sanPhamKhuyenMai.getMucGiam().intValue();
@@ -188,23 +188,29 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     public SanPham addSanPhamKhuyenMai(KhuyenMaiSanPhamRequest request) {
         Optional<KhuyenMai> khuyenMai = repository.findById(UUID.fromString(request.getIdKM()));
         Optional<SanPham> sanPham = sanPhamRepository.findById(UUID.fromString(request.getIdSanPham()));
-        if (khuyenMai.isPresent()) {
-            SanPhamKhuyenMai spkm = SanPhamKhuyenMai.builder()
+        SanPhamAsKhuyenMai km = repository.checkTonTaiSanPham(sanPham.get().getId());
+        SanPhamKhuyenMai spkm = null;
+        if (km != null) {
+            Integer updateMucGiam =  km.getMucGiam().intValue() + request.getMucGiam().intValue();
+            spkm = sanPhamKhuyenMaiRepository.findById(km.getId()).get();
+           spkm.setMucGiam(BigDecimal.valueOf(updateMucGiam));
+        } else {
+            spkm = SanPhamKhuyenMai.builder()
                     .khuyenMai(khuyenMai.get())
                     .sanPhamKM(sanPham.get())
                     .trangThai(KhuyenMaiStatus.KICH_HOAT)
                     .mucGiam(request.getMucGiam())
                     .loaiGiamGia(request.getLoaiGiamGia())
                     .build();
-            if (spkm.getLoaiGiamGia()) {
-                Integer donGiaKhiGiamPhanTram = spkm.getSanPhamKM().getGiaBan().intValue() - (spkm.getSanPhamKM().getGiaBan().intValue() / 100) * spkm.getMucGiam().intValue();
-                spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamPhanTram));
-            } else {
-                Integer donGiaKhiGiamVND = spkm.getSanPhamKM().getGiaBan().intValue() - spkm.getMucGiam().intValue();
-                spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamVND));
-            }
-            sanPhamKhuyenMaiRepository.save(spkm);
         }
+        if (spkm.getLoaiGiamGia()) {
+            Integer donGiaKhiGiamPhanTram = spkm.getSanPhamKM().getGiaBan().intValue() - (spkm.getSanPhamKM().getGiaBan().intValue() / 100) * spkm.getMucGiam().intValue();
+            spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamPhanTram));
+        } else {
+            Integer donGiaKhiGiamVND = spkm.getSanPhamKM().getGiaBan().intValue() - spkm.getMucGiam().intValue();
+            spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamVND));
+        }
+        sanPhamKhuyenMaiRepository.save(spkm);
         return sanPham.get();
     }
 

@@ -79,6 +79,7 @@ public class ChiTietSanPhamController {
             List<ChiTietSanPham> listChiTietSanPham = chiTietSanPhamService.getChiTietSanPham(idSanPham);
             chiTietSanPhamService.save(chiTietSanPham);
             redirectAttributes.addFlashAttribute("listChiTietSanPhamBySP", listChiTietSanPham);
+            redirectAttributes.addFlashAttribute("success", "thêm thi tiết sản phẩm thành công");
 
             int width = 300;
             int height = 300;

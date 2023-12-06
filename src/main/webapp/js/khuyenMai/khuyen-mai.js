@@ -36,9 +36,10 @@ function getSanPham(page) {
             let khuyenMai = null;
             for (let i = 0; i < data.content.length; i++) {
 
+
                 if (data.content[i].sanPhamKhuyenMais.length > 0) {
                     data.content[i].sanPhamKhuyenMais.map(function (e) {
-                        if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
+                        if (e.khuyenMai.trangThai === 1 && e.trangThai === 1) {
                             khuyenMai = e;
                         } else {
                             khuyenMai = null;
@@ -51,18 +52,28 @@ function getSanPham(page) {
                 sanPham += `<tr id="${data.content[i].ma}"><td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img}"></td>
                   <td>${data.content[i].ma}</td>
                   <td>${data.content[i].ten}</td>
-                  <td>${VND.format(data.content[i].giaBan)}</td>
-                 ${khuyenMai != null ?
-                    `<td style="color: #03AA28"> Đã được áp dụng</td>` :
+                  <td>
+                    ${khuyenMai !== null ?
+                    `<div><span style="color: #03AA28">${VND.format(khuyenMai.donGiaSauKhiGiam)}</span></div>
+
+                     <div style="display: flex">
+                     <strike>${VND.format(data.content[i].giaBan)}</strike>
+                     <p style="color: #E43535">${khuyenMai.loaiGiamGia === true ? '-' + khuyenMai.mucGiam + '%' : '-' + VND.format(khuyenMai.mucGiam)}</p>
+                     </div>`
+
+                    : `<span style="color: #03AA28">${VND.format(data.content[i].giaBan)}</span>`}
+                    </td>
+           
+                   ${khuyenMai !== null ? `<td style="color: #03AA28"> Đã được áp dụng ${khuyenMai.khuyenMai.ma}</td>` :
                     `<td>
-                    <button type="button" class="btn btn-primary" onclick="modalThemSanPhamKhuyenMai('${data.content[i].id}' ,
+                      <button type="button" class="btn btn-primary" onclick="modalThemSanPhamKhuyenMai('${data.content[i].id}' ,
                     '${data.content[i].ma}',
-                     '${data.content[i].ten}',
-                     '${data.content[i].giaBan}')">
+                     '${data.content[i].ten}'
+                     )">
                      <i class="bi bi-plus-circle"></i>
                      </button>
-                    </td>`
-                }
+                     </td>`}
+                
                   </tr>`
             }
 
@@ -114,8 +125,18 @@ function api(page, data) {
                 sanPham += `<tr><td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img}"></td>
                   <td>${data.content[i].ma}</td>
                   <td>${data.content[i].ten}</td>
-                  <td>${VND.format(data.content[i].giaBan)}</td>
-                 ${khuyenMai != null ? `<td style="color: #03AA28"> Đã được áp dụng</td>` :
+                  <td>
+                      ${khuyenMai !== null ?
+                    `<div><span style="color: #03AA28">${VND.format(khuyenMai.donGiaSauKhiGiam)}</span></div>
+
+                     <div style="display: flex">
+                     <strike>${VND.format(data.content[i].giaBan)}</strike>
+                     <p style="color: #E43535">${khuyenMai.loaiGiamGia === true ? '-' + khuyenMai.mucGiam + '%' : '-' + VND.format(khuyenMai.mucGiam)}</p>
+                     </div>`
+
+                    : `<span style="color: #03AA28">${VND.format(data.content[i].giaBan)}</span>`}
+                  </td>
+                 ${khuyenMai != null ? `<td style="color: #03AA28"> Đã được áp dụng ${khuyenMai.khuyenMai.ma}</td>` :
                     `<td>
                       <button type="button" class="btn btn-primary" onclick="modalThemSanPhamKhuyenMai('${data.content[i].id}' ,
                     '${data.content[i].ma}',
@@ -217,7 +238,8 @@ document.getElementById('clear').addEventListener('click', () => {
 function timKiem() {
     getSanPham(1);
 }
-window.onclick = function(event) {
+
+window.onclick = function (event) {
     if (event.target == modalSanPham) {
         modalSanPham.style.display = "none";
         window.location.reload();

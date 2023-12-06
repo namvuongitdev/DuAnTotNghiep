@@ -1,4 +1,5 @@
 package com.example.web.controller;
+
 import com.beust.jcommander.Parameter;
 import com.example.web.model.ChatLieu;
 import com.example.web.model.ChiTietSanPham;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -77,7 +79,7 @@ public class SanPhamController {
 
     @GetMapping(value = "/hien-thi")
     public String hienThi(Model model, @RequestParam(defaultValue = "1") Integer page) {
-        Pageable pageable = PageRequest.of(page - 1, 10 , Sort.by("ngayTao").descending());
+        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("ngayTao").descending());
         sanPhamPage = iSanPhamService.findAll(pageable);
         model.addAttribute("listSanPham", sanPhamPage);
         danhSachThuocTinhSanPham(model);
@@ -90,7 +92,7 @@ public class SanPhamController {
     public String filterSanPham(@RequestParam(defaultValue = "1") Integer page,
                                 @ModelAttribute("filterSanPham") SanPhamFilter filter,
                                 Model model) {
-        Pageable pageable = PageRequest.of(page - 1, 10 ,  Sort.by("ngayTao").descending());
+        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("ngayTao").descending());
         sanPhamPage = iSanPhamService.sanPhamFilter(filter, pageable);
         String url = "/admin/san-pham/filter?" + request.getQueryString().replaceAll("[&?]page.*?(?=&|\\?|$)", "") + "&page=";
         model.addAttribute("filter", filter);
@@ -102,22 +104,22 @@ public class SanPhamController {
 
     @GetMapping({"/api-hien-thi"})
     @ResponseBody
-    public Page<SanPham> apiSanPham(@RequestParam Integer page , @RequestParam(required = false) String value) {
+    public Page<SanPham> apiSanPham(@RequestParam Integer page, @RequestParam(required = false) String value) {
         Page listSanPham = null;
-        Pageable pageable = PageRequest.of(page - 1, 10 , Sort.by("ngayTao").descending());
-        if(value.isEmpty()){
+        Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("ngayTao").descending());
+        if (value.isEmpty()) {
             listSanPham = iSanPhamService.findAll(pageable);
-        }else{
-            listSanPham =  iSanPhamService.getAllByTenOrMa(value, page);
+        } else {
+            listSanPham = iSanPhamService.getAllByTenOrMa(value, page);
         }
         return listSanPham;
     }
 
     @PostMapping("/api-filter")
     @ResponseBody
-    public Page<SanPham> filterSanPham(@RequestParam Integer page , @RequestBody SanPhamFilter filter) {
+    public Page<SanPham> filterSanPham(@RequestParam Integer page, @RequestBody SanPhamFilter filter) {
         Pageable pageable = PageRequest.of(page - 1, 10);
-        Page listSanPham = iSanPhamService.sanPhamFilter(filter ,pageable);
+        Page listSanPham = iSanPhamService.sanPhamFilter(filter, pageable);
         return listSanPham;
     }
 
@@ -131,14 +133,14 @@ public class SanPhamController {
 
     @PostMapping(value = "/add")
     public String addSanPham(@Valid @ModelAttribute("sanPham") SanPham sanPham, BindingResult result, @RequestParam(required = false) String id,
-                             Model model, @RequestParam("ten") String ten) {
+                             Model model, @RequestParam("ten") String ten, RedirectAttributes attributes) {
         boolean checkTenSP = iSanPhamService.isProductExists(ten);
 
         if (result.hasErrors()) {
             model.addAttribute("title", "Tạo mới");
             danhSachThuocTinhSanPham(model);
             return "quanLySanPham/sanpham/new-san-pham";
-        }else {
+        } else {
             Date date = java.util.Calendar.getInstance().getTime();
             if (!id.isEmpty()) {
                 SanPham sp = iSanPhamService.getOne(UUID.fromString(id));
@@ -154,7 +156,7 @@ public class SanPhamController {
                 iSanPhamService.save(sp);
                 khuyenMaiService.getSanPhamById(sp.getId());
             } else {
-                if(checkTenSP) {
+                if (checkTenSP) {
                     result.rejectValue("ten", "error.sanPham", "Sản phẩm này đã tồn tại.");
                     model.addAttribute("title", "Tạo mới");
                     danhSachThuocTinhSanPham(model);
@@ -164,7 +166,10 @@ public class SanPhamController {
                 sanPham.setMa(maKM);
                 sanPham.setNgayTao(date);
             }
-            iSanPhamService.save(sanPham);
+            SanPham sp = iSanPhamService.save(sanPham);
+            if (sp != null) {
+                attributes.addFlashAttribute("success", "thêm sản phẩm thành công");
+            }
         }
         return "redirect:/admin/san-pham/hien-thi/" + sanPham.getId();
     }
@@ -178,7 +183,7 @@ public class SanPhamController {
         model.addAttribute("chiTietSanPham", new ChiTietSanPham());
         model.addAttribute("sp", sanPham);
         danhSachThuocTinhSanPham(model);
-        model.addAttribute("listMauSacCTSP" , mauSacService.getTheoCTSP(UUID.fromString(id)));
+        model.addAttribute("listMauSacCTSP", mauSacService.getTheoCTSP(UUID.fromString(id)));
         return "quanLySanPham/sanpham/new-san-pham";
     }
 
@@ -187,7 +192,7 @@ public class SanPhamController {
     public SanPham addAnhMacDinhSanPham(@RequestParam String img, @RequestParam String idSP) {
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(idSP));
         sanPham.setImg(img);
-      return  iSanPhamService.save(sanPham);
+        return iSanPhamService.save(sanPham);
     }
 
 
@@ -201,15 +206,16 @@ public class SanPhamController {
 
     @GetMapping("/hienThi-chatLieu")
     @ResponseBody
-    public List<ChatLieu> getChatLieu(){
-        return  iChatLieuService.getAll1();
+    public List<ChatLieu> getChatLieu() {
+        return iChatLieuService.getAll1();
     }
+
     @PostMapping("/add-chatLieu")
     @ResponseBody
-    public ChatLieu addChatLieu(@RequestBody @Valid ChatLieu chatLieu, BindingResult result){
-        if(result.hasErrors()){
+    public ChatLieu addChatLieu(@RequestBody @Valid ChatLieu chatLieu, BindingResult result) {
+        if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
-        }else {
+        } else {
             UUID uuid = UUID.randomUUID();
             chatLieu.setId(uuid);
             chatLieu.setTrangThai(1);
@@ -221,15 +227,16 @@ public class SanPhamController {
 
     @GetMapping("/hienThi-danhMuc")
     @ResponseBody
-    public List<DanhMuc> getDanhMuc(){
-        return  danhMucService.getAll1();
+    public List<DanhMuc> getDanhMuc() {
+        return danhMucService.getAll1();
     }
+
     @PostMapping("/add-danhMuc")
     @ResponseBody
-    public DanhMuc addDanhMuc(@RequestBody @Valid DanhMuc danhMuc, BindingResult result){
-        if(result.hasErrors()){
+    public DanhMuc addDanhMuc(@RequestBody @Valid DanhMuc danhMuc, BindingResult result) {
+        if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
-        }else {
+        } else {
             UUID uuid = UUID.randomUUID();
             danhMuc.setId(String.valueOf(uuid));
             danhMuc.setTrangThai(1);
@@ -241,15 +248,16 @@ public class SanPhamController {
 
     @GetMapping("/hienThi-kieuDang")
     @ResponseBody
-    public List<KieuDang> getKieuDang(){
+    public List<KieuDang> getKieuDang() {
         return iFormDangService.getAll1();
     }
+
     @PostMapping("/add-kieuDang")
     @ResponseBody
-    public KieuDang addKieuDang(@RequestBody @Valid KieuDang kieuDang, BindingResult result){
-        if(result.hasErrors()){
+    public KieuDang addKieuDang(@RequestBody @Valid KieuDang kieuDang, BindingResult result) {
+        if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
-        }else {
+        } else {
             UUID uuid = UUID.randomUUID();
             kieuDang.setId(uuid);
             kieuDang.setTrangThai(1);
@@ -262,15 +270,16 @@ public class SanPhamController {
 
     @GetMapping("/hienThi-kichCo")
     @ResponseBody
-    public List<Size> getKichCo(){
+    public List<Size> getKichCo() {
         return sizeService.getAll1();
     }
+
     @PostMapping("/add-kichCo")
     @ResponseBody
-    public Size addSize(@RequestBody @Valid Size size, BindingResult result){
-        if(result.hasErrors()){
+    public Size addSize(@RequestBody @Valid Size size, BindingResult result) {
+        if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
-        }else {
+        } else {
             UUID uuid = UUID.randomUUID();
             size.setId(String.valueOf(uuid));
             size.setNgayTao(java.util.Calendar.getInstance().getTime());
@@ -283,15 +292,16 @@ public class SanPhamController {
 
     @GetMapping("/hienThi-mauSac")
     @ResponseBody
-    public List<MauSac> getMauSac(){
+    public List<MauSac> getMauSac() {
         return mauSacService.getAll1();
     }
+
     @PostMapping("/add-mauSac")
     @ResponseBody
-    public MauSac addMauSac(@RequestBody @Valid MauSac mauSac, BindingResult result){
-        if(result.hasErrors()){
+    public MauSac addMauSac(@RequestBody @Valid MauSac mauSac, BindingResult result) {
+        if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
-        }else {
+        } else {
             UUID uuid = UUID.randomUUID();
             mauSac.setId(uuid);
             mauSac.setTrangThai(1);
@@ -303,7 +313,7 @@ public class SanPhamController {
     }
 
     @GetMapping("/stop/{id}")
-    public String stop(@PathVariable("id") UUID id){
+    public String stop(@PathVariable("id") UUID id) {
         SanPham sp = iSanPhamService.getOne(id);
         sp.setTrangThai(1);
         chiTietSanPhamService.updateTT_0(id);
@@ -313,8 +323,8 @@ public class SanPhamController {
     }
 
     @GetMapping("/stop-ctsp/{id}")
-    public String stopCTSP(@PathVariable("id") String idCt, @RequestParam String idSP, @RequestParam("tt") Integer tt){
-        String url= chiTietSanPhamService.save2(idCt,idSP,tt);
+    public String stopCTSP(@PathVariable("id") String idCt, @RequestParam String idSP, @RequestParam("tt") Integer tt) {
+        String url = chiTietSanPhamService.save2(idCt, idSP, tt);
         return url;
     }
 
