@@ -84,7 +84,7 @@ public class ChiTietSanPhamController {
             int width = 300;
             int height = 300;
             String format = "png";
-            String fileName = chiTietSanPham.getSanPham().getMa() + "-" + chiTietSanPham.getMauSac().getTen() + "-" + chiTietSanPham.getSize().getTen() + "." + format;
+            String fileName = chiTietSanPham.getSanPham().getMa() + "-" + chiTietSanPham.getMauSac().getTen() + "-" + chiTietSanPham.getSize().getTen() + "-" + chiTietSanPham.getQrCode() + "." + format;
             Map<EncodeHintType, Object> hints = new HashMap<>();
             hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
             BitMatrix bitMatrix = new MultiFormatWriter().encode(chiTietSanPham.getQrCode(), BarcodeFormat.QR_CODE, width, height, hints);

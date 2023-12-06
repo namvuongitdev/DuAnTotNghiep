@@ -1,6 +1,7 @@
 package com.example.web.service;
 import com.example.web.model.ChatLieu;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,11 +16,11 @@ public interface IChatLieuService {
 
     void add(ChatLieu chatLieu);
 
-    void update(ChatLieu chatLieu);
+    ChatLieu save(ChatLieu chatLieu);
 
-    void delete(UUID id);
-
-    Page<ChatLieu> page(Integer pageNo, Integer size);
+    Page<ChatLieu> findAll(Pageable pageable);
 
     String updateStatus(String id,Integer trangThai);
+
+    boolean isExists(String value);
 }

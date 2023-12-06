@@ -79,7 +79,7 @@
                         <th scope="col">Mô tả</th>
                         <th scope="col">Ngày bắt đầu</th>
                         <th scope="col">Ngày kết thúc</th>
-                        <th scope="col">Trang Thái</th>
+                        <th scope="col">Trạng thái</th>
                         <th scope="col">Thao tác</th>
                     </tr>
                     </thead>

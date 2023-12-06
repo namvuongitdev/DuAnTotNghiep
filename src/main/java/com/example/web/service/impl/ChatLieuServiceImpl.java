@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,30 +40,31 @@ public class ChatLieuServiceImpl implements IChatLieuService {
     }
 
     @Override
-    public void update(ChatLieu chatLieu) {
-        repository.save(chatLieu);
+    public ChatLieu save(ChatLieu chatLieu) {
+        return repository.save(chatLieu);
     }
 
     @Override
-    public void delete(UUID id) {
-        repository.deleteById(id);
-    }
-
-    @Override
-    public Page<ChatLieu> page(Integer pageNo, Integer size) {
-        Pageable pageable = PageRequest.of(pageNo, size);
+    public Page<ChatLieu> findAll(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
     @Override
     public String updateStatus(String id, Integer trangThai) {
         ChatLieu chatLieu = repository.getReferenceById(UUID.fromString(id));
+        Date date = java.util.Calendar.getInstance().getTime();
         if (trangThai==0){
             chatLieu.setTrangThai(1);
         }else {
             chatLieu.setTrangThai(0);
         }
+        chatLieu.setNgaySua(date);
         repository.save(chatLieu);
         return "redirect:/admin/chat-lieu/hien-thi";
+    }
+
+    @Override
+    public boolean isExists(String value) {
+        return false;
     }
 }

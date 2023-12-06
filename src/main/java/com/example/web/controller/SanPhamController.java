@@ -165,6 +165,7 @@ public class SanPhamController {
                 String maKM = "SP" + (iSanPhamService.getAll().size() + 1);
                 sanPham.setMa(maKM);
                 sanPham.setNgayTao(date);
+                iSanPhamService.save(sanPham);
             }
             SanPham sp = iSanPhamService.save(sanPham);
             if (sp != null) {

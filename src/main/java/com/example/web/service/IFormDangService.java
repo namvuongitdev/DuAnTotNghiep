@@ -12,15 +12,15 @@ public interface IFormDangService {
 
     List<KieuDang> getAll1();
 
-    KieuDang getOne(UUID id);
-
     void add(KieuDang kieuDang);
 
-    void update(KieuDang kieuDang);
+    KieuDang getOne(UUID id);
 
-    void delete(UUID id);
+    KieuDang save(KieuDang kieuDang);
 
-    Page<KieuDang> page(Integer pageNo, Integer size);
+    Page<KieuDang> findAll(Pageable pageable);
 
     String updateStatus(String id,Integer trangThai);
+
+    boolean isExists(String value);
 }

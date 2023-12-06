@@ -33,26 +33,31 @@
                 </nav>
             </div><!-- End Page Title -->
             <section class="section">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Sửa dữ liệu</h5>
-
+                <!-- Add -->
+                <div class="card" id="cardAdd" style="display: none;">
+                    <div class="card-body row">
+                        <h5 class="card-title col-10">Tạo dữ liệu</h5>
+                        <div class="col-2 card-title">
+                            <button type="button" class="btn btn-danger" onclick="location.reload()">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
                         <!-- Floating Labels Form -->
-                        <%--@elvariable id="kieuDang" type=""--%>
-                        <form:form method="post" action="/admin/kieu-dang/update/${kieuDang.id}" modelAttribute="kieuDang" class="row g-3">
+                        <form id="colorForm" method="post" action="/admin/kieu-dang/save" modelAttribute="kieuDang" class="row g-3">
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Kiểu dáng" readonly="true"/>
-                                    <form:label for="floatingName" path="ten">Kiểu dáng</form:label>
-                                    <span style="color: red">${erro}</span>
+                                    <input type="text" name="ten" class="form-control" id="floatingName" placeholder="Tên kiểu dáng"/>
+                                    <label for="floatingName">Tên kiểu dáng</label>
+                                    <div id="nameError" style="color: red"></div>
                                 </div>
                             </div>
                             <div class="text-center">
-                                <form:button disabled="true" id="disabled" type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn sửa không?')==true){ }else{ alert('Sửa thất bại');return false; }">
+                                <button type="submit" class="btn btn-primary" onclick="return validateForm()">
                                     Xác nhận
-                                </form:button>
+                                </button>
                             </div>
-                        </form:form><!-- End floating Labels Form -->
+                        </form>
+                        <!-- End floating Labels Form -->
                     </div>
                 </div>
                 <br><br>
@@ -62,16 +67,16 @@
 
                         <div class="card">
                             <div class="card-body row">
-                                <h5 class="card-title col-9">Danh sách</h5>
-                                <div class="col-2 card-title" style="margin-left: 80px">
-                                    <button type="button" class="btn btn-primary" title="Thêm dữ liệu" data-bs-toggle="modal" data-bs-target="#modalDialogScrollable">
+                                <h5 class="card-title col-10">Danh sách</h5>
+                                <div class="col-2 card-title">
+                                    <button type="button" class="btn btn-primary" title="Tạo dữ liệu" id="showCardButton">
                                         <i class="bi bi-plus-circle"></i>
                                     </button>
                                 </div>
 
                                 <!-- Table with stripped rows -->
                                 <table class="table">
-                                    <thead>
+                                    <thead style="text-align: center">
                                     <tr>
                                         <th scope="col">STT</th>
                                         <th scope="col">Kiểu dáng</th>
@@ -82,83 +87,59 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach items="${list}" var="list" varStatus="i">
-                                        <tr>
-                                            <th scope="row">${i.index+1}</th>
-                                            <td>${list.ten}</td>
-                                            <td><fmt:formatDate value="${list.ngayTao}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
-                                            <td><fmt:formatDate value="${list.ngaySua}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
+                                    <c:forEach items="${list.content}" var="lst" varStatus="i">
+                                        <tr style="text-align: center">
+                                            <th scope="row">${i.index + (list.number + 1 != 1 ? ((list.number + 1) * list.size) -(list.size - 1) : list.number + 1)}</th>
+                                            <td>${lst.ten}</td>
+                                            <td><fmt:formatDate value="${lst.ngayTao}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
+                                            <td><fmt:formatDate value="${lst.ngaySua}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
                                             <td>
                                                 <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
-                                                        type="button" onclick="updateStatus({id:`${list.id}`,trangThai:`${list.trangThai}`})" class="${list.trangThai == 0 ? 'btn btn-danger' : 'btn btn-success'}">
-                                                        ${list.trangThai == 0 ? 'Ngừng kích hoạt' : 'Kích hoạt'}
+                                                        type="button" class="${lst.trangThai == 0 ? 'btn btn-danger' : 'btn btn-success'}">
+                                                        ${lst.trangThai == 0 ? 'Ngừng kích hoạt' : 'Kích hoạt'}
                                                 </button>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-success" title="Sửa dữ liệu" onclick="myFunction()">
-                                                    <a class="text-white" style="text-decoration: none" href="/admin/kieu-dang/view-update/${list.id}"><i class="bi bi-pencil"></i></a>
+                                                <a id="showButton" class="btn btn-success text-white" title="Sửa dữ liệu" style="text-decoration: none" href="/admin/kieu-dang/hien-thi/${lst.id}"><i class="bi bi-pencil"></i></a>
+                                                <button type="button" class="btn btn-warning" title="Cập nhật trạng thái" onclick="updateStatus({id:`${lst.id}`,trangThai:`${lst.trangThai}`})">
+                                                    <i class="bi bi-arrow-repeat"></i>
                                                 </button>
-                                                <button type="button" class="btn btn-danger" title="Ngừng kích hoạt" onclick="if(confirm('Bạn có chắc chắn muốn ngừng kích hoạt không?')){window.location.href = '/admin/kieu-dang/stop/${list.id}';}
-                                                        else{alert('Ngừng kích hoạt thất bại!')}"><i class="bi bi-sign-stop"></i>
-                                                </button>
-
                                             </td>
                                         </tr>
                                     </c:forEach>
                                     </tbody>
                                 </table>
                                 <!-- End Table with stripped rows -->
-                                <%--                phân trang --%>
+                                <%--phân trang--%>
                                 <div class="container-fluid mt-5">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination justify-content-center">
-                                            <li class="page-item ${currentPage<=0?"disabled":""}"><a class="page-link" href="/admin/kieu-dang/hien-thi/${currentPage-1}"><</a></li>
-                                            <c:forEach begin="1" end="${totalPage}" var="i">
-                                                <li class="page-item"><a class="page-link" href="/admin/kieu-dang/hien-thi/${i-1}">${i}</a></li>
+                                            <li class="page-item ${list.number + 1<=1?"disabled":""}"><a class="page-link"
+                                                                                                         href="${url}${(list.number + 1) - 1}"><</a>
+                                            </li>
+                                            <c:forEach begin="1" end="${list.getTotalPages()}" var="i">
+                                                <li class="page-item"><a class="page-link ${i == list.number + 1 ? 'active ' : ''}"
+                                                                         href="${url}${i}">${i}</a></li>
                                             </c:forEach>
-                                            <li class="page-item ${currentPage>=totalPage-1?"disabled":""}"><a class="page-link" href="/admin/kieu-dang/hien-thi/${currentPage+1}">></a></li>
+                                            <li class="page-item ${list.number + 1 >= list.getTotalPages() ? "disabled":  ""}">
+                                                <a class="page-link"
+                                                   href="${url}${(list.number + 1) + 1}">></a>
+                                            </li>
                                         </ul>
                                     </nav>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </section>
-            <div class="modal fade" id="modalDialogScrollable" tabindex="-1">
-                <div class="modal-dialog modal-dialog-scrollable">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Thêm dữ liệu</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form:form method="post" action="/admin/kieu-dang/add" modelAttribute="kieuDang" class="row g-3">
-                            <div class="modal-body">
-                                <div class="form-floating">
-                                    <form:input type="text" path="ten" class="form-control" id="floatingName" placeholder="Kiểu dáng"/>
-                                    <form:label for="floatingName" path="ten">Kiểu dáng</form:label>
-                                    <form:errors path="ten" cssStyle="color: red"/>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; }">
-                                    Xác nhận
-                                </form:button>
-                            </div>
-                        </form:form><!-- End floating Labels Form -->
-                    </div>
-                </div>
-            </div><!-- End Modal Dialog Scrollable-->
         </div>
     </div>
 </div>
 <script>
-    function myFunction() {
-        document.getElementById("floatingName").readOnly = false;
-        document.getElementById("disabled").disabled = false
-    }
+    document.getElementById("showCardButton").addEventListener("click", function() {
+        document.getElementById("cardAdd").style.display = "block";
+    });
     function updateStatus(data) {
         if (confirm("Bạn có muốn cập nhật trạng thái không?")==true){
             window.location.href="/admin/kieu-dang/update-status/"+data.id+"?trangThai="+data.trangThai;
@@ -167,6 +148,26 @@
             return;
         }
     }
+
+    function validateForm() {
+        if(confirm('Bạn có muốn tạo dữ liệu không')==true){
+            var input = document.getElementById('floatingName').value.trim();
+            var errorDiv = document.getElementById('nameError');
+            var regex = /^[^\d!"@#\$%\^&\*\(\)_\+=\[\]\{\}\|;:'",<>\?\/\\`~]+$/; // Chỉ chấp nhận chữ cái và khoảng trắng
+
+            if (!regex.test(input)) {
+                errorDiv.textContent = 'Tên kiểu dáng không hợp lệ';
+                return false; // Ngăn cản form được submit
+            }else {
+                errorDiv.textContent = ''; // Xóa thông báo lỗi
+                alert('Tạo dữ liệu thành công');
+                return true; // Cho phép form được submit
+            }
+        }else{
+            return false;
+        }
+    }
 </script>
+
 </body>
 </html>

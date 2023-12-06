@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,35 +34,36 @@ public class FormDangServiceImpl implements IFormDangService {
     }
 
     @Override
+    public KieuDang save(KieuDang kieuDang) {
+        return repository.save(kieuDang);
+    }
+
+    @Override
+    public Page<KieuDang> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
     public void add(KieuDang kieuDang) {
         repository.save(kieuDang);
     }
 
     @Override
-    public void update(KieuDang kieuDang) {
-        repository.save(kieuDang);
-    }
-
-    @Override
-    public void delete(UUID id) {
-        repository.deleteById(id);
-    }
-
-    @Override
-    public Page<KieuDang> page(Integer pageNo, Integer size) {
-        Pageable pageable = PageRequest.of(pageNo, size);
-        return repository.findAll(pageable);
-    }
-
-    @Override
     public String updateStatus(String id, Integer trangThai) {
         KieuDang kieuDang = repository.getReferenceById(UUID.fromString(id));
+        Date date = java.util.Calendar.getInstance().getTime();
         if (trangThai==0){
             kieuDang.setTrangThai(1);
         }else {
             kieuDang.setTrangThai(0);
         }
+        kieuDang.setNgaySua(date);
         repository.save(kieuDang);
         return "redirect:/admin/kieu-dang/hien-thi";
+    }
+
+    @Override
+    public boolean isExists(String value) {
+        return false;
     }
 }
