@@ -1,5 +1,4 @@
 package com.example.web.model;
-import com.example.web.response.SanPhamAsKhuyenMai;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,11 +16,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.Nationalized;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -63,6 +60,7 @@ public class SanPham {
     private Date ngaySua;
 
     @NotNull(message = "Vui lòng điền giá bán.")
+    @DecimalMin(value = "50000.00", message = "Giá bán phải lớn hơn hoặc bằng 50.000")
     @Column(name = "giaban")
     private BigDecimal giaBan;
 

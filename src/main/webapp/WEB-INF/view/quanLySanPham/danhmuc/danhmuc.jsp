@@ -13,6 +13,12 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
 </head>
 <body>
 <%--navbar--%>
@@ -43,16 +49,16 @@
                             </button>
                         </div>
                         <!-- Floating Labels Form -->
-                        <form id="colorForm" method="post" action="/admin/danh-muc/save" modelAttribute="danhMuc" class="row g-3">
+                        <form id="colorForm" method="post" action="/admin/danh-muc/save" modelAttribute="danhMuc" class="row g-3" onsubmit="return false;">
                             <div class="col-md-12">
                                 <div class="form-floating">
                                     <input type="text" name="ten" class="form-control" id="floatingName" placeholder="Tên danh mục"/>
-                                    <label for="floatingName">Tên danh mục</label>
+                                    <label for="floatingName">Tên danh mục <span style="color: red">(*)</span></label>
                                     <div id="nameError" style="color: red"></div>
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary" onclick="return validateForm()">
+                                <button type="submit" class="btn btn-primary" onclick="return validateForm(event)">
                                     Xác nhận
                                 </button>
                             </div>
@@ -141,31 +147,47 @@
         document.getElementById("cardAdd").style.display = "block";
     });
     function updateStatus(data) {
-        if (confirm("Bạn có muốn cập nhật trạng thái không?")==true){
-            window.location.href="/admin/danh-muc/update-status/"+data.id+"?trangThai="+data.trangThai;
-        }else {
-            alert("Cập nhật thất bại");
-            return;
-        }
+        Swal.fire({
+            title: "Bạn có muốn cập nhật trạng thái không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                window.location.href="/admin/chat-lieu/update-status/"+data.id+"?trangThai="+data.trangThai;
+                Swal.fire("Cập nhật thành công", "", "success");
+            } else if (result.isDenied) {
+                Swal.fire("Cập nhật thất bại!", "", "error");
+            }
+        });
     }
 
-    function validateForm() {
-        if(confirm('Bạn có muốn tạo dữ liệu không')==true){
-            var input = document.getElementById('floatingName').value.trim();
-            var errorDiv = document.getElementById('nameError');
-            var regex = /^[^\d!"@#\$%\^&\*\(\)_\+=\[\]\{\}\|;:'",<>\?\/\\`~]+$/; // Chỉ chấp nhận chữ cái và khoảng trắng
+    function validateForm(event) {
+        var input = document.getElementById('floatingName').value.trim();
+        var errorDiv = document.getElementById('nameError');
+        var regex = /^[^\d!"@#\$%\^&\*\(\)_\+=\[\]\{\}\|;:'",<>\?\/\\`~]+$/; // Chỉ chấp nhận chữ cái và khoảng trắng
 
-            if (!regex.test(input)) {
-                errorDiv.textContent = 'Tên danh mục không hợp lệ';
-                return false; // Ngăn cản form được submit
-            }else {
-                errorDiv.textContent = ''; // Xóa thông báo lỗi
-                alert('Tạo dữ liệu thành công');
-                return true; // Cho phép form được submit
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        Swal.fire({
+            title: "Bạn có muốn tạo dữ liệu không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (!regex.test(input)) {
+                    errorDiv.textContent = 'Tên danh mục không hợp lệ';
+                } else {
+                    errorDiv.textContent = ''; // Clear error message
+                    Swal.fire("Tạo dữ liệu thành công", "", "success");
+                    document.getElementById('colorForm').submit(); // Submit the form
+                }
+            } else if (result.isDenied) {
+                Swal.fire("Tạo dữ liệu thất bại !", "", "error");
             }
-        }else{
-            return false;
-        }
+        });
     }
 </script>
 

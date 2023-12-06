@@ -12,6 +12,14 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
+
     <style>
         .table .tenSP:hover {
             color: #1ab7ea; /* Màu nền khi hover */
@@ -120,9 +128,11 @@
                                                 ${sanPham.trangThai == 0 ? 'Kinh doanh' : 'Ngừng kinh doanh'}</button>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" title="Ngừng kinh doanh" onclick="if(confirm('Bạn có chắc chắn muốn ngừng kinh doanh không?')){window.location.href = '/admin/san-pham/stop/${sanPham.id}';}
-                                                else{alert('Ngừng kinh doanh thất bại!')}"><i class="bi bi-sign-stop"></i>
-                                        </button>
+                                        <c:if test="${sanPham.trangThai == 0}">
+                                            <button type="button" class="btn btn-danger" title="Ngừng kinh doanh" onclick="myFunction({id:`${sanPham.id}`})">
+                                                <i class="bi bi-sign-stop"></i>
+                                            </button>
+                                        </c:if>
                                         <a title="Xem chi tiết" href="/admin/san-pham/hien-thi/${sanPham.id}" class="btn btn-warning"><i class="bi bi-eye-fill"></i></a>
                                     </td>
                                 </tr>
@@ -153,5 +163,24 @@
         </div>
     </div>
 </div>
+<script>
+    function myFunction(data){
+        Swal.fire({
+            title: "Bạn có chắc chắn muốn ngừng kinh doanh không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                window.location.href = '/admin/san-pham/stop/' + data.id;
+                Swal.fire("Ngừng kinh doanh thành công", "", "success");
+            } else if (result.isDenied) {
+                Swal.fire("Ngừng kinh doanh thất bại!", "", "error");
+            }
+        });
+    }
+
+</script>
 </body>
 </html>
