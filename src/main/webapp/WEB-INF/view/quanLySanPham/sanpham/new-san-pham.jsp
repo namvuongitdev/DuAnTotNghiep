@@ -61,11 +61,11 @@
                     <div class="card-body row">
                         <h5 class="card-title">Thông tin sản phẩm</h5>
                         <br><br>
-                        <form:form action="/admin/san-pham/add?id=${sp.id}" method="post" modelAttribute="sanPham">
+                        <form:form action="/admin/san-pham/add?id=${sp.id}" method="post" modelAttribute="sanPham" id="yourForm" onsubmit="return false;">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <label for="ten" class="form-label ">Tên sản phẩm</label>
+                                        <label for="ten" class="form-label ">Tên sản phẩm <span style="color: red">(*)</span></label>
                                         <input type="text" class="form-control" name="ten" id="ten" value="${sp.ten}">
                                         <form:errors path="ten" cssStyle="color: red"/>
                                     </div>
@@ -81,7 +81,7 @@
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="giaBan" class="form-label">Giá bán</label>
+                                        <label for="giaBan" class="form-label">Giá bán <span style="color: red">(*)</span></label>
                                         <input type="text" class="form-control" name="giaBan" id="giaBan"
                                                value="${sp.giaBan}">
                                         <form:errors path="giaBan" cssStyle="color: red"/>
@@ -154,14 +154,16 @@
                             <br>
                             <div style="text-align: center">
                                 <c:if test="${sp.id == null}">
-                                <button class="btn btn-success" onclick="saveInputValues()">Xác nhận
+                                <button class="btn btn-success" onclick="add(event); saveInputValues()">Xác nhận
                                     </c:if>
                                     <c:if test="${sp.id != null}">
-                                    <button class="btn btn-primary" onclick="saveInputValues()">Cập nhật
+                                    <button class="btn btn-primary" onclick="update(event); saveInputValues()">Cập nhật
                                         </c:if>
                                     </button>
-                                    <a href="/admin/san-pham/new" class="btn btn-warning" onclick="clearLocalStorage()">Làm
+                                    <c:if test="${sp.id == null}">
+                                        <a href="/admin/san-pham/new" class="btn btn-warning" onclick="clearLocalStorage()">Làm
                                         Mới</a>
+                                    </c:if>
                             </div>
                         </form:form>
                     </div>
@@ -175,7 +177,6 @@
                             <a type="button" class="btn btn-primary" data-bs-toggle="modal"
                                data-bs-target="#exampleModal">Thêm
                             </a>
-                            <p style="color: red">${loiAdd}</p>
                         </div>
                         <br><br>
                         <div class="row">
@@ -300,7 +301,7 @@
                             <div class="row">
                                 <div class="col l-3">
                                     <form action="/admin/chi-tiet-san-pham/add?id=${sp.id}" method="post"
-                                          enctype="multipart/form-data" modelAttribute="${chiTietSanPham}">
+                                          enctype="multipart/form-data" modelAttribute="${chiTietSanPham}" id="yourFormId" onsubmit="return false;">
                                         <div class="row">
                                             <div class="row">
                                                 <div class="mb-3">
@@ -331,8 +332,7 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <button class="btn btn-primary" onclick="return checkMauSacKichCo()">Xác
-                                                Nhận
+                                            <button class="btn btn-primary" onclick="confirmCTSP(event)">Xác Nhận
                                             </button>
                                         </div>
                                     </form>
@@ -559,31 +559,105 @@
     });
 
     function myfunction(data) {
-        if (confirm("Bạn có muốn cập nhật trạng thái không ?") == true) {
-            window.location.href = '/admin/san-pham/stop-ctsp/' + data.idctsp + "?idSP=" + data.idsp + "&tt=" + data.trangThai;
-        } else {
-            alert('Cập nhật thất bại!')
-            return;
-        }
-    }
-
-    function checkMauSacKichCo() {
-        let check = '${checkError}';
-        console.log(check);
-        if (check !== null) {
-            alert('Thêm dữ liệu thành công.');
-            return true;
-        } else {
-            alert('Thêm thất bại! Dữ liệu đã tồn tại.');
-            return false;
-        }
-    }
-
-    if(${success != null}){
         Swal.fire({
-            title: "thêm mới!",
-            text: "${success}!",
+            title: "Bạn có muốn cập nhật trạng thái không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                window.location.href = '/admin/san-pham/stop-ctsp/' + data.idctsp + "?idSP=" + data.idsp + "&tt=" + data.trangThai;
+                Swal.fire("Cập nhật thành công", "", "success");
+            } else if (result.isDenied) {
+                Swal.fire("Cập nhật thất bại!", "", "error");
+            }
+        });
+    }
+
+    function add(event){
+        event.preventDefault(); // Prevent the default form submission behavior
+        Swal.fire({
+            title: "Bạn có muốn thêm không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                document.getElementById('yourForm').submit();
+            } else if (result.isDenied) {
+                Swal.fire("Thêm dữ liệu thất bại", "", "error");
+            }
+        });
+    }
+
+    function update(event){
+        event.preventDefault(); // Prevent the default form submission behavior
+        Swal.fire({
+            title: "Bạn có muốn sửa không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                document.getElementById('yourForm').submit();
+            } else if (result.isDenied) {
+                Swal.fire("Sửa dữ liệu thất bại", "", "error");
+            }
+        });
+    }
+
+    function confirmCTSP(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+        Swal.fire({
+            title: "Bạn có muốn thêm không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                document.getElementById('yourFormId').submit();
+            } else if (result.isDenied) {
+                Swal.fire("Thêm thất bại", "", "error");
+            }
+        });
+    }
+
+    if (${addSP != null}) {
+        Swal.fire({
+            title: "${addSP}",
             icon: "success"
+        });
+    }
+
+    if (${updateSP != null}) {
+        Swal.fire({
+            title: "${updateSP}",
+            icon: "success"
+        });
+    }
+
+    if (${updateSPLoi != null}) {
+        Swal.fire({
+            title: "${updateSPLoi}!",
+            icon: "error"
+        });
+    }
+
+
+    if (${successCTSP != null}) {
+        Swal.fire({
+            title: "${successCTSP}",
+            icon: "success"
+        });
+    }
+    if (${loiAdd != null}) {
+        Swal.fire({
+            title: "${loiAdd}!",
+            icon: "error"
         });
     }
 

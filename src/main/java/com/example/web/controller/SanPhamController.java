@@ -136,13 +136,12 @@ public class SanPhamController {
                              Model model, @RequestParam("ten") String ten, RedirectAttributes attributes) {
         boolean checkTenSP = iSanPhamService.isProductExists(ten);
 
-        if (result.hasErrors()) {
-            model.addAttribute("title", "Tạo mới");
-            danhSachThuocTinhSanPham(model);
-            return "quanLySanPham/sanpham/new-san-pham";
-        } else {
-            Date date = java.util.Calendar.getInstance().getTime();
-            if (!id.isEmpty()) {
+        Date date = java.util.Calendar.getInstance().getTime();
+        if (!id.isEmpty()) {
+            if (result.hasErrors()) {
+                attributes.addFlashAttribute("updateSPLoi", "Sửa dữ liệu thất bại");
+                return "redirect:/admin/san-pham/hien-thi/" + sanPham.getId();
+            } else {
                 SanPham sp = iSanPhamService.getOne(UUID.fromString(id));
                 sp.setNgaySua(date);
                 sp.setChatLieu(sanPham.getChatLieu());
@@ -155,21 +154,24 @@ public class SanPhamController {
                 sp.setTen(sanPham.getTen());
                 iSanPhamService.save(sp);
                 khuyenMaiService.getSanPhamById(sp.getId());
-            } else {
-                if (checkTenSP) {
-                    result.rejectValue("ten", "error.sanPham", "Sản phẩm này đã tồn tại.");
-                    model.addAttribute("title", "Tạo mới");
-                    danhSachThuocTinhSanPham(model);
-                    return "quanLySanPham/sanpham/new-san-pham";
-                }
+                attributes.addFlashAttribute("updateSP", "Sửa dữ liệu thành công");
+            }
+        } else {
+            if (result.hasErrors()) {
+                model.addAttribute("title", "Tạo mới");
+                danhSachThuocTinhSanPham(model);
+                return "quanLySanPham/sanpham/new-san-pham";
+            }else if(checkTenSP) {
+                result.rejectValue("ten", "error.sanPham", "Sản phẩm này đã tồn tại.");
+                model.addAttribute("title", "Tạo mới");
+                danhSachThuocTinhSanPham(model);
+                return "quanLySanPham/sanpham/new-san-pham";
+            }else{
                 String maKM = "SP" + (iSanPhamService.getAll().size() + 1);
                 sanPham.setMa(maKM);
                 sanPham.setNgayTao(date);
                 iSanPhamService.save(sanPham);
-            }
-            SanPham sp = iSanPhamService.save(sanPham);
-            if (sp != null) {
-                attributes.addFlashAttribute("success", "thêm sản phẩm thành công");
+                attributes.addFlashAttribute("addSP", "Thêm dữ liệu thành công");
             }
         }
         return "redirect:/admin/san-pham/hien-thi/" + sanPham.getId();
