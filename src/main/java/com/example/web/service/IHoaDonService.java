@@ -49,7 +49,7 @@ public interface IHoaDonService {
 
     HoaDon updateThongTinKhachHang(UUID idHD, ThongTinKhachHang thongTinKhachHang);
 
-    String inHoaDon(String id, Page<HoaDonChiTiet> hoaDonChiTiets);
+    void inHoaDon(String id, List<HoaDonChiTiet> hoaDonChiTiets);
 
     Page<Object[]> findHoaDonByTaiKhoan(String taiKhoan, Pageable pageable);
 

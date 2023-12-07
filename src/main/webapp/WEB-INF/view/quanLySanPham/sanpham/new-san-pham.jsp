@@ -257,6 +257,11 @@
                                                     </button>
                                                 </td>
                                                 <td style="text-align: center">
+                                                    <a class="btn btn-secondary" onclick="modalQrCode(`${ctsp.id}`)">
+                                                            QR
+                                                    </a>
+                                                </td>
+                                                <td style="text-align: center">
                                                     <button class="btn btn-secondary" onclick="if(confirm('Bạn có muốn sửa không')){
                                                         return true;
                                                         }else{
@@ -497,11 +502,12 @@
         </div>
     </div>
 </div>
-
+<jsp:include page="modal-hien-thi-qrcode.jsp"></jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="../../../../js/sanPham/quanLySanPham.js"></script>
+<script src="../../../../js/sanPham/modalHienThiQrCode.js"></script>
 <script type="text/javascript">
     // Lấy giá trị từ tất cả các ô input và textarea, và lưu chúng vào localStorage
     function saveInputValues() {

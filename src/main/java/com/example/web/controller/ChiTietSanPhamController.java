@@ -60,8 +60,8 @@ public class ChiTietSanPhamController {
 
 
     @PostMapping(value = "/add")
-    public String addCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham , Model model ,
-                          @RequestParam("id") String idSanPham, RedirectAttributes redirectAttributes ,
+    public String addCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, Model model,
+                          @RequestParam("id") String idSanPham, RedirectAttributes redirectAttributes,
                           @RequestParam("size") String kichCo, @RequestParam("mauSac") UUID mauSac) throws IOException, WriterException {
 
         Random random = new Random();
@@ -69,10 +69,10 @@ public class ChiTietSanPhamController {
 
         ChiTietSanPham checkMauSacSize = chiTietSanPhamService.checkSizeMauSac(mauSac, kichCo, UUID.fromString(idSanPham));
 
-        if(checkMauSacSize != null){
+        if (checkMauSacSize != null) {
             System.out.println(checkMauSacSize);
             redirectAttributes.addFlashAttribute("loiAdd", "Dữ liệu này đã tồn tại");
-        }else{
+        } else {
             chiTietSanPham.setSanPham(sanPham);
             chiTietSanPham.setQrCode(String.valueOf(random.nextInt(1000000000)));
             chiTietSanPham.setTrangThai(1);
@@ -138,6 +138,13 @@ public class ChiTietSanPhamController {
     public ChiTietSanPhamResponse getByMuaSacAnhKichCoAndSanPham(@RequestParam(value = "mauSac", required = false) String idMS, @RequestParam(value = "kichCo", required = false) String idKC, @RequestParam(value = "sanPham", required = false) String idSP) {
         ChiTietSanPhamResponse ctspResponse = chiTietSanPhamService.getByMauSacAndKichCoAndSanPham(idMS, idKC, idSP);
         return ctspResponse;
+    }
+
+    @GetMapping(value = "/api-hien-thi-qrcode/{id}")
+    @ResponseBody
+    public Object[] getQrCode(@PathVariable String id) {
+        Object[] qrcode = chiTietSanPhamService.getQrCodeById(UUID.fromString(id));
+        return qrcode;
     }
 
 }

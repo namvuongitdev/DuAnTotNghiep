@@ -44,4 +44,6 @@ public interface IChiTietSanPhamService {
     UUID getByQrcode(String qrCode);
 
     ChiTietSanPham checkSizeMauSac(UUID mauSac, String kichCo, UUID idSanPham);
+
+    Object[] getQrCodeById(UUID uuid);
 }

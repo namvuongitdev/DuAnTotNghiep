@@ -104,6 +104,8 @@ public class HoDonController {
         HoaDonChiTiet hdct = hoaDonChiTietService.addHoaDonChiTiet(UUID.fromString(idCTSP), UUID.fromString(idHD), Integer.parseInt(soLuong));
         if(hdct == null){
             attributes.addFlashAttribute("error" , "số lượng sản phẩm thêm vào không thảo mãn cần xem lại số lượng sản phẩm");
+        }else{
+            attributes.addFlashAttribute("success" , "thêm sản phẩm thành công");
         }
         if (idKhachHang != null && !idKhachHang.isEmpty()) {
             return "redirect:/hoa-don/detail?idHD=" + idHD + "&idKhachHang=" + idKhachHang;

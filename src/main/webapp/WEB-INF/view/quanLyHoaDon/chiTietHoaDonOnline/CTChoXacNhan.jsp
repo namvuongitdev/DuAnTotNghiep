@@ -15,6 +15,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../../../css/banHangTaiQuay/hoaDon/chiTietHoaDon.css">
     <link rel="stylesheet" href="../../../../css/ban-hang-tai-quay.css">
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
     <style>
         #info span {
             font-weight: 600;
@@ -42,13 +48,6 @@
     <div class="row flex-nowrap">
         <jsp:include page="../../sidebar/sidebar.jsp"/>
         <div class="col py-3">
-            <c:if test="${success != null}">
-                <jsp:include page="../../notiface/success.jsp"></jsp:include>
-            </c:if>
-
-            <c:if test="${error != null}">
-                <jsp:include page="../../notiface/error.jsp"></jsp:include>
-            </c:if>
             <div class="pagetitle">
                 <nav>
                     <ol class="breadcrumb">
@@ -123,7 +122,7 @@
     <jsp:include page="modal-update-so-luong.jsp"></jsp:include>
 </c:if>
 <%--modal xác nhân hoá đơn--%>
-    <jsp:include page="modal-xac-nhan-hoa-don.jsp"></jsp:include>
+<jsp:include page="modal-xac-nhan-hoa-don.jsp"></jsp:include>
 <%--modal tra hàng--%>
 <c:if test="${hoaDon.trangThai == 4}">
     <jsp:include page="modal-tra-hang.jsp"></jsp:include>
@@ -137,7 +136,7 @@
         currency: 'VND',
     });
     const modalHienThiSanPham = document.getElementById("modalHienThiSanPham");
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target == modalHienThiSanPham) {
             modalHienThiSanPham.style.display = "none";
         }
@@ -177,8 +176,24 @@
     <script src="/js/quanLyHoaDon/modal-xoa-san-pham.js"></script>
     <script src="/js/quanLyHoaDon/modal-update-so-luong.js"></script>
 </c:if>
-    <script src="/js/quanLyHoaDon/modal-xac-nhan-hoa-don.js"></script>
+<script src="/js/quanLyHoaDon/modal-xac-nhan-hoa-don.js"></script>
 <c:if test="${hoaDon.trangThai == 4}">
     <script src="/js/quanLyHoaDon/modal-tra-hang.js"></script>
 </c:if>
+<script>
+    if (${error != null}) {
+        Swal.fire({
+            title: "lỗi!",
+            text: "${error}",
+            icon: "error"
+        });
+    }
+    if (${success != null}) {
+        Swal.fire({
+            title: "thành công!",
+            text: "${success}",
+            icon: "success"
+        });
+    }
+</script>
 </html>

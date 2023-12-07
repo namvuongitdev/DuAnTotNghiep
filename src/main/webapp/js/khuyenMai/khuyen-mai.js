@@ -245,3 +245,4 @@ window.onclick = function (event) {
         window.location.reload();
     }
 }
+

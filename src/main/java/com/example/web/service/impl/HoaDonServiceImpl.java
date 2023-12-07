@@ -171,6 +171,10 @@ public class HoaDonServiceImpl implements IHoaDonService {
                         hd.setTongTien(tongTienHoaDon);
                         hd.setNgayNhanHang(date);
                         if (request.getHinhThucThanhToan() == PhuongThucThanhToanStatus.CHUYEN_KHOAN) {
+                            if(request.getMaGiaoDich().isEmpty() || request.getMaGiaoDich() == null){
+                                attributes.addFlashAttribute("error", "chưa nhập mã giao dịch");
+                                return "redirect:/admin/hoa-don/detail?idHD=" + hd.getId() + "&idKhachHang=" + request.getIdKhachHang();
+                            }
                             hd.setMaGiaoDich(request.getMaGiaoDich());
                         }
                         hd.setPhuongThucThanhToan(request.getHinhThucThanhToan());
@@ -183,6 +187,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 HoaDon response = hoaDonRepository.save(hd);
                 lichSuHoaDonService.add(response.getLoaiHoaDon() ? HoaDonStatus.CHO_XAC_NHAN : HoaDonStatus.DA_THANH_TOAN , response.getId(), "nhân viên tạo hoá đơn cho khách");
                 attributes.addFlashAttribute("success", "Hoá đơn " + response.getMa() + " tạo thành công");
+               // inHoaDon(String.valueOf(response.getId()) , response.getHoaDonChiTiets());
                 return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
             } else {
                 return null;
@@ -285,7 +290,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public String inHoaDon(String id, Page<HoaDonChiTiet> hoaDonChiTiets) {
+    public void inHoaDon(String id, List<HoaDonChiTiet> hoaDonChiTiets) {
         HoaDon hoaDon = getOne(id);
         Date date = java.util.Calendar.getInstance().getTime();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss");
@@ -294,14 +299,10 @@ public class HoaDonServiceImpl implements IHoaDonService {
         String day = String.valueOf(dateFormatter2.format(date));
         try {
             // Load báo cáo JasperReports từ tệp .jasper
-            File file = ResourceUtils.getFile("C:\\Users\\DELL\\Desktop\\DATN2\\DuAnTotNghiep\\src\\main\\resources\\HoaDon.jrxml");
+            File file = ResourceUtils.getFile("D:\\DuAnTotNghiep\\src\\main\\resources\\HoaDon.jrxml");
             JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(hoaDonChiTiets.getContent());
-            //Tổng tiền
-            Integer tongTien = 0;
-            for (int i = 0; i <= hoaDonChiTiets.getContent().size() - 1; i++) {
-                tongTien += hoaDonChiTiets.getContent().get(i).getSoLuong() * hoaDonChiTiets.getContent().get(i).getChiTietSanPham().getSanPham().getGiaBan().intValue();
-            }
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(hoaDonChiTiets);
+
             // Tạo dữ liệu cho báo cáo (đây là nơi bạn cung cấp thông tin hóa đơn)
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("ngayTao", day);
@@ -309,7 +310,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
             parameters.put("khachHang", hoaDon.getKhachHang() == null ? "Khách bán lẻ" : hoaDon.getKhachHang().getHoTen());
             parameters.put("maHd", hoaDon.getMa());
             parameters.put("inVaoLuc", time);
-            parameters.put("tongTien", tongTien);
+            parameters.put("tongTien", hoaDon.getTongTien());
             parameters.put("hoaDonChiTiet", dataSource);
 
             // Tạo báo cáo JasperPrint sử dụng dữ liệu và mẫu
@@ -317,13 +318,12 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
             // Lưu tệp PDF hóa đơn vào máy chủ
             String pdfFileName = hoaDon.getMa() + ".pdf";
-            String filePath = "C:\\Users\\DELL\\Desktop\\DATN2\\DuAnTotNghiep\\hoa_don-pdf\\" + pdfFileName;
+            String filePath = "D:\\hoaDonPDF\\" + pdfFileName;
             JasperExportManager.exportReportToPdfFile(jasperPrint, filePath);
 
         } catch (JRException | FileNotFoundException e) {
             e.printStackTrace();
         }
-        return "redirect:/admin/hoa-don/view-update/" + hoaDon.getId();
     }
 
     @Override

@@ -25,6 +25,7 @@
                 <th scope="col">Số lượng</th>
                 <th scope="col">Thành tiền</th>
                 <th scope="col">Thao tác</th>
+
             </tr>
             </thead>
             <tbody>
@@ -53,20 +54,25 @@
                     <td>${hdct.soLuong}</td>
                     <td><fmt:formatNumber pattern="#,###" value="${hdct.soLuong * hdct.donGia}"/> đ
                     </td>
-                    <c:if test="${hoaDon.trangThai == 4}">
-                        <c:if test="${hdct.trangThai == 2}">
-                            <td>
-                                <button class="btn btn-danger rounded-pill">Đã hoàn trả</button>
-                            </td>
-                        </c:if>
-                        <c:if test="${trangThaiTraHang == null}">
-                            <td>
-                                <button class="btn btn-outline-danger" onclick="getHDCT(`${hdct.id}` , `${hoaDon.id}`)">
-                                    Trả
-                                    hàng
-                                </button>
-                            </td>
-                        </c:if>
+                    <c:if test="${hoaDon.trangThai == 4 && hoaDon.loaiHoaDon == false}">
+                        <c:choose>
+                            <c:when test="${hdct.trangThai == 2}">
+                                <td>
+                                    <button class="btn btn-danger rounded-pill">Đã hoàn trả</button>
+                                </td>
+                            </c:when>
+                            <c:otherwise>
+                                <c:if test="${trangThaiTraHang == null}">
+                                    <td>
+                                        <button class="btn btn-outline-danger"
+                                                onclick="getHDCT(`${hdct.id}` , `${hoaDon.id}`)">
+                                            Trả
+                                            hàng
+                                        </button>
+                                    </td>
+                                </c:if>
+                            </c:otherwise>
+                        </c:choose>
 
                     </c:if>
                     <c:if test="${hoaDon.trangThai == 1 || hoaDon.trangThai == 2}">

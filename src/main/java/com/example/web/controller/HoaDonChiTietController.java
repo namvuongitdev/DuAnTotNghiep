@@ -85,6 +85,7 @@ public class HoaDonChiTietController {
             attributes.addFlashAttribute("error", "không tìm thấy qr code phù hợp");
             return "redirect:/admin/hoa-don/detail?idHD=" + idHD;
         } else {
+            attributes.addFlashAttribute("success", "thêm sản phẩm thành công");
             return "redirect:/admin/hoa-don/add-san-pham?ctsp=" + idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD
                     + "&idKhachHang=" + idKhachHang;
         }

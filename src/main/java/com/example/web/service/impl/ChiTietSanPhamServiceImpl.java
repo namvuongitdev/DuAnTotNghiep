@@ -129,4 +129,9 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
         return iChiTietSanPhamRepository.checkSizeMauSac(mauSac, kichCo, idSanPham);
     }
 
+    @Override
+    public Object[] getQrCodeById(UUID uuid) {
+        return iChiTietSanPhamRepository.findQrCodeById(uuid);
+    }
+
 }

@@ -66,16 +66,16 @@
             <staticText>
                 <reportElement mode="Transparent" x="-20" y="-20" width="419" height="70" backcolor="#FFFFFF" uuid="c364b0f8-2435-4185-98e5-02d1d180d180"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                    <font fontName=".VnBahamasBH" size="26"/>
+                    <font size="26"/>
                 </textElement>
-                <text><![CDATA[SPORTS CLOTHING]]></text>
+                <text>SPORTS CLOTHING</text>
             </staticText>
             <staticText>
                 <reportElement x="-20" y="30" width="419" height="30" uuid="fab430b0-c90b-4485-a3b4-0b1e956ead08"/>
                 <textElement>
                     <font fontName="Serif" size="15"/>
                 </textElement>
-                <text><![CDATA[Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Nam Từ Liêm, Hà Nội]]></text>
+                <textElement>Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Nam Từ Liêm, Hà Nội</textElement>
             </staticText>
         </band>
     </title>
@@ -86,7 +86,7 @@
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font fontName="Serif" size="18" isBold="true"/>
                 </textElement>
-                <text><![CDATA[HÓA ĐƠN BÁN HÀNG]]></text>
+                <text>HÓA ĐƠN BÁN HÀNG</text>
             </staticText>
         </band>
     </pageHeader>
@@ -146,8 +146,8 @@
                         <property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
                         <jr:columnHeader style="Table_CH" height="30" rowSpan="1">
                             <staticText>
-                                <reportElement x="0" y="0" width="119" height="30" uuid="97a437ab-f76b-4ca5-80c2-f6ba3109e3eb"/>
-                                <text><![CDATA[Mặt hàng]]></text>
+                                <reportElement/>
+                                <text>Mặt hàng</text>
                             </staticText>
                         </jr:columnHeader>
                         <jr:detailCell style="Table_TD" height="30">
@@ -162,7 +162,7 @@
                         <jr:columnHeader style="Table_CH" height="30" rowSpan="1">
                             <staticText>
                                 <reportElement x="0" y="0" width="119" height="30" uuid="d416bb49-dca1-48ad-94a2-d0d8d08c3d57"/>
-                                <text><![CDATA[Số lượng]]></text>
+                                <text>Số lượng</text>
                             </staticText>
                         </jr:columnHeader>
                         <jr:detailCell style="Table_TD" height="30">
@@ -177,7 +177,7 @@
                         <jr:columnHeader style="Table_CH" height="30" rowSpan="1">
                             <staticText>
                                 <reportElement x="0" y="0" width="119" height="30" uuid="a5f4aea2-c950-41e9-99e3-b28561dda1bb"/>
-                                <text><![CDATA[Đơn giá]]></text>
+                                <text>Đơn giá</text>
                             </staticText>
                         </jr:columnHeader>
                         <jr:detailCell style="Table_TD" height="30">
@@ -192,7 +192,7 @@
                         <jr:columnHeader style="Table_CH" height="30" rowSpan="1">
                             <staticText>
                                 <reportElement x="0" y="0" width="119" height="30" uuid="42e83eb3-84a2-4a80-a018-a0eb8cd250cc"/>
-                                <text><![CDATA[Thành tiền]]></text>
+                                <text>Thành tiền</text>
                             </staticText>
                         </jr:columnHeader>
                         <jr:detailCell style="Table_TD" height="30">
@@ -213,14 +213,14 @@
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font fontName="Serif" size="15" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$P{tongTien}]]></textFieldExpression>
+<!--                <textFieldExpression><![CDATA[$P{tongTien}]]></textFieldExpression>-->
             </textField>
             <staticText>
                 <reportElement x="-20" y="0" width="115" height="52" uuid="de085d14-6920-43f1-b3c9-096d11349c93"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
                     <font fontName="Serif" size="15" isBold="true"/>
                 </textElement>
-                <text><![CDATA[Tổng:]]></text>
+<!--                <text><![CDATA[Tổng:]]></text>-->
             </staticText>
         </band>
     </columnFooter>

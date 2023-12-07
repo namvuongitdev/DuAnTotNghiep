@@ -34,8 +34,10 @@ function findAnhMauSac(idSP, idMS) {
                                                 <img class="img-thumbnail" src="/image/${data[i].ten}" alt="..." style="width: 150px ; height: 150px">
                                             </div>
                                             <div>
-                                               <a type="button" class="btn btn-secondary" onclick="anhMacDinhSanPham('${idSP}','${data[i].ten}')">Mặc định</a>
-                                               <a type="button" class="btn btn-danger" onclick="xoaAnh('${data[i].id}')">Xoá</a>                                           
+                                               ${data[i].sanPham.img === data[i].ten ? "" :
+                        `   <a type="button" class="btn btn-secondary" onclick="anhMacDinhSanPham('${idSP}','${data[i].ten}')">Mặc định</a>
+                                               <a type="button" class="btn btn-danger" onclick="xoaAnh('${data[i].id}')">Xoá</a>`
+                    }
                                             </div>         
                                         </div>
                       `
@@ -56,17 +58,18 @@ async function themAnhMauSac() {
     findAnhMauSac(idSanPham, idMauSac);
 }
 
-async function anhMacDinhSanPham(idSP , tenAnh){
+async function anhMacDinhSanPham(idSP, tenAnh) {
     const anhMacDinh = document.getElementById("anhMacDinhSanPham");
     anhMacDinh.replaceChildren();
     const api = await fetch(`/admin/san-pham/add-anh-mac-dinh?img=${tenAnh}&idSP=${idSP}`);
-    const dataSanPham = await  api.json();
+    const dataSanPham = await api.json();
     anhMacDinh.innerHTML = ` <div class="pagination justify-content-center">
                                     <img src="/image/${dataSanPham.img}" alt="" class="img-thumbnail" style="width: 200px;height: 200px">
                                 </div>`
+    findAnhMauSac(idSP, idMauSac);
 }
 
-async function xoaAnh(idAnh){
+async function xoaAnh(idAnh) {
     const api = await fetch(`/admin/chi-tiet-san-pham/remove-anh?idAnh=${idAnh}`);
     findAnhMauSac(idSanPham, idMauSac);
 }
@@ -74,11 +77,11 @@ async function xoaAnh(idAnh){
 let host = "http://localhost:8080/admin/san-pham";
 const app = angular.module("app", []);
 
-app.controller("controller", function ($scope, $http){
+app.controller("controller", function ($scope, $http) {
     //Chất liệu
     $scope.chatLieu = {}
     $scope.lstChatLieu = {}
-    $scope.loadChatLieu = function(){
+    $scope.loadChatLieu = function () {
         var url = `${host}/hienThi-chatLieu`;
         $http.get(url).then(resp => {
             $scope.lstChatLieu = resp.data;
@@ -87,24 +90,24 @@ app.controller("controller", function ($scope, $http){
             console.log("Error", error)
         });
     }
-    $scope.addChatLieu = function(){
+    $scope.addChatLieu = function () {
         var item = angular.copy($scope.chatLieu);
         var url = `${host}/add-chatLieu`;
-        if(confirm('Bạn có chắc chắn muốn thêm không?')==true){
+        if (confirm('Bạn có chắc chắn muốn thêm không?') == true) {
             $http.post(url, item).then(resp => {
-                if($scope.chatLieu.ten != null){
+                if ($scope.chatLieu.ten != null) {
                     $scope.lstChatLieu.push(item);
                     alert('Thêm dữ liệu thành công');
                     location.reload();
                     console.log("Success", resp)
-                }else{
+                } else {
                     alert('Thêm dữ liệu thất bại');
                 }
 
             }).catch(error => {
                 console.log("Error", error)
             });
-        }else{
+        } else {
             alert('Thêm dữ liệu thất bại');
             return false;
         }
@@ -114,7 +117,7 @@ app.controller("controller", function ($scope, $http){
     //Danh mục
     $scope.danhMuc = {}
     $scope.lstDanhMuc = {}
-    $scope.loadDanhMuc = function(){
+    $scope.loadDanhMuc = function () {
         var url = `${host}/hienThi-danhMuc`;
         $http.get(url).then(resp => {
             $scope.lstDanhMuc = resp.data;
@@ -123,24 +126,24 @@ app.controller("controller", function ($scope, $http){
             console.log("Error", error)
         });
     }
-    $scope.addDanhMuc = function(){
+    $scope.addDanhMuc = function () {
         var item = angular.copy($scope.danhMuc);
         var url = `${host}/add-danhMuc`;
-        if(confirm('Bạn có chắc chắn muốn thêm không?')==true){
+        if (confirm('Bạn có chắc chắn muốn thêm không?') == true) {
             $http.post(url, item).then(resp => {
-                if($scope.danhMuc.ten != null){
+                if ($scope.danhMuc.ten != null) {
                     $scope.lstDanhMuc.push(item);
                     alert('Thêm dữ liệu thành công');
                     location.reload();
                     console.log("Success", resp)
-                }else{
+                } else {
                     alert('Thêm dữ liệu thất bại');
                 }
 
             }).catch(error => {
                 console.log("Error", error)
             });
-        }else{
+        } else {
             alert('Thêm dữ liệu thất bại');
             return false;
         }
@@ -149,7 +152,7 @@ app.controller("controller", function ($scope, $http){
     //Kiểu dáng
     $scope.kieuDang = {}
     $scope.lstKieuDang = {}
-    $scope.loadKieuDang = function(){
+    $scope.loadKieuDang = function () {
         var url = `${host}/hienThi-kieuDang`;
         $http.get(url).then(resp => {
             $scope.lstKieuDang = resp.data;
@@ -158,24 +161,24 @@ app.controller("controller", function ($scope, $http){
             console.log("Error", error)
         });
     }
-    $scope.addKieuDang = function(){
+    $scope.addKieuDang = function () {
         var item = angular.copy($scope.kieuDang);
         var url = `${host}/add-kieuDang`;
-        if(confirm('Bạn có chắc chắn muốn thêm không?')==true){
+        if (confirm('Bạn có chắc chắn muốn thêm không?') == true) {
             $http.post(url, item).then(resp => {
-                if($scope.kieuDang.ten != null){
+                if ($scope.kieuDang.ten != null) {
                     $scope.lstKieuDang.push(item);
                     alert('Thêm dữ liệu thành công');
                     location.reload();
                     console.log("Success", resp)
-                }else{
+                } else {
                     alert('Thêm dữ liệu thất bại');
                 }
 
             }).catch(error => {
                 console.log("Error", error)
             });
-        }else{
+        } else {
             alert('Thêm dữ liệu thất bại');
             return false;
         }
@@ -184,7 +187,7 @@ app.controller("controller", function ($scope, $http){
     //Kich cỡ
     $scope.kichCo = {}
     $scope.lstKichCo = {}
-    $scope.loadKichCo = function(){
+    $scope.loadKichCo = function () {
         var url = `${host}/hienThi-kichCo`;
         $http.get(url).then(resp => {
             $scope.lstKichCo = resp.data;
@@ -193,24 +196,24 @@ app.controller("controller", function ($scope, $http){
             console.log("Error", error)
         });
     }
-    $scope.addKichCo = function(){
+    $scope.addKichCo = function () {
         var item = angular.copy($scope.kichCo);
         var url = `${host}/add-kichCo`;
-        if(confirm('Bạn có chắc chắn muốn thêm không?')==true){
+        if (confirm('Bạn có chắc chắn muốn thêm không?') == true) {
             $http.post(url, item).then(resp => {
-                if($scope.kichCo.ten != null){
+                if ($scope.kichCo.ten != null) {
                     $scope.lstKichCo.push(item);
                     alert('Thêm dữ liệu thành công');
                     location.reload();
                     console.log("Success", resp)
-                }else{
+                } else {
                     alert('Thêm dữ liệu thất bại');
                 }
 
             }).catch(error => {
                 console.log("Error", error)
             });
-        }else{
+        } else {
             alert('Thêm dữ liệu thất bại');
             return false;
         }
@@ -219,7 +222,7 @@ app.controller("controller", function ($scope, $http){
     //Màu sắc
     $scope.mauSac = {}
     $scope.lstMauSac = {}
-    $scope.loadMauSac = function(){
+    $scope.loadMauSac = function () {
         var url = `${host}/hienThi-mauSac`;
         $http.get(url).then(resp => {
             $scope.lstMauSac = resp.data;
@@ -228,24 +231,24 @@ app.controller("controller", function ($scope, $http){
             console.log("Error", error)
         });
     }
-    $scope.addMauSac = function(){
+    $scope.addMauSac = function () {
         var item = angular.copy($scope.mauSac);
         var url = `${host}/add-mauSac`;
-        if(confirm('Bạn có chắc chắn muốn thêm không?')==true){
+        if (confirm('Bạn có chắc chắn muốn thêm không?') == true) {
             $http.post(url, item).then(resp => {
-                if($scope.mauSac.ten != null){
+                if ($scope.mauSac.ten != null) {
                     $scope.lstMauSac.push(item);
                     alert('Thêm dữ liệu thành công');
                     location.reload();
                     console.log("Success", resp)
-                }else{
+                } else {
                     alert('Thêm dữ liệu thất bại');
                 }
 
             }).catch(error => {
                 console.log("Error", error)
             });
-        }else{
+        } else {
             alert('Thêm dữ liệu thất bại');
             return false;
         }
@@ -258,5 +261,3 @@ app.controller("controller", function ($scope, $http){
     $scope.loadKichCo();
     $scope.loadMauSac();
 });
-
-
