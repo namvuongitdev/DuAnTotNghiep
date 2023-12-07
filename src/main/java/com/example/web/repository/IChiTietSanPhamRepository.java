@@ -65,4 +65,9 @@ public interface IChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,
 
     @Query(value = "select sp.ma  , ctsp.qrCode from ChiTietSanPham ctsp join ctsp.sanPham sp  where ctsp.id = ?1")
     Object[] findQrCodeById(UUID uuid);
+
+    @Query(value = """ 
+    select * from chi_tiet_san_pham where id in (select gio_hang_chi_tiet.idctsp from gio_hang_chi_tiet where id = ?1)
+""",nativeQuery = true)
+    ChiTietSanPham getSL(String idGioHang);
 }

@@ -46,4 +46,7 @@ public interface IChiTietSanPhamService {
     ChiTietSanPham checkSizeMauSac(UUID mauSac, String kichCo, UUID idSanPham);
 
     Object[] getQrCodeById(UUID uuid);
+
+    ChiTietSanPham getSL(String idGioHangCT);
+
 }

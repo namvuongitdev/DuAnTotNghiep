@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -118,9 +119,9 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
     @Override
     public UUID getByQrcode(String qrCode) {
         Optional<UUID> value = iChiTietSanPhamRepository.findByQrCode(qrCode);
-        if(value.isPresent()){
+        if (value.isPresent()) {
             return value.get();
-        }else{
+        } else {
             return null;
         }
     }
@@ -132,6 +133,10 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
     @Override
     public Object[] getQrCodeById(UUID uuid) {
         return iChiTietSanPhamRepository.findQrCodeById(uuid);
+    }
+
+    public ChiTietSanPham getSL(String idGioHangCT) {
+        return iChiTietSanPhamRepository.getSL(idGioHangCT);
     }
 
 }

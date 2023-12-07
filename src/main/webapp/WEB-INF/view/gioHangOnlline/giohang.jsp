@@ -137,9 +137,11 @@
                         <div class="d-flex flex-row align-items-center">
                             <div style="margin-left: 15px;width: 30px;margin-right: 210px">
                                 <input type="number"
-                                       style="width: 120px;text-align: center;margin-top: 15px"
+                                       style="width: 120px; text-align: center; margin-top: 15px"
                                        name="soLuong" min="1" value="${gh.getSoLuong()}" class="form-control"
-                                       onchange="callYourApi(this.value,{idGioHangCT:`${gh.getId()}`})"/>
+                                       onkeydown="handleKeyPress(event, this.value, '${gh.getId()}')"
+                                       onchange="if (!enterKeyPressed) { callYourApi(this.value, {idGioHangCT: '${gh.getId()}'}); }"
+                                />
                             </div>
                             <div style="margin-right:170px;width: 100px;color: #5f9ea0;">
                                 <h6 class="mb-0" style="margin-top: 15px"><b><fmt:formatNumber pattern="#,###"
@@ -188,11 +190,36 @@
 <script src="/js/owl.carousel.min.js"></script>
 <script src="/js/main.js"></script>
 <script>
+    let enterKeyPressed = false;
+
     function callYourApi(newValue, gioHang) {
-        window.location.href = "/gio-hang-onl/cap-nhat-gio-hang/" + newValue + "/"
-            + gioHang.idGioHangCT;
+        if (newValue > 0) {
+            window.location.href = "/gio-hang-onl/cap-nhat-gio-hang/" + newValue + "/" + gioHang.idGioHangCT;
+        }
+        enterKeyPressed = false; // Reset the flag after handling the event
     }
 
+    function handleKeyPress(event, value, id) {
+        if (event.key === 'Enter') {
+            fetch('/gio-hang-onl/get-one/' + id)
+                .then(response => response.json())
+                .then(data => {
+                    if (value <= 0) {
+                        alert("Số lượng không hợp lệ.");
+                        window.location.href = "/gio-hang-onl";
+                    } else {
+                        if (value > data.soLuong) {
+                            alert("Số lượng Tồn không đủ");
+                            window.location.href = "/gio-hang-onl";
+                        } else if (value <= data.soLuong) {
+                            window.location.href = "/gio-hang-onl/cap-nhat-gio-hang/" + value + "/" + id;
+                        }
+                    }
+                    enterKeyPressed = true; // Set the flag to true after handling the "Enter" key
+                })
+            event.preventDefault(); // Prevent the default "change" event behavior
+        }
+    }
 </script>
 </body>
 </html>
