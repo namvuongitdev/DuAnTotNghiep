@@ -70,7 +70,7 @@
                                         <form:errors path="ten" cssStyle="color: red"/>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="gioiTinh" class="form-label">Giới tính</label>
+                                        <label for="gioiTinh" class="form-label">Giới tính <span style="color: red">(*)</span></label>
                                         <select name="gioiTinh" class="form-select" id="gioiTinh">
                                             <option value="true" ${sp.gioiTinh == true ? 'selected' : '' }>
                                                 Dành cho nam
@@ -87,7 +87,7 @@
                                         <form:errors path="giaBan" cssStyle="color: red"/>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="moTa" class="form-label">Mô tả</label>
+                                        <label for="moTa" class="form-label">Mô tả <span style="color: red">(*)</span></label>
                                         <textarea name="moTa" class="form-control" id="moTa">${sp.moTa}</textarea>
                                         <form:errors path="moTa" cssStyle="color: red"/>
                                     </div>
@@ -95,7 +95,7 @@
                                 <div class="col-6">
                                     <div class="row mb-3">
                                         <div class="col-11">
-                                            <label for="chatLieu" class="form-label">Chất liệu</label>
+                                            <label for="chatLieu" class="form-label">Chất liệu <span style="color: red">(*)</span></label>
                                             <select name="chatLieu" class="form-select" id="chatLieu">
                                                 <c:forEach items="${listChatLieu}" var="chatLieu">
                                                     <option value="${chatLieu.id}" ${sp.chatLieu.id==chatLieu.id?'selected':''}>${chatLieu.ten}</option>
@@ -110,7 +110,7 @@
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-11">
-                                            <label for="kieuDang" class="form-label">Kiểu dáng</label>
+                                            <label for="kieuDang" class="form-label">Kiểu dáng <span style="color: red">(*)</span></label>
                                             <select name="kieuDang" class="form-select" id="kieuDang">
                                                 <c:forEach items="${listFromDang}" var="kieuDang">
                                                     <option value="${kieuDang.id}" ${sp.kieuDang.id==kieuDang.id?'selected':''}>${kieuDang.ten}</option>
@@ -125,7 +125,7 @@
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-11">
-                                            <label for="danhMuc" class="form-label">Danh mục</label>
+                                            <label for="danhMuc" class="form-label">Danh mục <span style="color: red">(*)</span></label>
                                             <select name="danhMuc" class="form-select" id="danhMuc">
                                                 <c:forEach items="${listDanhMuc}" var="danhMuc">
                                                     <option value="${danhMuc.id}" ${sp.danhMuc.id==danhMuc.id?'selected':''}>${danhMuc.ten}</option>
@@ -139,7 +139,7 @@
                                         </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="trangThai" class="form-label">Trạng Thái</label>
+                                        <label for="trangThai" class="form-label">Trạng Thái <span style="color: red">(*)</span></label>
                                         <select name="trangThai" class="form-select" id="trangThai">
                                             <option value="0" ${sp.trangThai == 0 ? 'selected' : '' }>
                                                 Kinh doanh
@@ -245,9 +245,8 @@
                                                     </select>
                                                 </td>
                                                 <td style="width: 110px">
-                                                    <label for="soLuongCTSP"></label>
-                                                    <input type="number" class="form-control" value="${ctsp.soLuong}"
-                                                           id="soLuongCTSP" name="soLuong" min="1" required/>
+                                                    <p id="pSoLuong${ctsp.id}" style="display: block;">${ctsp.soLuong}</p>
+                                                    <input style="display: none;" type="number" class="form-control" id="soLuongCTSP${ctsp.id}" value="${ctsp.soLuong}" name="soLuong" min="1" required/>
                                                 </td>
                                                 <td>
                                                     <button style="--bs-btn-padding-y: .56rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
@@ -626,38 +625,17 @@
         });
     }
 
-    if (${addSP != null}) {
+    if (${error != null}) {
         Swal.fire({
-            title: "${addSP}",
-            icon: "success"
-        });
-    }
-
-    if (${updateSP != null}) {
-        Swal.fire({
-            title: "${updateSP}",
-            icon: "success"
-        });
-    }
-
-    if (${updateSPLoi != null}) {
-        Swal.fire({
-            title: "${updateSPLoi}!",
+            title: "${error}",
             icon: "error"
         });
     }
 
-
-    if (${successCTSP != null}) {
+    if (${success != null}) {
         Swal.fire({
-            title: "${successCTSP}",
+            title: "${success}",
             icon: "success"
-        });
-    }
-    if (${loiAdd != null}) {
-        Swal.fire({
-            title: "${loiAdd}!",
-            icon: "error"
         });
     }
 
@@ -669,18 +647,24 @@
                 var ctspId = this.id.replace('checkbox', '');
                 var pKichCo = document.getElementById('pKichCo' + ctspId);
                 var pMauSac = document.getElementById('pMauSac' + ctspId);
+                var pSoLuong = document.getElementById('pSoLuong' + ctspId);
                 var selectKichCo = document.getElementById('selectKichCo' + ctspId);
                 var selectMauSac = document.getElementById('selectMauSac' + ctspId);
+                var soLuongCTSP = document.getElementById('soLuongCTSP' + ctspId);
                 if (this.checked) {
                     selectKichCo.style.display = 'block';
                     selectMauSac.style.display = 'block';
+                    soLuongCTSP.style.display = 'block';
                     pMauSac.style.display = 'none';
                     pKichCo.style.display = 'none';
+                    pSoLuong.style.display = 'none';
                 } else {
                     selectKichCo.style.display = 'none';
                     selectMauSac.style.display = 'none';
+                    soLuongCTSP.style.display = 'none';
                     pMauSac.style.display = 'block';
                     pKichCo.style.display = 'block';
+                    pSoLuong.style.display = 'block';
                 }
             });
         });
