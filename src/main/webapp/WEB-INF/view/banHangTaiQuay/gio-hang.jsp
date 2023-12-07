@@ -68,7 +68,7 @@
                     <form class="row"
                           action="/admin/hoa-don/thanh-toan?idHD=${hoaDon.id}&idKhachHang=${khachHang.id}"
                           method="post"
-                          modelAtrribute="${request}">
+                          modelAtrribute="${request}" id="xacNhanThanhToan" onsubmit="return false;">
                         <div class="card">
                             <div class="card-body row">
                                 <c:choose>
@@ -133,13 +133,21 @@
         });
     }
 
-    function xacNhan() {
-        const comfirm = confirm("bạn có muốn thanh toán không");
-        if (comfirm) {
-            return true;
-        } else {
-            return false;
-        }
+    function xacNhan(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+        Swal.fire({
+            title: "Bạn có muốn thanh toán ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: "Không"
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                document.getElementById('xacNhanThanhToan').submit();
+            } else if (result.isDenied) {
+                Swal.fire("thanh toán thất bạn", "", "error");
+            }
+        });
     }
 </script>
 </html>

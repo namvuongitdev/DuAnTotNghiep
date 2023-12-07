@@ -53,7 +53,7 @@
         <label for="moTa">Mô Tả</label>
     </div>
     <div style="margin-bottom: 20px">
-        <button class="btn btn-primary" id="xacNhanThanhToan" onclick="return xacNhan()"
+        <button class="btn btn-primary" id="xacNhanThanhToan" onclick="xacNhan(event)"
         >Xác nhận thanh toán
         </button>
     </div>

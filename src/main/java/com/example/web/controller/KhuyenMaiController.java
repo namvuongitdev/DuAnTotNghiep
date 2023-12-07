@@ -115,6 +115,7 @@ public class KhuyenMaiController {
             return "redirect:/admin/khuyen-mai/detail?id=" + idKM;
         } else {
             KhuyenMai khuyenMai = khuyenMaiService.updateKhuyenMai(khuyenMaiRequest, UUID.fromString(idKM));
+            attributes.addFlashAttribute("dataKhuyenMai", khuyenMai);
             attributes.addFlashAttribute("success", "update thành công");
             return "redirect:/admin/khuyen-mai/detail?id=" + khuyenMai.getId();
         }
@@ -126,6 +127,7 @@ public class KhuyenMaiController {
         Page<SanPhamKhuyenMai> list = khuyenMaiService.getKhuyenMaiById(UUID.fromString(id), page);
         sanPhamController.danhSachThuocTinhSanPham(model);
         model.addAttribute("listChiTietKhuyenMai", list);
+        System.out.println("mo ta" + km.getMoTa());
         model.addAttribute("dataKhuyenMai", km);
         model.addAttribute("url", "/admin/khuyen-mai/update?idKM=" + km.getId());
         model.addAttribute("sanPhamKhuyenMai", new SanPhamKhuyenMai());

@@ -56,7 +56,7 @@
     </div>
     <br>
     <div>
-        <button class="btn btn-primary" id="xacNhanDatHang" onclick="return xacNhan()"
+        <button class="btn btn-primary" id="xacNhanDatHang" onclick="xacNhan(event)"
         >Đặt hàng
         </button>
     </div>
