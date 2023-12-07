@@ -58,5 +58,9 @@ public interface IChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,
     @Query(value = "select ctsp from ChiTietSanPham ctsp where ctsp.mauSac.id = ?1 and ctsp.size.id = ?2 and ctsp.sanPham.id = ?3")
     ChiTietSanPham checkSizeMauSac(UUID mauSac, String kichCo, UUID idSanPham);
 
+    @Query(value = """ 
+    select * from chi_tiet_san_pham where id in (select gio_hang_chi_tiet.idctsp from gio_hang_chi_tiet where id = ?1)
+""",nativeQuery = true)
+    ChiTietSanPham getSL(String idGioHang);
 
 }

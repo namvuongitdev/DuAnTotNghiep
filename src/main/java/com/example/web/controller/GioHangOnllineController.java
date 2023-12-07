@@ -1,14 +1,13 @@
 package com.example.web.controller;
 
 import com.example.web.model.ChiTietSanPham;
+import com.example.web.model.GioHangChiTiet;
 import com.example.web.model.KhachHang;
 import com.example.web.request.DataThemVaoGioHang;
 import com.example.web.response.ChiTietResponse;
 import com.example.web.response.GioHangReponse;
-import com.example.web.service.IAnhService;
-import com.example.web.service.IChiTietSanPhamService;
-import com.example.web.service.IGioHangOnllineService;
-import com.example.web.service.IKhachHangService;
+import com.example.web.service.*;
+import org.apache.commons.collections4.Get;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +29,9 @@ public class GioHangOnllineController {
     IChiTietSanPhamService iChiTietSanPhamService;
 
     @Autowired
+    IGioHangCTService iGioHangCTService;
+
+    @Autowired
     IKhachHangService iKhachHangService;
 
     @GetMapping()
@@ -44,10 +46,21 @@ public class GioHangOnllineController {
         return "gioHangOnlline/giohang";
     }
 
+    @ResponseBody
+    @GetMapping("/get-one/{idGioHangCT}")
+    ChiTietSanPham soLuongTon(@PathVariable(name = "idGioHangCT") String idGioHangCT){
+        ChiTietSanPham chiTietSanPham = iChiTietSanPhamService.getSL(idGioHangCT);
+        ChiTietSanPham chiTietSanPham1 = new ChiTietSanPham();
+        chiTietSanPham1.setId(chiTietSanPham.getId());
+        chiTietSanPham1.setSoLuong(chiTietSanPham.getSoLuong());
+        chiTietSanPham1.setTrangThai(chiTietSanPham.getTrangThai());
+        return chiTietSanPham1;
+    }
 
     @GetMapping("/cap-nhat-gio-hang/{soLuong}/{idGioHangCT}")
     public String updateSoLuong(@PathVariable(name = "soLuong") Integer soLuong,
                                 @PathVariable(name = "idGioHangCT") String idGioHangCT, RedirectAttributes attributes) {
+        ChiTietSanPham chiTietSanPham = iChiTietSanPhamService.getSL(idGioHangCT);
         iGioHangOnllineService.updateSoLuong(soLuong, idGioHangCT);
         return "redirect:/gio-hang-onl";
     }

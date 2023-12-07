@@ -129,4 +129,9 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
         return iChiTietSanPhamRepository.checkSizeMauSac(mauSac, kichCo, idSanPham);
     }
 
+    @Override
+    public ChiTietSanPham getSL(String idGioHangCT) {
+        return iChiTietSanPhamRepository.getSL(idGioHangCT);
+    }
+
 }

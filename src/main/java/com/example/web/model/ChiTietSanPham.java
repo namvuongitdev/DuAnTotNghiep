@@ -8,11 +8,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 
 public class ChiTietSanPham {
 
@@ -68,5 +66,12 @@ public class ChiTietSanPham {
         this.qrCode = qrCode;
         this.mauSac = mauSac;
         this.size = size;
+    }
+
+    public ChiTietSanPham(UUID id, Integer soLuong, Integer trangThai, String qrCode) {
+        this.id = id;
+        this.soLuong = soLuong;
+        this.trangThai = trangThai;
+        this.qrCode = qrCode;
     }
 }

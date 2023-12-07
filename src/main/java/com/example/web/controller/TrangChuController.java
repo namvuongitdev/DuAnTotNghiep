@@ -169,7 +169,6 @@ public class TrangChuController {
     @GetMapping("/chi-tiet-san-pham-onl")
     public String chiTiet(Model model, @RequestParam(name = "id") String
             idSanPham, Principal principal) {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<Anh> anhs = anhService.getAllAnhBySanPham_id(UUID.fromString(idSanPham));
         SanPham sanPham = iSanPhamService.getOne(UUID.fromString(idSanPham));
