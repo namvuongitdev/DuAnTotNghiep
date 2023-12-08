@@ -140,7 +140,7 @@ public class SanPhamController {
         Date date = java.util.Calendar.getInstance().getTime();
         if (!id.isEmpty()) {
             if (result.hasErrors()) {
-                attributes.addFlashAttribute("updateSPLoi", "Sửa dữ liệu thất bại");
+                attributes.addFlashAttribute("error", "Sửa dữ liệu thất bại");
                 return "redirect:/admin/san-pham/hien-thi/" + sanPham.getId();
             } else {
                 SanPham sp = iSanPhamService.getOne(UUID.fromString(id));
@@ -155,7 +155,7 @@ public class SanPhamController {
                 sp.setTen(sanPham.getTen());
                 iSanPhamService.save(sp);
                 khuyenMaiService.getSanPhamById(sp.getId());
-                attributes.addFlashAttribute("updateSP", "Sửa dữ liệu thành công");
+                attributes.addFlashAttribute("success", "Sửa dữ liệu thành công");
             }
         } else {
             if (result.hasErrors()) {
@@ -172,7 +172,7 @@ public class SanPhamController {
                 sanPham.setMa(maKM);
                 sanPham.setNgayTao(date);
                 iSanPhamService.save(sanPham);
-                attributes.addFlashAttribute("addSP", "Thêm dữ liệu thành công");
+                attributes.addFlashAttribute("success", "Thêm dữ liệu thành công");
             }
         }
         return "redirect:/admin/san-pham/hien-thi/" + sanPham.getId();

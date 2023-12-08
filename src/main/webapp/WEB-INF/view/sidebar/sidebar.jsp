@@ -55,7 +55,7 @@
                     </a>
                 </li>
             </sec:authorize>
-            <sec:authorize access="hasAuthority('ADMIN')">
+            <sec:authorize access="hasAnyAuthority('STAFF' , 'ADMIN')">
                 <li>
                     <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

@@ -5,21 +5,23 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html lang="zxx">
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="shortcut icon" href="#">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../../../css/banHangTaiQuay/hoaDon/chiTietHoaDon.css">
+    <link rel="stylesheet" href="../../../../css/ban-hang-tai-quay.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="https://kit.fontawesome.com/35a8b342cd.js" crossorigin="anonymous"></script>
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
-          rel="stylesheet">
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="../../../../css/bootstrap.min.css" type="text/css">
@@ -49,9 +51,10 @@
                 <ul>
                     <li><a href="/cuaToi/donHangAll">Tất cả đơn hàng</a></li>|
                     <li><a href="/cuaToi/donHangChoXacNhan">Chờ xác nhận</a></li>|
-                    <li><a href="/cuaToi/donHangChoGiaoHang">Đã tiếp nhận</a></li>|
+                    <li><a href="/cuaToi/donHangChoGiaoHang">Đã xác nhận</a></li>|
                     <li><a href="/cuaToi/donHangDangGiao">Đang giao</a></li>|
                     <li><a href="/cuaToi/donHangDaNhan">Đã nhận</a></li>|
+                    <li><a href="/cuaToi/donHangDaThanhToan">Đã thanh toán</a></li>|
                     <li class="active"><a href="/cuaToi/donHangDaHuy">Đã hủy</a></li>
                 </ul>
             </nav>
@@ -82,7 +85,15 @@
                         <td style="width: 300px">
                             <p>
                                 <b style="color: red">
-                                    <fmt:formatNumber pattern="#,###" value="${hd[3]}"/>
+                                    <c:choose>
+                                        <c:when test="${hd[6] != null}">
+                                            <fmt:formatNumber pattern="#,###" value="${hd[3] + hd[6]}"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <fmt:formatNumber pattern="#,###" value="${hd[3]}"/>
+                                        </c:otherwise>
+
+                                    </c:choose>
                                     <c:if test="${hd[3]==null}">
                                         <span>0</span>
                                     </c:if>
@@ -91,14 +102,44 @@
                             </p>
                         </td>
                         <td>
-                            <div style="margin-top: 30px">${hd[5]==4?'Đã thanh toán':(hd[5]==3)?'Đang giao hàng':(hd[5]==0)?'Đang chờ':(hd[5]==1)?'Chờ xác nhận':(hd[5]==2)?'Đã tiếp nhận':(hd[5]==6)?'Đã nhận hàng':(hd[5]==5)?'Hủy đơn hàng':''}</div>
+                            <div style="margin-top: 30px">
+                                <c:if test="${hd[5] == 4}">
+                                    Đã thanh toán
+                                </c:if>
+
+                                <c:if test="${hd[5] == 1}">
+                                    Chờ xác nhận
+                                </c:if>
+
+                                <c:if test="${hd[5] == 2}">
+                                    Đã xác nhận
+                                </c:if>
+
+                                <c:if test="${hd[5] == 3}">
+                                    Đang giao hàng
+                                </c:if>
+
+                                <c:if test="${hd[5] == 5}">
+                                    Đã huỷ
+                                </c:if>
+
+                                <c:if test="${hd[5] == 6}">
+                                    Đã nhận
+                                </c:if>
+
+                                <c:if test="${hd[5] == 9}">
+                                    Hoàn trả
+                                </c:if>
+                            </div>
                             <div style="margin-top: 10px">
                                 <a class="text-primary" href="/cuaToi/chiTietDonHang/${hd[0]}">Chi tiết đơn hàng</a>
                             </div>
                         </td>
                         <td>
                             <div>
-                                <button class="btn btn-secondary" style="visibility: ${hd[5]==5?'hidden':''}"><a href="#" style="color: white">Hủy đơn</a></button>
+                                <button class="xacNhanHoaDon" id="xacNhanHoaDon" style="visibility: hidden;border: none; background-color: white">
+                                    <a class="btn btn-success text-light">Đã nhận</a>
+                                </button>
                             </div>
                         </td>
                     </tr>

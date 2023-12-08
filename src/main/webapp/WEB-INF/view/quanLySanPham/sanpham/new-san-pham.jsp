@@ -59,7 +59,7 @@
                     <div class="card-body row">
                         <h5 class="card-title">Thông tin sản phẩm</h5>
                         <br><br>
-                           <jsp:include page="form-them-san-pham.jsp"></jsp:include>
+                        <jsp:include page="form-them-san-pham.jsp"></jsp:include>
                     </div>
                 </div>
                 <br><br>
@@ -182,14 +182,14 @@
             if (result.isConfirmed) {
                 document.getElementById('yourForm').submit();
             } else if (result.isDenied) {
-               return false;
+                return false;
             }
         });
     }
 
     function confirmCTSP(event) {
         event.preventDefault(); // Prevent the default form submission behavior
-         Swal.fire({
+        Swal.fire({
             title: "Bạn có muốn thêm không?",
             showDenyButton: true,
             confirmButtonText: "Có",

@@ -63,6 +63,8 @@ public interface IHoaDonService {
 
     Integer xacNhanHoaDon(Integer trangThai, UUID idHD, String ghiChu);
 
+    Integer xacNhanDonHangCuaToi(Integer trangThai, UUID idHD, String ghiChu);
+
     Integer tongDoanhThu();
 
     Page<Object[]> getAllHoaDonHoanTien(Integer page);

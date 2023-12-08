@@ -47,7 +47,7 @@
         <div class="row">
             <div class="span-1">
                 <span><a href="javascript:history.back()">< Quay lại</a></span>
-                <span class="maDH">Mã đơn hàng: ${hd.ma} | ${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Chờ giao hàng':(hd.trangThai==6)?'Đã nhận hàng':(hd.trangThai==5)?'Hủy đơn hàng':''}</span>
+                <span class="maDH">Mã đơn hàng: ${hd.ma} | ${hd.trangThai==4?'Đã thanh toán':(hd.trangThai==3)?'Đang giao hàng':(hd.trangThai==0)?'Đang chờ':(hd.trangThai==1)?'Chờ xác nhận':(hd.trangThai==2)?'Chờ giao hàng':(hd.trangThai==6)?'Đã nhận hàng':(hd.trangThai==5)?'Hủy đơn hàng':(hd.trangThai==9)?'Hoàn trả':''}</span>
             </div>
             <table class="table">
                 <thead class="thead">

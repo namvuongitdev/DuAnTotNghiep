@@ -34,18 +34,19 @@ public class FormDangController {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute("kieuDang") KieuDang kieuDang){
+    public String save(@ModelAttribute("kieuDang") KieuDang kieuDang, RedirectAttributes attributes){
         Date date = java.util.Calendar.getInstance().getTime();
         UUID uuid = UUID.randomUUID();
         kieuDang.setId(uuid);
         kieuDang.setTrangThai(1);
         kieuDang.setNgayTao(date);
         service.save(kieuDang);
+        attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
         return "redirect:/admin/kieu-dang/hien-thi";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable("id") String id, @ModelAttribute("kieuDang") KieuDang kieuDang){
+    public String update(@PathVariable("id") String id, @ModelAttribute("kieuDang") KieuDang kieuDang, RedirectAttributes attributes){
          KieuDang data = service.getOne(UUID.fromString(id));
         Date date = java.util.Calendar.getInstance().getTime();
         kieuDang.setId(UUID.fromString(id));
@@ -53,6 +54,7 @@ public class FormDangController {
         kieuDang.setNgayTao(data.getNgayTao());
         kieuDang.setNgaySua(date);
         service.save(kieuDang);
+        attributes.addFlashAttribute("success", "Sửa dữ liệu thành công");
         return "redirect:/admin/kieu-dang/hien-thi";
     }
 

@@ -51,10 +51,10 @@
                 <ul>
                     <li><a href="/cuaToi/donHangAll">Tất cả đơn hàng</a></li>|
                     <li><a href="/cuaToi/donHangChoXacNhan">Chờ xác nhận</a></li>|
-                    <li class="active"><a href="/cuaToi/donHangChoGiaoHang">Đã xác nhận</a></li>|
+                    <li><a href="/cuaToi/donHangChoGiaoHang">Đã xác nhận</a></li>|
                     <li><a href="/cuaToi/donHangDangGiao">Đang giao</a></li>|
                     <li><a href="/cuaToi/donHangDaNhan">Đã nhận</a></li>|
-                    <li><a href="/cuaToi/donHangDaThanhToan">Đã thanh toán</a></li>|
+                    <li class="active"><a href="/cuaToi/donHangDaThanhToan">Đã thanh toán</a></li>|
                     <li><a href="/cuaToi/donHangDaHuy">Đã hủy</a></li>
                 </ul>
             </nav>
@@ -136,13 +136,6 @@
                             </div>
                         </td>
                         <td>
-                            <c:if test="${hd[5]==1}">
-                                <div>
-                                    <button class="xacNhanHuyHoaDon" id="xacNhanHuyHoaDon${hd[0]}" style="border: none; background-color: white">
-                                        <a class="btn btn-danger text-light">Huỷ</a>
-                                    </button>
-                                </div>
-                            </c:if>
                             <div>
                                 <button class="xacNhanHoaDon" id="xacNhanHoaDon" style="visibility: hidden;border: none; background-color: white">
                                     <a class="btn btn-success text-light">Đã nhận</a>

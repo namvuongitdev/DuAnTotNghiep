@@ -107,7 +107,6 @@ public class ChiTietSanPhamController {
     public String updateCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham,
                              @RequestParam("soLuong") List<Integer> soLuong,
                              @RequestParam String idSP , RedirectAttributes attributes) {
-        System.out.println("soLuong"+ soLuong.toString());
         Integer update = chiTietSanPhamService.updateChiTietSanPham(chiTietSanPham , soLuong ,UUID.fromString(idSP));
         if(update == 1){
             attributes.addFlashAttribute("error" , "chi tiết sản phẩm đã tồn tại");
