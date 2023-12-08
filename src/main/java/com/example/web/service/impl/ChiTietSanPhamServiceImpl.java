@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -137,6 +136,26 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
 
     public ChiTietSanPham getSL(String idGioHangCT) {
         return iChiTietSanPhamRepository.getSL(idGioHangCT);
+    }
+
+    @Override
+    public Integer updateChiTietSanPham(ChiTietSanPham chiTietSanPham , List<Integer> soLuong ,UUID idSP) {
+//        ChiTietSanPham check = iChiTietSanPhamRepository.checkSizeMauSac(chiTietSanPham.getMauSac().getId() , chiTietSanPham.getSize().getId() , idSP);
+//         if(check != null){
+//              return 1;
+//         }else{
+            for(int i = 0 ; i < chiTietSanPham.getChiTietSanPhams().size() ; i++){
+                Optional<ChiTietSanPham> ctsp = iChiTietSanPhamRepository.findById( chiTietSanPham.getChiTietSanPhams().get(i));
+                if(ctsp.isPresent()){
+                    ChiTietSanPham update = ctsp.get();
+                    update.setSoLuong(soLuong.get(i));
+//                    update.setMauSac(chiTietSanPham.getMauSac());
+//                    update.setSize(chiTietSanPham.getSize());
+                    iChiTietSanPhamRepository.save(update);
+                }
+            }
+//         }
+        return 2;
     }
 
 }

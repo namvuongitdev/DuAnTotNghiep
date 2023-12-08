@@ -1,5 +1,12 @@
 let idSanPham = null;
 let idMauSac = null;
+let modalThemCTSP = document.getElementById("modalThemChiTietSanPham");
+
+
+function modalThemChiTietSanPham(){
+    modalThemCTSP.style.display = "block";
+}
+
 
 function findAnhMauSac(idSP, idMS) {
     if (idMS == "") {
@@ -234,7 +241,7 @@ app.controller("controller", function ($scope, $http) {
     $scope.addMauSac = function () {
         var item = angular.copy($scope.mauSac);
         var url = `${host}/add-mauSac`;
-        if (confirm('Bạn có chắc chắn muốn thêm không?') == true) {
+        if (confirm('Bạn có chắc chắn muốn thêm không?') === true) {
             $http.post(url, item).then(resp => {
                 if ($scope.mauSac.ten != null) {
                     $scope.lstMauSac.push(item);

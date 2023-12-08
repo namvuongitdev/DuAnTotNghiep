@@ -49,4 +49,6 @@ public interface IChiTietSanPhamService {
 
     ChiTietSanPham getSL(String idGioHangCT);
 
+    Integer updateChiTietSanPham(ChiTietSanPham chiTietSanPham ,List<Integer> soLuong , UUID idSP);
+
 }

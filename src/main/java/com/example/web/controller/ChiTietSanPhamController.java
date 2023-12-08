@@ -33,6 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +72,7 @@ public class ChiTietSanPhamController {
 
         if (checkMauSacSize != null) {
             System.out.println(checkMauSacSize);
-            redirectAttributes.addFlashAttribute("loiAdd", "Dữ liệu này đã tồn tại");
+            redirectAttributes.addFlashAttribute("error", "Dữ liệu này đã tồn tại");
         } else {
             chiTietSanPham.setSanPham(sanPham);
             chiTietSanPham.setQrCode(String.valueOf(random.nextInt(1000000000)));
@@ -103,22 +104,19 @@ public class ChiTietSanPhamController {
     }
 
     @PostMapping(value = "/update-chi-tiet-san-pham")
-    public String updateCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, @RequestParam String idCTSP, @RequestParam String idSP) {
-        ChiTietSanPham ctsp = chiTietSanPhamService.getOne(UUID.fromString(idCTSP));
-        chiTietSanPham.setId(UUID.fromString(idCTSP));
-        chiTietSanPham.setSanPham(sanPhamService.getOne(UUID.fromString(idSP)));
-        chiTietSanPham.setTrangThai(ctsp.getTrangThai());
-        chiTietSanPham.setQrCode(ctsp.getQrCode());
-        chiTietSanPhamService.save(chiTietSanPham);
+    public String updateCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham,
+                             @RequestParam("soLuong") List<Integer> soLuong,
+                             @RequestParam String idSP , RedirectAttributes attributes) {
+        System.out.println("soLuong"+ soLuong.toString());
+        Integer update = chiTietSanPhamService.updateChiTietSanPham(chiTietSanPham , soLuong ,UUID.fromString(idSP));
+        if(update == 1){
+            attributes.addFlashAttribute("error" , "chi tiết sản phẩm đã tồn tại");
+        }
+        if(update == 2){
+            attributes.addFlashAttribute("success" , "update chi tiết sản phẩm thành công");
+        }
         return "redirect:/admin/san-pham/hien-thi/" + idSP;
     }
-
-//    @GetMapping(value = "/anh/{id}")
-//    public String getAnhByChiTietSanPham_id(RedirectAttributes redirectAttributes, @PathVariable("id") String idCTSP, @RequestParam String idSP) {
-//        List<Anh> anhs = anhService.getAnh(idCTSP);
-//        redirectAttributes.addFlashAttribute("listAnhChiTietSanPham_id", anhs);
-//        return "redirect:/admin/san-pham/hien-thi/" + idSP;
-//    }
 
     @GetMapping(value = "/remove-anh")
     @ResponseBody

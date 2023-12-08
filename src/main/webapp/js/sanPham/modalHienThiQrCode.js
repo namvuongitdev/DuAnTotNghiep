@@ -6,13 +6,16 @@ let modalQrcode = document.getElementById("modalQrcode");
     const data = await  api.json();
     console.log(data[0][0]);
     document.getElementById("modalHienThiQrcode").innerHTML = `
-         <img src="/qr/${data[0][0]}-${data[0][1]}.png" alt="" style="width: 200px;height: 200px">
+         <img src="/qr/${data[0][0]}-${data[0][2]}-${data[0][3]}-${data[0][1]}.png" alt="" style="width: 200px;height: 200px">
        <p style="text-align: center">${data[0][1]}</p> 
       `
 }
 window.onclick = function(event) {
-    if (event.target == modalQrcode) {
+    if (event.target === modalQrcode) {
         document.getElementById("modalHienThiQrcode").replaceChildren();
         modalQrcode.style.display = "none";
+    }
+    if(event.target === modalThemCTSP){
+        modalThemCTSP.style.display = "none";
     }
 }

@@ -1,4 +1,5 @@
 package com.example.web.model;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,8 +9,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.*;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -57,6 +58,10 @@ public class ChiTietSanPham {
     @OneToMany(mappedBy = "chiTietSanPham")
     @JsonIgnore
     private List<GioHangChiTiet> gioHangChiTiets;
+
+    @Transient
+    @JsonIgnore
+    private List<UUID> chiTietSanPhams;
 
     public ChiTietSanPham(UUID id, SanPham sanPham, Integer soLuong, Integer trangThai, String qrCode, MauSac mauSac, Size size) {
         this.id = id;

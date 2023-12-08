@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -63,7 +62,7 @@ public interface IChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham,
     @Query(value = "select ctsp from ChiTietSanPham ctsp where ctsp.mauSac.id = ?1 and ctsp.size.id = ?2 and ctsp.sanPham.id = ?3")
     ChiTietSanPham checkSizeMauSac(UUID mauSac, String kichCo, UUID idSanPham);
 
-    @Query(value = "select sp.ma  , ctsp.qrCode from ChiTietSanPham ctsp join ctsp.sanPham sp  where ctsp.id = ?1")
+    @Query(value = "select sp.ma  , ctsp.qrCode, ctsp.mauSac.ten, ctsp.size.ten from ChiTietSanPham ctsp join ctsp.sanPham sp  where ctsp.id = ?1")
     Object[] findQrCodeById(UUID uuid);
 
     @Query(value = """ 
