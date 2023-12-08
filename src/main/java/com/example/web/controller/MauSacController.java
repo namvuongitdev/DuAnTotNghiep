@@ -39,13 +39,20 @@ public class MauSacController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute("mauSac") MauSac mauSac, RedirectAttributes attributes){
-        Date date = java.util.Calendar.getInstance().getTime();
-        UUID uuid = UUID.randomUUID();
-        mauSac.setId(uuid);
-        mauSac.setTrangThai(1);
-        mauSac.setNgayTao(date);
-        iMauSacService.save(mauSac);
-        attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
+        boolean checkTen = iMauSacService.isExists(mauSac.getTen());
+
+        if(checkTen){
+            attributes.addFlashAttribute("error", "Tên dữ liệu đã tồn tại");
+        }else{
+            Date date = java.util.Calendar.getInstance().getTime();
+            UUID uuid = UUID.randomUUID();
+            mauSac.setId(uuid);
+            mauSac.setTrangThai(1);
+            mauSac.setNgayTao(date);
+            iMauSacService.save(mauSac);
+            attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
+        }
+
         return "redirect:/admin/mau-sac/hien-thi";
     }
 

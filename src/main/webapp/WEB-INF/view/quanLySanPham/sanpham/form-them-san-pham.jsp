@@ -100,10 +100,10 @@
     <br>
     <div style="text-align: center">
         <c:if test="${sp.id == null}">
-        <button class="btn btn-success" onclick="add(event); saveInputValues()">Xác nhận
+        <button class="btn btn-success" onclick="add(event)">Xác nhận
             </c:if>
             <c:if test="${sp.id != null}">
-            <button class="btn btn-primary" onclick="update(event); saveInputValues()">Cập nhật
+            <button class="btn btn-primary" onclick="update(event)">Cập nhật
                 </c:if>
             </button>
             <c:if test="${sp.id == null}">

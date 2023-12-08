@@ -70,7 +70,9 @@ public class ChiTietSanPhamController {
 
         ChiTietSanPham checkMauSacSize = chiTietSanPhamService.checkSizeMauSac(mauSac, kichCo, UUID.fromString(idSanPham));
 
-        if (checkMauSacSize != null) {
+        if (chiTietSanPham.getSoLuong() < 1) {
+            redirectAttributes.addFlashAttribute("error", "Số lượng phải lớn hơn 0");
+        }else if(checkMauSacSize != null){
             System.out.println(checkMauSacSize);
             redirectAttributes.addFlashAttribute("error", "Dữ liệu này đã tồn tại");
         } else {
@@ -80,7 +82,7 @@ public class ChiTietSanPhamController {
             List<ChiTietSanPham> listChiTietSanPham = chiTietSanPhamService.getChiTietSanPham(idSanPham);
             chiTietSanPhamService.save(chiTietSanPham);
             redirectAttributes.addFlashAttribute("listChiTietSanPhamBySP", listChiTietSanPham);
-            redirectAttributes.addFlashAttribute("successCTSP", "Thêm dữ liệu thành công");
+            redirectAttributes.addFlashAttribute("success", "Thêm dữ liệu thành công");
 
             int width = 300;
             int height = 300;

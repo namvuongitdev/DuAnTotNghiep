@@ -9,10 +9,14 @@
                 <h5 class="modal-title" id="exampleModalLabelAnh">Thêm ảnh</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="themAnh">
-                <input type='file' name='file' id="fileAnh">
-                <button class='btn btn-primary' onclick="themAnhMauSac()" data-bs-dismiss="modal">Xác nhận
-                </button>
+            <div class="modal-body row" id="themAnh">
+                <div class="col-9">
+                    <input class="form-control" type="file" name="file" id="fileAnh">
+                </div>
+                <div class="col-3">
+                    <button class='btn btn-primary' onclick="themAnhMauSac()" data-bs-dismiss="modal">Xác nhận
+                    </button>
+                </div>
             </div>
         </div>
     </div>

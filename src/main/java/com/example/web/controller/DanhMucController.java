@@ -39,13 +39,19 @@ public class DanhMucController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute("danhMuc") DanhMuc danhMuc , RedirectAttributes attributes){
-        Date date = java.util.Calendar.getInstance().getTime();
-        UUID uuid = UUID.randomUUID();
-        danhMuc.setId(String.valueOf(uuid));
-        danhMuc.setTrangThai(1);
-        danhMuc.setNgayTao(date);
-        danhMucService.save(danhMuc);
-        attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
+        boolean checkTen = danhMucService.isExists(danhMuc.getTen());
+
+        if(checkTen){
+            attributes.addFlashAttribute("error", "Tên dữ liệu đã tồn tại");
+        }else{
+            Date date = java.util.Calendar.getInstance().getTime();
+            UUID uuid = UUID.randomUUID();
+            danhMuc.setId(String.valueOf(uuid));
+            danhMuc.setTrangThai(1);
+            danhMuc.setNgayTao(date);
+            danhMucService.save(danhMuc);
+            attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
+        }
         return "redirect:/admin/danh-muc/hien-thi";
     }
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,6 +18,9 @@ import java.util.UUID;
 public class DanhMucServiceImpl implements DanhMucService {
     @Autowired
     private DanhMucRepository danhMucRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public List<DanhMuc> getAll() {
@@ -69,6 +73,8 @@ public class DanhMucServiceImpl implements DanhMucService {
 
     @Override
     public boolean isExists(String value) {
-        return false;
+        String sql = "SELECT COUNT(*) FROM danh_muc WHERE danh_muc.ten = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, value);
+        return count > 0;
     }
 }

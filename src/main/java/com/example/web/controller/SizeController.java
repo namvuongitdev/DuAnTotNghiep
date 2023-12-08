@@ -40,13 +40,19 @@ public class SizeController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute("size") Size size, RedirectAttributes attributes){
-        Date date = java.util.Calendar.getInstance().getTime();
-        UUID uuid = UUID.randomUUID();
-        size.setId(String.valueOf(uuid));
-        size.setTrangThai(1);
-        size.setNgayTao(date);
-        sizeService.save(size);
-        attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
+        boolean checkTen = sizeService.isExists(size.getTen());
+
+        if(checkTen){
+            attributes.addFlashAttribute("error", "Tên dữ liệu đã tồn tại");
+        }else{
+            Date date = java.util.Calendar.getInstance().getTime();
+            UUID uuid = UUID.randomUUID();
+            size.setId(String.valueOf(uuid));
+            size.setTrangThai(1);
+            size.setNgayTao(date);
+            sizeService.save(size);
+            attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
+        }
         return "redirect:/admin/size/hien-thi";
     }
 

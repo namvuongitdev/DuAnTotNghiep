@@ -93,7 +93,7 @@
                 <a type="button" class="btn btn-primary" onclick="modalThemChiTietSanPham()" style="margin-right: 10px">Thêm
                 </a>
                 <button class="btn btn-secondary">
-                    update
+                    Cập nhật
                 </button>
             </div>
         </form>

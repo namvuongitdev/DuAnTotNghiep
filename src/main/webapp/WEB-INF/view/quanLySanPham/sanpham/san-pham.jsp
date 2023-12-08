@@ -174,10 +174,23 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 window.location.href = '/admin/san-pham/stop/' + data.id;
-                Swal.fire("Ngừng kinh doanh thành công", "", "success");
             } else if (result.isDenied) {
-                Swal.fire("Ngừng kinh doanh thất bại!", "", "error");
+                return false;
             }
+        });
+    }
+
+    if (${error != null}) {
+        Swal.fire({
+            title: "${error}",
+            icon: "error"
+        });
+    }
+
+    if (${success != null}) {
+        Swal.fire({
+            title: "${success}",
+            icon: "success"
         });
     }
 

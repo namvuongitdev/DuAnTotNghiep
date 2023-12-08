@@ -146,9 +146,8 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 window.location.href = '/admin/san-pham/stop-ctsp/' + data.idctsp + "?idSP=" + data.idsp + "&tt=" + data.trangThai;
-                Swal.fire("Cập nhật thành công", "", "success");
             } else if (result.isDenied) {
-                Swal.fire("Cập nhật thất bại!", "", "error");
+                return false;
             }
         });
     }
@@ -164,8 +163,9 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 document.getElementById('yourForm').submit();
+                saveInputValues();
             } else if (result.isDenied) {
-                Swal.fire("Thêm dữ liệu thất bại", "", "error");
+                return false;
             }
         });
     }
@@ -216,6 +216,7 @@
             title: "${success}",
             icon: "success"
         });
+        clearLocalStorage();
     }
 
     document.addEventListener('DOMContentLoaded', function () {
