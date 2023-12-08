@@ -38,18 +38,19 @@ public class DanhMucController {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute("danhMuc") DanhMuc danhMuc){
+    public String save(@ModelAttribute("danhMuc") DanhMuc danhMuc , RedirectAttributes attributes){
         Date date = java.util.Calendar.getInstance().getTime();
         UUID uuid = UUID.randomUUID();
         danhMuc.setId(String.valueOf(uuid));
         danhMuc.setTrangThai(1);
         danhMuc.setNgayTao(date);
         danhMucService.save(danhMuc);
+        attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
         return "redirect:/admin/danh-muc/hien-thi";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable("id") String id, @ModelAttribute("danhMuc") DanhMuc danhMuc){
+    public String update(@PathVariable("id") String id, @ModelAttribute("danhMuc") DanhMuc danhMuc, RedirectAttributes attributes){
         DanhMuc data = danhMucService.getOne(id);
         Date date = java.util.Calendar.getInstance().getTime();
         danhMuc.setId(id);
@@ -57,6 +58,7 @@ public class DanhMucController {
         danhMuc.setNgayTao(data.getNgayTao());
         danhMuc.setNgaySua(date);
         danhMucService.save(danhMuc);
+        attributes.addFlashAttribute("success", "Sửa dữ liệu thành công");
         return "redirect:/admin/danh-muc/hien-thi";
     }
 

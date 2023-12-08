@@ -38,18 +38,19 @@ public class MauSacController {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute("mauSac") MauSac mauSac){
+    public String save(@ModelAttribute("mauSac") MauSac mauSac, RedirectAttributes attributes){
         Date date = java.util.Calendar.getInstance().getTime();
         UUID uuid = UUID.randomUUID();
         mauSac.setId(uuid);
         mauSac.setTrangThai(1);
         mauSac.setNgayTao(date);
         iMauSacService.save(mauSac);
+        attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
         return "redirect:/admin/mau-sac/hien-thi";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable("id") String id, @ModelAttribute("mauSac") MauSac mauSac){
+    public String update(@PathVariable("id") String id, @ModelAttribute("mauSac") MauSac mauSac, RedirectAttributes attributes){
         MauSac data = iMauSacService.getOne(id);
         Date date = java.util.Calendar.getInstance().getTime();
         mauSac.setId(UUID.fromString(id));
@@ -57,6 +58,7 @@ public class MauSacController {
         mauSac.setNgayTao(data.getNgayTao());
         mauSac.setNgaySua(date);
         iMauSacService.save(mauSac);
+        attributes.addFlashAttribute("success", "Sửa dữ liệu thành công");
         return "redirect:/admin/mau-sac/hien-thi";
     }
 

@@ -13,8 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -84,6 +87,15 @@ public class HoaDonCuaToiController {
         return "donHangOnline/danhSach/donHangDaHuy";
     }
 
+    @GetMapping("/donHangDaThanhToan")
+    public String donHangDaThanhToan(Principal principal, Model model, @RequestParam(defaultValue = "1") Integer page){
+        Sort sort = Sort.by("ngayTao").descending();
+        Pageable pageable = PageRequest.of(page - 1, 10, sort);
+        model.addAttribute("listHd", hoaDonService.findHoaDonByTrangThai(principal.getName(), 4, pageable));
+        model.addAttribute("url", "/cuaToi/donHangDaThanhToan?page=");
+        return "donHangOnline/danhSach/donHangDaThanhToan";
+    }
+
     @GetMapping("/chiTietDonHang/{idHD}")
     public String chiTietDonHang(@PathVariable UUID idHD, Model model){
         List<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietService.getAllByIdHoaDon(idHD);
@@ -92,25 +104,18 @@ public class HoaDonCuaToiController {
         return "donHangOnline/chiTiet/chiTietDonHang";
     }
 
-    @GetMapping("/xac-nhan/{id}")
-    public String xacNhan(Principal principal, @PathVariable("id")String id){
-        HoaDon hoaDon=hoaDonService.getOne(id);
-        hoaDon.setTrangThai(6);
-    //    hoaDonService.updateStatusHoaDonById(hoaDon,"6");
+    @PostMapping("/update-trang-thai")
+    public String updateTrangThaiDonHang(@RequestParam Integer trangThai , @RequestParam String idHD , @RequestParam String ghiChuXacNhan , RedirectAttributes attributes){
+        Integer isCheck = hoaDonService.xacNhanDonHangCuaToi(trangThai , UUID.fromString(idHD) , ghiChuXacNhan);
+        if(isCheck == 1){
+            attributes.addFlashAttribute("success", "Xác nhận đơn hàng thành công");
+        }else if (isCheck == 2){
+            attributes.addFlashAttribute("error", "Bạn chưa nhập phí vận chuyển");
+        }else if(isCheck == 3){
+            attributes.addFlashAttribute("error", "Hủy đơn hàng thành công");
+        }else{
+            attributes.addFlashAttribute("error", "Không tìm thấy đơn hàng");
+        }
         return "redirect:/cuaToi/donHangAll";
     }
-
-//    @GetMapping("/huy-don/{id}")
-//    public String huyDon(Principal principal, @RequestParam(defaultValue = "0") Integer page,
-//                         @PathVariable("id")String id){
-//        Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),page,5);
-//        for (int i = 0; i <= lst.getContent().size()-1; i++) {
-//            hoaDonChiTietService.deleteSanPhamHoaDon(String.valueOf(lst.getContent().get(i).getId()));
-//        }
-//        HoaDon hoaDon=hoaDonService.getOne(id);
-//        hoaDon.setTrangThai(5);
-//        hoaDonService.updateStatusHoaDonById(hoaDon,"5");
-//        lichSuHoaDonService.add(principal.getName(),"Hủy hóa đơn",hoaDon,null,"ok");
-//        return "redirect:/cuaToi/donHangAll";
-//    }
 }

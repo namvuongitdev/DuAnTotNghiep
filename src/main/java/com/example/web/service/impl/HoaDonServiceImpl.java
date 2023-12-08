@@ -385,6 +385,41 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
+    public Integer xacNhanDonHangCuaToi(Integer trangThai, UUID idHD, String ghiChu) {
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHD);
+        if (hoaDon.isPresent()) {
+            HoaDon hd = hoaDon.get();
+            if (trangThai == HoaDonStatus.DA_TIEP_NHAN) {
+                if (hd.getPhiVanChuyen() == null) {
+                    return 2;
+                }
+            }
+            if (trangThai == HoaDonStatus.GIAO_HANG) {
+                BigDecimal tongTien = hoaDonRepository.tongTien(idHD);
+                hd.setTongTien(BigDecimal.valueOf(tongTien.intValue() + hd.getPhiVanChuyen().intValue()));
+            }
+            if (trangThai == HoaDonStatus.HUY) {
+                hd.getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() == HoaDonChiTietStatus.KICH_HOAT).forEach(hoaDonChiTiet -> {
+                    Integer soLuong = hoaDonChiTiet.getSoLuong() + hoaDonChiTiet.getChiTietSanPham().getSoLuong();
+                    hoaDonChiTiet.getChiTietSanPham().setSoLuong(soLuong);
+                });
+                hd.setTrangThai(trangThai);
+                lichSuHoaDonService.add(trangThai, hd.getId(), ghiChu);
+                return 3;
+            }
+            if (trangThai == HoaDonStatus.DA_THANH_TOAN) {
+                hd.setNgayNhanHang(java.util.Calendar.getInstance().getTime());
+            }
+            hd.setTrangThai(trangThai);
+            lichSuHoaDonService.add(trangThai, hd.getId(), ghiChu);
+            return 1;
+
+        } else {
+            return -1;
+        }
+    }
+
+    @Override
     public Integer tongDoanhThu() {
         return hoaDonRepository.tongDoanhThu();
     }

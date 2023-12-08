@@ -62,10 +62,10 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon, UUID>, JpaSpeci
             "group by hd.id, hd.ma, hd.ngayTao, hd.trangThai , hd.phiVanChuyen")
     Page<Object[]> findHoaDonByTaiKhoan(String taiKhoan, Pageable pageable);
 
-    @Query("SELECT hd.id, hd.ma, hd.ngayTao, hd.tongTien, SUM(hdct.soLuong), hd.trangThai FROM HoaDon hd " +
-            "JOIN HoaDonChiTiet hdct ON hdct.hoaDon.id = hd.id " +
-            "WHERE hd.khachHang.taiKhoan = ?1 AND hd.loaiHoaDon = true AND hd.trangThai = ?2 " +
-            "GROUP BY hd.ma, hd.ngayTao, hd.id, hd.tongTien, hd.trangThai")
+    @Query("SELECT hd.id, hd.ma, hd.ngayTao, SUM(hdct.donGia * hdct.soLuong), SUM(hdct.soLuong), hd.trangThai , hd.phiVanChuyen FROM HoaDon hd " +
+            "JOIN hd.hoaDonChiTiets hdct join hd.khachHang kh " +
+            "WHERE kh.taiKhoan = ?1 AND hd.trangThai = ?2 AND hd.loaiHoaDon = true AND hdct.trangThai=0" +
+            "group by hd.id, hd.ma, hd.ngayTao, hd.trangThai , hd.phiVanChuyen")
     Page<Object[]> findHoaDonByTrangThai(String taiKhoan, Integer trangThai, Pageable pageable);
 
 

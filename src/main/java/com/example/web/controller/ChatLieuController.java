@@ -39,18 +39,19 @@ public class ChatLieuController {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute("chatLieu") ChatLieu chatLieu){
+    public String save(@ModelAttribute("chatLieu") ChatLieu chatLieu, RedirectAttributes attributes){
         Date date = java.util.Calendar.getInstance().getTime();
         UUID uuid = UUID.randomUUID();
         chatLieu.setId(uuid);
         chatLieu.setTrangThai(1);
         chatLieu.setNgayTao(date);
         service.save(chatLieu);
+        attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
         return "redirect:/admin/chat-lieu/hien-thi";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable("id") String id, @ModelAttribute("chatLieu") ChatLieu chatLieu){
+    public String update(@PathVariable("id") String id, @ModelAttribute("chatLieu") ChatLieu chatLieu, RedirectAttributes attributes){
         ChatLieu data = service.getOne(UUID.fromString(id));
         Date date = java.util.Calendar.getInstance().getTime();
         chatLieu.setId(UUID.fromString(id));
@@ -58,6 +59,7 @@ public class ChatLieuController {
         chatLieu.setNgayTao(data.getNgayTao());
         chatLieu.setNgaySua(date);
         service.save(chatLieu);
+        attributes.addFlashAttribute("success", "Sửa dữ liệu thành công");
         return "redirect:/admin/chat-lieu/hien-thi";
     }
 

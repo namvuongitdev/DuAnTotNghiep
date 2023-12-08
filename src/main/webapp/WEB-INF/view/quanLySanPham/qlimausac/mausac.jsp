@@ -181,12 +181,17 @@
                     errorDiv.textContent = 'Tên màu không hợp lệ';
                 } else {
                     errorDiv.textContent = ''; // Clear error message
-                    Swal.fire("Tạo dữ liệu thành công", "", "success");
                     document.getElementById('colorForm').submit(); // Submit the form
                 }
             } else if (result.isDenied) {
                 Swal.fire("Tạo dữ liệu thất bại !", "", "error");
             }
+        });
+    }
+    if (${success != null}) {
+        Swal.fire({
+            title: "${success}",
+            icon: "success"
         });
     }
 </script>

@@ -5,21 +5,23 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html lang="zxx">
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="shortcut icon" href="#">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../../../css/banHangTaiQuay/hoaDon/chiTietHoaDon.css">
+    <link rel="stylesheet" href="../../../../css/ban-hang-tai-quay.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="https://kit.fontawesome.com/35a8b342cd.js" crossorigin="anonymous"></script>
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
-          rel="stylesheet">
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="../../../../css/bootstrap.min.css" type="text/css">
@@ -52,6 +54,7 @@
                     <li><a href="/cuaToi/donHangChoGiaoHang">Đã xác nhận</a></li>|
                     <li><a href="/cuaToi/donHangDangGiao">Đang giao</a></li>|
                     <li><a href="/cuaToi/donHangDaNhan">Đã nhận</a></li>|
+                    <li><a href="/cuaToi/donHangDaThanhToan">Đã thanh toán</a></li>|
                     <li><a href="/cuaToi/donHangDaHuy">Đã hủy</a></li>
                 </ul>
             </nav>
@@ -102,7 +105,7 @@
                         <td>
                             <div style="margin-top: 30px">
                                 <c:if test="${hd[5] == 4}">
-                                    Đã hoàn thành
+                                    Đã thanh toán
                                 </c:if>
 
                                 <c:if test="${hd[5] == 1}">
@@ -122,7 +125,11 @@
                                 </c:if>
 
                                 <c:if test="${hd[5] == 6}">
-                                    Giao hàng thành công
+                                    Đã nhận
+                                </c:if>
+
+                                <c:if test="${hd[5] == 9}">
+                                    Hoàn trả
                                 </c:if>
                             </div>
                             <div style="margin-top: 10px">
@@ -132,20 +139,99 @@
                         <td>
                             <c:if test="${hd[5]==1}">
                                 <div>
-                                    <button id="huy" class="btn btn-secondary" name="${hd[5]}" onclick="huyDonHang({idhd:`${hd[0]}`})" >
-                                        <a href="#" style="color: white">Hủy đơn</a>
+                                    <button class="xacNhanHuyHoaDon" id="xacNhanHuyHoaDon${hd[0]}" style="border: none; background-color: white">
+                                        <a class="btn btn-danger text-light">Huỷ</a>
                                     </button>
                                 </div>
                             </c:if>
                             <div>
-                                <button id="nhan" class="btn btn-secondary" name="${hd[5]}" onclick="xacNhan({idhd:`${hd[0]}`})" style="visibility: ${hd[5]==3?'':'hidden'}">
-                                    <a href="#" style="color: white">Đã nhận</a>
+                                <button class="xacNhanHoaDon" id="xacNhanHoaDon${hd[0]}" style="visibility: ${hd[5]==3?'':'hidden'};border: none; background-color: white">
+                                    <a class="btn btn-success text-light">Đã nhận</a>
                                 </button>
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                <%--xác nhận đơn--%>
+                <div id="modalXacNhanHoaDon${hd[0]}" class="modal">
+                    <div class="modal-content-1" style="width: 50%">
+                        <c:if test="${hd[5] == 1}">
+                            <h5 class="mb-3"><b>Xác nhận đơn hàng</b></h5>
+                        </c:if>
+
+                        <c:if test="${hd[5] == 2}">
+                            <h5 class="mb-3"><b>Xác nhận giao hàng</b></h5>
+                        </c:if>
+
+                        <c:if test="${hd[5] == 3}">
+                            <h5 class="mb-3"><b>Xác nhận đã nhận được hàng</b></h5>
+                        </c:if>
+
+                        <c:if test="${hd[5] == 6}">
+                            <h5 class="mb-3"><b>Xác nhận hàng thành</b></h5>
+                        </c:if>
+                        <span class="close" id="close_modalXacNhanHoaDon${hd[0]}">&times;</span>
+                        <div class="row">
+                            <c:if test="${hd[5] == 1}">
+                                <form action="/cuaToi/update-trang-thai?trangThai=2&idHD=${hd[0]}" method="post" style="margin-right: 10px">
+                                    <label>Ghi chú</label>
+                                    <textarea name="ghiChuXacNhan" class="form-control"></textarea>
+                                    <br>
+                                    <button class="btn btn-primary">Xác nhận</button>
+                                </form>
+                            </c:if>
+
+                            <c:if test="${hd[5] == 2}">
+
+                                <form action="/cuaToi/update-trang-thai?trangThai=3&idHD=${hd[0]}" method="post" style="margin-right: 10px">
+                                    <label>Ghi chú</label>
+                                    <textarea name="ghiChuXacNhan" class="form-control"></textarea>
+                                    <br>
+                                    <button class="btn btn-primary">Xác nhận</button>
+                                </form>
+
+                            </c:if>
+
+                            <c:if test="${hd[5] == 3}">
+
+                                <form action="/cuaToi/update-trang-thai?trangThai=6&idHD=${hd[0]}" method="post">
+                                    <label>Ghi chú</label>
+                                    <textarea name="ghiChuXacNhan" class="form-control"></textarea>
+                                    <br>
+                                    <button class="btn btn-primary">Xác nhận</button>
+                                </form>
+
+                            </c:if>
+
+                            <c:if test="${hd[5] == 6}">
+
+                                <form action="/cuaToi/update-trang-thai?trangThai=4&idHD=${hd[0]}" method="post">
+                                    <label>Ghi chú</label>
+                                    <textarea name="ghiChuXacNhan" class="form-control"></textarea>
+                                    <br>
+                                    <button class="btn btn-primary">Xác nhận</button>
+                                </form>
+
+                            </c:if>
+                        </div>
+                    </div>
+                </div>
+                <%--hủy đơn--%>
+                <div id="modalXacNhanHuyHoaDon${hd[0]}" class="modal">
+                    <div class="modal-content-1" style="width: 50%">
+                        <h5 class="mb-3"><b>Xác nhận huỷ hoá đơn</b></h5>
+                        <span class="close" id="close_modalXacNhanHuyHoaDon${hd[0]}">&times;</span>
+                        <div class="row">
+                            <form action="/cuaToi/update-trang-thai?trangThai=5&idHD=${hd[0]}" method="post">
+                                <label>Ghi chú</label>
+                                <textarea name="ghiChuXacNhan" class="form-control"></textarea>
+                                <br>
+                                <button class="btn btn-primary">Xác nhận</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </c:forEach>
             <%--end--%>
             <%--                  phân trang--%>
@@ -185,25 +271,64 @@
 <script src="../../../../js/mixitup.min.js"></script>
 <script src="../../../../js/owl.carousel.min.js"></script>
 <script src="../../../../js/main.js"></script>
-<script>
-    function huyDonHang(data) {
-        if (confirm("Bạn có chắc chắn muốn hủy đơn không ?")===true){
-            window.location.href="/cuaToi/huy-don/"+data.idhd;
-            alert('Hủy đơn thành công.');
-        }else {
-            alert('Hủy đơn thất bại.');
-            return;
-        }
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var xacNhanHoaDons = document.querySelectorAll('.xacNhanHoaDon');
+
+        xacNhanHoaDons.forEach(function (xacNhanHoaDon){
+            xacNhanHoaDon.addEventListener('click', function (){
+                var idHD = this.id.replace('xacNhanHoaDon', '');
+                let modalXacNhanHoaDon = document.getElementById("modalXacNhanHoaDon" + idHD);
+                let close_modalXacNhanHoaDon = document.getElementById("close_modalXacNhanHoaDon" + idHD);
+                const xacNhan = document.getElementById("xacNhanHoaDon" + idHD);
+
+                if (xacNhan != null) {
+                    xacNhan.onclick = function () {
+                        modalXacNhanHoaDon.style.display = "block";
+                    }
+                }
+                if (close_modalXacNhanHoaDon != null) {
+                    close_modalXacNhanHoaDon.onclick = function () {
+                        modalXacNhanHoaDon.style.display = "none";
+                    }
+                }
+            });
+        });
+
+        var xacNhanHuyHoaDons = document.querySelectorAll('.xacNhanHuyHoaDon');
+
+        xacNhanHuyHoaDons.forEach(function (xacNhanHuyHoaDon){
+            xacNhanHuyHoaDon.addEventListener('click', function (){
+                var idHD = this.id.replace('xacNhanHuyHoaDon', '');
+                let modalXacNhanHuyHoaDon = document.getElementById("modalXacNhanHuyHoaDon" + idHD);
+                let close_modalXacNhanHuyHoaDon = document.getElementById("close_modalXacNhanHuyHoaDon" + idHD);
+
+                if (document.getElementById("xacNhanHuyHoaDon" + idHD) != null) {
+                    document.getElementById("xacNhanHuyHoaDon" + idHD).onclick = function () {
+                        modalXacNhanHuyHoaDon.style.display = "block"
+                    }
+                }
+                if (close_modalXacNhanHuyHoaDon != null) {
+                    close_modalXacNhanHuyHoaDon.onclick = function () {
+                        modalXacNhanHuyHoaDon.style.display = "none";
+                    }
+                }
+            });
+        });
+    });
+
+    if (${success != null}) {
+        Swal.fire({
+            title: "${success}",
+            icon: "success"
+        });
     }
-    function xacNhan(data) {
-        if (confirm("Bạn có chắc chắn là đã nhận hàng chưa ?")===true){
-            window.location.href="/cuaToi/xac-nhan/"+data.idhd;
-            alert('Xác nhận thành công.');
-        }else {
-            alert('Xác nhận thất bại.');
-            return;
-        }
+    if (${error != null}) {
+        Swal.fire({
+            title: "${error}!",
+            icon: "error"
+        });
     }
 </script>
 

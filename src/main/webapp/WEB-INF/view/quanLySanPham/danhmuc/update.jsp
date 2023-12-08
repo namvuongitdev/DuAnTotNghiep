@@ -171,12 +171,17 @@
                     errorDiv.textContent = 'Tên danh mục không hợp lệ';
                 } else {
                     errorDiv.textContent = ''; // Clear error message
-                    Swal.fire("Sửa dữ liệu thành công", "", "success");
                     document.getElementById('colorForm').submit(); // Submit the form
                 }
             } else if (result.isDenied) {
                 Swal.fire("Sửa dữ liệu thất bại !", "", "error");
             }
+        });
+    }
+    if (${success != null}) {
+        Swal.fire({
+            title: "${success}",
+            icon: "success"
         });
     }
 </script>

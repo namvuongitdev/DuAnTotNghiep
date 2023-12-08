@@ -39,18 +39,19 @@ public class SizeController {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute("size") Size size){
+    public String save(@ModelAttribute("size") Size size, RedirectAttributes attributes){
         Date date = java.util.Calendar.getInstance().getTime();
         UUID uuid = UUID.randomUUID();
         size.setId(String.valueOf(uuid));
         size.setTrangThai(1);
         size.setNgayTao(date);
         sizeService.save(size);
+        attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
         return "redirect:/admin/size/hien-thi";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable("id") String id, @ModelAttribute("size") Size size){
+    public String update(@PathVariable("id") String id, @ModelAttribute("size") Size size, RedirectAttributes attributes){
         Size data = sizeService.getOne(id);
         Date date = java.util.Calendar.getInstance().getTime();
         size.setId(id);
@@ -58,6 +59,7 @@ public class SizeController {
         size.setNgayTao(data.getNgayTao());
         size.setNgaySua(date);
         sizeService.save(size);
+        attributes.addFlashAttribute("success", "Sửa dữ liệu thành công");
         return "redirect:/admin/size/hien-thi";
     }
 
