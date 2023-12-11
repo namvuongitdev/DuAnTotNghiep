@@ -395,7 +395,7 @@ public class SanPhamController {
     public String stop(@PathVariable("id") UUID id, RedirectAttributes attributes) {
         SanPham sp = iSanPhamService.getOne(id);
         sp.setTrangThai(1);
-        chiTietSanPhamService.updateTT_0(id);
+       // chiTietSanPhamService.updateTT_0(id);
         sp.setNgaySua(java.util.Calendar.getInstance().getTime());
         iSanPhamService.save(sp);
         attributes.addFlashAttribute("success", "Ngừng kinh doanh thành công");
