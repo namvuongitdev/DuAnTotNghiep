@@ -9,7 +9,7 @@
             <div class="mb-3">
                 <label for="ten" class="form-label ">Tên sản phẩm <span
                         style="color: red">(*)</span></label>
-                <input type="text" class="form-control" name="ten" id="ten" value="${sp.ten}">
+                <input type="text" class="form-control" name="ten" id="tenSP" value="${sp.ten}">
                 <form:errors path="ten" cssStyle="color: red"/>
             </div>
             <div class="mb-3">

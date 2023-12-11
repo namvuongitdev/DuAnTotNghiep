@@ -93,11 +93,16 @@
                                         <form:errors path="cccd" cssStyle="color: red"/>
                                     </div>
                                     <div class="row mb-3">
-                                        <div class="col-12">
+                                        <div class="col-11">
                                             <label for="chucVu" class="form-label">Chức vụ</label>
                                             <form:select path="chucVu" class="form-control" id="chucVu">
                                                 <form:options items="${listChucVu}" itemLabel="ten" itemValue="id"/>
                                             </form:select>
+                                        </div>
+                                        <div class="col-1" style="padding-top: 40px">
+                                            <a data-bs-toggle="modal" data-bs-target="#exampleModalChucVu">
+                                                <i class="bi bi-plus-circle"></i>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="mb-3">
@@ -123,6 +128,33 @@
                         </form:form>
                     </div>
                 </div>
+                <%--thêm nhanh chức vụ--%>
+                <div class="modal" id="exampleModalChucVu" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Thêm dữ liệu</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <%--@elvariable id="chucVu" type=""--%>
+                            <form:form method="post" action="/admin/nhan-vien/modal-add-chuc-vu" modelAttribute="chucVu" class="row g-3">
+                                <div class="modal-body">
+                                    <div class="form-floating">
+                                        <form:input class="form-control" placeholder="" path="ten"/>
+                                        <form:label class="form-label" path="ten">Tên chức vụ:</form:label>
+                                        <form:errors path="ten" cssStyle="color: #ff0000"/>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                    <form:button type="submit" class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){ }else{ alert('Thêm thất bại');return false; } saveInputValues()">
+                                        Xác nhận
+                                    </form:button>
+                                </div>
+                            </form:form><!-- End floating Labels Form -->
+                        </div>
+                    </div>
+                </div><!-- End Modal Dialog Scrollable-->
             </section>
         </div>
     </div>
