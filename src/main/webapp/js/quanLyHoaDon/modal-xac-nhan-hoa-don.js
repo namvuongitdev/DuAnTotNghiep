@@ -14,11 +14,13 @@ close_modalXacNhanHoaDon.onclick = function () {
 
 let modalXacNhanHuyHoaDon = document.getElementById("modalXacNhanHuyHoaDon");
 let close_modalXacNhanHuyHoaDon = document.getElementById("close_modalXacNhanHuyHoaDon");
+let xacNhanHuyHoaDon = document.getElementById("xacNhanHuyHoaDon");
+if(xacNhanHuyHoaDon != null){
+    xacNhanHuyHoaDon.onclick = function () {
+        modalXacNhanHuyHoaDon.style.display = "block"
+    }
 
-document.getElementById("xacNhanHuyHoaDon").onclick = function () {
-    modalXacNhanHuyHoaDon.style.display = "block"
 }
-
 close_modalXacNhanHuyHoaDon.onclick = function () {
     modalXacNhanHuyHoaDon.style.display = "none";
 }

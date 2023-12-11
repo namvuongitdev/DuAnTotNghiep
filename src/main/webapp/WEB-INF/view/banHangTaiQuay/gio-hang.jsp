@@ -145,7 +145,7 @@
             if (result.isConfirmed) {
                 document.getElementById('xacNhanThanhToan').submit();
             } else if (result.isDenied) {
-                Swal.fire("thanh toán thất bạn", "", "error");
+               return false;
             }
         });
     }

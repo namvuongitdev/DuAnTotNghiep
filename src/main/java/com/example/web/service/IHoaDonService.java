@@ -2,17 +2,13 @@ package com.example.web.service;
 
 import com.example.web.request.HoaDonRequest;
 import com.example.web.model.HoaDon;
-import com.example.web.model.HoaDonChiTiet;
 import com.example.web.request.ThongTinKhachHang;
 import com.example.web.response.HoaDonChiTietReponse;
 import com.example.web.response.HoaDonFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,10 +42,7 @@ public interface IHoaDonService {
 
     HoaDon add(HoaDon hoaDon);
 
-
     HoaDon updateThongTinKhachHang(UUID idHD, ThongTinKhachHang thongTinKhachHang);
-
-    void inHoaDon(String id, List<HoaDonChiTiet> hoaDonChiTiets);
 
     Page<Object[]> findHoaDonByTaiKhoan(String taiKhoan, Pageable pageable);
 

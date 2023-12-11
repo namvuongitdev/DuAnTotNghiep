@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../../../css/banHangTaiQuay/hoaDon/chiTietHoaDon.css">
     <link rel="stylesheet" href="../../../../css/ban-hang-tai-quay.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="
               https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
               "></script>
@@ -180,6 +181,7 @@
 <c:if test="${hoaDon.trangThai == 4}">
     <script src="/js/quanLyHoaDon/modal-tra-hang.js"></script>
 </c:if>
+<script src="/js/quanLyHoaDon/inHoaDon.js"></script>
 <script>
     if (${error != null}) {
         Swal.fire({
@@ -194,6 +196,23 @@
             text: "${success}",
             icon: "success"
         });
+    }
+
+    function inHoaDon(event, idHD) {
+        event.preventDefault();
+        Swal.fire({
+            title: "Bạn có muốn in hoá đơn không?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                printHoaDon(idHD);
+            } else {
+                return false;
+            }
+        });
+        return false;
     }
 </script>
 </html>

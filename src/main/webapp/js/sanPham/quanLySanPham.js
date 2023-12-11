@@ -118,6 +118,7 @@ app.controller("controller", function ($scope, $http) {
                                 $scope.lstChatLieu.push(item);
                                 Swal.fire("Thêm dữ liệu thành công", "", "success");
                                 location.reload();
+                                saveInputValues();
                                 console.log("Success", resp);
                             }).catch(error => {
                                 console.log("Error", error);
@@ -166,6 +167,7 @@ app.controller("controller", function ($scope, $http) {
                                 $scope.lstDanhMuc.push(item);
                                 Swal.fire("Thêm dữ liệu thành công", "", "success");
                                 location.reload();
+                                saveInputValues();
                                 console.log("Success", resp)
                             }).catch(error => {
                                 console.log("Error", error)
@@ -213,6 +215,7 @@ app.controller("controller", function ($scope, $http) {
                                 $scope.lstKieuDang.push(item);
                                 Swal.fire("Thêm dữ liệu thành công", "", "success");
                                 location.reload();
+                                saveInputValues();
                                 console.log("Success", resp)
                             }).catch(error => {
                                 console.log("Error", error)

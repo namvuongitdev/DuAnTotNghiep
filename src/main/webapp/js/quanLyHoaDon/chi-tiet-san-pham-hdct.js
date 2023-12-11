@@ -133,11 +133,3 @@ function themSanPhamVaoGioHang(data) {
        window.location.href = "/admin/hoa-don-chi-tiet/add?idCTSP=" + data.idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD;
     }
 }
-
-function inHoaDon(data) {
-    if (confirm("Bạn có muốn in hóa đơn?") === true) {
-        window.location.href = "/admin/hoa-don-onl/in-hoa-don/" + data.idhd;
-    } else {
-        return;
-    }
-}

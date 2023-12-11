@@ -14,6 +14,7 @@ import com.example.web.response.HoaDonFilter;
 import com.example.web.response.SanPhamFilter;
 import com.example.web.service.IKhachHangService;
 import com.example.web.service.ILichSuHoaDonService;
+import com.example.web.service.InHoaDonService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -62,6 +66,9 @@ public class HoDonController {
 
     @Autowired
     private ILichSuHoaDonService lichSuHoaDonService;
+
+    @Autowired
+    private InHoaDonService inHoaDonService;
 
 
     @GetMapping("/hien-thi-hoa-cho")
@@ -240,11 +247,15 @@ public class HoDonController {
     }
 
 
-    @GetMapping("/in-hoa-don/{id}")
-    public String generateAndSaveInvoice(@PathVariable("id") String id) {
-        //  Page<HoaDonChiTiet> lst = hoaDonService.getHoaDonChiTiet(UUID.fromString(id),0,5);
-        //   url = hoaDonService.inHoaDon(id,lst);
-        return url;
+    @PostMapping("/in-hoa-don")
+    public String generateAndSaveInvoice(@RequestParam("id") String id , RedirectAttributes attributes) {
+      ResponseEntity<?> responseEntity = inHoaDonService.generatePdf(UUID.fromString(id));
+       if(responseEntity.getStatusCode().value() == 200){
+           attributes.addFlashAttribute("success" , "in hoá đơn thành công");
+       }else{
+           attributes.addFlashAttribute("error" , "in hoá đơn không thành công");
+       }
+        return "redirect:/admin/hoa-don/chi-tiet-hoa-dons/"+id;
     }
 
     @GetMapping("/admin/hoa-don/hoan-tien")

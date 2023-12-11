@@ -18,19 +18,12 @@ import com.example.web.response.HoaDonReponse;
 import com.example.web.service.IHoaDonService;
 import com.example.web.response.HoaDonFilter;
 import com.example.web.service.ILichSuHoaDonService;
+import com.example.web.service.InHoaDonService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.SneakyThrows;
-import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,18 +34,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -71,6 +58,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
 
     @Autowired
     private ILichSuHoaDonService lichSuHoaDonService;
+
+    @Autowired
+    private InHoaDonService inHoaDonService;
 
     @Override
     public String addHoaDon() {
@@ -187,7 +177,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 HoaDon response = hoaDonRepository.save(hd);
                 lichSuHoaDonService.add(response.getLoaiHoaDon() ? HoaDonStatus.CHO_XAC_NHAN : HoaDonStatus.DA_THANH_TOAN , response.getId(), "nhân viên tạo hoá đơn cho khách");
                 attributes.addFlashAttribute("success", "Hoá đơn " + response.getMa() + " tạo thành công");
-               // inHoaDon(String.valueOf(response.getId()) , response.getHoaDonChiTiets());
+                inHoaDonService.generatePdf(response.getId());
                 return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
             } else {
                 return null;
@@ -287,43 +277,6 @@ public class HoaDonServiceImpl implements IHoaDonService {
             return hoaDonRepository.save(hd);
         }
         return null;
-    }
-
-    @Override
-    public void inHoaDon(String id, List<HoaDonChiTiet> hoaDonChiTiets) {
-        HoaDon hoaDon = getOne(id);
-        Date date = java.util.Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss");
-        SimpleDateFormat dateFormatter2 = new SimpleDateFormat("dd-MM-yyyy");
-        String time = String.valueOf(dateFormatter.format(date));
-        String day = String.valueOf(dateFormatter2.format(date));
-        try {
-            // Load báo cáo JasperReports từ tệp .jasper
-            File file = ResourceUtils.getFile("D:\\DuAnTotNghiep\\src\\main\\resources\\HoaDon.jrxml");
-            JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(hoaDonChiTiets);
-
-            // Tạo dữ liệu cho báo cáo (đây là nơi bạn cung cấp thông tin hóa đơn)
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put("ngayTao", day);
-            parameters.put("nhanVien", hoaDon.getNhanVien().getHoTen());
-            parameters.put("khachHang", hoaDon.getKhachHang() == null ? "Khách bán lẻ" : hoaDon.getKhachHang().getHoTen());
-            parameters.put("maHd", hoaDon.getMa());
-            parameters.put("inVaoLuc", time);
-            parameters.put("tongTien", hoaDon.getTongTien());
-            parameters.put("hoaDonChiTiet", dataSource);
-
-            // Tạo báo cáo JasperPrint sử dụng dữ liệu và mẫu
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
-
-            // Lưu tệp PDF hóa đơn vào máy chủ
-            String pdfFileName = hoaDon.getMa() + ".pdf";
-            String filePath = "D:\\hoaDonPDF\\" + pdfFileName;
-            JasperExportManager.exportReportToPdfFile(jasperPrint, filePath);
-
-        } catch (JRException | FileNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

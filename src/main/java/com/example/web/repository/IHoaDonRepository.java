@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -90,7 +89,7 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon, UUID>, JpaSpeci
     @Query(value = "select count(hd.id) from hoa_don hd join lich_su_hoa_don lshd on hd.id = lshd.id_hoa_don where CONVERT(DATE,lshd.ngay_thao_tac) = CONVERT(DATE,GETDATE()) and lshd.thao_tac = 4", nativeQuery = true)
     Integer tongHoaDon();
 
-    @Query(value = "select sum(hd.tong_tien) from hoa_don hd join lich_su_hoa_don lshd on hd.id = lshd.id_hoa_don where lshd.thao_tac = 4 and MONTH(lshd.ngay_thao_tac) =?1 and  YEAR(hd.ngay_tao) = ?2  and YEAR(lshd.ngay_thao_tac) = YEAR(GETDATE())", nativeQuery = true)
+    @Query(value = "select sum(hd.tong_tien) from hoa_don hd join lich_su_hoa_don lshd on hd.id = lshd.id_hoa_don where lshd.thao_tac = 4 and MONTH(lshd.ngay_thao_tac) =?1 and  YEAR(lshd.ngay_thao_tac) = ?2", nativeQuery = true)
     Double getDoanhThuTheoThang(Integer thang, Integer nam);
 
     @Query(value = " select distinct YEAR(hd.ngay_tao) from hoa_don hd order by YEAR(hd.ngay_tao) asc", nativeQuery = true)

@@ -94,23 +94,30 @@
 <script type="text/javascript">
     // Lấy giá trị từ tất cả các ô input và textarea, và lưu chúng vào localStorage
     function saveInputValues() {
-        var allInputs = document.querySelectorAll('input, textarea');
-        for (var i = 0; i < allInputs.length; i++) {
-            var inputId = allInputs[i].id;
-            var inputValue = allInputs[i].value;
-            localStorage.setItem(inputId, inputValue);
-        }
+        var tenSP = document.getElementById('tenSP');
+        var giaBan = document.getElementById('giaBan');
+        var moTa = document.getElementById('moTa');
+        localStorage.setItem('tenSPValue', tenSP.value);
+        localStorage.setItem('giaBanValue', giaBan.value);
+        localStorage.setItem('moTaValue', moTa.value);
     }
 
     // Khôi phục giá trị từ localStorage vào các ô input và textarea
     window.onload = function () {
-        var allInputs = document.querySelectorAll('input, textarea');
-        for (var i = 0; i < allInputs.length; i++) {
-            var inputId = allInputs[i].id;
-            var savedValue = localStorage.getItem(inputId);
-            if (savedValue) {
-                allInputs[i].value = savedValue;
-            }
+        var tenSP = document.getElementById('tenSP');
+        var giaBan = document.getElementById('giaBan');
+        var moTa = document.getElementById('moTa');
+        var savedTenSP = localStorage.getItem('tenSPValue');
+        var savedGiaBan = localStorage.getItem('giaBanValue');
+        var savedMoTa = localStorage.getItem('moTaValue');
+        if (savedTenSP) {
+            tenSP.value = savedTenSP;
+        }
+        if (savedMoTa) {
+            moTa.value = savedMoTa;
+        }
+        if (savedGiaBan) {
+            giaBan.value = savedGiaBan;
         }
     }
 
