@@ -113,7 +113,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(UUID.fromString(id));
         if (hoaDon.isPresent()) {
             HoaDon hd = hoaDon.get();
-            hd.setTrangThai(HoaDonStatus.HUY);
+            hd.setTrangThai(HoaDonStatus.HUY_HOA_DON_CHO);
             List<HoaDonChiTiet> listHDCT = hd.getHoaDonChiTiets().stream().filter(o -> o.getTrangThai() == HoaDonChiTietStatus.KICH_HOAT).collect(Collectors.toList());
             if (hd.getHoaDonChiTiets().isEmpty()) {
                 hoaDonRepository.save(hd);
@@ -259,10 +259,10 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 if (!filter.getLoaiHoaDon().isBlank()) {
                     predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("loaiHoaDon"), Boolean.valueOf(filter.getLoaiHoaDon()))));
                 }
-                if (!filter.getTrangThai().isEmpty() && filter.getTrangThai() != null) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai"), Integer.parseInt(filter.getTrangThai()))));
+                if (filter.getTrangThai() != null && filter.getTrangThai() != 0) {
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai"), filter.getTrangThai())));
                 }
-                predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("trangThai"), HoaDonStatus.HOA_DON_CHO)));
+                predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("trangThai"), HoaDonStatus.HOA_DON_CHO), criteriaBuilder.notEqual(root.get("trangThai"), HoaDonStatus.HUY_HOA_DON_CHO)));
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         }, pageable);

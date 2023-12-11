@@ -2,7 +2,6 @@ let idSanPham = null;
 let idMauSac = null;
 let modalThemCTSP = document.getElementById("modalThemChiTietSanPham");
 
-
 function modalThemChiTietSanPham(){
     modalThemCTSP.style.display = "block";
 }
@@ -98,27 +97,38 @@ app.controller("controller", function ($scope, $http) {
         });
     }
     $scope.addChatLieu = function () {
-        var item = angular.copy($scope.chatLieu);
-        var url = `${host}/add-chatLieu`;
-        if (confirm('Bạn có chắc chắn muốn thêm không?') == true) {
-            $http.post(url, item).then(resp => {
-                if ($scope.chatLieu.ten != null) {
-                    $scope.lstChatLieu.push(item);
-                    alert('Thêm dữ liệu thành công');
-                    location.reload();
-                    console.log("Success", resp)
+        Swal.fire({
+            title: "Bạn có muốn thêm không?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if ($scope.chatLieu.ten == null) {
+                    Swal.fire("Thêm dữ liệu thất bại", "", "error");
                 } else {
-                    alert('Thêm dữ liệu thất bại');
+                    // Kiểm tra trùng tên dữ liệu
+                    $http.get(`${host}/check-tenChatLieu/` + $scope.chatLieu.ten).then(response => {
+                        if (response.data.isDuplicate) {
+                            Swal.fire("Tên dữ liệu đã tồn tại", "", "error");
+                        } else {
+                            var item = angular.copy($scope.chatLieu);
+                            var url = `${host}/add-chatLieu`;
+                            $http.post(url, item).then(resp => {
+                                $scope.lstChatLieu.push(item);
+                                Swal.fire("Thêm dữ liệu thành công", "", "success");
+                                location.reload();
+                                console.log("Success", resp);
+                            }).catch(error => {
+                                console.log("Error", error);
+                            });
+                        }
+                    });
                 }
-
-            }).catch(error => {
-                console.log("Error", error)
-            });
-        } else {
-            alert('Thêm dữ liệu thất bại');
-            return false;
-        }
-
+            } else {
+                return false;
+            }
+        });
     }
 
     //Danh mục
@@ -134,26 +144,39 @@ app.controller("controller", function ($scope, $http) {
         });
     }
     $scope.addDanhMuc = function () {
-        var item = angular.copy($scope.danhMuc);
-        var url = `${host}/add-danhMuc`;
-        if (confirm('Bạn có chắc chắn muốn thêm không?') == true) {
-            $http.post(url, item).then(resp => {
-                if ($scope.danhMuc.ten != null) {
-                    $scope.lstDanhMuc.push(item);
-                    alert('Thêm dữ liệu thành công');
-                    location.reload();
-                    console.log("Success", resp)
+        Swal.fire({
+            title: "Bạn có muốn thêm không?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                if ($scope.danhMuc.ten == null) {
+                    Swal.fire("Thêm dữ liệu thất bại", "", "error");
                 } else {
-                    alert('Thêm dữ liệu thất bại');
+                    // Kiểm tra trùng tên dữ liệu
+                    $http.get(`${host}/check-tenDanhMuc/` + $scope.danhMuc.ten).then(response => {
+                        if (response.data.isDuplicate) {
+                            Swal.fire("Tên dữ liệu đã tồn tại", "", "error");
+                        } else {
+                            var item = angular.copy($scope.danhMuc);
+                            var url = `${host}/add-danhMuc`;
+                            $http.post(url, item).then(resp => {
+                                $scope.lstDanhMuc.push(item);
+                                Swal.fire("Thêm dữ liệu thành công", "", "success");
+                                location.reload();
+                                console.log("Success", resp)
+                            }).catch(error => {
+                                console.log("Error", error)
+                            });
+                        }
+                    });
                 }
-
-            }).catch(error => {
-                console.log("Error", error)
-            });
-        } else {
-            alert('Thêm dữ liệu thất bại');
-            return false;
-        }
+            }else{
+                return false;
+            }
+        });
     }
 
     //Kiểu dáng
@@ -169,26 +192,38 @@ app.controller("controller", function ($scope, $http) {
         });
     }
     $scope.addKieuDang = function () {
-        var item = angular.copy($scope.kieuDang);
-        var url = `${host}/add-kieuDang`;
-        if (confirm('Bạn có chắc chắn muốn thêm không?') == true) {
-            $http.post(url, item).then(resp => {
-                if ($scope.kieuDang.ten != null) {
-                    $scope.lstKieuDang.push(item);
-                    alert('Thêm dữ liệu thành công');
-                    location.reload();
-                    console.log("Success", resp)
+        Swal.fire({
+            title: "Bạn có muốn thêm không?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                if ($scope.kieuDang.ten == null) {
+                    Swal.fire("Thêm dữ liệu thất bại", "", "error");
                 } else {
-                    alert('Thêm dữ liệu thất bại');
+                    $http.get(`${host}/check-tenKieuDang/` + $scope.kieuDang.ten).then(response => {
+                        if (response.data.isDuplicate) {
+                            Swal.fire("Tên dữ liệu đã tồn tại", "", "error");
+                        } else {
+                            var item = angular.copy($scope.kieuDang);
+                            var url = `${host}/add-kieuDang`;
+                            $http.post(url, item).then(resp => {
+                                $scope.lstKieuDang.push(item);
+                                Swal.fire("Thêm dữ liệu thành công", "", "success");
+                                location.reload();
+                                console.log("Success", resp)
+                            }).catch(error => {
+                                console.log("Error", error)
+                            });
+                        }
+                    });
                 }
-
-            }).catch(error => {
-                console.log("Error", error)
-            });
-        } else {
-            alert('Thêm dữ liệu thất bại');
-            return false;
-        }
+            }else{
+                return false;
+            }
+        });
     }
 
     //Kich cỡ
@@ -204,26 +239,38 @@ app.controller("controller", function ($scope, $http) {
         });
     }
     $scope.addKichCo = function () {
-        var item = angular.copy($scope.kichCo);
-        var url = `${host}/add-kichCo`;
-        if (confirm('Bạn có chắc chắn muốn thêm không?') == true) {
-            $http.post(url, item).then(resp => {
-                if ($scope.kichCo.ten != null) {
-                    $scope.lstKichCo.push(item);
-                    alert('Thêm dữ liệu thành công');
-                    location.reload();
-                    console.log("Success", resp)
+        Swal.fire({
+            title: "Bạn có muốn thêm không?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                if ($scope.kichCo.ten == null) {
+                    Swal.fire("Thêm dữ liệu thất bại", "", "error");
                 } else {
-                    alert('Thêm dữ liệu thất bại');
+                    $http.get(`${host}/check-tenKichCo/` + $scope.kichCo.ten).then(response => {
+                        if (response.data.isDuplicate) {
+                            Swal.fire("Tên dữ liệu đã tồn tại", "", "error");
+                        } else {
+                            var item = angular.copy($scope.kichCo);
+                            var url = `${host}/add-kichCo`;
+                            $http.post(url, item).then(resp => {
+                                $scope.lstKichCo.push(item);
+                                Swal.fire("Thêm dữ liệu thành công", "", "success");
+                                location.reload();
+                                console.log("Success", resp)
+                            }).catch(error => {
+                                console.log("Error", error)
+                            });
+                        }
+                    });
                 }
-
-            }).catch(error => {
-                console.log("Error", error)
-            });
-        } else {
-            alert('Thêm dữ liệu thất bại');
-            return false;
-        }
+            }else{
+                return false;
+            }
+        });
     }
 
     //Màu sắc
@@ -239,26 +286,38 @@ app.controller("controller", function ($scope, $http) {
         });
     }
     $scope.addMauSac = function () {
-        var item = angular.copy($scope.mauSac);
-        var url = `${host}/add-mauSac`;
-        if (confirm('Bạn có chắc chắn muốn thêm không?') === true) {
-            $http.post(url, item).then(resp => {
-                if ($scope.mauSac.ten != null) {
-                    $scope.lstMauSac.push(item);
-                    alert('Thêm dữ liệu thành công');
-                    location.reload();
-                    console.log("Success", resp)
+        Swal.fire({
+            title: "Bạn có muốn thêm không?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                if ($scope.mauSac.ten == null) {
+                    Swal.fire("Thêm dữ liệu thất bại", "", "error");
                 } else {
-                    alert('Thêm dữ liệu thất bại');
+                    $http.get(`${host}/check-tenMauSac/` + $scope.mauSac.ten).then(response => {
+                        if (response.data.isDuplicate) {
+                            Swal.fire("Tên dữ liệu đã tồn tại", "", "error");
+                        } else {
+                            var item = angular.copy($scope.mauSac);
+                            var url = `${host}/add-mauSac`;
+                            $http.post(url, item).then(resp => {
+                                $scope.lstMauSac.push(item);
+                                Swal.fire("Thêm dữ liệu thành công", "", "success");
+                                location.reload();
+                                console.log("Success", resp)
+                            }).catch(error => {
+                                console.log("Error", error)
+                            });
+                        }
+                    });
                 }
-
-            }).catch(error => {
-                console.log("Error", error)
-            });
-        } else {
-            alert('Thêm dữ liệu thất bại');
-            return false;
-        }
+            }else{
+                return false;
+            }
+        });
     }
 
     //Thực hiện tải toàn bộ

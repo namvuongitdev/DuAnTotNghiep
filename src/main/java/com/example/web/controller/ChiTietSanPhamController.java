@@ -1,14 +1,15 @@
 package com.example.web.controller;
 
-import com.example.web.model.Anh;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
+import com.example.web.request.UpdateChiTietSanPham;
 import com.example.web.response.ChiTietSanPhamResponse;
 import com.example.web.service.IAnhService;
 import com.example.web.service.IChiTietSanPhamService;
 import com.example.web.service.IMauSacService;
 import com.example.web.service.ISanPhamService;
+import com.example.web.service.SizeService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -24,12 +25,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -59,6 +61,9 @@ public class ChiTietSanPhamController {
     @Autowired
     private IAnhService anhService;
 
+    @Autowired
+    private SizeService sizeService;
+
 
     @PostMapping(value = "/add")
     public String addCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, Model model,
@@ -70,8 +75,9 @@ public class ChiTietSanPhamController {
 
         ChiTietSanPham checkMauSacSize = chiTietSanPhamService.checkSizeMauSac(mauSac, kichCo, UUID.fromString(idSanPham));
 
-        if (checkMauSacSize != null) {
-            System.out.println(checkMauSacSize);
+        if (chiTietSanPham.getSoLuong() < 1) {
+            redirectAttributes.addFlashAttribute("error", "Số lượng phải lớn hơn 0");
+        }else if(checkMauSacSize != null){
             redirectAttributes.addFlashAttribute("error", "Dữ liệu này đã tồn tại");
         } else {
             chiTietSanPham.setSanPham(sanPham);
@@ -80,7 +86,7 @@ public class ChiTietSanPhamController {
             List<ChiTietSanPham> listChiTietSanPham = chiTietSanPhamService.getChiTietSanPham(idSanPham);
             chiTietSanPhamService.save(chiTietSanPham);
             redirectAttributes.addFlashAttribute("listChiTietSanPhamBySP", listChiTietSanPham);
-            redirectAttributes.addFlashAttribute("successCTSP", "Thêm dữ liệu thành công");
+            redirectAttributes.addFlashAttribute("success", "Thêm dữ liệu thành công");
 
             int width = 300;
             int height = 300;
@@ -104,17 +110,26 @@ public class ChiTietSanPhamController {
     }
 
     @PostMapping(value = "/update-chi-tiet-san-pham")
-    public String updateCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham,
-                             @RequestParam("soLuong") List<Integer> soLuong,
+    public String updateCTSP(@RequestParam(value = "chiTietSanPham" ,defaultValue = "") List<UUID> chiTietSanPham,
+                             @RequestParam(value = "soLuong" , defaultValue = "") List<Integer> soLuong,
                              @RequestParam String idSP , RedirectAttributes attributes) {
         Integer update = chiTietSanPhamService.updateChiTietSanPham(chiTietSanPham , soLuong ,UUID.fromString(idSP));
         if(update == 1){
-            attributes.addFlashAttribute("error" , "chi tiết sản phẩm đã tồn tại");
+            attributes.addFlashAttribute("error" , "chưa lựa chọn chi tiết sản phẩm");
         }
         if(update == 2){
             attributes.addFlashAttribute("success" , "update chi tiết sản phẩm thành công");
         }
         return "redirect:/admin/san-pham/hien-thi/" + idSP;
+    }
+
+    @PutMapping(value = "/update-size-mau-sac")
+    @ResponseBody
+    public Map<String , Boolean> updateSizeAndMauSac(@RequestBody UpdateChiTietSanPham request){
+        return chiTietSanPhamService.updateMauSacAndKichCo(request ,
+                mauSacService.getOne(request.getIdMS()),
+                        sizeService.getOne(request.getIdKC())
+                );
     }
 
     @GetMapping(value = "/remove-anh")
@@ -143,5 +158,4 @@ public class ChiTietSanPhamController {
         Object[] qrcode = chiTietSanPhamService.getQrCodeById(UUID.fromString(id));
         return qrcode;
     }
-
 }

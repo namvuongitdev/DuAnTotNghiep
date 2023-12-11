@@ -1,14 +1,15 @@
 package com.example.web.service;
 import com.example.web.model.ChiTietSanPham;
+import com.example.web.model.MauSac;
 import com.example.web.model.Size;
+import com.example.web.request.UpdateChiTietSanPham;
 import com.example.web.response.ChiTietOnllineResponse;
 import com.example.web.response.ChiTietResponse;
 import com.example.web.response.ChiTietSanPhamResponse;
-import com.example.web.response.SanPhamFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.UUID;
 
 public interface IChiTietSanPhamService {
@@ -49,6 +50,7 @@ public interface IChiTietSanPhamService {
 
     ChiTietSanPham getSL(String idGioHangCT);
 
-    Integer updateChiTietSanPham(ChiTietSanPham chiTietSanPham ,List<Integer> soLuong , UUID idSP);
+    Integer updateChiTietSanPham(List<UUID> chiTietSanPham ,List<Integer> soLuong , UUID idSP);
 
+    Map<String , Boolean> updateMauSacAndKichCo(UpdateChiTietSanPham request , MauSac mauSac , Size size);
 }

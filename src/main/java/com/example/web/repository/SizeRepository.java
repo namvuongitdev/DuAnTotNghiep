@@ -19,4 +19,7 @@ public interface SizeRepository extends JpaRepository<Size, String> {
     @Query(value = "\n" +
             "select distinct kich_co.* from kich_co,chi_tiet_san_pham where kich_co.id=chi_tiet_san_pham.idsize and idsanpham=?1",nativeQuery = true)
     List<Size> getTheoCT (UUID idSP);
+
+    @Query(value = "select s from Size  s where s.id = ?1")
+    Size findById(UUID uuid);
 }

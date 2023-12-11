@@ -10,4 +10,6 @@ public class HoaDonStatus {
     public static final Integer HUY = 5;
     public static final Integer CHINH_SUA = 7;
     public static final Integer HOAN_TRA = 9;
+    public static final Integer HUY_HOA_DON_CHO = 10;
+
 }

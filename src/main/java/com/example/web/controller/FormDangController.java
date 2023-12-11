@@ -35,13 +35,19 @@ public class FormDangController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute("kieuDang") KieuDang kieuDang, RedirectAttributes attributes){
-        Date date = java.util.Calendar.getInstance().getTime();
-        UUID uuid = UUID.randomUUID();
-        kieuDang.setId(uuid);
-        kieuDang.setTrangThai(1);
-        kieuDang.setNgayTao(date);
-        service.save(kieuDang);
-        attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
+        boolean checkTen = service.isExists(kieuDang.getTen());
+
+        if(checkTen){
+            attributes.addFlashAttribute("error", "Tên dữ liệu đã tồn tại");
+        }else{
+            Date date = java.util.Calendar.getInstance().getTime();
+            UUID uuid = UUID.randomUUID();
+            kieuDang.setId(uuid);
+            kieuDang.setTrangThai(1);
+            kieuDang.setNgayTao(date);
+            service.save(kieuDang);
+            attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
+        }
         return "redirect:/admin/kieu-dang/hien-thi";
     }
 

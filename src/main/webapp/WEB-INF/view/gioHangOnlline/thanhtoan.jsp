@@ -36,6 +36,12 @@
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
     <link rel="stylesheet" href="../../../css/banHangOnline/thanhToan/thanhToan.css" type="text/css">
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
 </head>
 <body>
 <div class="container-fluid">
@@ -50,7 +56,7 @@
                         <li class="breadcrumb-item">Thông tin giao hàng</li>
                     </nav>
                 </div><!-- End Page Title -->
-                <form:form action="/checkouts/order" method="post" modelAttribute="checkoutRequest">
+                <form:form action="/checkouts/order" method="post" modelAttribute="checkoutRequest" id="thanhToan" onsubmit="return false">
                     <div class="mb-3">
                         <h5>Thông tin giao hàng / <a onclick="getAllDiaChiKhachHang()" style="color: #1da1f2;:hover">thay đổi địa chỉ</a></h5>
                     </div>
@@ -74,7 +80,7 @@
                         <div class="form-check radio">
                             <input class="form-check-input" type="radio" name="phuongThucThanhToan"
                                    id="flexRadioDefault3"
-                                   value="4" ${checkoutRequest.phuongThucThanhToan == 4 ? "checked" : ""}>
+                                   value="4"${errorThanhToan != null ? "checked" : ""}>
                             <label class="form-check-label" for="flexRadioDefault3">
                                 Thanh toán (VNPAY).
                             </label>
@@ -86,7 +92,7 @@
                             <a class="hover" href="/gio-hang-onl">Giỏ hàng</a>
                         </div>
                         <div class="col-6" style="text-align: right">
-                            <button class="btn btn-info p-3">Hoàn tất đơn hàng</button>
+                            <button class="btn btn-info p-3" onclick="xacNhanThanhToan(event)">Hoàn tất đơn hàng</button>
                         </div>
                     </div>
                 </form:form>
@@ -176,5 +182,22 @@
 <jsp:include page="modalNewDiaChi.jsp"></jsp:include>
 <jsp:include page="modalDiaChi.jsp"></jsp:include>
 <script src="/js/banHangOnlline/thanhToan/diaChiKhachHang.js"></script>
+<script>
+    function xacNhanThanhToan(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: "Bạn có muốn đặt hàng không?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById("thanhToan").submit();
+            } else {
+                return false;
+            }
+        });
+    }
+</script>
 </body>
 </html>

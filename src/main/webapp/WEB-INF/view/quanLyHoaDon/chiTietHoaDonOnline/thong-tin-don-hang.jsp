@@ -6,7 +6,7 @@
         <span>Loại hoá đơn :
          <c:choose>
              <c:when test="${hoaDon.loaiHoaDon}">
-                Giao hàng
+                 Giao hàng
              </c:when>
              <c:otherwise>
                  Tại quầy
@@ -35,25 +35,34 @@
     </div>
 </div>
 <div class="col-md-6">
-    <div>
-        <span>Họ tên : ${hoaDon.loaiHoaDon ? hoaDon.hoTen : hoaDon.khachHang.hoTen}</span>
-    </div>
+    <c:choose>
+        <c:when test="${hoaDon.khachHang == null}">
+            <div>
+                <button class="btn btn-secondary rounded-pill">khách lẻ</button>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div>
+                <span>Họ tên : ${hoaDon.loaiHoaDon ? hoaDon.hoTen : hoaDon.khachHang.hoTen}</span>
+            </div>
+            <br>
+            <div>
+                <span>Số điện thoại : ${hoaDon.loaiHoaDon ? hoaDon.sdt : hoaDon.khachHang.sdt}</span>
+            </div>
+        </c:otherwise>
+    </c:choose>
     <br>
-    <div>
-        <span>Số điện thoại : ${hoaDon.loaiHoaDon ? hoaDon.sdt : hoaDon.khachHang.sdt}</span>
-    </div>
-    <br>
-        <c:if test="${hoaDon.loaiHoaDon}">
-            <c:if test="${hoaDon.trangThai == 1 || hoaDon.trangThai == 2}">
-                <div>
-                    <span>Địa chỉ : ${hoaDon.diaChi}</span>
-                    <button style="border: none;margin-left: 10px ; background-color: white"
-                            onclick="updateThongTinKhachHang()"><i
-                            class="bi bi-pencil"></i></button>
-                </div>
-                <br>
-            </c:if>
+    <c:if test="${hoaDon.loaiHoaDon}">
+        <c:if test="${hoaDon.trangThai == 1 || hoaDon.trangThai == 2}">
+            <div>
+                <span>Địa chỉ : ${hoaDon.diaChi}</span>
+                <button style="border: none;margin-left: 10px ; background-color: white"
+                        onclick="updateThongTinKhachHang()"><i
+                        class="bi bi-pencil"></i></button>
+            </div>
+            <br>
         </c:if>
+    </c:if>
     <div>
         <span>Ghí chú : ${hoaDon.moTa == "" ? "không có ghi chú phía khách hàng" : hoaDon.moTa}</span>
     </div>

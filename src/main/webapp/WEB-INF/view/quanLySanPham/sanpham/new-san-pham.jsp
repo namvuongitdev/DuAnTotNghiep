@@ -85,6 +85,7 @@
     </div>
 </div>
 <jsp:include page="modal-hien-thi-qrcode.jsp"></jsp:include>
+<jsp:include page="modal-update-chi-tiet-san-pham.jsp"></jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -146,9 +147,8 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 window.location.href = '/admin/san-pham/stop-ctsp/' + data.idctsp + "?idSP=" + data.idsp + "&tt=" + data.trangThai;
-                Swal.fire("Cập nhật thành công", "", "success");
             } else if (result.isDenied) {
-                Swal.fire("Cập nhật thất bại!", "", "error");
+                return false;
             }
         });
     }
@@ -164,8 +164,9 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 document.getElementById('yourForm').submit();
+                saveInputValues();
             } else if (result.isDenied) {
-                Swal.fire("Thêm dữ liệu thất bại", "", "error");
+                return false;
             }
         });
     }
@@ -187,6 +188,22 @@
         });
     }
 
+    function updateCTSP(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+        Swal.fire({
+            title: "Bạn có muốn sửa không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('formUpdateCtsp').submit();
+            } else if (result.isDenied) {
+                return false;
+            }
+        });
+    }
+
     function confirmCTSP(event) {
         event.preventDefault(); // Prevent the default form submission behavior
         Swal.fire({
@@ -198,7 +215,7 @@
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 document.getElementById("yourFormId").submit();
-            }else{
+            } else {
                 return false;
             }
         });
@@ -216,43 +233,9 @@
             title: "${success}",
             icon: "success"
         });
+        clearLocalStorage();
     }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        var checkboxes = document.querySelectorAll('.checkbox');
-        checkboxes.forEach(function (checkbox) {
-            checkbox.addEventListener('change', function () {
-                var ctspId = this.id.replace('checkbox', '');
-                var pKichCo = document.getElementById('pKichCo' + ctspId);
-                var pMauSac = document.getElementById('pMauSac' + ctspId);
-                var pSoLuong = document.getElementById('pSoLuong' + ctspId);
-                var selectKichCo = document.getElementById('selectKichCo' + ctspId);
-                var selectMauSac = document.getElementById('selectMauSac' + ctspId);
-                var soLuongCTSP = document.getElementById('soLuongCTSP' + ctspId);
-                if (this.checked) {
-                    selectKichCo.style.display = 'block';
-                    selectMauSac.style.display = 'block';
-                    soLuongCTSP.style.display = 'block';
-                    selectKichCo.setAttribute('name', 'size');
-                    selectMauSac.setAttribute('name', 'mauSac');
-                    soLuongCTSP.setAttribute('name', 'soLuong');
-                    pMauSac.style.display = 'none';
-                    pKichCo.style.display = 'none';
-                    pSoLuong.style.display = 'none';
-                } else {
-                    selectKichCo.style.display = 'none';
-                    selectMauSac.style.display = 'none';
-                    soLuongCTSP.style.display = 'none';
-                    selectKichCo.setAttribute('name', 's');
-                    selectMauSac.setAttribute('name', 'ms');
-                    soLuongCTSP.setAttribute('name', 'sl');
-                    pMauSac.style.display = 'block';
-                    pKichCo.style.display = 'block';
-                    pSoLuong.style.display = 'block';
-                }
-            });
-        });
-    });
 </script>
+<script src="../../../../js/sanPham/checked.js"></script>
 </body>
 </html>

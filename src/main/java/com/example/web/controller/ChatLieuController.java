@@ -40,13 +40,19 @@ public class ChatLieuController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute("chatLieu") ChatLieu chatLieu, RedirectAttributes attributes){
-        Date date = java.util.Calendar.getInstance().getTime();
-        UUID uuid = UUID.randomUUID();
-        chatLieu.setId(uuid);
-        chatLieu.setTrangThai(1);
-        chatLieu.setNgayTao(date);
-        service.save(chatLieu);
-        attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
+        boolean checkTen = service.isExists(chatLieu.getTen());
+
+        if(checkTen){
+            attributes.addFlashAttribute("error", "Tên dữ liệu đã tồn tại");
+        }else{
+            Date date = java.util.Calendar.getInstance().getTime();
+            UUID uuid = UUID.randomUUID();
+            chatLieu.setId(uuid);
+            chatLieu.setTrangThai(1);
+            chatLieu.setNgayTao(date);
+            service.save(chatLieu);
+            attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
+        }
         return "redirect:/admin/chat-lieu/hien-thi";
     }
 

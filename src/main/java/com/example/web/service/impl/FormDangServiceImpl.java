@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,6 +18,9 @@ import java.util.UUID;
 public class FormDangServiceImpl implements IFormDangService {
     @Autowired
     private IFormDangRepository repository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public List<KieuDang> getAll() {
@@ -64,6 +68,8 @@ public class FormDangServiceImpl implements IFormDangService {
 
     @Override
     public boolean isExists(String value) {
-        return false;
+        String sql = "SELECT COUNT(*) FROM form_dang WHERE form_dang.ten = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, value);
+        return count > 0;
     }
 }

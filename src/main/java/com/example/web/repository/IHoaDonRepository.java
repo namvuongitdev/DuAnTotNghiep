@@ -50,7 +50,7 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon, UUID>, JpaSpeci
     @Query(value = "select * from hoa_don where getDate() >= cast(ngay_nhan_hang as datetime) + 4  and trang_thai= 4 and id = ?1", nativeQuery = true)
     HoaDon ngayHetHanTraHang(String id);
 
-    @Query(value = "select hd from HoaDon hd where hd.trangThai<>0")
+    @Query(value = "select hd from HoaDon hd where hd.trangThai<>0 and hd.trangThai <> 10")
     Page<HoaDon> findAllHoaDonByTrangThaiKhacHoaDonCho(Pageable pageable);
 
     @Query(value = "select hd.id , hd.ma , hd.hoTen , sum(hdct.soLuong * hdct.donGia) , hdct.ngayTao , sum(hdct.soLuong) from HoaDon hd join hd.hoaDonChiTiets hdct where hdct.trangThai = 2 group by hd.id , hd.ma , hd.hoTen , hdct.ngayTao")
@@ -76,7 +76,7 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon, UUID>, JpaSpeci
             "where lshd.thao_tac = 5 and CONVERT(date  ,lshd.ngay_thao_tac) = CONVERT(date , GETDATE())", nativeQuery = true)
     Integer tongHoaDonHuy();
 
-    @Query(value = "select count(hd.id) from HoaDon hd where hd.ngayTao = current_date and hd.trangThai = 1")
+    @Query(value = "select count(hd.id) from HoaDon hd where  hd.trangThai = 1")
     Integer tongHoaDonChoXacNhan();
 
     @Query(value = "\n" +

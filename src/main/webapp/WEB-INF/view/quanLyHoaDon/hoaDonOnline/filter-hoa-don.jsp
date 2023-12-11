@@ -2,26 +2,27 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <form:form action="/admin/hoa-don/filter" method="get" modelAttribute="hoaDonFillter">
-    <div class="row d-flex justify-content-center">
-        <div class="col-sm-3">
-            <label class="col-form-label">Tìm kiếm hoá đơn</label>
-            <input type="text" class="form-control" name="search" value="${fillter.search}"
+    <div class="row" style="margin-bottom: 10px">
+        <jsp:include page="filter-trang-thai.jsp"></jsp:include>
+    </div>
+    <div class="row">
+        <div class="col-sm-3" style="margin-top: 25px">
+            <label class="col-form-label" for="search"></label>
+            <input type="text" class="form-control" id="search" name="search" value="${fillter.search}"
                    placeholder="Tìm hóa đơn"
             />
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <label class="col-form-label">Từ ngày</label>
             <input type="date" value="${fillter.dateBegin}" name="dateBegin"
                    class="form-control"/>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <label class="col-form-label">Đến ngày</label>
             <input type="date" value="${fillter.dateEnd}" name="dateEnd"
                    class="form-control"/>
         </div>
-    </div>
-    <div class="row d-flex justify-content-center">
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <label class="col-form-label">Loại hóa đơn</label>
             <select class="form-select" name="loaiHoaDon"
                     aria-label="Default select example">
@@ -33,37 +34,14 @@
                         class="text-success">Tại quầy
                 </option>
             </select>
+     <input type="text" name="trangThai" value="${fillter.trangThai}" style="display: none">
         </div>
-        <div class="col-sm-3">
-            <label class="col-form-label">Trạng thái</label>
-            <select class="form-select" name="trangThai"
-                    aria-label="Default select example">
-                <option value="">Tất cả</option>
-                <option value="1" ${fillter.trangThai == '1'? 'selected':''}
-                        >Chờ xác nhận
-                </option>
-                <option value="2" ${fillter.trangThai == '2'? 'selected':''}
-                       >Đã xác nhận
-                </option>
-                <option value="3" ${fillter.trangThai == '3'? 'selected':''}
-                        >Giao Hàng
-                </option>
-                <option value="5" ${fillter.trangThai == '5'? 'selected':''}
-                       >Huỷ
-                </option>
-                <option value="6" ${fillter.trangThai == '6'? 'selected':''}
-                        >Giao thành công
-                </option>
-                <option value="4" ${fillter.trangThai == '4'? 'selected':''}
-                       >Đã hoàn thành
-                </option>
-            </select>
+        <div class="col-sm-3" style="margin-top: 35px">
+            <div>
+                <button type="submit" class="btn btn-primary" value="${fillter.trangThai}">Tìm kiếm</button>
+                <a href="/admin/hoa-don/hien-thi" class="btn btn-warning">Làm mới</a>
+            </div>
         </div>
-        <div style="text-align: center" class="mt-3">
-            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-            <a href="/admin/hoa-don/hien-thi" class="btn btn-warning">Làm mới</a>
-        </div>
-
     </div>
-    <br>
+
 </form:form>

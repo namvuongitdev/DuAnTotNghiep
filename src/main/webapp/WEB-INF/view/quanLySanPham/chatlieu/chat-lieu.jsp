@@ -184,7 +184,7 @@
                     document.getElementById('colorForm').submit(); // Submit the form
                 }
             } else if (result.isDenied) {
-                Swal.fire("Tạo dữ liệu thất bại !", "", "error");
+                return false;
             }
         });
     }
@@ -193,6 +193,13 @@
         Swal.fire({
             title: "${success}",
             icon: "success"
+        });
+    }
+
+    if (${error != null}) {
+        Swal.fire({
+            title: "${error}",
+            icon: "error"
         });
     }
 </script>

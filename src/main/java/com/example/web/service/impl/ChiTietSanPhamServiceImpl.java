@@ -1,8 +1,10 @@
 package com.example.web.service.impl;
 
 import com.example.web.model.ChiTietSanPham;
+import com.example.web.model.MauSac;
 import com.example.web.model.Size;
 import com.example.web.repository.IChiTietSanPhamRepository;
+import com.example.web.request.UpdateChiTietSanPham;
 import com.example.web.response.ChiTietOnllineResponse;
 import com.example.web.response.ChiTietResponse;
 import com.example.web.response.ChiTietSanPhamResponse;
@@ -12,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -139,23 +143,40 @@ public class ChiTietSanPhamServiceImpl implements IChiTietSanPhamService {
     }
 
     @Override
-    public Integer updateChiTietSanPham(ChiTietSanPham chiTietSanPham , List<Integer> soLuong ,UUID idSP) {
-//        ChiTietSanPham check = iChiTietSanPhamRepository.checkSizeMauSac(chiTietSanPham.getMauSac().getId() , chiTietSanPham.getSize().getId() , idSP);
-//         if(check != null){
-//              return 1;
-//         }else{
-            for(int i = 0 ; i < chiTietSanPham.getChiTietSanPhams().size() ; i++){
-                Optional<ChiTietSanPham> ctsp = iChiTietSanPhamRepository.findById( chiTietSanPham.getChiTietSanPhams().get(i));
+    public Integer updateChiTietSanPham(List<UUID> chiTietSanPham , List<Integer> soLuong ,UUID idSP) {
+         if(chiTietSanPham.isEmpty() || chiTietSanPham == null){
+              return 1;
+         }else{
+            for(int i = 0 ; i < chiTietSanPham.size() ; i++){
+                Optional<ChiTietSanPham> ctsp = iChiTietSanPhamRepository.findById( chiTietSanPham.get(i));
                 if(ctsp.isPresent()){
                     ChiTietSanPham update = ctsp.get();
                     update.setSoLuong(soLuong.get(i));
-//                    update.setMauSac(chiTietSanPham.getMauSac());
-//                    update.setSize(chiTietSanPham.getSize());
                     iChiTietSanPhamRepository.save(update);
                 }
             }
-//         }
+         }
         return 2;
+    }
+
+    @Override
+    public Map<String , Boolean> updateMauSacAndKichCo(UpdateChiTietSanPham request , MauSac mauSac , Size size) {
+        Map <String ,Boolean> response = new HashMap<>();
+        ChiTietSanPham checkSizeMauSac = iChiTietSanPhamRepository.checkSizeMauSac(mauSac.getId() , size.getId() , request.getIdSP());
+        if(checkSizeMauSac != null){
+            response.put("error" , false);
+        }else{
+            ChiTietSanPham ctsp = iChiTietSanPhamRepository.getOne(request.getIdCTSP());
+            ctsp.setSize(size);
+            ctsp.setMauSac(mauSac);
+            ChiTietSanPham chiTietSanPham = iChiTietSanPhamRepository.save(ctsp);
+            if(chiTietSanPham != null){
+                response.put("success" , true);
+            }else{
+                 response.put("error" , false);
+            }
+        }
+        return response;
     }
 
 }

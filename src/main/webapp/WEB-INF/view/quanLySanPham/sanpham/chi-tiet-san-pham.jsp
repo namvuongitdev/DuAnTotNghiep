@@ -3,18 +3,26 @@
          pageEncoding="UTF-8" %>
 <c:if test="${listChiTietSanPhamBySP != null}">
     <div class="col l-5" style="margin-bottom: 30px">
-        <p class="text-center"><b>Thêm ảnh theo màu sắc</b></p>
         <div class="row">
-            <select name="mauSacAnh" class="form-select"
-                    style="width: 50%;margin-left: 90px"
-                    onchange="findAnhMauSac(`${sp.id}` , this.value)">
-                <option value="">Màu sắc</option>
-                <c:forEach items="${listMauSacCTSP}" var="mauSacCTSP">
-                    <option value="${mauSacCTSP.id}">
-                            ${mauSacCTSP.ten}
-                    </option>
-                </c:forEach>
-            </select>
+            <div style="text-align: center">
+                <label for="mauSacAnh">Thêm ảnh theo màu sắc</label>
+                <select name="mauSacAnh" id="mauSacAnh" class="form-select"
+                        style="width: 50%;margin-left: 90px"
+                        onchange="findAnhMauSac(`${sp.id}` , this.value)">
+                    <option value="">Màu sắc</option>
+                    <c:forEach items="${listMauSacCTSP}" var="mauSacCTSP">
+                        <option value="${mauSacCTSP.id}">
+                                ${mauSacCTSP.ten}
+                        </option>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
+        <div class="row" id="anhMacDinhSanPham" style="margin-top: 20px">
+            <div class="pagination justify-content-center">
+                <img src="/image/${sp.img}" alt="" class="img-thumbnail"
+                     style="width: 200px;height: 200px">
+            </div>
         </div>
     </div>
 </c:if>
@@ -23,7 +31,10 @@
     <table class="table">
         <thead>
         <tr style="text-align: center">
-            <th></th>
+            <th>
+                <label for="checkeds"></label>
+                <input type="checkbox" id="checkeds">
+            </th>
             <th scope="col">Kích cỡ
                 <a data-bs-toggle="modal" data-bs-target="#exampleModalKichCo">
                     <i class="bi bi-plus-circle"></i>
@@ -41,31 +52,20 @@
         </thead>
         <tbody>
         <form action="/admin/chi-tiet-san-pham/update-chi-tiet-san-pham?idSP=${sp.id}"
-              method="post" modelAttribute="${chiTietSanPham}">
+              method="post" id="formUpdateCtsp" onsubmit="return false">
             <c:forEach items="${listChiTietSanPhamBySP}" var="ctsp">
                 <tr style="text-align: center">
                     <td style="padding-top: 20px">
                         <input type="checkbox" id="checkbox${ctsp.id}" value="${ctsp.id}"
-                               name="chiTietSanPhams" class="checkbox">
-                    </td>
-                    <td id="kichCoCTSP">
-                        <p id="pKichCo${ctsp.id}"
-                        >${ctsp.size.ten}</p>
-                        <select name="s" class="form-select" id="selectKichCo${ctsp.id}" style="display: none;">
-                            <c:forEach items="${listKichCo}" var="kichCo" >
-                                <option value="${kichCo.id}" ${ctsp.size.id==kichCo.id?'selected':''}>${kichCo.ten}</option>
-                            </c:forEach>
-                        </select>
+                               name="chiTietSanPham" class="checkbox">
                     </td>
                     <td>
-                        <p id="pMauSac${ctsp.id}"
-                           style="display: block;">${ctsp.mauSac.ten}</p>
-                        <select name="ms" class="form-select"
-                                id="selectMauSac${ctsp.id}" style="display: none;">
-                            <c:forEach items="${listMuaSac}" var="mauSac">
-                                <option value="${mauSac.id}" ${ctsp.mauSac.id==mauSac.id?'selected':''}>${mauSac.ten}</option>
-                            </c:forEach>
-                        </select>
+                        <p
+                        >${ctsp.size.ten}</p>
+                    </td>
+                    <td>
+                        <p
+                        >${ctsp.mauSac.ten}</p>
                     </td>
                     <td style="width: 110px">
                         <p id="pSoLuong${ctsp.id}"
@@ -84,16 +84,38 @@
                     </td>
                     <td style="text-align: center">
                         <a class="btn btn-secondary" onclick="modalQrCode(`${ctsp.id}`)">
-                            QR
+                            <i class="bi bi-qr-code"></i>
                         </a>
+                        <a class="btn btn-warning" onclick="modalUpdateCTSP(`
+
+
+
+
+
+                        <c:forEach items="${listMuaSac}" var="mauSac">
+                          <option value='${mauSac.id}' ${ctsp.mauSac.id==mauSac.id?'selected':''}>${mauSac.ten}</option>
+                        </c:forEach>
+
+                        `,
+                                `
+
+
+
+
+
+                        <c:forEach items="${listKichCo}" var="kichCo">
+                         <option value='${kichCo.id}' ${ctsp.size.id == kichCo.id?'selected':''}>${kichCo.ten}</option>
+                        </c:forEach>
+                        `,`${ctsp.id}`
+                                )"><i class="bi bi-eye-fill"></i></a>
                     </td>
                 </tr>
             </c:forEach>
             <div style="float: right;display: flex">
                 <a type="button" class="btn btn-primary" onclick="modalThemChiTietSanPham()" style="margin-right: 10px">Thêm
                 </a>
-                <button class="btn btn-secondary">
-                    update
+                <button class="btn btn-secondary" onclick="updateCTSP(event)">
+                    Cập nhật số lượng
                 </button>
             </div>
         </form>
@@ -102,10 +124,4 @@
 </div>
 <%--hiển thị ảnh theo màu sắc--%>
 <div class="row" id="hienThiAnhMauSac">
-</div>
-<div class="row" id="anhMacDinhSanPham" style="margin-top: 20px">
-    <div class="pagination justify-content-center">
-        <img src="/image/${sp.img}" alt="" class="img-thumbnail"
-             style="width: 200px;height: 200px">
-    </div>
 </div>

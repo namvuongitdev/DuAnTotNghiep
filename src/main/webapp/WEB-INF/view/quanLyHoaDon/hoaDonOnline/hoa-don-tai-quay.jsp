@@ -24,6 +24,7 @@
         <jsp:include page="../../sidebar/sidebar.jsp"/>
         <div class="col py-3">
             <div class="card">
+<%--                  <jsp:include page="filter-trang-thai.jsp"></jsp:include>--%>
                 <div class="card-body row">
                     <div class="row">
                         <jsp:include page="filter-hoa-don.jsp"></jsp:include>
@@ -51,7 +52,7 @@
                             <tbody>
                             <c:forEach items="${hoaDons.content}" var="hd" varStatus="i">
                                 <tr>
-                                    <td>${i.index+ (khuyenMais.number + 1 != 1 ? ((khuyenMais.number + 1) * khuyenMais.size) -(khuyenMais.size - 1) : khuyenMais.number + 1)}</td>
+                                    <td>${i.index+ (hoaDons.number + 1 != 1 ? ((hoaDons.number + 1) * hoaDons.size) -(hoaDons.size - 1) : hoaDons.number + 1)}</td>
                                     <td>${hd.ma}</td>
                                     <td>${hd.loaiHoaDon==false?'Đơn tại quầy':'Đơn giao'}</td>
                                     <td><fmt:formatDate value="${hd.ngayTao}" pattern="dd/MM/yyyy HH:mm:ss"/></td>

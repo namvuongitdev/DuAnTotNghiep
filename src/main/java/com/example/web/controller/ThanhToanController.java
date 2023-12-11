@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.List;
@@ -87,13 +88,13 @@ public class ThanhToanController {
     }
 
     @PostMapping("/new-dia-chi")
-    public String newDiaChi(@ModelAttribute("newDiaChiOnline") NewDiaChiOnline newDiaChiOnline, @RequestParam String idKH , RedirectAttributes attributes) {
+    public String newDiaChi(@ModelAttribute("newDiaChiOnline") NewDiaChiOnline newDiaChiOnline, @RequestParam String idKH, RedirectAttributes attributes) {
         KhachHang khachHang = khachHangService.getKhachHangById(idKH);
         DiaChi diaChi = modelMapper.map(newDiaChiOnline, DiaChi.class);
         diaChi.setKhachHang(khachHang);
         diaChi.setDiaChiMacDinh(true);
-        DiaChi response =  diaChiService.add(diaChi);
-        attributes.addFlashAttribute("diaChiMacDinh" , response);
+        DiaChi response = diaChiService.add(diaChi);
+        attributes.addFlashAttribute("diaChiMacDinh", response);
         return "redirect:/checkouts";
     }
 
@@ -121,15 +122,18 @@ public class ThanhToanController {
     }
 
     @GetMapping(value = "/payment/return")
-    public String payment(@RequestParam(name = "vnp_TransactionNo") String maGiaDich) {
+    public String payment(@RequestParam(name = "vnp_TransactionNo") String maGiaDich , RedirectAttributes attributes) {
         Integer ischeck = checkoutService.orderReturn(request);
         KhachHang khachHang = khachHangService.getKhachHangLogin();
         if (ischeck == 1) {
             checkout.setMaGiaDich(maGiaDich);
             HoaDon hoaDon = checkoutService.saveOrder(checkout, khachHang);
             return "redirect:/checkouts/success?idHD=" + hoaDon.getId();
+        } else {
+            attributes.addFlashAttribute("diaChiMacDinh", checkout);
+            attributes.addFlashAttribute("errorThanhToan", "error");
+            return "redirect:/checkouts";
         }
-        return null;
     }
 
 }

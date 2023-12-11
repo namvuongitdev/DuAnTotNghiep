@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,6 +18,9 @@ import java.util.UUID;
 public class SizeServiceImpl implements SizeService {
     @Autowired
     private SizeRepository sizeRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public List<Size> getAll() {
@@ -69,7 +73,14 @@ public class SizeServiceImpl implements SizeService {
 
     @Override
     public boolean isExists(String value) {
-        return false;
+        String sql = "SELECT COUNT(*) FROM kich_co WHERE kich_co.ten = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, value);
+        return count > 0;
+    }
+
+    @Override
+    public Size getById(UUID uuid) {
+        return sizeRepository.findById(uuid);
     }
 
 

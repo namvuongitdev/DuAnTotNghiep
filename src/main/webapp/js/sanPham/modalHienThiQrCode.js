@@ -1,21 +1,78 @@
 let modalQrcode = document.getElementById("modalQrcode");
+let modalUpdateChiTietSanPham = document.getElementById("modalUpdateCTSP");
+let idCTSP = null;
+let idMSac = null
+let idKCo = null;
 
- async  function  modalQrCode (idctsp){
+function getMauSacUpdate(id) {
+    idMSac = id
+}
+
+function getKichCoUpdate(id) {
+    idKCo = id;
+}
+
+function modalUpdateCTSP(htmlMauSac, htmlKichCo, idctsp) {
+    modalUpdateChiTietSanPham.style.display = "block";
+    idCTSP = idctsp;
+    document.getElementById("updateMauSac").innerHTML = `
+     ${htmlMauSac}
+     `
+    document.getElementById("updateSize").innerHTML = `
+     ${htmlKichCo}
+     `
+}
+
+async function updateSizeAndMauSac(idSP) {
+    if (idMSac === null) {
+        const mauSac = document.getElementById("updateMauSac")
+        idMSac = mauSac.value;
+    }
+    if(idKCo === null){
+        const kichCo = document.getElementById("updateSize")
+        idKCo = kichCo.value;
+    }
+    const data = {
+        idCTSP: idCTSP,
+        idSP: idSP,
+        idMS: idMSac,
+        idKC: idKCo
+    }
+    const options = {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    };
+    const api = await fetch(`/admin/chi-tiet-san-pham/update-size-mau-sac`, options);
+    const response = await api.json();
+      if(response.success){
+          await Swal.fire("update thành công", "", "success");
+          window.location.reload();
+      }else{
+          await Swal.fire("dữ liệu đã tồn tại", "", "error");
+      }
+}
+
+async function modalQrCode(idctsp) {
     modalQrcode.style.display = "block";
     const api = await fetch(`/admin/chi-tiet-san-pham/api-hien-thi-qrcode/${idctsp}`)
-    const data = await  api.json();
+    const data = await api.json();
     console.log(data[0][0]);
     document.getElementById("modalHienThiQrcode").innerHTML = `
          <img src="/qr/${data[0][0]}-${data[0][2]}-${data[0][3]}-${data[0][1]}.png" alt="" style="width: 200px;height: 200px">
        <p style="text-align: center">${data[0][1]}</p> 
       `
 }
-window.onclick = function(event) {
+
+window.onclick = function (event) {
     if (event.target === modalQrcode) {
         document.getElementById("modalHienThiQrcode").replaceChildren();
         modalQrcode.style.display = "none";
     }
-    if(event.target === modalThemCTSP){
+    if (event.target === modalThemCTSP) {
         modalThemCTSP.style.display = "none";
+    }
+    if (event.target === modalUpdateChiTietSanPham) {
+        modalUpdateChiTietSanPham.style.display = "none";
     }
 }

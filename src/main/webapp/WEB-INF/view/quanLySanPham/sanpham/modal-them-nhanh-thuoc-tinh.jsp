@@ -47,8 +47,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button ng-click="addDanhMuc()" type="submit" class="btn btn-primary"
-                            onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){}else{return false; }">
+                    <button ng-click="addDanhMuc()" type="submit" class="btn btn-primary">
                         Xác nhận
                     </button>
                 </div>
@@ -76,8 +75,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button ng-click="addKieuDang()" type="submit" class="btn btn-primary"
-                            onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){}else{return false; }">
+                    <button ng-click="addKieuDang()" type="submit" class="btn btn-primary">
                         Xác nhận
                     </button>
                 </div>
@@ -105,8 +103,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button ng-click="addKichCo()" type="submit" class="btn btn-primary"
-                            onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){}else{return false; }">
+                    <button ng-click="addKichCo()" type="submit" class="btn btn-primary">
                         Xác nhận
                     </button>
                 </div>
@@ -135,8 +132,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button ng-click="addMauSac()" type="submit" class="btn btn-primary"
-                            onclick="if(confirm('Bạn có chắc chắn muốn thêm không?')==true){}else{return false; }">
+                    <button ng-click="addMauSac()" type="submit" class="btn btn-primary">
                         Xác nhận
                     </button>
                 </div>

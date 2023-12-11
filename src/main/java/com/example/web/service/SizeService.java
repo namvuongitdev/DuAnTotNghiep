@@ -26,5 +26,7 @@ public interface SizeService {
 
     boolean isExists(String value);
 
+    Size getById(UUID uuid);
+
 
 }

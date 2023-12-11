@@ -42,7 +42,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -208,6 +210,7 @@ public class SanPhamController {
         model.addAttribute("listDanhMuc", danhMucService.getAll1());
     }
 
+    //Call API Chất liệu
     @GetMapping("/hienThi-chatLieu")
     @ResponseBody
     public List<ChatLieu> getChatLieu() {
@@ -217,9 +220,13 @@ public class SanPhamController {
     @PostMapping("/add-chatLieu")
     @ResponseBody
     public ChatLieu addChatLieu(@RequestBody @Valid ChatLieu chatLieu, BindingResult result) {
+        boolean checkTen = iChatLieuService.isExists(chatLieu.getTen());
+
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
-        } else {
+        }else if(checkTen) {
+            return chatLieu;
+        }else {
             UUID uuid = UUID.randomUUID();
             chatLieu.setId(uuid);
             chatLieu.setTrangThai(1);
@@ -229,6 +236,17 @@ public class SanPhamController {
         return chatLieu;
     }
 
+    @GetMapping("/check-tenChatLieu/{ten}")
+    @ResponseBody
+    public Map<String, Boolean> checkTenChatLieu(@PathVariable String ten) {
+        Map<String, Boolean> response = new HashMap<>();
+        boolean isDuplicate = iChatLieuService.isExists(ten);
+        response.put("isDuplicate", isDuplicate);
+        return response;
+    }
+    //End
+
+    //Call API Danh mục
     @GetMapping("/hienThi-danhMuc")
     @ResponseBody
     public List<DanhMuc> getDanhMuc() {
@@ -238,9 +256,13 @@ public class SanPhamController {
     @PostMapping("/add-danhMuc")
     @ResponseBody
     public DanhMuc addDanhMuc(@RequestBody @Valid DanhMuc danhMuc, BindingResult result) {
+        boolean checkTen = danhMucService.isExists(danhMuc.getTen());
+
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
-        } else {
+        }else if(checkTen) {
+            return danhMuc;
+        }else {
             UUID uuid = UUID.randomUUID();
             danhMuc.setId(String.valueOf(uuid));
             danhMuc.setTrangThai(1);
@@ -250,6 +272,17 @@ public class SanPhamController {
         return danhMuc;
     }
 
+    @GetMapping("/check-tenDanhMuc/{ten}")
+    @ResponseBody
+    public Map<String, Boolean> checkTenDanhMuc(@PathVariable String ten) {
+        Map<String, Boolean> response = new HashMap<>();
+        boolean isDuplicate = danhMucService.isExists(ten);
+        response.put("isDuplicate", isDuplicate);
+        return response;
+    }
+    //End
+
+    //Call API Kiểu dáng
     @GetMapping("/hienThi-kieuDang")
     @ResponseBody
     public List<KieuDang> getKieuDang() {
@@ -259,9 +292,13 @@ public class SanPhamController {
     @PostMapping("/add-kieuDang")
     @ResponseBody
     public KieuDang addKieuDang(@RequestBody @Valid KieuDang kieuDang, BindingResult result) {
+        boolean checkTen = iFormDangService.isExists(kieuDang.getTen());
+
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
-        } else {
+        }else if(checkTen) {
+            return kieuDang;
+        }else {
             UUID uuid = UUID.randomUUID();
             kieuDang.setId(uuid);
             kieuDang.setTrangThai(1);
@@ -272,6 +309,17 @@ public class SanPhamController {
         return kieuDang;
     }
 
+    @GetMapping("/check-tenKieuDang/{ten}")
+    @ResponseBody
+    public Map<String, Boolean> checkTenKieuDang(@PathVariable String ten) {
+        Map<String, Boolean> response = new HashMap<>();
+        boolean isDuplicate = iFormDangService.isExists(ten);
+        response.put("isDuplicate", isDuplicate);
+        return response;
+    }
+    //End
+
+    //Call API Kích cỡ
     @GetMapping("/hienThi-kichCo")
     @ResponseBody
     public List<Size> getKichCo() {
@@ -281,9 +329,12 @@ public class SanPhamController {
     @PostMapping("/add-kichCo")
     @ResponseBody
     public Size addSize(@RequestBody @Valid Size size, BindingResult result) {
+        boolean checkTen = sizeService.isExists(size.getTen());
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
-        } else {
+        }else if(checkTen) {
+            return size;
+        }else {
             UUID uuid = UUID.randomUUID();
             size.setId(String.valueOf(uuid));
             size.setNgayTao(java.util.Calendar.getInstance().getTime());
@@ -294,6 +345,17 @@ public class SanPhamController {
         return size;
     }
 
+    @GetMapping("/check-tenKichCo/{ten}")
+    @ResponseBody
+    public Map<String, Boolean> checkTenKichCo(@PathVariable String ten) {
+        Map<String, Boolean> response = new HashMap<>();
+        boolean isDuplicate = sizeService.isExists(ten);
+        response.put("isDuplicate", isDuplicate);
+        return response;
+    }
+    //End
+
+    //Call API Màu sắc
     @GetMapping("/hienThi-mauSac")
     @ResponseBody
     public List<MauSac> getMauSac() {
@@ -303,9 +365,12 @@ public class SanPhamController {
     @PostMapping("/add-mauSac")
     @ResponseBody
     public MauSac addMauSac(@RequestBody @Valid MauSac mauSac, BindingResult result) {
+        boolean checkTen = mauSacService.isExists(mauSac.getTen());
         if (result.hasErrors()) {
             List<ObjectError> list = result.getAllErrors();
-        } else {
+        }else if(checkTen) {
+            return mauSac;
+        }else {
             UUID uuid = UUID.randomUUID();
             mauSac.setId(uuid);
             mauSac.setTrangThai(1);
@@ -316,19 +381,32 @@ public class SanPhamController {
         return mauSac;
     }
 
+    @GetMapping("/check-tenMauSac/{ten}")
+    @ResponseBody
+    public Map<String, Boolean> checkTenMauSac(@PathVariable String ten) {
+        Map<String, Boolean> response = new HashMap<>();
+        boolean isDuplicate = mauSacService.isExists(ten);
+        response.put("isDuplicate", isDuplicate);
+        return response;
+    }
+    //End
+
     @GetMapping("/stop/{id}")
-    public String stop(@PathVariable("id") UUID id) {
+    public String stop(@PathVariable("id") UUID id, RedirectAttributes attributes) {
         SanPham sp = iSanPhamService.getOne(id);
         sp.setTrangThai(1);
         chiTietSanPhamService.updateTT_0(id);
         sp.setNgaySua(java.util.Calendar.getInstance().getTime());
         iSanPhamService.save(sp);
+        attributes.addFlashAttribute("success", "Ngừng kinh doanh thành công");
         return "redirect:/admin/san-pham/hien-thi";
     }
 
     @GetMapping("/stop-ctsp/{id}")
-    public String stopCTSP(@PathVariable("id") String idCt, @RequestParam String idSP, @RequestParam("tt") Integer tt) {
+    public String stopCTSP(@PathVariable("id") String idCt, @RequestParam String idSP, @RequestParam("tt") Integer tt,
+                           RedirectAttributes attributes) {
         String url = chiTietSanPhamService.save2(idCt, idSP, tt);
+        attributes.addFlashAttribute("success", "Cập nhật thành công");
         return url;
     }
 
