@@ -28,6 +28,11 @@ public class DiaChiServiceImpl implements IDiaChiService {
     }
 
     @Override
+    public DiaChi getOne(UUID id) {
+        return diaChiRepository.getReferenceById(id);
+    }
+
+    @Override
     public List<DiaChi> getDiaChiByKhachHang_id(UUID idKH) {
         List<DiaChi> diaChis = diaChiRepository.findDiaChiByKhachHang_id(idKH);
         return diaChis;

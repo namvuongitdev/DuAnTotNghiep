@@ -10,6 +10,8 @@ public interface IDiaChiService {
 
     DiaChi getDiaChiByKhachHang_idAndDiaChiMacDinh(UUID idKH);
 
+    DiaChi getOne(UUID id);
+
     List<DiaChi> getDiaChiByKhachHang_id(UUID idKH);
 
     void delete(UUID id);

@@ -88,8 +88,8 @@
                                                 <button type="button" class="btn btn-success" title="Sửa dữ liệu" onclick="myFunction()">
                                                     <a class="text-white" style="text-decoration: none" href="/admin/khach-hang/view-update/${nv.id}"><i class="bi bi-pencil"></i></a>
                                                 </button>
-                                                <button type="button" class="btn btn-danger" title="Dừng kích hoạt" onclick="if(confirm('Bạn có chắc chắn muốn dừng kích hoạt không?')){window.location.href = '/admin/khach-hang/stop/${nv.id}';}
-                                                        else{alert('Dừng kích hoạt thất bại!')}"><i class="bi bi-sign-stop"></i>
+                                                <button type="button" class="${nv.trangThai==0?'btn btn-danger':'btn btn-success'}" title="${nv.trangThai==0?'Kích hoạt':'Dừng kích hoạt'}" onclick="if(confirm('Bạn có chắc chắn muốn đổi trạng thái không?')){window.location.href = '/admin/khach-hang/stop/${nv.id}';}
+                                                        else{alert('Đổi trạng thái thất bại!')}"><i class="bi bi-sign-stop"></i>
                                                 </button>
 
                                             </td>

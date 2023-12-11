@@ -80,10 +80,10 @@ public class KhachHangServiceImpl implements IKhachHangService {
             public Predicate toPredicate(Root<KhachHang> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
                 if (!filter.getSearch().isBlank()) {
-                    predicates.add(criteriaBuilder.or(criteriaBuilder.equal(root.get("taiKhoan"), filter.getSearch()),
-                            criteriaBuilder.equal(root.get("sdt"), filter.getSearch()),
-                            criteriaBuilder.equal(root.get("hoTen"), filter.getSearch()),
-                            criteriaBuilder.equal(root.get("email"), filter.getSearch())));
+                    predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("taiKhoan"), "%"+filter.getSearch()+"%"),
+                            criteriaBuilder.like(root.get("sdt"), "%"+filter.getSearch()+"%"),
+                            criteriaBuilder.like(root.get("hoTen"), "%"+filter.getSearch()+"%"),
+                            criteriaBuilder.like(root.get("email"), "%"+filter.getSearch()+"%")));
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }

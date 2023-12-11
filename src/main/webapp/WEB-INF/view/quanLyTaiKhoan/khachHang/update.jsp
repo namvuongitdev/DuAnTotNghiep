@@ -5,9 +5,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-          crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
@@ -76,6 +75,56 @@
                                         <form:input type="text" class="form-control" path="sdt" id="sdt"/>
                                         <form:errors path="sdt" cssStyle="color: red"/>
                                     </div>
+                                    <div class="mb-3">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label class="form-label">Danh sách địa chỉ nhận hàng</label><br>
+                                            </div>
+                                            <div class="col-4">
+                                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">STT</th>
+                                                <th scope="col">Thông tin địa chỉ</th>
+                                                <th scope="col">Thao tác</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach items="${lstdChi}" var="diaChi" varStatus="i">
+                                                <tr>
+                                                    <th scope="row">${i.index+1}</th>
+                                                    <td>
+                                                        <div style="display: flex; align-items: center;">
+                                                            <div>
+                                                                <span style="font-size: 16px">
+                                                                    <strong>
+                                                                        <span style="text-transform: none">${diaChi.diaChi}</span>
+                                                                    </strong>
+                                                                </span><br>
+                                                                <div style="font-size: 13px">
+                                                                    <span>${diaChi.sdt}</span><br>
+                                                                    <span>${diaChi.hoTen}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-danger" title="xóa địa chỉ" style="color: whitesmoke" onclick="if(confirm('Bạn có muốn xóa thông tin địa chi này không.')==true){
+                                                                window.location.href='/admin/khach-hang/xoa-dia-chi/${diaChi.id}?idKH=${khachHang.id}';
+                                                                }else{return false}">
+                                                            Xóa
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             <br>
@@ -88,6 +137,35 @@
                         </form:form>
                     </div>
                 </div>
+                <!-- Modal DiaChi-->
+                <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Thêm địa chỉ giao hàng</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                                <div class="modal-body">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="hoTen" class="form-control" id="floatingHoTenNhan" placeholder="Họ và tên" required>
+                                        <label for="floatingHoTenNhan">Họ và tên</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="sdtNhan" class="form-control" id="floatingSDTNhan" placeholder="Số điện thoại" required>
+                                        <label for="floatingSDTNhan">Số điện thoại</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="text" name="diaChiNhan" class="form-control" id="floatingDiaChiNhan" placeholder="Địa chỉ" required>
+                                        <label for="floatingDiaChiNhan">Địa chỉ</label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                    <button type="submit" onclick="themDiaChi({idkh:`${khachHang.id}`})" class="btn btn-primary">Xác nhận</button>
+                                </div>
+                        </div>
+                    </div>
+                </div>
             </section>
          </div>
     </div>
@@ -97,12 +175,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    // $(document).ready(function () {
-    //     $('#chucVu').select2({
-    //         theme: "bootstrap-5"
-    //     });
-    //
-    // });
+    function themDiaChi(data) {
+        var hoTen = document.getElementById("floatingHoTenNhan").value;
+        var sdt = document.getElementById("floatingSDTNhan").value;
+        var diaChi = document.getElementById("floatingDiaChiNhan").value;
+        window.location.href="/admin/khach-hang/them-dia-chi/"+data.idkh+"?hoTen="+hoTen+"&sdt="+sdt+"&diaChi="+diaChi;
+    }
 </script>
 </body>
 </html>
