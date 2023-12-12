@@ -27,11 +27,14 @@
             <select class="form-select" name="loaiHoaDon"
                     aria-label="Default select example">
                 <option value="">Tất cả</option>
-                <option value="true" ${fillter.loaiHoaDon == 'true'? 'selected':''}
-                        class="text-warning">Đơn hàng
+                <option value="2" ${fillter.loaiHoaDon == 2? 'selected':''}
+                        >Giao hàng
                 </option>
-                <option value="false" ${fillter.loaiHoaDon == 'false'? 'selected':''}
-                        class="text-success">Tại quầy
+                <option value="0" ${fillter.loaiHoaDon == 0? 'selected':''}
+                        >Tại quầy
+                </option>
+                <option value="1" ${fillter.loaiHoaDon == 1? 'selected':''}
+                        >Online
                 </option>
             </select>
      <input type="text" name="trangThai" value="${fillter.trangThai}" style="display: none">

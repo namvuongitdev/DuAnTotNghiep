@@ -2,6 +2,7 @@ package com.example.web.service.impl;
 
 import com.example.web.Config.status.HoaDonChiTietStatus;
 import com.example.web.Config.status.HoaDonStatus;
+import com.example.web.Config.status.LoaiHoaDon;
 import com.example.web.Config.status.PhuongThucThanhToanStatus;
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
@@ -69,7 +70,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 .trangThai(TrangThaiHoaDon.HOA_DON_CHO.getValue())
                 .ngayTao(date)
                 .ma("HD" + (hoaDonRepository.findAll().size() + 1))
-                .loaiHoaDon(false)
+                .loaiHoaDon(LoaiHoaDon.TAI_QUAY)
                 .build();
         hoaDon = hoaDonRepository.save(hoaDon);
         return "redirect:/admin/hoa-don/detail?idHD=" + hoaDon.getId();
@@ -135,11 +136,13 @@ public class HoaDonServiceImpl implements IHoaDonService {
             attributes.addFlashAttribute("error", "giỏ hàng chưa có sản phẩm");
             return "redirect:/admin/hoa-don/detail?idHD=" + request.getId() + "&idKhachHang=" + request.getIdKhachHang();
         } else {
+            // kiểm tra hoá đơn có tồn tại
             if (hoaDon.isPresent()) {
                 HoaDon hd = hoaDon.get();
                 hd.setNhanVien(nhanVien);
-                if (hd.getLoaiHoaDon()) {
-                    hd.setTrangThai(HoaDonStatus.CHO_XAC_NHAN);
+                // nếu hoá đơn là giao hàng
+                if (hd.getLoaiHoaDon() == LoaiHoaDon.GIAO_HANG) {
+                    hd.setTrangThai(HoaDonStatus.DA_TIEP_NHAN);
                     hd.setPhiVanChuyen(request.getPhiVanChuyen());
                     hd.setDiaChi(request.getDiaChi());
                     hd.setHoTen(request.getHoTen());
@@ -147,6 +150,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                     hd.setSdt(request.getSdt());
                     hd.setPhuongThucThanhToan(PhuongThucThanhToanStatus.THANH_TOAN_KHI_NHAN_HANG);
                 } else {
+                    // kiểm tra tiền khách đữa
                     if (request.getSoTienThanhToan().isEmpty() || request.getSoTienThanhToan() == null) {
                         attributes.addFlashAttribute("error", "chưa nhập tiền khách đưa");
                         return "redirect:/admin/hoa-don/detail?idHD=" + request.getId() + "&idKhachHang=" + request.getIdKhachHang();
@@ -155,6 +159,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                         attributes.addFlashAttribute("soTienKhachTra", request.getSoTienThanhToan());
                         return "redirect:/admin/hoa-don/detail?idHD=" + hd.getId() + "&idKhachHang=" + request.getIdKhachHang();
                     } else {
+                        // nếu hoá đơn là tại quầy
                         Date date = java.util.Calendar.getInstance().getTime();
                         hd.setMoTa(request.getMoTa());
                         hd.setTrangThai(TrangThaiHoaDon.DA_HOAN_THANH.getValue());
@@ -170,13 +175,16 @@ public class HoaDonServiceImpl implements IHoaDonService {
                         hd.setPhuongThucThanhToan(request.getHinhThucThanhToan());
                     }
                 }
+                // kiểm tra nếu có khách hàng
                 if (request.getIdKhachHang() != null && !request.getIdKhachHang().isEmpty()) {
                     Optional<KhachHang> khachHang = khachHangRepository.findById(UUID.fromString(request.getIdKhachHang()));
                     hd.setKhachHang(khachHang.get());
                 }
                 HoaDon response = hoaDonRepository.save(hd);
-                lichSuHoaDonService.add(response.getLoaiHoaDon() ? HoaDonStatus.CHO_XAC_NHAN : HoaDonStatus.DA_THANH_TOAN , response.getId(), "nhân viên tạo hoá đơn cho khách");
+                // lịch sử
+                lichSuHoaDonService.add(response.getLoaiHoaDon() == LoaiHoaDon.GIAO_HANG ? HoaDonStatus.DA_TIEP_NHAN : HoaDonStatus.DA_THANH_TOAN , response.getId(), "nhân viên tạo hoá đơn cho khách");
                 attributes.addFlashAttribute("success", "Hoá đơn " + response.getMa() + " tạo thành công");
+                // in hoá đơn ra file pdf
                 inHoaDonService.generatePdf(response.getId());
                 return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
             } else {
@@ -246,8 +254,8 @@ public class HoaDonServiceImpl implements IHoaDonService {
                     Date ngayKetThuc = dateFormat.parse(filter.getDateEnd());
                     predicates.add(criteriaBuilder.and(criteriaBuilder.between(root.get("ngayTao"), ngayBatDau, ngayKetThuc)));
                 }
-                if (!filter.getLoaiHoaDon().isBlank()) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("loaiHoaDon"), Boolean.valueOf(filter.getLoaiHoaDon()))));
+                if (filter.getLoaiHoaDon() != null) {
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("loaiHoaDon"),filter.getLoaiHoaDon())));
                 }
                 if (filter.getTrangThai() != null && filter.getTrangThai() != 0) {
                     predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai"), filter.getTrangThai())));

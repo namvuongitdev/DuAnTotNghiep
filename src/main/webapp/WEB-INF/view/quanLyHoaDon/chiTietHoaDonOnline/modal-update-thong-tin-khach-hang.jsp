@@ -6,7 +6,7 @@
     <div class="modal-content-1" style="width: 50%">
         <span class="close" id="close_modalUpdateThongTinKhachHang">&times;</span>
         <div class="row">
-            <form:form action="/admin/hoa-don/update-thong-tin-khach-hang?idHD=${hoaDon.id}" method="post" modelAttribute="thongTinKhachHang">
+            <form action="/admin/hoa-don/update-thong-tin-khach-hang?idHD=${hoaDon.id}" method="post" modelAttribute="${thongTinKhachHang}">
                 <div class="row">
                     <div class="col-md-4">
                         <label for="hoTenKhach">Họ tên khách hàng</label>
@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <label for="phiVanChuyen">Phí vận chuyển</label>
-                        <input id="phiVanChuyen" style="height: 60px" value="${hoaDon.phiVanChuyen}" name="phiVanChuyen" type="number" class="form-control"/>
+                        <input id="phiVanChuyen" style="height: 60px" value="${hoaDon.phiVanChuyen.intValue()}" name="phiVanChuyen" type="number" class="form-control"/>
                     </div>
                     <div class="col-md-6">
                         <label for="diaChiMoi">Địa chỉ</label>
@@ -34,11 +34,11 @@
                     </div>
                 </div>
                 <div style="margin-top: 20px">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" onclick="return validateThongTinKhachHang()">
                         update
                     </button>
                 </div>
-            </form:form>
+            </form>
         </div>
     </div>
 </div>

@@ -4,14 +4,15 @@
 <div class="col-md-6">
     <div>
         <span>Loại hoá đơn :
-         <c:choose>
-             <c:when test="${hoaDon.loaiHoaDon}">
-                 Giao hàng
-             </c:when>
-             <c:otherwise>
-                 Tại quầy
-             </c:otherwise>
-         </c:choose>
+          <c:if test="${hoaDon.loaiHoaDon == 0}">
+              Tại quầy
+          </c:if>
+          <c:if test="${hoaDon.loaiHoaDon == 1}">
+             Online
+          </c:if>
+          <c:if test="${hoaDon.loaiHoaDon == 2}">
+             Giao hàng
+          </c:if>
         </span>
     </div>
     <br>
@@ -43,16 +44,18 @@
         </c:when>
         <c:otherwise>
             <div>
-                <span>Họ tên : ${hoaDon.loaiHoaDon ? hoaDon.hoTen : hoaDon.khachHang.hoTen}</span>
+                <span>Họ tên :
+                    ${hoaDon.loaiHoaDon != 0 ? hoaDon.hoTen : hoaDon.khachHang.hoTen}
+                </span>
             </div>
             <br>
             <div>
-                <span>Số điện thoại : ${hoaDon.loaiHoaDon ? hoaDon.sdt : hoaDon.khachHang.sdt}</span>
+                <span>Số điện thoại : ${hoaDon.loaiHoaDon != 0 ? hoaDon.sdt : hoaDon.khachHang.sdt}</span>
             </div>
         </c:otherwise>
     </c:choose>
     <br>
-    <c:if test="${hoaDon.loaiHoaDon}">
+    <c:if test="${hoaDon.loaiHoaDon == 1 || hoaDon.loaiHoaDon == 2}">
         <c:if test="${hoaDon.trangThai == 1 || hoaDon.trangThai == 2}">
             <div>
                 <span>Địa chỉ : ${hoaDon.diaChi}</span>

@@ -1,6 +1,7 @@
 package com.example.web.service.impl;
 
 import com.example.web.Config.status.HoaDonStatus;
+import com.example.web.Config.status.LoaiHoaDon;
 import com.example.web.Config.status.PhuongThucThanhToanStatus;
 import com.example.web.model.DiaChi;
 import com.example.web.model.GioHangChiTiet;
@@ -30,7 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-
 import com.example.web.Config.VNPAY.Config;
 
 @Service
@@ -156,7 +156,7 @@ public class CheckoutServiceImpl implements CheckoutService {
                 .trangThai(HoaDonStatus.CHO_XAC_NHAN)
                 .ngayTao(java.util.Calendar.getInstance().getTime())
                 .ma("HD" + (hoaDonRepository.findAll().size() + 1))
-                .loaiHoaDon(true)
+                .loaiHoaDon(LoaiHoaDon.ONLINE)
                 .hoTen(request.getHoTen())
                 .khachHang(khachHang)
                 .diaChi(diaChi)

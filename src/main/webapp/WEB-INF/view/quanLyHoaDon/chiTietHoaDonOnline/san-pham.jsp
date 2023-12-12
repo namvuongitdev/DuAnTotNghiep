@@ -54,7 +54,7 @@
                     <td>${hdct.soLuong}</td>
                     <td><fmt:formatNumber pattern="#,###" value="${hdct.soLuong * hdct.donGia}"/> đ
                     </td>
-                    <c:if test="${hoaDon.trangThai == 4 && hoaDon.loaiHoaDon == false}">
+                    <c:if test="${hoaDon.trangThai == 4 && hoaDon.loaiHoaDon == 0}">
                         <c:choose>
                             <c:when test="${hdct.trangThai == 2}">
                                 <td>
