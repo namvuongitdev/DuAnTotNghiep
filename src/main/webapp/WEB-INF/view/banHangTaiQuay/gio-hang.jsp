@@ -71,16 +71,16 @@
                           modelAtrribute="${request}" id="xacNhanThanhToan" onsubmit="return false;">
                         <div class="card">
                             <div class="card-body row">
-                                <c:choose>
-                                    <%-- đặt hàng--%>
-                                    <c:when test="${hoaDon.loaiHoaDon}">
-                                        <jsp:include page="dat-hang.jsp"></jsp:include>
-                                    </c:when>
-                                    <%--tại quầy--%>
-                                    <c:otherwise>
-                                        <jsp:include page="tai-quay.jsp"></jsp:include>
-                                    </c:otherwise>
-                                </c:choose>
+
+                                <%-- đặt hàng--%>
+                                <c:if test="${hoaDon.loaiHoaDon == 2}">
+                                    <jsp:include page="dat-hang.jsp"></jsp:include>
+                                </c:if>
+                                <%--tại quầy--%>
+                                <c:if test="${hoaDon.loaiHoaDon == 0}">
+                                    <jsp:include page="tai-quay.jsp"></jsp:include>
+                                </c:if>
+
                             </div>
                         </div>
                     </form>
@@ -145,7 +145,7 @@
             if (result.isConfirmed) {
                 document.getElementById('xacNhanThanhToan').submit();
             } else if (result.isDenied) {
-               return false;
+                return false;
             }
         });
     }

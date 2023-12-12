@@ -1,7 +1,7 @@
 package com.example.web.service.impl;
 
 import com.example.web.Config.status.HoaDonChiTietStatus;
-import com.example.web.Config.status.HoaDonStatus;
+import com.example.web.Config.status.LoaiHoaDon;
 import com.example.web.Config.status.PhuongThucThanhToanStatus;
 import com.example.web.model.HoaDon;
 import com.example.web.repository.IHoaDonRepository;
@@ -14,7 +14,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -147,12 +146,15 @@ public class InHoaDonServiceImpl implements InHoaDonService {
             htmlContentBuilder.append("<h3>").append("Thông tin đơn hàng").append("</h1>");
             htmlContentBuilder.append("<p>Mã đơn hàng: ").append(hoaDon.getMa()).append("</p>");
             htmlContentBuilder.append("<p>Ngày mua: ").append(formattedNgayTao).append("</p>");
-            if (hoaDon.getLoaiHoaDon()) {
-                htmlContentBuilder.append("<p>Loại đơn: ").append("Giao hàng").append("</p>");
+            if (hoaDon.getLoaiHoaDon() == LoaiHoaDon.GIAO_HANG || hoaDon.getLoaiHoaDon() == LoaiHoaDon.ONLINE) {
+                htmlContentBuilder.append("<p>Loại đơn: ").append(
+                        hoaDon.getLoaiHoaDon() == LoaiHoaDon.ONLINE ? "Online":"Giao hàng"
+                ).append("</p>");
                 htmlContentBuilder.append("<p>Họ tên: ").append(hoaDon.getHoTen()).append("</p>");
                 htmlContentBuilder.append("<p>Số điện thoại: ").append(hoaDon.getSdt()).append("</p>");
                 htmlContentBuilder.append("<p>Địa chỉ: ").append(hoaDon.getDiaChi()).append("</p>");
-            } else {
+            }
+            if (hoaDon.getLoaiHoaDon() == LoaiHoaDon.TAI_QUAY) {
                 htmlContentBuilder.append("<p>Loại đơn: ").append("Tại quầy").append("</p>");
                 if (hoaDon.getHoTen() != null) {
                     htmlContentBuilder.append("<p>Khách hàng: ").append(hoaDon.getHoTen()).append("</p>");
@@ -166,7 +168,7 @@ public class InHoaDonServiceImpl implements InHoaDonService {
             }
             // phương thức thanh toán
             String phuongThucThanhToan = "";
-            if (hoaDon.getLoaiHoaDon()) {
+            if (hoaDon.getLoaiHoaDon() == LoaiHoaDon.ONLINE || hoaDon.getLoaiHoaDon() == LoaiHoaDon.GIAO_HANG) {
                 if (hoaDon.getPhuongThucThanhToan() == PhuongThucThanhToanStatus.VNPAY) {
                     phuongThucThanhToan = "Đã thanh toán tiền hàng bằng VNPAY";
                 }
@@ -221,7 +223,7 @@ public class InHoaDonServiceImpl implements InHoaDonService {
                 htmlContentBuilder.append("<p>Hoàn tiền: ").append(numberFormat.format(hoaDon.tongTienTraHang())).append("</p>");
             }
             htmlContentBuilder.append("<p>Tổng số tiền cần trả: ").append(formattedTongTienHoaDon).append("</p>");
-            if (hoaDon.getLoaiHoaDon() && hoaDon.getPhuongThucThanhToan() == 4) {
+            if (hoaDon.getLoaiHoaDon() == LoaiHoaDon.ONLINE && hoaDon.getPhuongThucThanhToan() == 4) {
                 htmlContentBuilder.append("<p>Đã thanh toán: ").append(numberFormat.format(hoaDon.tongTienHang())).append("</p>");
                 htmlContentBuilder.append("<p>Cần thanh toán khi nhận hàng: ").append(numberFormat.format(hoaDon.getPhiVanChuyen())).append("</p>");
             }

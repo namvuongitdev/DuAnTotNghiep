@@ -1,6 +1,7 @@
 package com.example.web.controller;
 
 import com.example.web.Config.status.HoaDonStatus;
+import com.example.web.Config.status.LoaiHoaDon;
 import com.example.web.model.HoaDon;
 import com.example.web.model.KhachHang;
 import com.example.web.model.TrangThaiHoaDon;
@@ -152,7 +153,7 @@ public class HoDonController {
     }
 
     @GetMapping("/loai-hoa-don")
-    public String loaiHoaDon(@RequestParam String idHD, @RequestParam String idKhachHang, @RequestParam Boolean loaiHoaDon) {
+    public String loaiHoaDon(@RequestParam String idHD, @RequestParam String idKhachHang, @RequestParam Integer loaiHoaDon) {
         HoaDon hoaDon = hoaDonService.getOne(idHD);
         hoaDon.setLoaiHoaDon(loaiHoaDon);
         hoaDonService.add(hoaDon);
@@ -162,7 +163,7 @@ public class HoDonController {
     @PostMapping("/thanh-toan")
     private String xacNhanThanhToan(@RequestParam String idHD, @RequestParam String idKhachHang, @Valid @ModelAttribute("request") HoaDonRequest hoaDonRequest, BindingResult result, RedirectAttributes attributes) {
         HoaDon hoaDon = hoaDonService.getOne(idHD);
-        if (hoaDon.getLoaiHoaDon()) {
+        if (hoaDon.getLoaiHoaDon() == LoaiHoaDon.GIAO_HANG) {
             if (result.hasErrors()) {
                 for (FieldError fieldError : result.getFieldErrors()) {
                     attributes.addFlashAttribute(fieldError.getField(), fieldError.getDefaultMessage());
@@ -244,18 +245,6 @@ public class HoDonController {
             attributes.addFlashAttribute("error", "không tìm thấy hoá đơn");
         }
          return "redirect:/admin/hoa-don/chi-tiet-hoa-dons/" + idHD;
-    }
-
-
-    @PostMapping("/in-hoa-don")
-    public String generateAndSaveInvoice(@RequestParam("id") String id , RedirectAttributes attributes) {
-      ResponseEntity<?> responseEntity = inHoaDonService.generatePdf(UUID.fromString(id));
-       if(responseEntity.getStatusCode().value() == 200){
-           attributes.addFlashAttribute("success" , "in hoá đơn thành công");
-       }else{
-           attributes.addFlashAttribute("error" , "in hoá đơn không thành công");
-       }
-        return "redirect:/admin/hoa-don/chi-tiet-hoa-dons/"+id;
     }
 
     @GetMapping("/admin/hoa-don/hoan-tien")

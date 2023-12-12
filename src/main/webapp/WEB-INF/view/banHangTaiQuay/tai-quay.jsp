@@ -8,7 +8,7 @@
     <h4>Thông tin thanh toán</h4>
     <div class="form-check form-switch">
         <input class="form-check-input" type="checkbox" id="mySwitch"
-               name="${khachHang.id}" ${hoaDon.loaiHoaDon == false ? '' : 'checked'}>
+               name="${khachHang.id}" ${hoaDon.loaiHoaDon == 0 ? '' : 'checked'}>
         <label class="form-check-label" for="mySwitch">Đặt hàng</label>
     </div>
     <div>

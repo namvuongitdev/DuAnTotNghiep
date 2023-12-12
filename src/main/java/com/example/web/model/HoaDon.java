@@ -72,7 +72,7 @@ public class HoaDon {
     private Integer trangThai;
 
     @Column(name = "loaiHoaDon")
-    private Boolean loaiHoaDon;
+    private Integer loaiHoaDon;
 
     @Column(name = "phuongThucThanhToan")
     private Integer phuongThucThanhToan;

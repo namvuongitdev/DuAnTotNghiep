@@ -13,7 +13,7 @@ mySwitch.addEventListener('click', (e) => {
     let paramValue = url.searchParams.get("idHD");
     let uri = null;
     if (e.target.checked) {
-        uri = '/admin/hoa-don/loai-hoa-don?loaiHoaDon=' + e.target.checked + '&idHD=' + paramValue;
+        uri = '/admin/hoa-don/loai-hoa-don?loaiHoaDon=' + 2 + '&idHD=' + paramValue;
         if (mySwitch.name != "") {
             window.location.href = uri + '&idKhachHang=' + mySwitch.name;
         } else {
@@ -21,7 +21,7 @@ mySwitch.addEventListener('click', (e) => {
         }
 
     } else {
-        uri = '/admin/hoa-don/loai-hoa-don?loaiHoaDon=' + e.target.checked + '&idHD=' + paramValue;
+        uri = '/admin/hoa-don/loai-hoa-don?loaiHoaDon=' + 0 + '&idHD=' + paramValue;
         if (mySwitch.name != "") {
             window.location.href = uri + '&idKhachHang=' + mySwitch.name;
         } else {

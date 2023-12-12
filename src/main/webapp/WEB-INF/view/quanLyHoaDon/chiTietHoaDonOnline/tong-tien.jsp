@@ -31,7 +31,7 @@
         </p>
     </div>
 
-    <c:if test="${hoaDon.loaiHoaDon && hoaDon.phuongThucThanhToan == 4}">
+    <c:if test="${hoaDon.loaiHoaDon == 1 && hoaDon.phuongThucThanhToan == 4}">
         <div>
             <p style="float: right">Đã thanh toán : <span style="color: red"><fmt:formatNumber pattern="#,###"
                                                                                                value="${hoaDon.tongTienHang()}"/> đ</span>

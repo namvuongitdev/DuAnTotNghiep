@@ -52,7 +52,7 @@
             <div class="pagetitle">
                 <nav>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/admin/trang-chu"
+                        <li class="breadcrumb-item"><a href="/admin/thong-ke"
                                                        style="text-decoration: none; color: black">Trang chủ</a></li>
                         <li class="breadcrumb-item"><a href="/admin/hoa-don/hien-thi"
                                                        style="text-decoration: none; color: black">Quản lí hóa đơn</a>
@@ -107,7 +107,7 @@
     </div>
 </div>
 <!-- Sửa thông tin -->
-<c:if test="${hoaDon.loaiHoaDon}">
+<c:if test="${hoaDon.loaiHoaDon == 2 || hoaDon.loaiHoaDon == 1}">
     <jsp:include page="modal-update-thong-tin-khach-hang.jsp"></jsp:include>
 </c:if>
 <%--modal lịch sử hoá đơn--%>
@@ -144,7 +144,7 @@
     }
 </script>
 
-<c:if test="${hoaDon.loaiHoaDon}">
+<c:if test="${hoaDon.loaiHoaDon == 2 || hoaDon.loaiHoaDon == 1}">
     <script src="/js/quanLyHoaDon/modal-update-thong-tin-khach-hang.js"></script>
 </c:if>
 

@@ -79,10 +79,10 @@
 <div style="border: 2px solid #eae8e8;border-style: ridge;height: 60px;width: 1170px;margin-left: 190px;align-items: center;background-color: white">
     <nav style="padding: 0;margin: 0;list-style: none;">
         <ul style="display: flex;margin-top: 20px">
-            <li  style="color: #7a7a7a;display: flex;margin-left: 20px"><a>Sản Phẩm</a></li>
-            <li style="color: #7a7a7a;display: flex;margin-left: 400px"><a >Số Lượng</a></li>
-            <li style="color: #7a7a7a;display: flex;margin-left: 200px"><a >Số Tiền</a></li>
-            <li style="color: #7a7a7a;display: flex;margin-left: 200px"><a >Thao Tác</a></li>
+            <li style="color: #7a7a7a;display: flex;margin-left: 20px"><a>Sản Phẩm</a></li>
+            <li style="color: #7a7a7a;display: flex;margin-left: 400px"><a>Số Lượng</a></li>
+            <li style="color: #7a7a7a;display: flex;margin-left: 200px"><a>Số Tiền</a></li>
+            <li style="color: #7a7a7a;display: flex;margin-left: 200px"><a>Thao Tác</a></li>
         </ul>
     </nav>
 </div>
@@ -105,7 +105,8 @@
 
     <c:forEach items="${list}" var="gh" varStatus="i">
         <hr class="my-4">
-        <div class="card mb-3" style="border: 2px solid #eae8e8;border-style: ridge;height: 100px;width: 1140px;margin-left: 15px">
+        <div class="card mb-3"
+             style="border: 2px solid #eae8e8;border-style: ridge;height: 100px;width: 1140px;margin-left: 15px">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div class="d-flex flex-row align-items-center">
@@ -116,8 +117,8 @@
                                     style="width: 65px;">
                         </div>
                         <div class="ms-2">
-                            <h5>${gh.getTenSanPham()}</h5>
-                            <p class="small mb-0">${gh.getMauSac()},${gh.getKichCo()},
+                            <h4>${gh.getTenSanPham()}</h4>
+                            <p>${gh.getMauSac()},${gh.getKichCo()},
                                 <c:choose>
                                 <c:when test="${gh.getGiaBanSanPham() != null && gh.trangThaiKMCT == 1 && gh.trangThaiKM ==1}">
                                 <font color="#5f9ea0"><fmt:formatNumber pattern="#,###"
@@ -150,7 +151,8 @@
                             </div>
                             <a href="#!" style="color: #cecece;margin-left: 15px">
                                 <button formaction="/gio-hang-onl/xoa/${gh.getId()}"
-                                        style="background-color:white ;border: none;margin-top: 15px;margin-right: 80px" title="xoá"><i
+                                        style="background-color:white ;border: none;margin-top: 15px;margin-right: 80px"
+                                        title="xoá"><i
                                         class="fas fa-trash-alt"></i></button>
                             </a>
                         </div>
@@ -164,13 +166,13 @@
 <br>
 <!-- Header Section End -->
 <div style="border: 2px solid #eae8e8;border-style: ridge;height: 60px;margin-left: 730px;display: flex;width: 600px">
-            <h5 class="text-uppercase" style="margin-top: 7px;padding-left: 30px">Tổng đơn
-            <font color="red"><fmt:formatNumber pattern="#,###"
-                                                    value="${tongTien}"></fmt:formatNumber>
-                đ</font></h5>
-        <a href="/checkouts" style="margin-left: 50px" class="btn btn-dark btn-block btn-lg"
-           data-mdb-ripple-color="dark">Thanh toán
-        </a>
+    <h5 class="text-uppercase" style="margin-top: 7px;padding-left: 30px">Tổng đơn
+        <font color="red"><fmt:formatNumber pattern="#,###"
+                                            value="${tongTien}"></fmt:formatNumber>
+            đ</font></h5>
+    <a href="/checkouts" style="margin-left: 50px" class="btn btn-dark btn-block btn-lg"
+       data-mdb-ripple-color="dark">Thanh toán
+    </a>
 
 </div>
 <br>
