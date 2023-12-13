@@ -92,7 +92,6 @@ public class ThanhToanController {
         KhachHang khachHang = khachHangService.getKhachHangById(idKH);
         DiaChi diaChi = modelMapper.map(newDiaChiOnline, DiaChi.class);
         diaChi.setKhachHang(khachHang);
-        diaChi.setDiaChiMacDinh(true);
         DiaChi response = diaChiService.add(diaChi);
         attributes.addFlashAttribute("diaChiMacDinh", response);
         return "redirect:/checkouts";

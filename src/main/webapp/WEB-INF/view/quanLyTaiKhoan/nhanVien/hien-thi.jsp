@@ -40,12 +40,6 @@
                         <div class="card">
                             <div class="card-body row">
                                 <h5 class="card-title col-10">Danh sách nhân viên</h5>
-                                <div class="col-2 card-title">
-                                    <button type="button" class="btn btn-primary" title="Thêm dữ liệu">
-                                        <a href="/admin/nhan-vien/view-add" style="color: white"><i class="bi bi-plus-circle"></i></a>
-                                    </button>
-                                </div>
-
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <form method="get"  action="/admin/nhan-vien/filter" modelAttribute="${filterNhanVien}">
@@ -82,16 +76,15 @@
                                             <td>
                                                 <button  style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" type="button"
                                                          class="${nv.trangThai == 0 ? 'btn btn-success' : 'btn btn-danger'}">
-                                                        ${nv.trangThai == 0 ? 'Đang làm việc' : 'Đã nghỉ việc'}</button>
+                                                        ${nv.trangThai == 0 ? 'Làm việc' : 'Nghỉ việc'}</button>
                                             </td>
-                                            <td>
+                                            <td style="display: flex">
                                                 <button type="button" class="btn btn-success" title="Sửa dữ liệu" onclick="myFunction()">
                                                     <a class="text-white" style="text-decoration: none" href="/admin/nhan-vien/view-update/${nv.id}"><i class="bi bi-pencil"></i></a>
                                                 </button>
-                                                <button type="button" class="${nhanVien.trangThai==0?'btn btn-danger':'btn btn-success'}" title="${nhanVien.trangThai==0?'Dừng làm việc':'Làm việc'}" onclick="if(confirm('Bạn có chắc chắn đổi trạng thái làm việc không?')){window.location.href = '/admin/nhan-vien/stop/${nv.id}';}
+                                                <button type="button" class="${nhanVien.trangThai==0?'btn btn-danger':'btn btn-success'}" style="margin-left: 6px" title="${nhanVien.trangThai==0?'Dừng làm việc':'Làm việc'}" onclick="if(confirm('Bạn có chắc chắn đổi trạng thái làm việc không?')){window.location.href = '/admin/nhan-vien/stop/${nv.id}';}
                                                         else{alert('Đổi trạng thái làm việc thất bại!')}"><i class="bi bi-sign-stop"></i>
                                                 </button>
-
                                             </td>
                                         </tr>
                                     </c:forEach>

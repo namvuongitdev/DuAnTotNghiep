@@ -7,7 +7,7 @@
 <div>
     <div class="row">
         <div class="col-6">
-            <span style="color: #03AA28">Tìm kiếm</span>
+            <span>Tìm kiếm</span>
             <form action="" method="post">
                 <div class="input-group">
                     <input type="text" class="form-control" name="search" placeholder="Tìm kiếm" value="${filter.search}" aria-label="Tìm kiếm"/>

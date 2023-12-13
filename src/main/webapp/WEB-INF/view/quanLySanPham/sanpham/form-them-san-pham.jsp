@@ -49,8 +49,8 @@
                     </select>
                 </div>
                 <div class="col-1" style="padding-top: 40px">
-                    <a data-bs-toggle="modal" data-bs-target="#exampleModalChatLieu">
-                        <i class="bi bi-plus-circle"></i>
+                    <a>
+                        <i class="bi bi-plus-circle" onclick="modalThemNhanhChatLieu()"></i>
                     </a>
                 </div>
             </div>
@@ -64,8 +64,8 @@
                     </select>
                 </div>
                 <div class="col-1" style="padding-top: 40px">
-                    <a data-bs-toggle="modal" data-bs-target="#exampleModalKieuDang">
-                        <i class="bi bi-plus-circle"></i>
+                    <a>
+                        <i class="bi bi-plus-circle" onclick="modalThemNhanhKieuDang()"></i>
                     </a>
                 </div>
             </div>
@@ -79,8 +79,8 @@
                     </select>
                 </div>
                 <div class="col-1" style="padding-top: 40px">
-                    <a data-bs-toggle="modal" data-bs-target="#exampleModalDanhMuc">
-                        <i class="bi bi-plus-circle"></i>
+                    <a>
+                        <i class="bi bi-plus-circle" onclick="modalThemNhanhDanhMuc()"></i>
                     </a>
                 </div>
             </div>

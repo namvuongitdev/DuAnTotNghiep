@@ -21,21 +21,6 @@
          " rel="stylesheet">
 </head>
 <style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    th, td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-
-    tr:hover {
-        background-color: #f5f5f5;
-    }
-
     /* The Modal (background) */
     .modal {
         display: none; /* Hidden by default */
@@ -79,61 +64,83 @@
 <%--navbar--%>
 <jsp:include page="../../sidebar/navbar.jsp"/>
 <%--sidebar--%>
-<div class="row flex-nowrap">
+<div class="row flex-nowrap" style="background-color: #dddddd">
     <jsp:include page="../../sidebar/sidebar.jsp"/>
     <div class="col py-3">
-        <div class="container">
-            <form:form class="row" action="${url}" method="post" modelAttribute="khuyenMaiRequest">
-                <div class="col-sm-3">
-                </div>
-                <div class="col-sm-6">
-                    <div class="mb-3 form-floating">
-                        <input type="text" class="form-control" name="ten" id="ten" value="${dataKhuyenMai.ten}">
-                        <label for="ten">Tên giảm giá</label>
-                        <form:errors path="ten" cssStyle="color: red"/>
-                    </div>
-                    <div class="row">
-                        <div class="col l-3">
-                            <div class="mb-3 form-floating">
-                                <input type="text" class="form-control" name="moTa" id="moTa" value="${dataKhuyenMai.moTa}">
-                                <label for="moTa">Mô tả</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col l-3">
-                            <div class="mb-3 form-floating">
-                                <input type="date" class="form-control" name="ngayBatDau" id="ngayBatDau"
-                                       value="${dataKhuyenMai.ngayBatDau}">
-                                <label for="ngayBatDau">Ngày bắt đầu</label>
-                                <form:errors path="ngayBatDau" cssStyle="color: red"/>
-                                <c:if test="${errorNgay != null}">
-                                    <p style="color: #E43535">${errorNgay}</p>
-                                </c:if>
-                            </div>
-                        </div>
-                        <div class="col l-3">
-                            <div class="mb-3 form-floating">
-                                <input type="date" class="form-control" name="ngayKetThuc" id="ngayKetThuc"
-                                       value="${dataKhuyenMai.ngayKetThuc}">
-                                <label for="ngayKetThuc">Ngày kết thúc</label>
-                                <form:errors path="ngayKetThuc" cssStyle="color: red"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div>
-                            <button class="btn btn-primary">${dataKhuyenMai != null ? "Cập nhập" : "Thêm"}</button>
-                        </div>
-                    </div>
+        <div class="pagetitle">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/admin/thong-ke"
+                                                   style="text-decoration: none; color: black">Trang chủ</a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="/admin/khuyen-mai/"
+                                                   style="text-decoration: none; color: black">Quản lý Khuyến mại</a>
+                    </li>
+                    <li class="breadcrumb-item">Chi tiết</li>
+                    <li class="breadcrumb-item" style="color: #1da1f2">${dataKhuyenMai.ma}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card">
+            <div class="card-body row">
+                <form:form class="row" action="${url}" method="post" modelAttribute="khuyenMaiRequest" id="formKhuyenMai" onsubmit="return false">
                     <div class="col-sm-3">
                     </div>
-                </div>
-            </form:form>
-            <c:if test="${listChiTietKhuyenMai.content != null}">
-                <jsp:include page="chi-tiet.jsp"></jsp:include>
-            </c:if>
+                    <div class="col-sm-6">
+                        <div class="mb-3 form-floating">
+                            <input type="text" class="form-control" name="ten" id="ten" value="${dataKhuyenMai.ten}">
+                            <label for="ten">Tên giảm giá</label>
+                            <form:errors path="ten" cssStyle="color: red"/>
+                        </div>
+                        <div class="row">
+                            <div class="col l-3">
+                                <div class="mb-3 form-floating">
+                                    <input type="text" class="form-control" name="moTa" id="moTa"
+                                           value="${dataKhuyenMai.moTa}">
+                                    <label for="moTa">Mô tả</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col l-3">
+                                <div class="mb-3 form-floating">
+                                    <input type="date" class="form-control" name="ngayBatDau" id="ngayBatDau"
+                                           value="${dataKhuyenMai.ngayBatDau}">
+                                    <label for="ngayBatDau">Ngày bắt đầu</label>
+                                    <form:errors path="ngayBatDau" cssStyle="color: red"/>
+                                    <c:if test="${errorNgay != null}">
+                                        <p style="color: #E43535">${errorNgay}</p>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <div class="col l-3">
+                                <div class="mb-3 form-floating">
+                                    <input type="date" class="form-control" name="ngayKetThuc" id="ngayKetThuc"
+                                           value="${dataKhuyenMai.ngayKetThuc}">
+                                    <label for="ngayKetThuc">Ngày kết thúc</label>
+                                    <form:errors path="ngayKetThuc" cssStyle="color: red"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div>
+                                <button class="btn btn-primary" onclick="confirmKhuyenMai(event , `${dataKhuyenMai.ma != null ? 'update' : 'Thêm'}`)">${dataKhuyenMai.ma != null ? "Cập nhập" : "Thêm"}</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                        </div>
+                    </div>
+                </form:form>
+            </div>
         </div>
+
+        <c:if test="${listChiTietKhuyenMai.content != null}">
+            <div class="card" style="margin-top: 10px">
+                <div class="card-body row">
+                    <jsp:include page="chi-tiet.jsp"></jsp:include>
+                </div>
+            </div>
+        </c:if>
     </div>
     <c:if test="${dataKhuyenMai != null}">
         <jsp:include page="modal-san-pham.jsp"></jsp:include>
@@ -141,6 +148,23 @@
     <script src="/js/khuyenMai/modal.js"></script>
     </c:if>
     <script>
+
+        function confirmKhuyenMai(event, message) {
+            event.preventDefault(); // Prevent the default form submission behavior
+            Swal.fire({
+                title: "Bạn có muốn "+ message +" không?",
+                showDenyButton: true,
+                confirmButtonText: "Có",
+                denyButtonText: `Không`
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    document.getElementById("formKhuyenMai").submit();
+                } else {
+                    return false;
+                }
+            });
+        }
 
         if (${error != null}) {
             Swal.fire({

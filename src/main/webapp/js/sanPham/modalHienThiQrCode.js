@@ -75,4 +75,22 @@ window.onclick = function (event) {
     if (event.target === modalUpdateChiTietSanPham) {
         modalUpdateChiTietSanPham.style.display = "none";
     }
+    if(event.target === modalMauSac){
+        modalMauSac.style.display = "none"
+    }
+    if(event.target === modalKichCo){
+        modalKichCo.style.display = "none"
+    }
+    if(event.target === modalChatLieu){
+        modalChatLieu.style.display = "none"
+    }
+    if(event.target === modalKieuDang){
+        modalKieuDang.style.display = "none"
+    }
+    if(event.target === modalDanhMuc){
+        modalDanhMuc.style.display = "none"
+    }
+    if(event.target === modalAnh){
+        modalAnh.style.display = "none"
+    }
 }

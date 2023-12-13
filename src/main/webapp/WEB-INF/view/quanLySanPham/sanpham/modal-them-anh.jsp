@@ -1,13 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<div class="modal" id="exampleModalAnh" tabindex="-1" aria-labelledby="exampleModalLabelAnh"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<div id="exampleModalAnh" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content-1" style="width: 40%">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabelAnh">Thêm ảnh</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body row" id="themAnh">
                 <div class="col-9">
@@ -18,6 +16,5 @@
                     </button>
                 </div>
             </div>
-        </div>
     </div>
 </div>

@@ -12,11 +12,9 @@
                         <input class="form-control" type="text" name="search" id="search-input"
                                placeholder="tìm kiếm">
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3" style="display: flex">
                         <button class="btn btn-primary" onclick="timKiem()">Tìm kiếm</button>
-                    </div>
-                    <div class="col-sm-2">
-                        <button class="btn btn-warning" id="clear">Làm mới</button>
+                        <button class="btn btn-warning" id="clear" style="margin-left: 6px">Làm mới</button>
                     </div>
                 </div>
                 <br>

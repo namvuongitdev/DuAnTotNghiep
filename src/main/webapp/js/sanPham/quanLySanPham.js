@@ -1,9 +1,13 @@
 let idSanPham = null;
 let idMauSac = null;
 let modalThemCTSP = document.getElementById("modalThemChiTietSanPham");
-
+const modalAnh = document.getElementById("exampleModalAnh");
 function modalThemChiTietSanPham(){
     modalThemCTSP.style.display = "block";
+}
+
+function modalThemAnh(){
+    modalAnh.style.display = "block";
 }
 
 
@@ -26,8 +30,7 @@ function findAnhMauSac(idSP, idMS) {
                           <div class="col-sm-2">
                             <a type="button"
                             class="btn btn-primary"
-                            data-bs-toggle="modal"
-                            data-bs-target="#exampleModalAnh">
+                            onclick="modalThemAnh()">
                             Thêm ảnh
                              </a>
                           </div>
@@ -62,6 +65,7 @@ async function themAnhMauSac() {
     };
     const api = await fetch(`/admin/chi-tiet-san-pham/add-anh?idSP=${idSanPham}&idMS=${idMauSac}`, options)
     findAnhMauSac(idSanPham, idMauSac);
+    modalAnh.style.display = "none";
 }
 
 async function anhMacDinhSanPham(idSP, tenAnh) {

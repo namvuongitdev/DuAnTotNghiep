@@ -28,7 +28,7 @@
                 <jsp:include page="../../notiface/error.jsp"></jsp:include>
             </c:if>
             <form class="row" action="/admin/khuyen-mai/filter" modelAttrubute="${khuyenMai}">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <div>
                         <label for="search">Tìm kiếm</label>
                         <input class="form-control" type="text" name="search" id="search"

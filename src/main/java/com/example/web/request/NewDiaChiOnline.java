@@ -17,4 +17,6 @@ public class NewDiaChiOnline {
 
     private String diaChi;
 
+    private Boolean diaChiMacDinh;
+
 }

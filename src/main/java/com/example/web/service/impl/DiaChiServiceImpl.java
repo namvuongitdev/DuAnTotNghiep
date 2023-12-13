@@ -18,6 +18,19 @@ public class DiaChiServiceImpl implements IDiaChiService {
 
     @Override
     public DiaChi add(DiaChi diaChi) {
+        if(diaChi.getDiaChiMacDinh() == null){
+            diaChi.setDiaChiMacDinh(true);
+        }else{
+            if(!diaChi.getDiaChiMacDinh()){
+                List<DiaChi> diaChis = diaChiRepository.findDiaChiByKhachHang_id(diaChi.getKhachHang().getId());
+                diaChis.forEach(o -> {
+                    if(!o.getDiaChiMacDinh()){
+                        o.setDiaChiMacDinh(true);
+                        diaChiRepository.save(o);
+                    }
+                });
+            }
+        }
         return diaChiRepository.save(diaChi);
     }
 

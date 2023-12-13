@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="row">
-    <hr>
     <div class="container">
         <div class="row" style="margin-bottom: 25px">
             <form class="row" action="/admin/khuyen-mai/filter-san-pham-khuyen-mai/${dataKhuyenMai.id}" method="get"
@@ -45,16 +44,16 @@
                     <button class="btn btn-primary" style="margin-right: 6px">Tìm kiếm</button>
                     <a href="/admin/khuyen-mai/detail?id=${dataKhuyenMai.id}" class="btn btn-warning">Làm mới</a>
                 </div>
+                <div class="col-sm-2" style="margin-top: 26px">
+                    <a  class="btn btn-primary"
+                            name="1" onclick="getSanPham(this.name)">
+                        Thêm sản phẩm
+                    </a>
+                </div>
             </form>
-            <div class="col-sm-2" style="margin-top: 15px ;float: left">
-                <button style="float: right" class="btn btn-primary"
-                        name="1" onclick="getSanPham(this.name)">
-                    Thêm sản phẩm
-                </button>
-            </div>
         </div>
         <div>
-            <table>
+            <table class="table">
                 <thead>
                 <tr>
                     <th scope="col">Tên sản phẩm</th>
@@ -104,7 +103,6 @@
             </table>
         </div>
     </div>
-
 </div>
 <div class="row">
     <div class="container-fluid mt-5">
@@ -149,10 +147,12 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <input type="radio" class="btn-check loaiGiamGia" name="loaiGiamGia"
-                               id="success-outlined__1" autocomplete="off" value="true" onchange="loaiGiamGiaUpdate(this.value)">
+                               id="success-outlined__1" autocomplete="off" value="true"
+                               onchange="loaiGiamGiaUpdate(this.value)">
                         <label class="btn btn-outline-secondary" for="success-outlined__1">%</label>
 
-                        <input type="radio" class="btn-check loaiGiamGia" name="loaiGiamGia" onchange="loaiGiamGiaUpdate(this.value)"
+                        <input type="radio" class="btn-check loaiGiamGia" name="loaiGiamGia"
+                               onchange="loaiGiamGiaUpdate(this.value)"
                                id="danger-outlined__1" autocomplete="off" value="false">
                         <label class="btn btn-outline-secondary" for="danger-outlined__1">VND</label>
                     </div>

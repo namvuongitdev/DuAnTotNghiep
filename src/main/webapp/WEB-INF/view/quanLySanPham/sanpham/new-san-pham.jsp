@@ -244,5 +244,6 @@
     }
 </script>
 <script src="../../../../js/sanPham/checked.js"></script>
+<script src="../../../../js/sanPham/modalThemNhanhThuocTinh.js"></script>
 </body>
 </html>

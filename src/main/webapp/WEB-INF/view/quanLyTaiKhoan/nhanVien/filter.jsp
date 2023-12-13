@@ -6,17 +6,18 @@
 <%--tìm kiếm--%>
 <div>
     <div class="row">
-        <div class="col-6">
-            <span style="color: #03AA28">Tìm kiếm</span>
+        <div class="col-3">
+            <span>Tìm kiếm</span>
             <form action="" method="post">
                 <div class="input-group">
-                    <input type="text" class="form-control" name="search" placeholder="Tìm kiếm" value="${filter.search}" aria-label="Tìm kiếm"/>
+                    <input type="text" class="form-control" name="search" placeholder="Tìm kiếm"
+                           value="${filter.search}" aria-label="Tìm kiếm"/>
                 </div>
             </form>
         </div>
 
-        <div class="col-3">
-            <span style="color: #03AA28">Trạng thái</span>
+        <div class="col-2">
+            <span>Trạng thái</span>
             <select name="trangThai" id="trangThai" class="form-select">
                 <option value="">Tất cả</option>
                 <option value="0" ${filter.trangThai == 0 ? 'selected' : ''}>
@@ -27,8 +28,8 @@
                 </option>
             </select>
         </div>
-        <div class="col-3">
-            <span style="color: #03AA28">Giới tính</span>
+        <div class="col-2">
+            <span>Giới tính</span>
             <select name="gioiTinh" id="gioiTinh" class="form-select">
                 <option value="">Tất cả</option>
                 <option value="true" ${filter.gioiTinh == true ? 'selected' : ''}>
@@ -39,12 +40,15 @@
                 </option>
             </select>
         </div>
-    </div><br>
-    <div style="text-align: center">
-        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-        <a class="btn btn-warning" href="/admin/nhan-vien/hien-thi">Làm mới</a>
+        <div class="col-4" style="margin-top: 22px">
+            <div>
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                <a class="btn btn-warning" href="/admin/nhan-vien/hien-thi">Làm mới</a>
+                <a class="btn btn-primary" href="/admin/nhan-vien/view-add">Tạo mới</a>
+            </div>
+        </div>
     </div>
-    <br>
-</div><!-- End Bordered Tabs -->
+</div>
+<br><!-- End Bordered Tabs -->
 
 <%--....--%>

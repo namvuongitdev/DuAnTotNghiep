@@ -36,13 +36,13 @@
                 <input type="checkbox" id="checkeds">
             </th>
             <th scope="col">Kích cỡ
-                <a data-bs-toggle="modal" data-bs-target="#exampleModalKichCo">
-                    <i class="bi bi-plus-circle"></i>
+                <a>
+                    <i class="bi bi-plus-circle" onclick="modalThemNhanhKichCo()"></i>
                 </a>
             </th>
             <th scope="col">Màu sắc
-                <a data-bs-toggle="modal" data-bs-target="#exampleModalMauSac">
-                    <i class="bi bi-plus-circle"></i>
+                <a>
+                    <i class="bi bi-plus-circle" onclick="modalThemNhanhMauSac()"></i>
                 </a>
             </th>
             <th scope="col">Số lượng</th>
@@ -98,11 +98,6 @@
 
                         `,
                                 `
-
-
-
-
-
                         <c:forEach items="${listKichCo}" var="kichCo">
                          <option value='${kichCo.id}' ${ctsp.size.id == kichCo.id?'selected':''}>${kichCo.ten}</option>
                         </c:forEach>
