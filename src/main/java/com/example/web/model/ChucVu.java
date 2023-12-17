@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +33,7 @@ public class ChucVu {
     @Column(name = "id")
     private UUID id;
 
-    @NotBlank(message = "Không được để trống")
+    @Pattern(regexp = "^[\\p{L}\\s']+", message = "Tên chức vụ không đúng định dạng.")
     @Column(name = "ten")
     @Nationalized
     private String ten;

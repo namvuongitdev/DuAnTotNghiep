@@ -9,7 +9,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
-
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
 </head>
 <body>
 <%--navbar--%>
@@ -27,7 +32,7 @@
                     </p>
                 </div>
                 <div class="m-sm-4">
-                    <form action="/admin/doiMatKhau/${myEmail}" method="post">
+                    <form action="/admin/doiMatKhau/${myEmail}" method="post" id="yourForm">
                         <div class="form-floating mb-3">
                             <input value="${myEmail}" class="form-control form-control-lg" type="email" name="email" placeholder="Email của bạn" disabled>
                             <label class="form-label">Email của bạn</label>
@@ -43,7 +48,7 @@
                             <p style="color: red">${nhapLai}</p>
                         </div>
                         <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-lg btn-primary">Đổi mật khẩu</button>
+                            <button type="submit" class="btn btn-lg btn-primary" onclick="doiMatKhau(event)">Đổi mật khẩu</button>
                             <!-- <button type="submit" class="btn btn-lg btn-primary">Reset password</button> -->
                         </div>
                     </form>
@@ -52,5 +57,38 @@
         </div>
     </div>
 </div>
+<script>
+    function doiMatKhau(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+        Swal.fire({
+            title: "Bạn có muốn đổi mật khẩu không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                document.getElementById('yourForm').submit();
+            } else if (result.isDenied) {
+                return false;
+            }
+        });
+    }
+
+    if (${error != null}) {
+        Swal.fire({
+            title: "${error}",
+            icon: "error"
+        });
+    }
+
+    if (${success != null}) {
+        Swal.fire({
+            title: "${success}",
+            icon: "success"
+        });
+        clearLocalStorage();
+    }
+</script>
 </body>
 </html>

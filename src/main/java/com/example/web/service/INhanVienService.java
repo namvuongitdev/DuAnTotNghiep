@@ -31,6 +31,8 @@ public interface INhanVienService {
 
     String findEmailToPass(String taiKhoan);
 
+    String updateStatus(String id,Integer trangThai);
+
     NhanVien getNhanVienLogin();
 
     NhanVien getByEmailOrTaiKhoan(String usename);

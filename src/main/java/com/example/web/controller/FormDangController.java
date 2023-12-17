@@ -80,6 +80,7 @@ public class FormDangController {
     public String page(@PathVariable("id") String id, RedirectAttributes redirectAttributes,
                        @RequestParam(name = "trangThai")Integer trangThai ){
         redirectAttributes.addFlashAttribute("kieuDang", new KieuDang());
+        redirectAttributes.addFlashAttribute("success", "Cập nhật trạng thái thành công");
         String url = service.updateStatus(id,trangThai);
         return url;
     }

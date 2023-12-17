@@ -39,7 +39,7 @@ public class NhanVien {
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
-    @NotBlank(message = "Vui lòng không để trống thông tin.")
+    @Pattern(regexp = "^[\\p{L}\\s']+", message = "Họ và tên không đúng định dạng.")
     @Column(name = "hoTen")
     @Nationalized
     private String hoTen;
@@ -47,7 +47,6 @@ public class NhanVien {
     @Column(name = "gioiTinh")
     private Boolean gioiTinh;
 
-    @NotBlank(message = "Vui lòng không để trống thông tin.")
     @Pattern(regexp = "^(.+)@(\\S+)$", message = "Email không đúng định dạng.")
     @Column(name = "email", unique = true)
     private String email;
@@ -70,12 +69,11 @@ public class NhanVien {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ngaySua;
 
-    @NotBlank(message = "Vui lòng không để trống thông tin.")
     @Pattern(regexp = "^0\\d{9}$", message = "Số điện thoại không đúng định dạng.")
     @Column(name="sdt")
     private String sdt;
 
-    @NotBlank(message = "Vui lòng không để trống thông tin.")
+    @Pattern(regexp = "[\\p{L}0-9\\s,./-]+", message = "Địa chỉ không đúng định dạng.")
     @Column(name = "diaChi")
     @Nationalized
     private String diaChi;
@@ -88,7 +86,6 @@ public class NhanVien {
     @JoinColumn(name = "idChucVu")
     private ChucVu chucVu;
 
-    @NotBlank(message = "Vui lòng không để trống thông tin.")
     @Pattern(regexp = "\\d{12}$", message = "Số CCCD không đúng định dạng.")
     @Column(name="cccd")
     private String cccd;

@@ -2,6 +2,7 @@ package com.example.web.controller;
 
 import com.example.web.Config.BcryptedPasswordEncoderConfig;
 import com.example.web.model.ChucVu;
+import com.example.web.model.MauSac;
 import com.example.web.model.NhanVien;
 import com.example.web.response.NhanVienFilter;
 import com.example.web.response.SanPhamFilter;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Date;
 import java.util.Optional;
@@ -84,7 +86,7 @@ public class NhanVienController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid @ModelAttribute("nhanVien") NhanVien nhanVien, BindingResult result, Model model){
+    public String add(@Valid @ModelAttribute("nhanVien") NhanVien nhanVien, BindingResult result, Model model, RedirectAttributes attributes){
         char[] password = RandomUntil.randomFull();
         NhanVien checkEmail = nhanVienService.checkEmail(nhanVien.getEmail());
         NhanVien checkTaiKhoan = nhanVienService.checkTaiKhoan(nhanVien.getTaiKhoan());
@@ -126,11 +128,13 @@ public class NhanVienController {
                         + "Số điện thoại  :" + nhanVien.getSdt() + "\n\n"
                         + "Chúc bạn ngày đầu đi làm vui vẻ.");
         nhanVienService.add(nhanVien);
+        attributes.addFlashAttribute("success", "Thêm dữ liệu thành công");
         return "redirect:/admin/nhan-vien/hien-thi";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@Valid @ModelAttribute("nhanVien") NhanVien nhanVien, BindingResult result, @PathVariable String id, Model model){
+    public String update(@Valid @ModelAttribute("nhanVien") NhanVien nhanVien, BindingResult result,
+                         @PathVariable String id, Model model, RedirectAttributes attributes){
         NhanVien nv = nhanVienService.findById(UUID.fromString(id));
         if(result.hasErrors()){
             model.addAttribute("chucVu", new ChucVu());
@@ -143,6 +147,7 @@ public class NhanVienController {
             nhanVien.setNgaySua(date);
             nhanVien.setMatKhau(nv.getMatKhau());
             nhanVienService.update(UUID.fromString(id), nhanVien);
+            attributes.addFlashAttribute("success", "Sửa dữ liệu thành công");
             return "redirect:/admin/nhan-vien/hien-thi";
         }
     }
@@ -156,38 +161,48 @@ public class NhanVienController {
     }
 
     @PostMapping("/modal-add-chuc-vu")
-    public String addCV(@ModelAttribute("chucVu") ChucVu chucVu){
-        UUID uuid = UUID.randomUUID();
-        Date date = java.util.Calendar.getInstance().getTime();
-        chucVu.setId(uuid);
-        chucVu.setTrangThai(0);
-        chucVu.setNgayTao(date);
-        chucVuService.add(chucVu);
+    public String addCV(@Valid @ModelAttribute("chucVu") ChucVu chucVu, BindingResult result, RedirectAttributes attributes){
+        if(result.hasErrors()){
+            attributes.addFlashAttribute("listChucVu", chucVuService.getAll1());
+            attributes.addFlashAttribute("error", "Thêm dữ liệu thất bại");
+        }else{
+            UUID uuid = UUID.randomUUID();
+            Date date = java.util.Calendar.getInstance().getTime();
+            chucVu.setId(uuid);
+            chucVu.setTrangThai(0);
+            chucVu.setNgayTao(date);
+            chucVuService.add(chucVu);
+            attributes.addFlashAttribute("success", "Thêm dữ liệu thành công");
+        }
         return "redirect:/admin/nhan-vien/view-add";
     }
 
     @PostMapping("/modal-update-chuc-vu")
-    public String addChucVu(@ModelAttribute("chucVu") ChucVu chucVu, @RequestParam("id") String id){
-        NhanVien nv = nhanVienService.findById(UUID.fromString(id));
-        UUID uuid = UUID.randomUUID();
-        Date date = java.util.Calendar.getInstance().getTime();
-        chucVu.setId(uuid);
-        chucVu.setTrangThai(0);
-        chucVu.setNgayTao(date);
-        chucVuService.add(chucVu);
-        return "redirect:/admin/nhan-vien/view-update/" + nv.getId();
+    public String addChucVu(@Valid @ModelAttribute("chucVu") ChucVu chucVu, BindingResult result, RedirectAttributes attributes, @RequestParam("id") UUID id){
+
+        if(result.hasErrors()){
+            NhanVien nv = nhanVienService.findById(id);
+            attributes.addFlashAttribute("listChucVu", chucVuService.getAll1());
+            attributes.addFlashAttribute("error", "Sửa dữ liệu thất bại");
+            return "redirect:/admin/nhan-vien/view-update/" + nv.getId();
+        }else{
+            NhanVien nv = nhanVienService.findById(id);
+            UUID uuid = UUID.randomUUID();
+            Date date = java.util.Calendar.getInstance().getTime();
+            chucVu.setId(uuid);
+            chucVu.setTrangThai(0);
+            chucVu.setNgayTao(date);
+            chucVuService.add(chucVu);
+            attributes.addFlashAttribute("success", "Sửa dữ liệu thành công");
+            return "redirect:/admin/nhan-vien/view-update/" + nv.getId();
+        }
     }
 
-    @GetMapping("/stop/{id}")
-    public String stop(@PathVariable("id") UUID id){
-        NhanVien sp = nhanVienService.findById(id);
-        if (sp.getTrangThai()==0){
-            sp.setTrangThai(1);
-        }else {
-            sp.setTrangThai(0);
-        }
-        sp.setNgaySua(java.util.Calendar.getInstance().getTime());
-        nhanVienService.update(id, sp);
-        return "redirect:/admin/nhan-vien/hien-thi";
+    @GetMapping("/update-status/{id}")
+    public String page(@PathVariable("id") String id, RedirectAttributes redirectAttributes,
+                       @RequestParam(name = "trangThai")Integer trangThai ){
+        redirectAttributes.addFlashAttribute("success", "Cập nhật trạng thái thành công");
+        String url = nhanVienService.updateStatus(id,trangThai);
+        return url;
     }
 }

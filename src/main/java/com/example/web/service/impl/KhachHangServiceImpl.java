@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -125,5 +126,19 @@ public class KhachHangServiceImpl implements IKhachHangService {
     @Override
     public KhachHang findKhachHangByTaiKhoan(String taiKhoan) {
         return khachHangRepository.findKhachHangByTaiKhoan(taiKhoan);
+    }
+
+    @Override
+    public String updateStatus(String id, Integer trangThai) {
+        KhachHang khachHang = khachHangRepository.getReferenceById(UUID.fromString(id));
+        Date date = java.util.Calendar.getInstance().getTime();
+        if (trangThai==0){
+            khachHang.setTrangThai(1);
+        }else {
+            khachHang.setTrangThai(0);
+        }
+        khachHang.setNgaySua(date);
+        khachHangRepository.save(khachHang);
+        return "redirect:/admin/khach-hang/hien-thi";
     }
 }

@@ -19,6 +19,12 @@
     <!-- Or for RTL support -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
 
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
 </head>
 <body>
 <%--navbar--%>
@@ -45,33 +51,33 @@
                         <h5 class="card-title">Thông tin khách hàng</h5>
                         <br><br>
                         <%--@elvariable id="khachHang" type=""--%>
-                        <form:form action="/admin/khach-hang/update/${khachHang.id}" method="post" modelAttribute="khachHang">
+                        <form:form action="/admin/khach-hang/update/${khachHang.id}" method="post" modelAttribute="khachHang" id="yourForm">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <label for="taiKhoan" class="form-label ">Tên tài khoản</label>
+                                        <label for="taiKhoan" class="form-label ">Tên tài khoản <span style="color: red">(*)</span></label>
                                         <form:input type="text" class="form-control" path="taiKhoan" id="taiKhoan"/>
                                         <form:errors path="taiKhoan" cssStyle="color: red"/>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="hoTen" class="form-label ">Họ và tên</label>
+                                        <label for="hoTen" class="form-label ">Họ và tên <span style="color: red">(*)</span></label>
                                         <form:input type="text" class="form-control" path="hoTen" id="hoTen"/>
                                         <form:errors path="hoTen" cssStyle="color: red"/>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="diaChi" class="form-label">Địa chỉ</label>
+                                        <label for="diaChi" class="form-label">Địa chỉ <span style="color: red">(*)</span></label>
                                         <form:textarea style="height: 125px" type="text" class="form-control" path="diaChi" id="diaChi" />
                                         <form:errors path="diaChi" cssStyle="color: red"/>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <label for="email" class="form-label">Email</label>
+                                        <label for="email" class="form-label">Email <span style="color: red">(*)</span></label>
                                         <form:input type="text" class="form-control" path="email" id="email"/>
                                         <form:errors path="email" cssStyle="color: red"/>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="sdt" class="form-label">Số điện thoại</label>
+                                        <label for="sdt" class="form-label">Số điện thoại <span style="color: red">(*)</span></label>
                                         <form:input type="text" class="form-control" path="sdt" id="sdt"/>
                                         <form:errors path="sdt" cssStyle="color: red"/>
                                     </div>
@@ -114,9 +120,7 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <a class="btn btn-danger" title="xóa địa chỉ" style="color: whitesmoke" onclick="if(confirm('Bạn có muốn xóa thông tin địa chi này không.')==true){
-                                                                window.location.href='/admin/khach-hang/xoa-dia-chi/${diaChi.id}?idKH=${khachHang.id}';
-                                                                }else{return false}">
+                                                        <a class="btn btn-danger" title="xóa địa chỉ" style="color: whitesmoke" onclick="xoaDiaChi({id:`${diaChi.id}`,idKH:`${khachHang.id}`})">
                                                             Xóa
                                                         </a>
                                                     </td>
@@ -129,10 +133,8 @@
                             </div>
                             <br>
                             <div style="text-align: center">
-                                <button class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn sửa thông tin không?')){}
-                                        else{alert('Sửa thông tin thất bại!')} clearLocalStorage()">Xác nhận
+                                <button class="btn btn-primary" onclick="add(event)">Xác nhận
                                 </button>
-                                <a href="/admin/khach-hang/view-add" class="btn btn-warning" onclick="clearLocalStorage()">Làm Mới</a>
                             </div>
                         </form:form>
                     </div>
@@ -176,10 +178,69 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     function themDiaChi(data) {
-        var hoTen = document.getElementById("floatingHoTenNhan").value;
-        var sdt = document.getElementById("floatingSDTNhan").value;
-        var diaChi = document.getElementById("floatingDiaChiNhan").value;
-        window.location.href="/admin/khach-hang/them-dia-chi/"+data.idkh+"?hoTen="+hoTen+"&sdt="+sdt+"&diaChi="+diaChi;
+        Swal.fire({
+            title: "Bạn có muốn thêm không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                var hoTen = document.getElementById("floatingHoTenNhan").value;
+                var sdt = document.getElementById("floatingSDTNhan").value;
+                var diaChi = document.getElementById("floatingDiaChiNhan").value;
+                window.location.href="/admin/khach-hang/them-dia-chi/"+data.idkh+"?hoTen="+hoTen+"&sdt="+sdt+"&diaChi="+diaChi;
+            } else if (result.isDenied) {
+                return false;
+            }
+        });
+    }
+
+    function xoaDiaChi(data) {
+        Swal.fire({
+            title: "Bạn có muốn xóa địa chỉ không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                window.location.href="/admin/khach-hang/xoa-dia-chi/"+data.id+"?idKH="+data.idKH;
+            } else if (result.isDenied) {
+                return fasle;
+            }
+        });
+    }
+
+    function add(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+        Swal.fire({
+            title: "Bạn có muốn thêm không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                document.getElementById('yourForm').submit();
+            } else if (result.isDenied) {
+                return false;
+            }
+        });
+    }
+
+    if (${error != null}) {
+        Swal.fire({
+            title: "${error}",
+            icon: "error"
+        });
+    }
+
+    if (${success != null}) {
+        Swal.fire({
+            title: "${success}",
+            icon: "success"
+        });
     }
 </script>
 </body>

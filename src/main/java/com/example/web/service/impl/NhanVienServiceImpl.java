@@ -15,11 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -118,6 +114,20 @@ public class NhanVienServiceImpl implements INhanVienService  {
     @Override
     public String findEmailToPass(String taiKhoan) {
         return iNhanVienRepository.findEmailToPass(taiKhoan);
+    }
+
+    @Override
+    public String updateStatus(String id, Integer trangThai) {
+        NhanVien nhanVien = iNhanVienRepository.getReferenceById(UUID.fromString(id));
+        Date date = java.util.Calendar.getInstance().getTime();
+        if (trangThai==0){
+            nhanVien.setTrangThai(1);
+        }else {
+            nhanVien.setTrangThai(0);
+        }
+        nhanVien.setNgaySua(date);
+        iNhanVienRepository.save(nhanVien);
+        return "redirect:/admin/nhan-vien/hien-thi";
     }
 
     @Override

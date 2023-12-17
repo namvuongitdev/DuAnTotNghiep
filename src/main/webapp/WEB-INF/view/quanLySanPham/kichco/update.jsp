@@ -145,10 +145,9 @@
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                window.location.href="/admin/chat-lieu/update-status/"+data.id+"?trangThai="+data.trangThai;
-                Swal.fire("Cập nhật thành công", "", "success");
+                window.location.href="/admin/size/update-status/"+data.id+"?trangThai="+data.trangThai;
             } else if (result.isDenied) {
-                Swal.fire("Cập nhật thất bại!", "", "error");
+                return false;
             }
         });
     }

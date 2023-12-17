@@ -6,18 +6,19 @@
 <%--tìm kiếm--%>
 <div>
     <div class="row">
-        <div class="col-6">
-            <span>Tìm kiếm</span>
+        <span>Tìm kiếm</span>
+        <div class="col-5">
             <form action="" method="post">
                 <div class="input-group">
                     <input type="text" class="form-control" name="search" placeholder="Tìm kiếm" value="${filter.search}" aria-label="Tìm kiếm"/>
                 </div>
             </form>
         </div>
-    </div><br>
-    <div style="text-align: center">
-        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-        <a class="btn btn-warning" href="/admin/khach-hang/hien-thi">Làm mới</a>
+        <div class="col-7">
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            <a class="btn btn-warning" href="/admin/khach-hang/hien-thi">Làm mới</a>
+            <a class="btn btn-success" href="/admin/khach-hang/view-add">Tạo mới</a>
+        </div>
     </div>
     <br>
 </div><!-- End Bordered Tabs -->

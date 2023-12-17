@@ -85,6 +85,7 @@ public class SizeController {
     public String page(@PathVariable("id") String id, RedirectAttributes redirectAttributes,
                        @RequestParam(name = "trangThai")Integer trangThai ){
         redirectAttributes.addFlashAttribute("size", new Size());
+        redirectAttributes.addFlashAttribute("success", "Cập nhật trạng thái thành công");
         String url = sizeService.updateStatus(id,trangThai);
         return url;
     }

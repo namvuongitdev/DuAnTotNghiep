@@ -38,9 +38,9 @@ function get(nam) {
 
                     type: 'line',
                     data: {
-                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                        labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
                         datasets: [{
-                            label: "Earnings",
+                            label: "Doanh thu",
                             lineTension: 0.3,
                             backgroundColor: "rgba(78, 115, 223, 0.05)",
                             borderColor: "rgba(78, 115, 223, 1)",
@@ -110,7 +110,6 @@ function get(nam) {
                             xPadding: 15,
                             yPadding: 15,
                             displayColors: false,
-                            intersect: false,
                             mode: 'index',
                             caretPadding: 10,
                             callbacks: {

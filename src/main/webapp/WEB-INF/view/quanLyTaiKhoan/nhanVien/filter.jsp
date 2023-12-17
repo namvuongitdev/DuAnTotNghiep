@@ -44,7 +44,7 @@
             <div>
                 <button type="submit" class="btn btn-primary">Tìm kiếm</button>
                 <a class="btn btn-warning" href="/admin/nhan-vien/hien-thi">Làm mới</a>
-                <a class="btn btn-primary" href="/admin/nhan-vien/view-add">Tạo mới</a>
+                <a class="btn btn-success" href="/admin/nhan-vien/view-add">Tạo mới</a>
             </div>
         </div>
     </div>

@@ -109,7 +109,7 @@ public class KhachHangController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid @ModelAttribute("khachHang") KhachHang khachHang, BindingResult result, Model model){
+    public String add(@Valid @ModelAttribute("khachHang") KhachHang khachHang, BindingResult result, Model model, RedirectAttributes attributes){
         char[] password = RandomUntil.randomFull();
 
         if(result.hasErrors()){
@@ -139,13 +139,16 @@ public class KhachHangController {
                         + "Họ tên  : " + khachHang.getHoTen() + "\n"
                         + "Số điện thoại  :" + khachHang.getSdt() + "\n\n");
             khachHangService.add(khachHang);
+        attributes.addFlashAttribute("success", "Tạo dữ liệu thành công");
             return "redirect:/admin/khach-hang/hien-thi";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@Valid @ModelAttribute("khachHang") KhachHang khachHang, BindingResult result, @PathVariable String id, Model model){
+    public String update(@Valid @ModelAttribute("khachHang") KhachHang khachHang, BindingResult result, @PathVariable String id,
+                         Model model, RedirectAttributes attributes){
         KhachHang kh = khachHangService.findById(UUID.fromString(id));
         if(result.hasErrors()) {
+            model.addAttribute("lstdChi", diaChiService.getDiaChiByKhachHang_id(UUID.fromString(id)));
             return "quanLyTaiKhoan/khachHang/update";
         }
             Date date = java.util.Calendar.getInstance().getTime();
@@ -155,6 +158,7 @@ public class KhachHangController {
             khachHang.setNgayTao(kh.getNgayTao());
             khachHang.setNgaySua(date);
             khachHangService.update(khachHang);
+            attributes.addFlashAttribute("success", "Sửa dữ liệu thành công");
             return "redirect:/admin/khach-hang/hien-thi";
     }
 
@@ -167,39 +171,39 @@ public class KhachHangController {
     }
 
 
-    @GetMapping("/stop/{id}")
-    public String stop(@PathVariable("id") UUID id){
-        KhachHang kh = khachHangService.findById(id);
-        if (kh.getTrangThai()==0){
-            kh.setTrangThai(1);
-        }else {
-            kh.setTrangThai(0);
-        }
-
-        kh.setNgaySua(java.util.Calendar.getInstance().getTime());
-        khachHangService.update(kh);
-        return "redirect:/admin/khach-hang/hien-thi";
+    @GetMapping("/update-status/{id}")
+    public String page(@PathVariable("id") String id, RedirectAttributes redirectAttributes,
+                       @RequestParam(name = "trangThai")Integer trangThai ){
+        redirectAttributes.addFlashAttribute("success", "Cập nhật trạng thái thành công");
+        String url = khachHangService.updateStatus(id,trangThai);
+        return url;
     }
 
     @GetMapping("/them-dia-chi/{id}")
     public String newDiaChi(@RequestParam String hoTen, @PathVariable("id") String idKH,
-                            @RequestParam String sdt,
-                            @RequestParam("diaChi") String diaChiNhan) {
+                            @RequestParam String sdt,@Valid DiaChi diaChi, BindingResult result,
+                            @RequestParam("diaChi") String diaChiNhan, RedirectAttributes attributes) {
         KhachHang khachHang = khachHangService.getKhachHangById(idKH);
-        DiaChi diaChi = new DiaChi();
-        diaChi.setHoTen(hoTen);
-        diaChi.setDiaChi(diaChiNhan);
-        diaChi.setSdt(sdt);
-        diaChi.setHoTen(hoTen);
-        diaChi.setKhachHang(khachHang);
-        diaChi.setDiaChiMacDinh(false);
-        diaChiService.add(diaChi);
+        if(result.hasErrors()){
+            attributes.addFlashAttribute("error", "Thêm dữ liệu thất bại");
+        }else{
+            diaChi = new DiaChi();
+            diaChi.setHoTen(hoTen);
+            diaChi.setDiaChi(diaChiNhan);
+            diaChi.setSdt(sdt);
+            diaChi.setHoTen(hoTen);
+            diaChi.setKhachHang(khachHang);
+            diaChi.setDiaChiMacDinh(false);
+            diaChiService.add(diaChi);
+            attributes.addFlashAttribute("success", "Thêm dữ liệu thành công");
+        }
         return "redirect:/admin/khach-hang/view-update/"+khachHang.getId();
     }
     @GetMapping("/xoa-dia-chi/{id}")
     public String xoaDiaChi(@PathVariable("id") String id,
-                            @RequestParam String idKH) {
+                            @RequestParam String idKH, RedirectAttributes attributes) {
         diaChiService.delete(UUID.fromString(id));
+        attributes.addFlashAttribute("success", "Xóa dữ liệu thành công");
         return "redirect:/admin/khach-hang/view-update/"+idKH;
     }
 }

@@ -42,4 +42,6 @@ public interface IKhachHangService {
 
     KhachHang findKhachHangByTaiKhoan(String taiKhoan);
 
+    String updateStatus(String id,Integer trangThai);
+
 }
