@@ -167,13 +167,13 @@
             <c:forEach items="${danhMuc}" var="danhMuc">
                 <!-- Earnings (Monthly) Card Example -->
 
-                <div class="col-xl-3 col-md-6 mb-4">
+                <div class="col-xl-3 col-md-6 mb-4" style="cursor: pointer">
                     <div class="card border-left-primary shadow h-100 py-2">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="height: 30px">
-                                     <a onclick="danhMucFilter('${danhMuc.id}')" style="color: black"> ${danhMuc.ten} </a> </div>
+                                    <div onclick="danhMucFilter('${danhMuc.id}')" class="text-xs font-weight-bold text-primary text-uppercase mb-1" style="height: 30px">
+                                     <a style="color: black"> ${danhMuc.ten} </a> </div>
                                 </div>
                                 <div class="col-auto">
                                 </div>

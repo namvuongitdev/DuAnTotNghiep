@@ -227,7 +227,7 @@ public class HoDonController {
         HoaDon hd = hoaDonService.updateThongTinKhachHang(UUID.fromString(idHD), request);
         if (hd != null) {
             attributes.addFlashAttribute("success", "update thông tin khách hàng thành công");
-            lichSuHoaDonService.add(HoaDonStatus.CHINH_SUA, hd.getId(),"Chỉ sửa thông tin khách hàng." +request.getGhiChu());
+            lichSuHoaDonService.add(HoaDonStatus.CHINH_SUA, hd.getId(),"Chỉnh sửa thông tin khách hàng." +request.getGhiChu());
         } else {
             attributes.addFlashAttribute("error", "không tìm thấy hoá đơn");
         }

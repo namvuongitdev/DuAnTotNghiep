@@ -18,7 +18,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     <!-- Or for RTL support -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
-
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
 </head>
 <body>
 <%--navbar--%>
@@ -160,7 +165,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                                     <button type="submit" onclick="themDiaChi({idkh:`${khachHang.id}`})" class="btn btn-primary">Xác nhận</button>
                                 </div>
                         </div>
@@ -179,7 +184,20 @@
         var hoTen = document.getElementById("floatingHoTenNhan").value;
         var sdt = document.getElementById("floatingSDTNhan").value;
         var diaChi = document.getElementById("floatingDiaChiNhan").value;
-        window.location.href="/admin/khach-hang/them-dia-chi/"+data.idkh+"?hoTen="+hoTen+"&sdt="+sdt+"&diaChi="+diaChi;
+        var regexSdt = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
+        if (hoTen==""||sdt==""||diaChi==""){
+            Swal.fire({
+                    title: "Lỗi!",
+                    icon: "error"
+                });
+        }else if (!regexSdt.test(sdt)){
+            Swal.fire({
+                title: "Sai định dạng số điện thoại!",
+                icon: "error"
+            });
+        }else {
+            window.location.href="/admin/khach-hang/them-dia-chi/"+data.idkh+"?hoTen="+hoTen+"&sdt="+sdt+"&diaChi="+diaChi;
+        }
     }
 </script>
 </body>

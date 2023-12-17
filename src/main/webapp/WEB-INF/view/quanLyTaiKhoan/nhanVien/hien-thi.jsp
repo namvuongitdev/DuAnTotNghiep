@@ -88,7 +88,7 @@
                                                 <button type="button" class="btn btn-success" title="Sửa dữ liệu" onclick="myFunction()">
                                                     <a class="text-white" style="text-decoration: none" href="/admin/nhan-vien/view-update/${nv.id}"><i class="bi bi-pencil"></i></a>
                                                 </button>
-                                                <button type="button" class="${nhanVien.trangThai==0?'btn btn-danger':'btn btn-success'}" title="${nhanVien.trangThai==0?'Dừng làm việc':'Làm việc'}" onclick="if(confirm('Bạn có chắc chắn đổi trạng thái làm việc không?')){window.location.href = '/admin/nhan-vien/stop/${nv.id}';}
+                                                <button type="button" class="${nhanVien.trangThai==0?'btn btn-success':'btn btn-danger'}" title="${nhanVien.trangThai==0?'Làm việc':'Dừng làm việc'}" onclick="if(confirm('Bạn có chắc chắn đổi trạng thái làm việc không?')){window.location.href = '/admin/nhan-vien/stop/${nv.id}';}
                                                         else{alert('Đổi trạng thái làm việc thất bại!')}"><i class="bi bi-sign-stop"></i>
                                                 </button>
 

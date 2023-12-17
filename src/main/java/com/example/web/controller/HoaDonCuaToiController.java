@@ -2,8 +2,11 @@ package com.example.web.controller;
 
 import com.example.web.model.HoaDon;
 import com.example.web.model.HoaDonChiTiet;
+import com.example.web.model.KhachHang;
+import com.example.web.service.IGioHangOnllineService;
 import com.example.web.service.IHoaDonChiTietService;
 import com.example.web.service.IHoaDonService;
+import com.example.web.service.IKhachHangService;
 import com.example.web.service.ILichSuHoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -32,11 +35,21 @@ public class HoaDonCuaToiController {
     @Autowired
     private IHoaDonChiTietService hoaDonChiTietService;
 
+    @Autowired
+    private IGioHangOnllineService iGioHangOnllineService;
+
+    @Autowired
+    private IKhachHangService iKhachHangService;
+
+    private KhachHang khachHang;
+
 
     @GetMapping("/donHangAll")
     public String donHangAll(Principal principal, Model model, @RequestParam(defaultValue = "1") Integer page){
+        khachHang = iKhachHangService.findByEmailOrAndTaiKhoan(principal.getName());
         Sort sort = Sort.by("ngayTao").descending();
         Pageable pageable = PageRequest.of(page - 1, 10, sort);
+        model.addAttribute("count", iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
         model.addAttribute("listHd", hoaDonService.findHoaDonByTaiKhoan(principal.getName(), pageable));
         model.addAttribute("url", "/cuaToi/donHangAll?page=");
         return "donHangOnline/danhSach/donHangAll";
@@ -46,6 +59,7 @@ public class HoaDonCuaToiController {
     public String donHangChoXacNhan(Principal principal, Model model, @RequestParam(defaultValue = "1") Integer page){
         Sort sort = Sort.by("ngayTao").descending();
         Pageable pageable = PageRequest.of(page - 1, 10, sort);
+        model.addAttribute("count", iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
         model.addAttribute("listHd", hoaDonService.findHoaDonByTrangThai(principal.getName(), 1, pageable));
         model.addAttribute("url", "/cuaToi/donHangChoXacNhan?page=");
         return "donHangOnline/danhSach/donHangChoXacNhan";
@@ -54,6 +68,7 @@ public class HoaDonCuaToiController {
     @GetMapping("/donHangChoGiaoHang")
     public String donHangChoGiaoHang(Principal principal, Model model, @RequestParam(defaultValue = "1") Integer page){
         Sort sort = Sort.by("ngayTao").descending();
+        model.addAttribute("count", iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
         Pageable pageable = PageRequest.of(page - 1, 10, sort);
         model.addAttribute("listHd", hoaDonService.findHoaDonByTrangThai(principal.getName(), 2, pageable));
         model.addAttribute("url", "/cuaToi/donHangChoGiaoHang?page=");
@@ -64,6 +79,7 @@ public class HoaDonCuaToiController {
     public String donHangDangGiao(Principal principal, Model model, @RequestParam(defaultValue = "1") Integer page){
         Sort sort = Sort.by("ngayTao").descending();
         Pageable pageable = PageRequest.of(page - 1, 10, sort);
+        model.addAttribute("count", iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
         model.addAttribute("listHd", hoaDonService.findHoaDonByTrangThai(principal.getName(), 3, pageable));
         model.addAttribute("url", "/cuaToi/donHangDangGiao?page=");
         return "donHangOnline/danhSach/donHangDangGiao";
@@ -73,6 +89,7 @@ public class HoaDonCuaToiController {
     public String donHangDaNhan(Principal principal, Model model, @RequestParam(defaultValue = "1") Integer page){
         Sort sort = Sort.by("ngayTao").descending();
         Pageable pageable = PageRequest.of(page - 1, 10, sort);
+        model.addAttribute("count", iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
         model.addAttribute("listHd", hoaDonService.findHoaDonByTrangThai(principal.getName(), 6, pageable));
         model.addAttribute("url", "/cuaToi/donHangDaNhan?page=");
         return "donHangOnline/danhSach/donHangDaNhan";
@@ -82,6 +99,7 @@ public class HoaDonCuaToiController {
     public String donHangDaHuy(Principal principal, Model model, @RequestParam(defaultValue = "1") Integer page){
         Sort sort = Sort.by("ngayTao").descending();
         Pageable pageable = PageRequest.of(page - 1, 10, sort);
+        model.addAttribute("count", iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
         model.addAttribute("listHd", hoaDonService.findHoaDonByTrangThai(principal.getName(), 5, pageable));
         model.addAttribute("url", "/cuaToi/donHangDaHuy?page=");
         return "donHangOnline/danhSach/donHangDaHuy";
@@ -91,6 +109,7 @@ public class HoaDonCuaToiController {
     public String donHangDaThanhToan(Principal principal, Model model, @RequestParam(defaultValue = "1") Integer page){
         Sort sort = Sort.by("ngayTao").descending();
         Pageable pageable = PageRequest.of(page - 1, 10, sort);
+        model.addAttribute("count", iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
         model.addAttribute("listHd", hoaDonService.findHoaDonByTrangThai(principal.getName(), 4, pageable));
         model.addAttribute("url", "/cuaToi/donHangDaThanhToan?page=");
         return "donHangOnline/danhSach/donHangDaThanhToan";
@@ -98,6 +117,7 @@ public class HoaDonCuaToiController {
 
     @GetMapping("/chiTietDonHang/{idHD}")
     public String chiTietDonHang(@PathVariable UUID idHD, Model model){
+        model.addAttribute("count", iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
         List<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietService.getAllByIdHoaDon(idHD);
         model.addAttribute("listHDCT", hoaDonChiTiet);
         model.addAttribute("hd", hoaDonService.getOne(String.valueOf(idHD)));
