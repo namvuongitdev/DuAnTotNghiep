@@ -60,8 +60,6 @@ public interface IHoaDonService {
 
     Integer tongDoanhThu();
 
-    Page<Object[]> getAllHoaDonHoanTien(Integer page);
-
     Double getDoanhThuTrongNgay();
 
     Integer tongHoaDon();

@@ -23,9 +23,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -164,6 +161,11 @@ public class HoDonController {
     private String xacNhanThanhToan(@RequestParam String idHD, @RequestParam String idKhachHang, @Valid @ModelAttribute("request") HoaDonRequest hoaDonRequest, BindingResult result, RedirectAttributes attributes) {
         HoaDon hoaDon = hoaDonService.getOne(idHD);
         if (hoaDon.getLoaiHoaDon() == LoaiHoaDon.GIAO_HANG) {
+            if(hoaDon.getHoaDonChiTiets().isEmpty()){
+                attributes.addFlashAttribute("error" , "giỏ hàng đang trống");
+                attributes.addFlashAttribute("datHang", hoaDonRequest);
+                return "redirect:/admin/hoa-don/detail?idHD=" + hoaDon.getId() + "&idKhachHang=" + idKhachHang;
+            }
             if (result.hasErrors()) {
                 for (FieldError fieldError : result.getFieldErrors()) {
                     attributes.addFlashAttribute(fieldError.getField(), fieldError.getDefaultMessage());
@@ -184,6 +186,7 @@ public class HoDonController {
     public String hienThi(Model model, @RequestParam(defaultValue = "1") Integer page) {
         Page<HoaDon> hoaDons = hoaDonService.getAllHoaDonByTrangThaiKhachHoaDonCho(page);
         model.addAttribute("hoaDons", hoaDons);
+        model.addAttribute("soLuongHoanTra", 0);
         model.addAttribute("hoaDonFillter", new HoaDonFilter());
         model.addAttribute("url", request.getRequestURI() + "?page=");
         return "quanLyHoaDon/hoaDonOnline/hoa-don-tai-quay";
@@ -227,7 +230,7 @@ public class HoDonController {
         HoaDon hd = hoaDonService.updateThongTinKhachHang(UUID.fromString(idHD), request);
         if (hd != null) {
             attributes.addFlashAttribute("success", "update thông tin khách hàng thành công");
-            lichSuHoaDonService.add(HoaDonStatus.CHINH_SUA, hd.getId(),"Chỉ sửa thông tin khách hàng." +request.getGhiChu());
+            lichSuHoaDonService.add(HoaDonStatus.CHINH_SUA, hd.getId(),"Chỉnh sửa thông tin khách hàng." +request.getGhiChu());
         } else {
             attributes.addFlashAttribute("error", "không tìm thấy hoá đơn");
         }
@@ -245,12 +248,6 @@ public class HoDonController {
             attributes.addFlashAttribute("error", "không tìm thấy hoá đơn");
         }
          return "redirect:/admin/hoa-don/chi-tiet-hoa-dons/" + idHD;
-    }
-
-    @GetMapping("/admin/hoa-don/hoan-tien")
-    public String findHoaDonHoanTien(@RequestParam(defaultValue = "1") Integer page){
-         Page<Object[]> listHoaDonHoanHien = hoaDonService.getAllHoaDonHoanTien(page);
-         return "";
     }
 
 }

@@ -13,8 +13,6 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../../../../css/banHangTaiQuay/hoaDon/chiTietHoaDon.css">
-    <link rel="stylesheet" href="../../../../css/ban-hang-tai-quay.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="
               https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
@@ -27,17 +25,43 @@
             font-weight: 600;
             padding-left: 5px;
         }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
         }
 
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-            font-weight: 600;
+        /* Modal Content */
+        .modal-content-1 {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -80,7 +104,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-top: 10px">
                     <div class="card">
                         <div style="margin-top: 15px">
                             <h4>Thông tin hoá đơn</h4>
@@ -93,7 +117,7 @@
                 </div>
                 <%-- end thông tin hoá đơn--%>
                 <%--thông tin sản phẩm--%>
-                <div class="row">
+                <div class="row" style="margin-top: 10px">
                     <div class="card">
                         <div class="card-body row">
                             <jsp:include page="san-pham.jsp"></jsp:include>
@@ -132,23 +156,38 @@
 
 <%--   javasctipt--%>
 <script>
+    const message = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+</script>
+<script>
     const VND = new Intl.NumberFormat('vi-VN', {
         style: 'currency',
         currency: 'VND',
     });
     const modalHienThiSanPham = document.getElementById("modalHienThiSanPham");
     window.onclick = function (event) {
-        if (event.target == modalHienThiSanPham) {
+        if (event.target === modalHienThiSanPham) {
             modalHienThiSanPham.style.display = "none";
         }
     }
 </script>
-
+<%-- start khi hoá đơn loại hoá đơn online or giao hang mới được update thông tin khách hàng--%>
 <c:if test="${hoaDon.loaiHoaDon == 2 || hoaDon.loaiHoaDon == 1}">
     <script src="/js/quanLyHoaDon/modal-update-thong-tin-khach-hang.js"></script>
 </c:if>
-
+<%-- end khi hoá đơn loại hoá đơn online or giao hang mới được update thông tin khách hàng--%>
 <script src="/js/quanLyHoaDon/modal-lich-su-hoa-don.js"></script>
+
+<%-- start khi hoá đơn trạng thái chờ xác nhận, đã xác nhận hoàn thành có thể trả hàng--%>
 <c:if test="${hoaDon.trangThai == 1 || hoaDon.trangThai == 2}">
     <script>
         let modal = document.getElementById("myModal");
@@ -177,22 +216,24 @@
     <script src="/js/quanLyHoaDon/modal-xoa-san-pham.js"></script>
     <script src="/js/quanLyHoaDon/modal-update-so-luong.js"></script>
 </c:if>
+<%-- end khi hoá đơn trạng thái chờ xác nhận, đã xác nhận hoàn thành có thể trả hàng--%>
 <script src="/js/quanLyHoaDon/modal-xac-nhan-hoa-don.js"></script>
+
+<%-- start khi hoá đơn trạng thái hoàn thành có thể trả hàng--%>
 <c:if test="${hoaDon.trangThai == 4}">
     <script src="/js/quanLyHoaDon/modal-tra-hang.js"></script>
 </c:if>
+<%--end khi hoá đơn trạng thái hoàn thành có thể trả hàng--%>
 <script src="/js/quanLyHoaDon/inHoaDon.js"></script>
 <script>
     if (${error != null}) {
-        Swal.fire({
-            title: "lỗi!",
+        message.fire({
             text: "${error}",
             icon: "error"
         });
     }
     if (${success != null}) {
-        Swal.fire({
-            title: "thành công!",
+        message.fire({
             text: "${success}",
             icon: "success"
         });

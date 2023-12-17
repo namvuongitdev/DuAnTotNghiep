@@ -69,6 +69,15 @@
     <div>
         <span>Ghí chú : ${hoaDon.moTa == "" ? "không có ghi chú phía khách hàng" : hoaDon.moTa}</span>
     </div>
+    <br>
+    <c:if test="${hoaDon.soLuongSanPhamHoanTra() != 0 && hoaDon.loaiHoaDon == 0}">
+        <div>
+            <span>Hoàn trả :</span>
+            <button class="btn btn-danger rounded-pill">${hoaDon.soLuongSanPhamHoanTra()}
+                sản phẩm
+            </button>
+        </div>
+    </c:if>
 </div>
 
 

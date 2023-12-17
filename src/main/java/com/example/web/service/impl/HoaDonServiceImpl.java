@@ -22,6 +22,8 @@ import com.example.web.service.ILichSuHoaDonService;
 import com.example.web.service.InHoaDonService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.SneakyThrows;
@@ -36,6 +38,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -166,7 +169,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                         hd.setTongTien(tongTienHoaDon);
                         hd.setNgayNhanHang(date);
                         if (request.getHinhThucThanhToan() == PhuongThucThanhToanStatus.CHUYEN_KHOAN) {
-                            if(request.getMaGiaoDich().isEmpty() || request.getMaGiaoDich() == null){
+                            if (request.getMaGiaoDich().isEmpty() || request.getMaGiaoDich() == null) {
                                 attributes.addFlashAttribute("error", "chưa nhập mã giao dịch");
                                 return "redirect:/admin/hoa-don/detail?idHD=" + hd.getId() + "&idKhachHang=" + request.getIdKhachHang();
                             }
@@ -182,10 +185,9 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 }
                 HoaDon response = hoaDonRepository.save(hd);
                 // lịch sử
-                lichSuHoaDonService.add(response.getLoaiHoaDon() == LoaiHoaDon.GIAO_HANG ? HoaDonStatus.DA_TIEP_NHAN : HoaDonStatus.DA_THANH_TOAN , response.getId(), "nhân viên tạo hoá đơn cho khách");
+                lichSuHoaDonService.add(response.getLoaiHoaDon() == LoaiHoaDon.GIAO_HANG ? HoaDonStatus.DA_TIEP_NHAN : HoaDonStatus.DA_THANH_TOAN, response.getId(), "nhân viên tạo hoá đơn cho khách");
                 attributes.addFlashAttribute("success", "Hoá đơn " + response.getMa() + " tạo thành công");
-                // in hoá đơn ra file pdf
-                inHoaDonService.generatePdf(response.getId());
+                attributes.addFlashAttribute("idHD", response.getId());
                 return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
             } else {
                 return null;
@@ -243,6 +245,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
             @Override
             public Predicate toPredicate(Root<HoaDon> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<>();
+                Join<HoaDonChiTiet, HoaDon> join = root.join("hoaDonChiTiets", JoinType.LEFT);
                 if (!filter.getSearch().isBlank()) {
                     predicates.add(criteriaBuilder.or(criteriaBuilder.like(root.get("ma"), "%" + filter.getSearch() + "%"),
                             criteriaBuilder.like(root.get("sdt"), "%" + filter.getSearch() + "%"),
@@ -255,11 +258,16 @@ public class HoaDonServiceImpl implements IHoaDonService {
                     predicates.add(criteriaBuilder.and(criteriaBuilder.between(root.get("ngayTao"), ngayBatDau, ngayKetThuc)));
                 }
                 if (filter.getLoaiHoaDon() != null) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("loaiHoaDon"),filter.getLoaiHoaDon())));
+                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("loaiHoaDon"), filter.getLoaiHoaDon())));
                 }
                 if (filter.getTrangThai() != null && filter.getTrangThai() != 0) {
-                    predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai"), filter.getTrangThai())));
+                    if (filter.getTrangThai() == HoaDonChiTietStatus.TRA_HANG) {
+                        predicates.add(criteriaBuilder.and(criteriaBuilder.equal(join.get("trangThai"), filter.getTrangThai())));
+                    } else {
+                        predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("trangThai"), filter.getTrangThai())));
+                    }
                 }
+
                 predicates.add(criteriaBuilder.and(criteriaBuilder.notEqual(root.get("trangThai"), HoaDonStatus.HOA_DON_CHO), criteriaBuilder.notEqual(root.get("trangThai"), HoaDonStatus.HUY_HOA_DON_CHO)));
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
@@ -385,11 +393,10 @@ public class HoaDonServiceImpl implements IHoaDonService {
         return hoaDonRepository.tongDoanhThu();
     }
 
-    @Override
-    public Page<Object[]> getAllHoaDonHoanTien(Integer page) {
-        Pageable pageable = PageRequest.of(page - 1, 10);
-        return hoaDonRepository.findHoaDonHoanTien(pageable);
-    }
+//    @Override
+//    public Integer getAllHoaDonHoanTien(UUID idHD) {
+//        return hoaDonRepository.findHoaDonHoanTien(idHD);
+//    }
 
     @Override
     public Double getDoanhThuTrongNgay() {
@@ -402,8 +409,8 @@ public class HoaDonServiceImpl implements IHoaDonService {
     }
 
     @Override
-    public Double getDoanhThuTheoThang(Integer thang ,Integer nam) {
-        return hoaDonRepository.getDoanhThuTheoThang(thang , nam);
+    public Double getDoanhThuTheoThang(Integer thang, Integer nam) {
+        return hoaDonRepository.getDoanhThuTheoThang(thang, nam);
     }
 
     @Override

@@ -17,4 +17,5 @@ public class UpdateChiTietSanPham {
     private UUID idSP;
     private String idMS;
     private String idKC;
+    private Integer soLuong;
 }

@@ -31,6 +31,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
           rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
           crossorigin="anonymous">
+
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
     <style>
         .pd-wrap {
             padding-top: 40px;
@@ -420,16 +427,6 @@
                     </a>
                 </div>
             </div>
-            <c:choose>
-                <c:when test="${error != null}">
-                    <jsp:include page="../notiface/error.jsp"></jsp:include>
-                </c:when>
-                <c:otherwise>
-                    <c:if test="${success != null}">
-                        <jsp:include page="../notiface/success.jsp"></jsp:include>
-                    </c:if>
-                </c:otherwise>
-            </c:choose>
         </div>
         <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>
@@ -576,19 +573,9 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="description" role="tabpanel"
                          aria-labelledby="description-tab">
-                        <li>Miễn phí đổi hàng cho khách mua ở Shop trong trường hợp bị lỗi từ nhà sản xuất, giao nhầm
-                            hàng,
-                            nhầm size.
+                        <li>Sports Clothing không hỗ trợ đổi trả lại hàng với những đơn hàng online và giao hàng.
                         </li>
-                        <li>Quay video mở sản phẩm khi nhận hàng, nếu không có video unbox, khi phát hiện lỗi phải báo
-                            ngay
-                            cho Shop trong 1 ngày tính từ ngày giao hàng thành công. Qua 1 ngày chúng mình không giải
-                            quyết
-                            khi không có video unbox.
-                        </li>
-                        <li>Sản phẩm đổi trong thời gian 3 ngày kể từ ngày nhận hàng.</li>
-                        <li>Sản phẩm còn mới nguyên tem, tags, sản phẩm chưa giặt và không dơ bẩn, hư hỏng bởi những tác
-                            nhân bên ngoài cửa hàng sau khi mua hàng.
+                        <li>Sports Clothing chỉ hỗ trợ trả lại với những đơn hàng tại quầy , trong vòng 1 ngày kể từ ngày nhận hàng
                         </li>
                     </div>
                     <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
@@ -647,6 +634,31 @@
     <script src="/js/mixitup.min.js"></script>
     <script src="/js/owl.carousel.min.js"></script>
     <script src="/js/main.js"></script>
+    <script>
+        const message = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        if (${error != null}) {
+            message.fire({
+                text: "${error}",
+                icon: "error"
+            });
+        }
+        if (${success != null}) {
+            message.fire({
+                text: "${success}",
+                icon: "success"
+            });
+        }
+    </script>
     <script>
         let mauSacSP = undefined;
         let kichCoSP = undefined;
@@ -715,20 +727,6 @@
             }
 
         }
-
-        // async function themVaoGiohang(sanPham) {
-        //     if (mauSacSP == null || kichCoSP == null) {
-        //         alert("chưa lựa chọn thuộc tính sản phẩm");
-        //     } else if (quantity.value <= 0) {
-        //         alert("Số lượng không hợp lệ.");
-        //     } else {
-        //         const options = {
-        //             method: 'POST',
-        //             headers: {'Content-Type': 'application/json'},
-        //         }
-        //
-        //     }
-        // }
 
         $(document).ready(function () {
             var slider = $("#slider");

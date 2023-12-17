@@ -30,6 +30,10 @@
             <label class="btn btn-outline-secondary" for="daHoanThanh" ${fillter.trangThai == '4'? 'style="background: #95999c ; color: white"':''}><b>Đã hoàn thành</b></label>
             <input type="submit" name="trangThai" value="4" id="daHoanThanh" class="btn-check">
         </div>
+        <div>
+            <label class="btn btn-outline-secondary" for="hoanTra" ${fillter.trangThai == '2'? 'style="background: #95999c ; color: white"':''}><b>Hoàn trả</b></label>
+            <input type="submit" name="trangThai" value="2" id="hoanTra" class="btn-check">
+        </div>
     </div>
 </nav>
 

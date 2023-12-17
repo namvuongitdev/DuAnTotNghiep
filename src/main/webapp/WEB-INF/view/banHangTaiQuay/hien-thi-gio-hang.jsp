@@ -5,7 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div class="card">
     <div class="card-body row">
-        <table>
+        <table class="table">
             <thead>
             <tr>
                 <th scope="col">Sản phẩm</th>

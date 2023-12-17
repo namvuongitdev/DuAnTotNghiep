@@ -15,7 +15,7 @@ close_modalXacNhanHoaDon.onclick = function () {
 let modalXacNhanHuyHoaDon = document.getElementById("modalXacNhanHuyHoaDon");
 let close_modalXacNhanHuyHoaDon = document.getElementById("close_modalXacNhanHuyHoaDon");
 let xacNhanHuyHoaDon = document.getElementById("xacNhanHuyHoaDon");
-if(xacNhanHuyHoaDon != null){
+if (xacNhanHuyHoaDon != null) {
     xacNhanHuyHoaDon.onclick = function () {
         modalXacNhanHuyHoaDon.style.display = "block"
     }
@@ -23,4 +23,17 @@ if(xacNhanHuyHoaDon != null){
 }
 close_modalXacNhanHuyHoaDon.onclick = function () {
     modalXacNhanHuyHoaDon.style.display = "none";
+}
+
+function xacDonHang() {
+    const ghiChuXacNhan = document.getElementsByName("ghiChuXacNhan")[0].value;
+    if(ghiChuXacNhan.trim() === ""){
+        message.fire({
+            text: "ghi chú không được để trống",
+            icon: "error"
+        });
+        return false;
+    }else{
+        return true;
+    }
 }

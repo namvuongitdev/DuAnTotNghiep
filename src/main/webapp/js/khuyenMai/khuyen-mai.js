@@ -3,7 +3,17 @@ const VND = new Intl.NumberFormat('vi-VN', {
     currency: 'VND',
 });
 let modalSanPham = document.getElementById("modalSanPham");
-
+const message = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+    }
+});
 let data = {
     search: "",
     danhMuc: "",
@@ -35,11 +45,9 @@ function getSanPham(page) {
             let phanTrang = "";
             let khuyenMai = null;
             for (let i = 0; i < data.content.length; i++) {
-
-
                 if (data.content[i].sanPhamKhuyenMais.length > 0) {
                     data.content[i].sanPhamKhuyenMais.map(function (e) {
-                        if (e.khuyenMai.trangThai === 1 && e.trangThai === 1) {
+                        if (e.khuyenMai.trangThai === 1 || e.khuyenMai.trangThai === 2  && e.trangThai === 1) {
                             khuyenMai = e;
                         } else {
                             khuyenMai = null;
@@ -68,7 +76,8 @@ function getSanPham(page) {
                     `<td>
                       <button type="button" class="btn btn-primary" onclick="modalThemSanPhamKhuyenMai('${data.content[i].id}' ,
                     '${data.content[i].ma}',
-                     '${data.content[i].ten}'
+                     '${data.content[i].ten}',
+                     '${data.content[i].giaBan}'
                      )">
                      <i class="bi bi-plus-circle"></i>
                      </button>
@@ -112,7 +121,7 @@ function api(page, data) {
 
                 if (data.content[i].sanPhamKhuyenMais.length > 0) {
                     data.content[i].sanPhamKhuyenMais.map(function (e) {
-                        if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
+                        if (e.khuyenMai.trangThai === 1 || e.khuyenMai.trangThai === 2 && e.trangThai === 1) {
                             khuyenMai = e;
                         } else {
                             khuyenMai = null;
@@ -140,7 +149,8 @@ function api(page, data) {
                     `<td>
                       <button type="button" class="btn btn-primary" onclick="modalThemSanPhamKhuyenMai('${data.content[i].id}' ,
                     '${data.content[i].ma}',
-                     '${data.content[i].ten}'
+                     '${data.content[i].ten}',
+                     '${data.content[i].giaBan}'
                      )">
                      <i class="bi bi-plus-circle"></i>
                      </button>

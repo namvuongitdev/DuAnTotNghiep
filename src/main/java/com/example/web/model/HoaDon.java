@@ -123,4 +123,13 @@ public class HoaDon {
         }
         return BigDecimal.valueOf(tongTien);
     }
+    public Integer soLuongSanPhamHoanTra(){
+        Integer soLuong = 0;
+        for(HoaDonChiTiet hoaDonChiTiet : this.hoaDonChiTiets){
+            if(hoaDonChiTiet.getTrangThai() == HoaDonChiTietStatus.TRA_HANG){
+                soLuong += hoaDonChiTiet.getSoLuong();
+            }
+        }
+        return soLuong;
+    }
 }

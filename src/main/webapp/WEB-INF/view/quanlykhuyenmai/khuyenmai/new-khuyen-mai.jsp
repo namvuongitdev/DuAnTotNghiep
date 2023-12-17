@@ -83,7 +83,8 @@
         </div>
         <div class="card">
             <div class="card-body row">
-                <form:form class="row" action="${url}" method="post" modelAttribute="khuyenMaiRequest" id="formKhuyenMai" onsubmit="return false">
+                <form:form class="row" action="${url}" method="post" modelAttribute="khuyenMaiRequest"
+                           id="formKhuyenMai" onsubmit="return false">
                     <div class="col-sm-3">
                     </div>
                     <div class="col-sm-6">
@@ -124,7 +125,8 @@
                         </div>
                         <div class="row">
                             <div>
-                                <button class="btn btn-primary" onclick="confirmKhuyenMai(event , `${dataKhuyenMai.ma != null ? 'update' : 'Thêm'}`)">${dataKhuyenMai.ma != null ? "Cập nhập" : "Thêm"}</button>
+                                <button class="btn btn-primary"
+                                        onclick="confirmKhuyenMai(event , `${dataKhuyenMai.ma != null ? 'update' : 'Thêm'}`)">${dataKhuyenMai.ma != null ? "Cập nhập" : "Thêm"}</button>
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -152,7 +154,7 @@
         function confirmKhuyenMai(event, message) {
             event.preventDefault(); // Prevent the default form submission behavior
             Swal.fire({
-                title: "Bạn có muốn "+ message +" không?",
+                title: "Bạn có muốn " + message + " không?",
                 showDenyButton: true,
                 confirmButtonText: "Có",
                 denyButtonText: `Không`
@@ -167,16 +169,14 @@
         }
 
         if (${error != null}) {
-            Swal.fire({
-                title: "lỗi!",
+            message.fire({
                 text: "${error}",
                 icon: "error"
             });
         }
 
         if (${success != null}) {
-            Swal.fire({
-                title: "thành công!",
+            message.fire({
                 text: "${success}",
                 icon: "success"
             });

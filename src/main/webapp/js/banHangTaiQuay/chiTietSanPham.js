@@ -4,6 +4,17 @@ let kichCo;
 let mauSac;
 let sanPham;
 let dataCTSP;
+const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+    }
+});
 
 function getModal(dataSanPham) {
     sanPham = dataSanPham.idSanPham;
@@ -115,21 +126,36 @@ function getCTSP(id) {
         }
     }
 }
-
 async function themSanPhamVaoGioHang(data) {
     let soLuong = document.getElementById("soLuongTon").value;
     let idHD = document.getElementById("soLuongTon").name;
     if (data.idCTSP === "") {
-        alert("lựa chon các thuộc tính sản phẩm")
+        Toast.fire({
+            icon: "error",
+            title: "bạn chưa lựa chọn thuộc tính"
+        });
+        return;
+    } else if(soLuong.trim() === ""){
+        Toast.fire({
+            icon: "error",
+            title: "số lượng không được bỏ trống"
+        });
+        return;
     } else {
         for (let i = 0; i < dataCTSP.length; i++) {
             if (data.idCTSP === dataCTSP[i].id) {
                 if(soLuong <= 0){
-                    alert("số lượng không thoả mãn");
+                    Toast.fire({
+                        icon: "error",
+                        title: "số lượng sản phẩm không thoả mãn"
+                    });
                     return;
                 }
                 if (soLuong > dataCTSP[i].soLuong) {
-                    alert("số lượng sản phẩm không đủ");
+                    Toast.fire({
+                        icon: "error",
+                        title: "số lượng sản phẩm không đủ"
+                    });
                     return;
                 }
             }

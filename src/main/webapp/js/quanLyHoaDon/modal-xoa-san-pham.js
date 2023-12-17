@@ -1,6 +1,5 @@
 let modalXoaSanPham = document.getElementById("modalXoaSanPham");
 let close_modalXoaSanPham = document.getElementById("close_modalXoaSanPham");
-
 async function xoaSanPham(idHDCT) {
     modalXoaSanPham.style.display = "block";
     const api = await fetch(`/admin/hoa-don/chi-tiet-hoa-don/${idHDCT}`)
@@ -30,7 +29,7 @@ async function xoaSanPham(idHDCT) {
             <textarea name="ghiChu" class="form-control" id="ghiChuKhiXoa"></textarea>
         </div>
         <div>
-            <button class="btn btn-danger">Xác nhận</button>
+            <button class="btn btn-danger" onclick="return validateHuySanPham()">Xác nhận</button>
         </div>
     </form>
 </div>
@@ -39,4 +38,17 @@ async function xoaSanPham(idHDCT) {
 
 close_modalXoaSanPham.onclick = function () {
     modalXoaSanPham.style.display = "none";
+}
+
+function validateHuySanPham(){
+    const ghiChuKhiXoa = document.getElementById("ghiChuKhiXoa").value;
+    if(ghiChuKhiXoa.trim() === ""){
+        message.fire({
+            text: "Ghi chú không được để trống",
+            icon: "error"
+        });
+        return false;
+    }else{
+        return true;
+    }
 }

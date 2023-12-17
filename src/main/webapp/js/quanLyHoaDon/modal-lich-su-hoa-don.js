@@ -5,7 +5,6 @@ async function getAllLichHoaDon(idHD) {
     modalLichSuHoaDon.style.display = "block";
     const api = await fetch(`/admin/lich-su-hoa-don?idHD=${idHD}`)
     const data = await api.json();
-    console.log(data);
     for (let i = 0; i < data.length; i++) {
 
         document.getElementById("bodyLichSu").innerHTML += `

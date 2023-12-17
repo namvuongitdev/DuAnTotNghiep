@@ -11,6 +11,7 @@ let data = {
 
 };
 
+
 function getSanPham(page) {
     modalHienThiSanPham.style.display = "block";
     const value = document.querySelector("#search-input").value;

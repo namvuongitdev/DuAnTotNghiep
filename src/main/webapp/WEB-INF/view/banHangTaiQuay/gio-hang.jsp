@@ -118,18 +118,16 @@
 <script src="/js/banHangTaiQuay/khachHang.js"></script>
 <script>
     if (${error != null}) {
-        Swal.fire({
-            title: "lỗi!",
-            text: "${error}",
-            icon: "error"
+        Toast.fire({
+            icon: "error",
+            title: "${error}"
         });
     }
 
     if (${success != null}) {
-        Swal.fire({
-            title: "thành công!",
-            text: "${success}",
-            icon: "success"
+        Toast.fire({
+            icon: "success",
+            title: "${success}"
         });
     }
 

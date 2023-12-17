@@ -14,7 +14,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -148,7 +151,7 @@ public class InHoaDonServiceImpl implements InHoaDonService {
             htmlContentBuilder.append("<p>Ngày mua: ").append(formattedNgayTao).append("</p>");
             if (hoaDon.getLoaiHoaDon() == LoaiHoaDon.GIAO_HANG || hoaDon.getLoaiHoaDon() == LoaiHoaDon.ONLINE) {
                 htmlContentBuilder.append("<p>Loại đơn: ").append(
-                        hoaDon.getLoaiHoaDon() == LoaiHoaDon.ONLINE ? "Online":"Giao hàng"
+                        hoaDon.getLoaiHoaDon() == LoaiHoaDon.ONLINE ? "Online" : "Giao hàng"
                 ).append("</p>");
                 htmlContentBuilder.append("<p>Họ tên: ").append(hoaDon.getHoTen()).append("</p>");
                 htmlContentBuilder.append("<p>Số điện thoại: ").append(hoaDon.getSdt()).append("</p>");
@@ -232,7 +235,6 @@ public class InHoaDonServiceImpl implements InHoaDonService {
 
             // Gọi phương thức tạo file PDF từ nội dung HTML, sử dụng thư viện iText
             byte[] pdfBytes = createPdfFromHtml(htmlContentBuilder);
-
             // Lưu file PDF vào thư mục dự án
             String filePath = "D:\\hoaDon\\hoa_don_" + hoaDonId + ".pdf";
             try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
@@ -241,7 +243,6 @@ public class InHoaDonServiceImpl implements InHoaDonService {
                 e.printStackTrace();
                 // Xử lý lỗi nếu cần thiết
             }
-
             // Thiết lập thông tin phản hồi
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
@@ -249,7 +250,10 @@ public class InHoaDonServiceImpl implements InHoaDonService {
             // Trả về file PDF dưới dạng byte[]
             return ResponseEntity.ok().headers(headers).body(pdfBytes);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().
+
+                build();
+
     }
 
     // Phương thức tạo file PDF từ nội dung HTML sử dụng thư viện iText

@@ -44,12 +44,14 @@
                     <button class="btn btn-primary" style="margin-right: 6px">Tìm kiếm</button>
                     <a href="/admin/khuyen-mai/detail?id=${dataKhuyenMai.id}" class="btn btn-warning">Làm mới</a>
                 </div>
-                <div class="col-sm-2" style="margin-top: 26px">
-                    <a  class="btn btn-primary"
-                            name="1" onclick="getSanPham(this.name)">
-                        Thêm sản phẩm
-                    </a>
-                </div>
+                <c:if test="${dataKhuyenMai.trangThai == 1 || dataKhuyenMai.trangThai == 2}">
+                    <div class="col-sm-2" style="margin-top: 26px">
+                        <a class="btn btn-primary"
+                           name="1" onclick="getSanPham(this.name)">
+                            Thêm sản phẩm
+                        </a>
+                    </div>
+                </c:if>
             </form>
         </div>
         <div>

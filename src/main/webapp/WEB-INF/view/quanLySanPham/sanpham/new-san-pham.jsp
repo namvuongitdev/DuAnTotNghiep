@@ -229,15 +229,15 @@
     }
 
     if (${error != null}) {
-        Swal.fire({
+        message.fire({
             title: "${error}",
             icon: "error"
         });
     }
 
     if (${success != null}) {
-        Swal.fire({
-            title: "${success}",
+        message.fire({
+            text: "${success}",
             icon: "success"
         });
         clearLocalStorage();

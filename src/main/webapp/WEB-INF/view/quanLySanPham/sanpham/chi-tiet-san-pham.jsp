@@ -87,22 +87,17 @@
                             <i class="bi bi-qr-code"></i>
                         </a>
                         <a class="btn btn-warning" onclick="modalUpdateCTSP(`
-
-
-
-
-
                         <c:forEach items="${listMuaSac}" var="mauSac">
                           <option value='${mauSac.id}' ${ctsp.mauSac.id==mauSac.id?'selected':''}>${mauSac.ten}</option>
                         </c:forEach>
 
                         `,
-                                `
+                         `
                         <c:forEach items="${listKichCo}" var="kichCo">
                          <option value='${kichCo.id}' ${ctsp.size.id == kichCo.id?'selected':''}>${kichCo.ten}</option>
                         </c:forEach>
                         `,`${ctsp.id}`
-                                )"><i class="bi bi-eye-fill"></i></a>
+                         )"><i class="bi bi-eye-fill"></i></a>
                     </td>
                 </tr>
             </c:forEach>

@@ -13,7 +13,6 @@ if (modalDiaChiKhachHang != null && btnDiaChiKhachHang != null && spanDiaChiKhac
         modalDiaChiKhachHang.style.display = "block";
     }
 
-
     function findDiaChi(data) {
         document.getElementById('hoTen').value = data.hoTen;
         document.getElementById('sdt').value = data.sdt;

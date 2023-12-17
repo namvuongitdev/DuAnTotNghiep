@@ -13,7 +13,7 @@ let idSP = null;
 let loaiGiamGiaSP = "true";
 let giaBan = null;
 
-function modalThemSanPhamKhuyenMai(idSanPham, maSanPham, tenSanPham , giaBanSP) {
+function modalThemSanPhamKhuyenMai(idSanPham, maSanPham, tenSanPham, giaBanSP) {
     idSP = idSanPham;
     giaBan = giaBanSP;
     document.getElementById("tenSanPhamThem").value = tenSanPham;
@@ -24,19 +24,22 @@ function modalThemSanPhamKhuyenMai(idSanPham, maSanPham, tenSanPham , giaBanSP) 
 spanSanPhamKhuyenMai.onclick = function () {
     modalSanPhamKhuyenMai.style.display = "none";
 }
-let updateLoaiGiamGia = "";
+let updateLoaiGiamGia = null;
+let giaBanSanPhamUpdateCTKM = null;
+
 function getSanPhamKhuyenMai(id) {
     modalSanPhamKhuyenMai.style.display = "block";
     fetch('/admin/khuyen-mai/api-san-pham-khuyen-mai/' + id)
         .then(response => response.json())
         .then(data => {
             const loaiGiamGiaSanPham = document.getElementsByClassName("btn-check loaiGiamGia");
-            updateLoaiGiamGia = data.loaiGiamGia;
             if (data.loaiGiamGia) {
                 loaiGiamGiaSanPham[0].checked = "checked";
             } else {
                 loaiGiamGiaSanPham[1].checked = "checked";
             }
+            giaBanSanPhamUpdateCTKM = data.giaBanSanPham;
+            updateLoaiGiamGia = data.loaiGiamGia.toString();
             document.getElementById("tenSanPham").value = data.tenSanPham;
             document.getElementById("maSanPham").value = data.maSanPham;
             document.getElementById("mucGiamSanPham").value = data.mucGiam;
@@ -45,24 +48,44 @@ function getSanPhamKhuyenMai(id) {
 }
 
 
-function loaiGiamGiaUpdate(valueLoaiGiamGia){
-    updateLoaiGiamGia = valueLoaiGiamGia;
+function loaiGiamGiaUpdate(valueLoaiGiamGia) {
+    if (valueLoaiGiamGia != null) {
+        updateLoaiGiamGia = valueLoaiGiamGia;
+    }
 }
 
-function validateUpdate(){
+function validateUpdate() {
     const mucGiam = document.getElementById("mucGiamSanPham").value.trim();
     if (mucGiam === "") {
-        alert("mức giảm không được để trống")
+        message.fire({
+            text: "Mức giá không được để trống",
+            icon: "error"
+        });
         return false;
     } else if (mucGiam <= 0) {
-        alert("mức giảm không thoả mãn")
+        message.fire({
+            text: "Mức giá không thoả mãn",
+            icon: "error"
+        });
         return false;
-    }else{
-        if(updateLoaiGiamGia === "true"){
-           if(mucGiam >= 100){
-                alert("mức giảm giá phải nhỏ hơn 100%");
+    } else {
+        if (updateLoaiGiamGia === "true") {
+            if (mucGiam >= 100) {
+                message.fire({
+                    text: "Mức giá phải nhỏ hơn 100%",
+                    icon: "error"
+                });
                 return false;
-           }
+            }
+        } else {
+
+            if (mucGiam >= Number.parseInt(giaBanSanPhamUpdateCTKM)) {
+                message.fire({
+                    text: "Mức giảm đang lớn hơn hoặc bằng giá bạn hiện tại : " + giaBanSanPhamUpdateCTKM,
+                    icon: "error"
+                });
+                return false;
+            }
         }
         return true;
     }
@@ -78,20 +101,32 @@ function selectLoaiGiamGia(value) {
 async function addKhuyenMaiCT(idKM) {
     const mucGiam = document.getElementById("mucGiam").value.trim();
     if (mucGiam === "") {
-        alert("mức giảm không được để trống")
+        message.fire({
+            text: "Mức giá không được để trống",
+            icon: "error"
+        });
         return false;
     } else if (mucGiam <= 0) {
-        alert("mức giảm không thoả mãn")
+        message.fire({
+            text: "Mức giảm không thoả mãn",
+            icon: "error"
+        });
         return false;
     } else {
         if (loaiGiamGiaSP === "true") {
             if (mucGiam >= 100) {
-                alert("mức giảm giá phải nhỏ hơn 100%")
+                message.fire({
+                    text: "Mức giảm phải nhỏ hơn 100%",
+                    icon: "error"
+                });
                 return false;
             }
-        }else{
-            if(mucGiam >= giaBan){
-                alert("mức giảm giá đang lớn hơn giá bán hiện tại")
+        } else {
+            if (mucGiam >= Number.parseInt(giaBan)) {
+                message.fire({
+                    text: "Mức giảm đang lớn hơn hoặc bằng giá bạn hiện tại : " + giaBan,
+                    icon: "error"
+                });
                 return false;
             }
         }
@@ -143,16 +178,15 @@ async function addKhuyenMaiCT(idKM) {
                     `<td>
                     <button type="button" class="btn btn-primary" onclick="modalThemSanPhamKhuyenMai('${response.id}' ,
                    '${response.ma}',
-                   '${response.ten}'
+                   '${response.ten}',
+                   '${response.giaBan}',
                     )">
                     <i class="bi bi-plus-circle"></i>
                   </button>
                   </td>`
                 }
              </tr>`
-            alert("thêm thành công");
             modalKhuyenMai.style.display = "none";
         }
     }
-
 }

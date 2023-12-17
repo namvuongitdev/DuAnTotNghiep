@@ -24,17 +24,16 @@
                     <label>Ghi chú</label>
                     <textarea name="ghiChuXacNhan" class="form-control"></textarea>
                     <br>
-                    <button class="btn btn-primary">Xác nhận</button>
+                    <button class="btn btn-primary" onclick="return xacDonHang()">Xác nhận</button>
                 </form>
             </c:if>
 
             <c:if test="${hoaDon.trangThai == 2}">
-
                 <form action="/admin/hoa-don/update-trang-thai?trangThai=3&idHD=${hoaDon.id}" method="post" style="margin-right: 10px">
                     <label>Ghi chú</label>
                     <textarea name="ghiChuXacNhan" class="form-control"></textarea>
                     <br>
-                    <button class="btn btn-primary">Xác nhận</button>
+                    <button class="btn btn-primary" onclick="return xacDonHang()">Xác nhận</button>
                 </form>
 
             </c:if>
@@ -45,7 +44,7 @@
                     <label>Ghi chú</label>
                     <textarea name="ghiChuXacNhan" class="form-control"></textarea>
                     <br>
-                    <button class="btn btn-primary">Xác nhận</button>
+                    <button class="btn btn-primary" onclick="return xacDonHang()">Xác nhận</button>
                 </form>
 
             </c:if>
@@ -56,7 +55,7 @@
                     <label>Ghi chú</label>
                     <textarea name="ghiChuXacNhan" class="form-control"></textarea>
                     <br>
-                    <button class="btn btn-primary">Xác nhận</button>
+                    <button class="btn btn-primary" onclick="return xacDonHang()">Xác nhận</button>
                 </form>
 
             </c:if>

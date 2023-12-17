@@ -51,13 +51,22 @@ function checkSoLuongKhiTraHang(soLuong) {
     const soLuongUpdate = document.getElementById("soLuongUpdate").value;
     const ghiChuKhiTraHang = document.getElementById("ghiChuKhiTraHang").value;
     if (soLuongUpdate.trim() == "") {
-        alert("không được để trống số lượng trả");
+        message.fire({
+            text: "không được để trống số lượng trả",
+            icon: "error"
+        });
         return false;
     } else if (soLuong < soLuongUpdate) {
-        alert("số lượng đổi không phù hợp");
+        message.fire({
+            text: "số lượng đổi không phù hợp",
+            icon: "error"
+        });
         return false;
     } else if (ghiChuKhiTraHang.trim() == "") {
-        alert("không được để trống ghi chú");
+        message.fire({
+            text: "không được để trống ghi chú",
+            icon: "error"
+        });
         return false;
     } else {
         return true;

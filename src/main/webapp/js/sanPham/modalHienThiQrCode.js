@@ -12,7 +12,7 @@ function getKichCoUpdate(id) {
     idKCo = id;
 }
 
-function modalUpdateCTSP(htmlMauSac, htmlKichCo, idctsp) {
+function modalUpdateCTSP(htmlMauSac, htmlKichCo, idctsp, soLuong) {
     modalUpdateChiTietSanPham.style.display = "block";
     idCTSP = idctsp;
     document.getElementById("updateMauSac").innerHTML = `
@@ -24,33 +24,38 @@ function modalUpdateCTSP(htmlMauSac, htmlKichCo, idctsp) {
 }
 
 async function updateSizeAndMauSac(idSP) {
+    const soLuong = document.getElementById("updateSoLuongCTSP").value;
     if (idMSac === null) {
         const mauSac = document.getElementById("updateMauSac")
         idMSac = mauSac.value;
     }
-    if(idKCo === null){
+    if (idKCo === null) {
         const kichCo = document.getElementById("updateSize")
         idKCo = kichCo.value;
     }
-    const data = {
-        idCTSP: idCTSP,
-        idSP: idSP,
-        idMS: idMSac,
-        idKC: idKCo
-    }
-    const options = {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-    };
-    const api = await fetch(`/admin/chi-tiet-san-pham/update-size-mau-sac`, options);
-    const response = await api.json();
-      if(response.success){
-          await Swal.fire("update thành công", "", "success");
-          window.location.reload();
-      }else{
-          await Swal.fire("dữ liệu đã tồn tại", "", "error");
-      }
+        const data = {
+            idCTSP: idCTSP,
+            idSP: idSP,
+            idMS: idMSac,
+            idKC: idKCo,
+            soLuong: soLuong
+        }
+        const options = {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        };
+        const api = await fetch(`/admin/chi-tiet-san-pham/update-size-mau-sac`, options);
+        const response = await api.json();
+        if (response.success) {
+            await Swal.fire("update thành công", "", "success");
+            window.location.reload();
+        } else {
+            message.fire({
+                icon: "error",
+                text: "dữ liệu đã tồn tại"
+            });
+        }
 }
 
 async function modalQrCode(idctsp) {
@@ -75,22 +80,22 @@ window.onclick = function (event) {
     if (event.target === modalUpdateChiTietSanPham) {
         modalUpdateChiTietSanPham.style.display = "none";
     }
-    if(event.target === modalMauSac){
+    if (event.target === modalMauSac) {
         modalMauSac.style.display = "none"
     }
-    if(event.target === modalKichCo){
+    if (event.target === modalKichCo) {
         modalKichCo.style.display = "none"
     }
-    if(event.target === modalChatLieu){
+    if (event.target === modalChatLieu) {
         modalChatLieu.style.display = "none"
     }
-    if(event.target === modalKieuDang){
+    if (event.target === modalKieuDang) {
         modalKieuDang.style.display = "none"
     }
-    if(event.target === modalDanhMuc){
+    if (event.target === modalDanhMuc) {
         modalDanhMuc.style.display = "none"
     }
-    if(event.target === modalAnh){
+    if (event.target === modalAnh) {
         modalAnh.style.display = "none"
     }
 }

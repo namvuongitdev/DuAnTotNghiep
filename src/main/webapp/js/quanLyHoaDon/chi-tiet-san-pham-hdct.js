@@ -120,16 +120,36 @@ function themSanPhamVaoGioHang(data) {
     let soLuong = document.getElementById("soLuongTon").value;
     let idHD = document.getElementById("soLuongTon").name;
     if (data.idCTSP === "") {
-        alert("lựa chon các thuộc tính sản phẩm")
-    } else {
+        message.fire({
+            text: "bạn chưa lựa chọn thuộc tính",
+            icon: "error"
+        });
+        return;
+    } else if(soLuong.trim() === ""){
+        message.fire({
+            text: "số lượng không được bỏ trống",
+            icon: "error"
+        });
+        return;
+    }else {
         for (let i = 0; i < dataCTSP.length; i++) {
-            if (data.idCTSP === dataCTSP[i].soLuong) {
+            if (data.idCTSP === dataCTSP[i].id) {
+                if(soLuong <= 0){
+                    message.fire({
+                        icon: "error",
+                        title: "số lượng sản phẩm không thoả mãn"
+                    });
+                    return;
+                }
                 if (soLuong > dataCTSP[i].soLuong) {
-                    alert("số lượng sản phẩm không đủ");
+                    message.fire({
+                        icon: "error",
+                        title: "số lượng sản phẩm không đủ"
+                    });
                     return;
                 }
             }
         }
-       window.location.href = "/admin/hoa-don-chi-tiet/add?idCTSP=" + data.idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD;
+        window.location.href = "/admin/hoa-don-chi-tiet/add?idCTSP=" + data.idCTSP + "&soLuong=" + soLuong + "&idHD=" + idHD;
     }
 }

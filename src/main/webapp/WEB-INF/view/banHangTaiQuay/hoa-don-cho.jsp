@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -93,30 +94,49 @@
     </div>
 </div>
 </body>
+<script src="/js/quanLyHoaDon/inHoaDon.js"></script>
 <script>
+    const message = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
    function  deleteHoaDonCho(idHD) {
-       console.log(idHD)
-       let check = confirm("Bạn có chắc muốn xoá không!");
-       if(check){
-            window.location.href = "/admin/hoa-don/huy?idHD="+idHD;
-       }else{
-           return;
-       }
+       Swal.fire({
+           title: "Bạn có chắc muốn xoá không?",
+           showDenyButton: true,
+           confirmButtonText: "Có",
+           denyButtonText: `Không`
+       }).then((result) => {
+           /* Read more about isConfirmed, isDenied below */
+           if (result.isConfirmed) {
+               window.location.href = "/admin/hoa-don/huy?idHD="+idHD;
+           } else {
+               return false;
+           }
+       });
    }
    if (${error != null}) {
-       Swal.fire({
-           title: "lỗi!",
-           text: "${error}",
-           icon: "error"
-       });
+       message.fire({
+           icon:"error",
+           text:"${error}"
+       })
    }
 
    if (${success != null}) {
-       Swal.fire({
-           title: "thành công!",
-           text: "${success}",
-           icon: "success"
-       });
+       message.fire({
+           icon:"success",
+           text:"${success}"
+       })
+       if(${idHD != null}){
+           printHoaDon(`${idHD}`);
+       }
    }
 </script>
 </html>

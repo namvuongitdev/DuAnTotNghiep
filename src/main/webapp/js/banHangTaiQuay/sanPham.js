@@ -51,7 +51,7 @@ function getSanPham(page) {
 
                      <div style="display: flex">
                      <strike>${VND.format(data.content[i].giaBan)}</strike>
-                     <p style="color: #E43535">${khuyenMai.loaiGiamGia == true ? '-'+khuyenMai.mucGiam+'%' : '-'+VND.format(khuyenMai.mucGiam)}</p>
+                     <p style="color: #E43535">${khuyenMai.loaiGiamGia == true ? '-' + khuyenMai.mucGiam + '%' : '-' + VND.format(khuyenMai.mucGiam)}</p>
                      </div>`
 
                     : `<span style="color: #03AA28">${VND.format(data.content[i].giaBan)}</span>`}
@@ -64,7 +64,7 @@ function getSanPham(page) {
                        tenSanPham:'${data.content[i].ten}' ,
                        giaBan:'${data.content[i].giaBan}',
                        img:'${data.content[i].img}',
-                       donGiaSauKhiGiam:'${khuyenMai != null ? khuyenMai.donGiaSauKhiGiam : null }',
+                       donGiaSauKhiGiam:'${khuyenMai != null ? khuyenMai.donGiaSauKhiGiam : null}',
                        loaiGiamGia:'${khuyenMai != null ? khuyenMai.loaiGiamGia : null}',
                        mucGiam:'${khuyenMai != null ? khuyenMai.mucGiam : null}'
                        },
@@ -126,7 +126,7 @@ function api(page, data) {
 
                      <div style="display: flex">
                      <strike>${VND.format(data.content[i].giaBan)}</strike>
-                     <p style="color: #E43535">${khuyenMai.loaiGiamGia == true ? '-'+khuyenMai.mucGiam+'%' : '-'+VND.format(khuyenMai.mucGiam)}</p>
+                     <p style="color: #E43535">${khuyenMai.loaiGiamGia == true ? '-' + khuyenMai.mucGiam + '%' : '-' + VND.format(khuyenMai.mucGiam)}</p>
                      </div>`
 
                     : `<span style="color: #03AA28">${VND.format(data.content[i].giaBan)}</span>`}
@@ -139,7 +139,7 @@ function api(page, data) {
                        tenSanPham:'${data.content[i].ten}' ,
                        giaBan:'${data.content[i].giaBan}',
                        img:'${data.content[i].img}',
-                       donGiaSauKhiGiam:'${khuyenMai != null ? khuyenMai.donGiaSauKhiGiam : null }',
+                       donGiaSauKhiGiam:'${khuyenMai != null ? khuyenMai.donGiaSauKhiGiam : null}',
                        loaiGiamGia:'${khuyenMai != null ? khuyenMai.loaiGiamGia : null}',
                        mucGiam:'${khuyenMai != null ? khuyenMai.mucGiam : null}'
                        },
@@ -294,12 +294,12 @@ function innnerHTMLTrByIdHDCT(data) {
 
 async function updateSoLuong(soLuong, sanPham) {
     const soLuongTon = +sanPham.soLuongHDCT + +sanPham.soLuongCTSP;
-    if (soLuong < 0 || soLuong == 0) {
-        alert("số lượng phải  lớn hơn 0");
-        window.location.reload();
+    if (soLuong <= 0) {
+        alert("số lượng phải lớn hơn hoặc 0")
+        window.location.reload()
     } else if (soLuong > soLuongTon) {
-        alert("số lượng hiện tại trong của hàng không đủ");
-        window.location.reload();
+        alert("số lượng hiện tại trong của hàng chỉ còn : " + sanPham.soLuongCTSP);
+        window.location.reload()
     } else {
         const options = {
             method: 'PUT',
@@ -317,17 +317,24 @@ async function deleteSanPhamTrongGioHang(idHDCT) {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
     };
-    if (confirm("Bạn có muốn xoá sản phẩm ra khỏi giỏ hàng không") == true) {
-        const apiDeleteSanPham = await fetch(`/admin/hoa-don/delete?idHDCT=${idHDCT}`, options)
-        const data = await apiDeleteSanPham.json();
-        document.getElementById(data.id).remove();
-        await tongTien();
-    } else {
-        return;
-    }
+    Swal.fire({
+        title: "Bạn có xoá sản phẩm không?",
+        showDenyButton: true,
+        confirmButtonText: "Có",
+        denyButtonText: `Không`
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const apiDeleteSanPham = await fetch(`/admin/hoa-don/delete?idHDCT=${idHDCT}`, options)
+            const data = await apiDeleteSanPham.json();
+            document.getElementById(data.id).remove();
+            await tongTien();
+        } else if (result.isDenied) {
+            return false;
+        }
+    });
 }
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target == modalHienThiSanPham) {
         modalHienThiSanPham.style.display = "none";
     }

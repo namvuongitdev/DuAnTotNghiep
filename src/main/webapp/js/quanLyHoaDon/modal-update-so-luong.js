@@ -26,7 +26,7 @@ async function updateSoLuong(idHDCT) {
         <p style="color: #E43535">${VND.format(data.donGia * data.soLuong)}</p>
     </div>
 </div>
-<form action="/admin/hoa-don-chi-tiet/update?idHDCT=${data.id}" method="post" class="row" onclick="return validateSoLuong('${data.soLuongCTSP}')">
+<form action="/admin/hoa-don-chi-tiet/update?idHDCT=${data.id}" method="post" class="row">
     <div>
           <label for="soLuongUpdate">Số lượng</label>
                 <input type="number" value="${data.soLuong}" id="soLuongUpdate" name="soLuongUpdate" style="width: 30%"
@@ -37,7 +37,7 @@ async function updateSoLuong(idHDCT) {
         <textarea name="ghiChuUpdate" class="form-control" id="ghiChuKhiUpdate"></textarea>
     </div>
     <div>
-        <button class="btn btn-danger">Xác nhận</button>
+        <button class="btn btn-danger" onclick="return validateSoLuong('${data.soLuongCTSP}')">Xác nhận</button>
     </div>
 </form>
     `
@@ -49,12 +49,25 @@ close_modalUpdateSoLuongSanPham.onclick = function () {
 
 function validateSoLuong (soLuongCTSP){
     const soLuongThem = document.getElementById("soLuongUpdate").value;
+    const ghiChuUpdate = document.getElementById("ghiChuKhiUpdate").value;
     if(Number.parseInt(soLuongThem) <= 0){
-        alert("số lượng phải không thảo mãn");
+        message.fire({
+            text: "số lượng không phải lớn hơn 0",
+            icon: "error"
+        });
+        return false;
+    }else if(ghiChuUpdate.trim() === ""){
+        message.fire({
+            text: "ghi chú không được để trống",
+            icon: "error"
+        });
         return false;
     }
     else if(Number.parseInt(soLuongThem) > soLuongCTSP){
-        alert("số lượng hiện tại không đủ chỉ còn :" + soLuongCTSP);
+        message.fire({
+            text: "Số lượng sản phẩm trong kho chỉ còn "+soLuongCTSP,
+            icon: "error"
+        });
         return false;
     }else{
         return true;

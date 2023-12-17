@@ -15,7 +15,6 @@ $(document).ready(function () {
 });
 
 function printHoaDon(hoaDonId) {
-    console.log("id hoá đơn" , hoaDonId)
     // Tạo tên file PDF mới bằng UUID
     let pdfFileName = generateUuid() + '.pdf';
     // Gọi API để in hóa đơn và lưu file PDF vào thư mục dự án

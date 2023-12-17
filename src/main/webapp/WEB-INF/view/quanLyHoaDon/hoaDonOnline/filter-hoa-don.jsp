@@ -14,7 +14,7 @@
         </div>
         <div class="col-sm-2">
             <label class="col-form-label">Từ ngày</label>
-            <input type="date" value="${fillter.dateBegin}" name="dateBegin"
+            <input type="date" value="${fillter.dateBegin}" data-date-format="dd/mm/yyyy" name="dateBegin"
                    class="form-control"/>
         </div>
         <div class="col-sm-2">

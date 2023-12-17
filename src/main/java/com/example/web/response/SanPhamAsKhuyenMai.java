@@ -15,6 +15,7 @@ public class SanPhamAsKhuyenMai {
     private UUID id;
     private String tenSanPham;
     private String maSanPham;
+    private BigDecimal giaBanSanPham;
     private Boolean loaiGiamGia;
     private BigDecimal mucGiam;
     private Integer trangThai;

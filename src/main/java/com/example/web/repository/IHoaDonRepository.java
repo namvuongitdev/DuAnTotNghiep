@@ -46,14 +46,12 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon, UUID>, JpaSpeci
             " ctsp.size s left join ctsp.mauSac ms where hdct.id = ?1")
     HoaDonChiTietReponse findHoaDonChiTietByHoaDon_id(UUID id);
 
-    @Query(value = "select * from hoa_don where getDate() >= cast(ngay_nhan_hang as datetime) + 4  and trang_thai= 4 and id = ?1", nativeQuery = true)
+    @Query(value = "select * from hoa_don where getDate() >= cast(ngay_nhan_hang as datetime) + 4  and trang_thai= 4 and loai_hoa_don = 0 and id = ?1" , nativeQuery = true)
     HoaDon ngayHetHanTraHang(String id);
 
-    @Query(value = "select hd from HoaDon hd where hd.trangThai<>0 and hd.trangThai <> 10")
+    @Query(value = "select hd from HoaDon hd left join hd.hoaDonChiTiets hdct where hd.trangThai<>0 and hd.trangThai <> 10")
     Page<HoaDon> findAllHoaDonByTrangThaiKhacHoaDonCho(Pageable pageable);
 
-    @Query(value = "select hd.id , hd.ma , hd.hoTen , sum(hdct.soLuong * hdct.donGia) , hdct.ngayTao , sum(hdct.soLuong) from HoaDon hd join hd.hoaDonChiTiets hdct where hdct.trangThai = 2 group by hd.id , hd.ma , hd.hoTen , hdct.ngayTao")
-    Page<Object[]> findHoaDonHoanTien(Pageable pageable);
 
     @Query("SELECT hd.id, hd.ma, hd.ngayTao, SUM(hdct.donGia * hdct.soLuong), SUM(hdct.soLuong), hd.trangThai , hd.phiVanChuyen FROM HoaDon hd " +
             "JOIN hd.hoaDonChiTiets hdct join hd.khachHang kh " +
