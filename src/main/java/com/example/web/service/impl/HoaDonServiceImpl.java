@@ -76,7 +76,7 @@ public class HoaDonServiceImpl implements IHoaDonService {
                 .loaiHoaDon(LoaiHoaDon.TAI_QUAY)
                 .build();
         hoaDon = hoaDonRepository.save(hoaDon);
-        return "redirect:/admin/hoa-don/detail?idHD=" + hoaDon.getId();
+        return "redirect:/admin/hoa-don/hien-thi-hoa-cho";
     }
 
     @Override
