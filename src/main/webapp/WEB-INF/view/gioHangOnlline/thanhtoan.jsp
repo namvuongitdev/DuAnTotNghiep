@@ -167,10 +167,15 @@
                     </div>
                     <div class="col-12">
                         <div class="row">
-                            <h6 class="form-label ml">Tổng cộng:</h6>
+                            <h6 class="form-label ml">Tổng :</h6>
                             <h4 class="form-label mr" id="tongTien"><fmt:formatNumber pattern="#,###"
                                                                                       value="${tongTien}"></fmt:formatNumber>
                                 đ</h4>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="row">
+                            <b>Lưu ý: Đơn hàng chưa bao gồm phí vận chuyển.</b>
                         </div>
                     </div>
                 </div>

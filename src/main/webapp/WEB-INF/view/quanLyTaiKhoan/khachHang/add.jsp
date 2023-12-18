@@ -20,6 +20,12 @@
     <!-- Or for RTL support -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.rtl.min.css" />
 
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
 </head>
 <body>
 <%--navbar--%>
@@ -35,7 +41,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/admin/trangchu" style="text-decoration: none; color: black">Trang chủ</a></li>
                         <li class="breadcrumb-item ">Quản lý tài khoản</li>
-                        <li class="breadcrumb-item "><a href="/admin/khach-hang/hien-thi" style="text-decoration: none; color: black">Khách hàng</a></li>
+                        <li class="breadcrumb-item "><a href="/admin/khach-hang/hien-thi" style="text-decoration: none; color: black" onclick="clearLocalStorage()">Khách hàng</a></li>
                         <li class="breadcrumb-item active">Thêm dữ liệu</li>
                     </ol>
                 </nav>
@@ -46,35 +52,35 @@
                         <h5 class="card-title">Thông tin sản phẩm</h5>
                         <br><br>
                         <%--@elvariable id="nhanVien" type=""--%>
-                        <form:form action="/admin/khach-hang/add" method="post" modelAttribute="khachHang">
+                        <form:form action="/admin/khach-hang/add" method="post" modelAttribute="khachHang" id="yourForm">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <label for="taiKhoan" class="form-label ">Tên tài khoản</label>
+                                        <label for="taiKhoan" class="form-label ">Tên tài khoản <span style="color: red">(*)</span></label>
                                         <form:input type="text" class="form-control" path="taiKhoan" id="taiKhoan"/>
                                         <form:errors path="taiKhoan" cssStyle="color: red"/>
                                         <p style="color: red">${taiK}</p>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="hoTen" class="form-label ">Họ và tên</label>
+                                        <label for="hoTen" class="form-label ">Họ và tên <span style="color: red">(*)</span></label>
                                         <form:input type="text" class="form-control" path="hoTen" id="hoTen"/>
                                         <form:errors path="hoTen" cssStyle="color: red"/>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="diaChi" class="form-label">Địa chỉ</label>
+                                        <label for="diaChi" class="form-label">Địa chỉ <span style="color: red">(*)</span></label>
                                         <form:textarea style="height: 125px" type="text" class="form-control" path="diaChi" id="diaChi" />
                                         <form:errors path="diaChi" cssStyle="color: red"/>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <label for="email" class="form-label">Email</label>
+                                        <label for="email" class="form-label">Email <span style="color: red">(*)</span></label>
                                         <form:input type="text" class="form-control" path="email" id="email"/>
                                         <form:errors path="email" cssStyle="color: red"/>
                                         <p style="color: red">${email}</p>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="sdt" class="form-label">Số điện thoại</label>
+                                        <label for="sdt" class="form-label">Số điện thoại <span style="color: red">(*)</span></label>
                                         <form:input type="text" class="form-control" path="sdt" id="sdt"/>
                                         <form:errors path="sdt" cssStyle="color: red"/>
                                         <p style="color: red">${sdt}</p>
@@ -83,8 +89,7 @@
                             </div>
                             <br>
                             <div style="text-align: center">
-                                <button class="btn btn-primary" onclick="if(confirm('Bạn có chắc chắn muốn thêm khách hàng không?')){}
-                                        else{alert('Thêm khách hàng thất bại!')} clearLocalStorage()">Xác nhận
+                                <button class="btn btn-primary" onclick="add(event)">Xác nhận
                                 </button>
                                 <a href="/admin/khach-hang/view-add" class="btn btn-warning" onclick="clearLocalStorage()">Làm Mới</a>
                             </div>
@@ -128,6 +133,39 @@
 
     function clearLocalStorage() {
         localStorage.clear();
+    }
+
+    function add(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+        Swal.fire({
+            title: "Bạn có muốn thêm không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                document.getElementById('yourForm').submit();
+                saveInputValues();
+            } else if (result.isDenied) {
+                return false;
+            }
+        });
+    }
+
+    if (${error != null}) {
+        Swal.fire({
+            title: "${error}",
+            icon: "error"
+        });
+    }
+
+    if (${success != null}) {
+        Swal.fire({
+            title: "${success}",
+            icon: "success"
+        });
+        clearLocalStorage();
     }
 </script>
 </body>

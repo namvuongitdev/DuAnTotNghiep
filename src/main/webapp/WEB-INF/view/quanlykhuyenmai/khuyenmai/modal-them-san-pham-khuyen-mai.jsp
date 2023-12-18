@@ -21,7 +21,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
+                    <div class="mb-3 form-floating">
+                        <input type="text" class="form-control" name="giaSanPham" disabled
+                               id="giaBanSanPham">
+                        <label for="giaBanSanPham">Giá bán sản phẩm</label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
                     <input type="radio" class="btn-check" name="loaiGiamGia"
                            id="success-outlined" onchange="selectLoaiGiamGia(this.value)" autocomplete="off" value="true" checked>
                     <label class="btn btn-outline-secondary"
@@ -32,11 +39,11 @@
                     <label class="btn btn-outline-secondary"
                            for="danger-outlined">VND</label>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                     <div class="mb-3 form-floating">
                         <input type="number" class="form-control" name="mucGiam"
                                id="mucGiam">
-                        <label for="mucGiam">Mức giảm</label>
+                        <label for="mucGiam">Mức giảm sản phẩm</label>
                     </div>
                 </div>
             </div>

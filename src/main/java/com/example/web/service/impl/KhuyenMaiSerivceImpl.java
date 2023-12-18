@@ -23,9 +23,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,7 +57,7 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     public Integer validateTrangThai(KhuyenMai khuyenMai) {
         Date thoiGianHienTai = java.util.Calendar.getInstance().getTime();
         if (khuyenMai.getNgayKetThuc().before(thoiGianHienTai)) {
-            return KhuyenMaiStatus.NGUNG_KICH_HOAT;
+            return KhuyenMaiStatus.HET_HAN;
         } else if (khuyenMai.getNgayBatDau().after(thoiGianHienTai)) {
             return KhuyenMaiStatus.CHUA_BAT_DAU;
         } else {
@@ -77,6 +78,19 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     }
 
     @Override
+    @Transactional
+    @Modifying
+    public Boolean deleteKhuyenMaiCT(UUID id) {
+        Optional<SanPhamKhuyenMai> sanPhamKhuyenMai = sanPhamKhuyenMaiRepository.findById(id);
+        if(sanPhamKhuyenMai.isPresent()){
+            sanPhamKhuyenMaiRepository.delete(sanPhamKhuyenMai.get());
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
     public KhuyenMai updateKhuyenMai(KhuyenMaiRequest request, UUID idKM) {
         Optional<KhuyenMai> km = repository.findById(idKM);
         if (km.isPresent()) {
@@ -87,6 +101,11 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
             khuyenMai.setTen(request.getTen());
             Integer trangThai = validateTrangThai(khuyenMai);
             khuyenMai.setTrangThai(trangThai);
+            if(khuyenMai.getTrangThai() == KhuyenMaiStatus.HET_HAN){
+                khuyenMai.getSanPhamKhuyenMais().forEach(o -> {
+                    o.setTrangThai(KhuyenMaiStatus.NGUNG_KICH_HOAT);
+                });
+            }
             return repository.save(khuyenMai);
         }
         return null;
@@ -255,6 +274,9 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
         List<KhuyenMai> listKhuyenMai = repository.findKhuyenMaiByHetHan();
         listKhuyenMai.forEach(o -> {
             o.setTrangThai(KhuyenMaiStatus.HET_HAN);
+            o.getSanPhamKhuyenMais().forEach(kmct -> {
+                kmct.setTrangThai(KhuyenMaiStatus.NGUNG_KICH_HOAT);
+            });
             repository.save(o);
         });
     }

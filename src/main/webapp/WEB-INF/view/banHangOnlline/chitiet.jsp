@@ -573,7 +573,7 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="description" role="tabpanel"
                          aria-labelledby="description-tab">
-                        <li>Sports Clothing không hỗ trợ đổi trả lại hàng với những đơn hàng online và giao hàng.
+                        <li>Sports Clothing không hỗ trợ đổi trả hoàn tiền lại hàng với những đơn hàng online và giao hàng.
                         </li>
                         <li>Sports Clothing chỉ hỗ trợ trả lại với những đơn hàng tại quầy , trong vòng 1 ngày kể từ ngày nhận hàng
                         </li>

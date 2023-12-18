@@ -198,4 +198,15 @@ public class KhuyenMaiController {
             return "redirect:" + urlUpdate + pager;
         }
     }
+
+    @GetMapping("/delete")
+    public String deleteKhuyenMaiCT(@RequestParam UUID idKMCT , @RequestParam UUID idKM , RedirectAttributes attributes){
+        Boolean isCheck = khuyenMaiService.deleteKhuyenMaiCT(idKMCT);
+        if(isCheck){
+            attributes.addFlashAttribute("success" , "xoá thành công");
+        }else{
+            attributes.addFlashAttribute("error" , "không tìm thấy khuyến mại");
+        }
+        return "redirect:/admin/khuyen-mai/detail?id="+idKM;
+    }
 }

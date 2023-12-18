@@ -37,3 +37,16 @@ function xacDonHang() {
         return true;
     }
 }
+
+function vaidateXacNhanHuyHoaDon(){
+    const ghiChu = document.getElementById("ghiChuHuyHoaDon").value;
+    if(ghiChu.trim() === ""){
+        message.fire({
+            text: "ghi chú không được để trống",
+            icon: "error"
+        });
+        return false;
+    }else{
+        return true;
+    }
+}

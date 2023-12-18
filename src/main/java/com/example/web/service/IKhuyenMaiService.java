@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface IKhuyenMaiService {
@@ -45,5 +46,7 @@ public interface IKhuyenMaiService {
     Integer validateTrangThai(KhuyenMai khuyenMai);
 
     KhuyenMai getKhuyenMaiById(UUID uuid);
+
+    Boolean deleteKhuyenMaiCT(UUID id);
 
 }

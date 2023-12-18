@@ -10,6 +10,13 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-light" style="height:80px;background-color: #f5f5f5; border-bottom: 1px #cbd3da groove">
@@ -25,11 +32,27 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
                 <li><a class="bi bi-lock dropdown-item" style="font-size: 14px" href="/admin/doiMatKhau"> Đổi mật khẩu</a></li>
-                <li><a class="bi bi-box-arrow-right dropdown-item" style="font-size: 14px" href="/logout"
-                       onclick="if(confirm('Bạn có muốn đăng xuất không ?')==true){return true;}else{return false;}"> Đăng xuất</a></li>
+                <li><a class="bi bi-box-arrow-right dropdown-item" style="font-size: 14px" href="#" onclick="logout()"> Đăng xuất</a></li>
             </ul>
         </div>
     </div>
 </nav>
+<script>
+    function logout() {
+        Swal.fire({
+            title: "Bạn có muốn đăng xuất không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                window.location.href="/logout";
+            } else if (result.isDenied) {
+                return fasle;
+            }
+        });
+    }
+</script>
 </body>
 </html>

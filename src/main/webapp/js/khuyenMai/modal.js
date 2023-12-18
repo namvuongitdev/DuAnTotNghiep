@@ -18,6 +18,7 @@ function modalThemSanPhamKhuyenMai(idSanPham, maSanPham, tenSanPham, giaBanSP) {
     giaBan = giaBanSP;
     document.getElementById("tenSanPhamThem").value = tenSanPham;
     document.getElementById("maSanPhamThem").value = maSanPham;
+    document.getElementById("giaBanSanPham").value = VND.format(giaBanSP);
     modalKhuyenMai.style.display = "block";
 }
 
@@ -145,13 +146,17 @@ async function addKhuyenMaiCT(idKM) {
         const api = await fetch("/admin/khuyen-mai/khuyen-mai-san-pham", options);
         const response = await api.json();
         if (api.status === 200) {
+            message.fire({
+                text: "thêm thành công",
+                icon: "success"
+            })
             let khuyenMai = null;
             if (response.sanPhamKhuyenMais.length > 0) {
                 response.sanPhamKhuyenMais.map(function (e) {
-                    if (e.khuyenMai.trangThai == 1 && e.trangThai == 1) {
-                        khuyenMai = e;
-                    } else {
-                        khuyenMai = null;
+                    if (e.khuyenMai.trangThai === 1 || e.khuyenMai.trangThai === 2) {
+                        if (e.trangThai === 1) {
+                            khuyenMai = e;
+                        }
                     }
                 })
             } else {
@@ -189,4 +194,21 @@ async function addKhuyenMaiCT(idKM) {
             modalKhuyenMai.style.display = "none";
         }
     }
+}
+
+
+function deleteKhuyenMaiCT(idKMCT, idKM) {
+    Swal.fire({
+        title: "Bạn có muốn xoá không?",
+        showDenyButton: true,
+        confirmButtonText: "Có",
+        denyButtonText: `Không`
+    }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            window.location.href = `/admin/khuyen-mai/delete?idKMCT=${idKMCT}&idKM=${idKM}`
+        } else {
+            return false;
+        }
+    });
 }

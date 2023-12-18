@@ -47,10 +47,10 @@ function getSanPham(page) {
             for (let i = 0; i < data.content.length; i++) {
                 if (data.content[i].sanPhamKhuyenMais.length > 0) {
                     data.content[i].sanPhamKhuyenMais.map(function (e) {
-                        if (e.khuyenMai.trangThai === 1 || e.khuyenMai.trangThai === 2  && e.trangThai === 1) {
-                            khuyenMai = e;
-                        } else {
-                            khuyenMai = null;
+                        if (e.khuyenMai.trangThai === 1 || e.khuyenMai.trangThai === 2) {
+                            if(e.trangThai === 1){
+                                khuyenMai = e;
+                            }
                         }
                     })
                 } else {

@@ -10,19 +10,6 @@ async function getCTSP(value) {
     }
     if (value.type == 'mauSac') {
         mauSacSP = value.id;
-        // kichCo.replaceChildren();
-        // const responseSize = await fetch(`/index/kich-co?idSP=${myVariable.data}&idMS=${mauSacSP}`)
-        // const data = await responseSize.json();
-        // data.map(function (size) {
-        //     kichCo.innerHTML += ` <input type="radio" className="btn-check" onclick="getCTSP({
-        //                                id:this.value,
-        //                                 type:'size'
-        //                                          })"
-        //               value="${size.id}" name="success-outlined" id="${size.id}"
-        //             autoComplete="off">
-        //          <label className="btn btn-outline-secondary" htmlFor="${size.id}">${size.ten}
-        //          </label>`
-        // })
         fetch('/index/anh-mau-sac?idSP=' + myVariable.data + '&idMS=' + mauSacSP)
             .then(response => response.json())
             .then(data => {

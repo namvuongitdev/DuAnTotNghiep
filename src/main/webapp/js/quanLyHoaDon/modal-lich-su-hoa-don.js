@@ -37,10 +37,7 @@ function thaoTacHoaDon(thaoTac){
     if (thaoTac === 7) {
         return "chỉnh sửa hoá đơn";
     }
-    if (thaoTac === 8) {
-        return "nhân viên tạo hoá đơn cho khách";
-    }
-    if (thaoTac === 10) {
+    if (thaoTac === 11) {
         return "khách hàng tạo hoá đơn";
     }
     if (thaoTac === 5) {

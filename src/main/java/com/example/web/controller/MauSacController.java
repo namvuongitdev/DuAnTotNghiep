@@ -85,6 +85,7 @@ public class MauSacController {
     public String page(@PathVariable("id") String id, RedirectAttributes redirectAttributes,
                        @RequestParam(name = "trangThai")Integer trangThai ){
         redirectAttributes.addFlashAttribute("mauSac", new MauSac());
+        redirectAttributes.addFlashAttribute("success", "Cập nhật trạng thái thành công");
         String url = iMauSacService.updateStatus(id,trangThai);
         return url;
     }

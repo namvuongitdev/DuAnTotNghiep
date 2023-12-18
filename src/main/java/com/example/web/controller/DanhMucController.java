@@ -84,6 +84,7 @@ public class DanhMucController {
     public String page(@PathVariable("id") String id, RedirectAttributes redirectAttributes,
                        @RequestParam(name = "trangThai")Integer trangThai ){
         redirectAttributes.addFlashAttribute("danhMuc", new DanhMuc());
+        redirectAttributes.addFlashAttribute("success", "Cập nhật trạng thái thành công");
         String url = danhMucService.updateStatus(id,trangThai);
         return url;
     }

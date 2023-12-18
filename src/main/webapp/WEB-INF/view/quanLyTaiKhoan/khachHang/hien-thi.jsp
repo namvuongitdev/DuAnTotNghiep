@@ -13,6 +13,13 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
 </head>
 <body>
 <%--navbar--%>
@@ -40,12 +47,6 @@
                         <div class="card">
                             <div class="card-body row">
                                 <h5 class="card-title col-10">Danh sách khách hàng</h5>
-                                <div class="col-2 card-title">
-                                    <button type="button" class="btn btn-primary" title="Thêm dữ liệu">
-                                        <a href="/admin/khach-hang/view-add" style="color: white"><i class="bi bi-plus-circle"></i></a>
-                                    </button>
-                                </div>
-
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <form method="get"  action="/admin/khach-hang/filter" modelAttribute="${filterKhachHang}">
@@ -56,7 +57,7 @@
 
                                 <!-- Table with stripped rows -->
                                 <table class="table">
-                                    <thead>
+                                    <thead style="text-align: center">
                                     <tr>
                                         <th scope="col">STT</th>
                                         <th scope="col">Họ và tên</th>
@@ -69,7 +70,7 @@
                                         <th scope="col">Thao tác</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody style="text-align: center">
                                     <c:forEach items="${lst.content}" var="nv" varStatus="i">
                                         <tr>
                                             <th scope="row">${i.index + (lst.number + 1 != 1 ? ((lst.number + 1) * lst.size) -(lst.size - 1) : lst.number + 1)}</th>
@@ -88,8 +89,8 @@
                                                 <button type="button" class="btn btn-success" title="Sửa dữ liệu" onclick="myFunction()">
                                                     <a class="text-white" style="text-decoration: none" href="/admin/khach-hang/view-update/${nv.id}"><i class="bi bi-pencil"></i></a>
                                                 </button>
-                                                <button type="button" class="${nv.trangThai==0?'btn btn-danger':'btn btn-success'}" title="${nv.trangThai==0?'Kích hoạt':'Dừng kích hoạt'}" onclick="if(confirm('Bạn có chắc chắn muốn đổi trạng thái không?')){window.location.href = '/admin/khach-hang/stop/${nv.id}';}
-                                                        else{alert('Đổi trạng thái thất bại!')}"><i class="bi bi-sign-stop"></i>
+                                                <button type="button" class="btn btn-warning" title="Cập nhật trạng thái" onclick="updateStatus({id:`${nv.id}`,trangThai:`${nv.trangThai}`})">
+                                                    <i class="bi bi-arrow-repeat"></i>
                                                 </button>
 
                                             </td>
@@ -125,5 +126,37 @@
         </div>
     </div>
 </div>
+<script>
+    function updateStatus(data) {
+        Swal.fire({
+            title: "Bạn có muốn cập nhật trạng thái không ?",
+            showDenyButton: true,
+            confirmButtonText: "Có",
+            denyButtonText: `Không`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                window.location.href="/admin/khach-hang/update-status/"+data.id+"?trangThai="+data.trangThai;
+            } else if (result.isDenied) {
+                return fasle;
+            }
+        });
+    }
+
+    if (${error != null}) {
+        Swal.fire({
+            title: "${error}",
+            icon: "error"
+        });
+    }
+
+    if (${success != null}) {
+        Swal.fire({
+            title: "${success}",
+            icon: "success"
+        });
+        clearLocalStorage();
+    }
+</script>
 </body>
 </html>

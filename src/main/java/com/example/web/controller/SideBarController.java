@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.Date;
@@ -51,7 +52,7 @@ public class SideBarController {
     }
 
     @PostMapping("/doiMatKhau/{email}")
-    public String doiMatKhau(Principal principal, Model model,@PathVariable("email") String email,NhanVien nv,
+    public String doiMatKhau(Principal principal, Model model,@PathVariable("email") String email,NhanVien nv, RedirectAttributes attributes,
                              @RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword){
 
         UUID id = iNhanVienService.findIdByEmail(email);
@@ -89,7 +90,8 @@ public class SideBarController {
 
         iNhanVienService.update(id, nv);
 
-        return "redirect:/admin/trang-chu";
+        attributes.addFlashAttribute("success", "Đổi mật khẩu thành công");
+        return "redirect:/admin/doiMatKhau";
     }
 
 }

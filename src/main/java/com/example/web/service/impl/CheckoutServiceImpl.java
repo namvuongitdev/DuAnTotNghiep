@@ -172,7 +172,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         response.forEach(o -> {
             hoaDonChiTietService.addHoaDonChiTiet(o.getChiTietSanPham().getId(), hd.getId(), o.getSoLuong());
         });
-        lichSuHoaDonService.add(HoaDonStatus.CHO_XAC_NHAN, hd.getId() , request.getGhiChu());
+        lichSuHoaDonService.add(HoaDonStatus.KHACH_TAO_HOA_DON, hd.getId() , request.getGhiChu());
         gioHangOnllineService.clearAllGioHangChiTietByKhachHang_id(khachHang.getId());
         return hd;
     }

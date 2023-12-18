@@ -67,7 +67,7 @@
                     <ul class="collapse nav flex-column ms-1 coll <%= request.getRequestURI().contains("quanLySanPham") ? "collapsed show" : ""  %>"
                         id="submenu1" data-bs-parent="#menu">
                         <li class="w-100" style="margin-left: 15px">
-                            <a href="/admin/san-pham/hien-thi" class="nav-link px-0">
+                            <a href="/admin/san-pham/hien-thi" class="nav-link px-0" onclick="clearLocalStorage()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-caret-right" viewBox="0 0 16 16">
                                     <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -77,7 +77,7 @@
                         </li>
                         <li style="margin-left: 15px">
 
-                            <a href="/admin/kieu-dang/hien-thi" class="nav-link px-0">
+                            <a href="/admin/kieu-dang/hien-thi" class="nav-link px-0" onclick="clearLocalStorage()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-caret-right" viewBox="0 0 16 16">
                                     <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -87,7 +87,7 @@
                             </a>
                         </li>
                         <li style="margin-left: 15px">
-                            <a href="/admin/chat-lieu/hien-thi" class="nav-link px-0">
+                            <a href="/admin/chat-lieu/hien-thi" class="nav-link px-0" onclick="clearLocalStorage()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-caret-right" viewBox="0 0 16 16">
                                     <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -97,7 +97,7 @@
                             </a>
                         </li>
                         <li style="margin-left: 15px">
-                            <a href="/admin/size/hien-thi" class="nav-link px-0">
+                            <a href="/admin/size/hien-thi" class="nav-link px-0" onclick="clearLocalStorage()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-caret-right" viewBox="0 0 16 16">
                                     <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -106,7 +106,7 @@
                                         color="black">Kích Cỡ</font></span> </a>
                         </li>
                         <li style="margin-left: 15px">
-                            <a href="/admin/danh-muc/hien-thi" class="nav-link px-0">
+                            <a href="/admin/danh-muc/hien-thi" class="nav-link px-0" onclick="clearLocalStorage()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-caret-right" viewBox="0 0 16 16">
                                     <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -115,7 +115,7 @@
                                         color="black">Danh Mục</font></span> </a>
                         </li>
                         <li style="margin-left: 15px">
-                            <a href="/admin/mau-sac/hien-thi" class="nav-link px-0">
+                            <a href="/admin/mau-sac/hien-thi" class="nav-link px-0" onclick="clearLocalStorage()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-caret-right" viewBox="0 0 16 16">
                                     <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -138,7 +138,7 @@
                         id="submenu4" data-bs-parent="#menu">
                         <sec:authorize access="hasAuthority('ADMIN')">
                             <li class="w-100" style="margin-left: 15px">
-                                <a href="/admin/nhan-vien/hien-thi" class="nav-link px-0">
+                                <a href="/admin/nhan-vien/hien-thi" class="nav-link px-0" onclick="clearLocalStorage()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                          class="bi bi-caret-right" viewBox="0 0 16 16">
                                         <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -149,7 +149,7 @@
                             </li>
                         </sec:authorize>
                         <li style="margin-left: 15px">
-                            <a href="/admin/khach-hang/hien-thi" class="nav-link px-0">
+                            <a href="/admin/khach-hang/hien-thi" class="nav-link px-0" onclick="clearLocalStorage()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-caret-right" viewBox="0 0 16 16">
                                     <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
@@ -161,7 +161,7 @@
                 </li>
             <sec:authorize access="hasAuthority('ADMIN')">
                 <li>
-                    <a href="/admin/khuyen-mai/" class="nav-link px-0 align-middle">
+                    <a href="/admin/khuyen-mai/" class="nav-link px-0 align-middle" onclick="clearLocalStorage()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                              class="bi bi-gift" viewBox="0 0 16 16">
                             <path d="M3 2.5a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0v.006c0 .07 0 .27-.038.494H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 14.5V7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2.038A2.968 2.968 0 0 1 3 2.506V2.5zm1.068.5H7v-.5a1.5 1.5 0 1 0-3 0c0 .085.002.274.045.43a.522.522 0 0 0 .023.07zM9 3h2.932a.56.56 0 0 0 .023-.07c.043-.156.045-.345.045-.43a1.5 1.5 0 0 0-3 0V3zM1 4v2h6V4H1zm8 0v2h6V4H9zm5 3H9v8h4.5a.5.5 0 0 0 .5-.5V7zm-7 8V7H2v7.5a.5.5 0 0 0 .5.5H7z"/>
@@ -175,5 +175,10 @@
         <hr>
     </div>
 </div>
+<script>
+    function clearLocalStorage() {
+        localStorage.clear();
+    }
+</script>
 </body>
 </html>

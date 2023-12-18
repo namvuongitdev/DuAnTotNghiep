@@ -71,9 +71,9 @@
         <div class="row">
                 <form action="/admin/hoa-don/update-trang-thai?trangThai=5&idHD=${hoaDon.id}" method="post">
                     <label>Ghi chú</label>
-                    <textarea name="ghiChuXacNhan" class="form-control"></textarea>
+                    <textarea name="ghiChuXacNhan" id="ghiChuHuyHoaDon"  class="form-control"></textarea>
                     <br>
-                    <button class="btn btn-primary">Xác nhận</button>
+                    <button class="btn btn-primary" onclick="return vaidateXacNhanHuyHoaDon()">Xác nhận</button>
                 </form>
         </div>
     </div>

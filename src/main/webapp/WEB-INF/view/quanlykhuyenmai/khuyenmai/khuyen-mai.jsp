@@ -99,36 +99,30 @@
                                 <fmt:formatDate value="${khuyenMai.ngayKetThuc}" pattern="yyyy-MM-dd"/>
                             </td>
 
-                            <c:choose>
-                                <c:when test="${khuyenMai.trangThai == 1}">
-                                   <td> <button class="btn btn-success rounded-pill">kích hoạt</button></td>
-                                </c:when>
-                                <c:when test="${khuyenMai.trangThai == 2}">
-                                   <td> <button class="btn btn-warning rounded-pill">chưa bắt đầu</button></td>
-                                </c:when>
-                                <c:when test="${khuyenMai.trangThai == 4}">
-                                    <td style="color: red">Đã xoá</td>
-                                </c:when>
-                                <c:otherwise>
-                                    <td> <button class="btn btn-danger rounded-pill">hết hạn</button></td>
-                                </c:otherwise>
-                            </c:choose>
+
+                            <c:if test="${khuyenMai.trangThai == 1}">
+                                <td>
+                                    <button class="btn btn-success rounded-pill">kích hoạt</button>
+                                </td>
+                            </c:if>
+                            <c:if test="${khuyenMai.trangThai == 2}">
+                                <td>
+                                    <button class="btn btn-warning rounded-pill">chưa bắt đầu</button>
+                                </td>
+                            </c:if>
+                            <c:if test="${khuyenMai.trangThai == 3}">
+                                <td style="color: red"><button class="btn btn-danger rounded-pill">Hết hạn</button></td>
+                            </c:if>
+
                             <td style="display: flex">
                                 <div>
-                                    <button style="margin-right: 10px" type="button" class="btn btn-success" title="chi tiết"
+                                    <button style="margin-right: 10px" type="button" class="btn btn-success"
+                                            title="chi tiết"
                                             onclick="getKhuyenMaiById(`${khuyenMai.id}`)">
                                         chi tiết
                                     </button>
                                 </div>
-                                <div>
-                                    <c:if test="${khuyenMai.trangThai != 4}">
-                                        <form action="/admin/khuyen-mai/delete?idKM=${khuyenMai.id}" method="post">
-                                            <button class="btn btn-danger" onclick="return deleteKhuyenMai()">Huỷ</button>
-                                        </form>
-                                    </c:if>
-                                </div>
                             </td>
-
                         </tr>
                     </c:forEach>
                     </tbody>

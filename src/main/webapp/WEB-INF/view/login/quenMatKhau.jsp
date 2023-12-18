@@ -5,6 +5,12 @@
 <html>
 <head>
     <link rel="stylesheet" href="/css/login.css">
+    <script src="
+              https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js
+              "></script>
+    <link href="
+          https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css
+         " rel="stylesheet">
 </head>
 <body>
 <section class="myform-area">
@@ -31,10 +37,10 @@
                                 <button type="submit" class="myform-btn">Gửi</button>
                             </div><br>
                             <div style="text-align: center">
-                                <a href="/login">Đăng nhập</a>
+                                <a href="/login" onclick="clearLocalStorage()">Đăng nhập</a>
                             </div><br>
                             <div style="text-align: center">
-                                <a href="/dangKy">Bạn chưa có tài khoản? Đăng ký</a>
+                                <a href="/dangKy" onclick="clearLocalStorage()">Bạn chưa có tài khoản? Đăng ký</a>
                             </div>
                         </form>
                     </div>
@@ -43,5 +49,21 @@
         </div>
     </div>
 </section>
+<script>
+    if (${error != null}) {
+        Swal.fire({
+            title: "${error}",
+            icon: "error"
+        });
+    }
+
+    if (${success != null}) {
+        Swal.fire({
+            title: "${success}",
+            icon: "success"
+        });
+        clearLocalStorage();
+    }
+</script>
 </body>
 </html>

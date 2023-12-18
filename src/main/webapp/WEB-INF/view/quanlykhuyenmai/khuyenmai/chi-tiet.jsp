@@ -83,17 +83,10 @@
                         <td><fmt:formatNumber pattern="#,###" value="${km.sanPhamKM.giaBan}"/></td>
                         <td><fmt:formatNumber pattern="#,###" value="${km.donGiaSauKhiGiam}"/></td>
                         <td style="${km.trangThai == 1 ? 'color: #03AA28' : 'color:red'}">${km.trangThai == 1 ? 'kích hoạt' : 'ngừng hoạt động'}</td>
-                        <td><c:choose>
-                            <c:when test="${km.trangThai == 1}">
-                                <a href="/admin/khuyen-mai/update-trang-thai-san-pham?idSPKM=${km.id}"
-                                   class="btn btn-danger">Xoá</a>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="/admin/khuyen-mai/update-trang-thai-san-pham?idSPKM=${km.id}"
-                                   class="btn btn-success">Kích hoạt</a>
-                            </c:otherwise>
+                        <td>
+                            <a onclick="deleteKhuyenMaiCT(`${km.id}` , `${dataKhuyenMai.id}`)"
+                               class="btn btn-danger">Xoá</a>
 
-                        </c:choose>
                             <button type="button" class="btn btn-success" title="chi tiết"
                                     onclick="getSanPhamKhuyenMai(`${km.id}`)">
                                 chi tiết

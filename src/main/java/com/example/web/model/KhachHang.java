@@ -35,12 +35,11 @@ public class KhachHang {
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
-    @NotBlank(message = "Vui lòng không để trống thông tin.")
+    @Pattern(regexp = "^[\\p{L}\\s']+", message = "Họ và tên không đúng định dạng.")
     @Column(name = "hoTen")
     @Nationalized
     private String hoTen;
 
-    @NotBlank(message = "Vui lòng không để trống thông tin.")
     @Pattern(regexp = "^(.+)@(\\S+)$", message = "Email không đúng định dạng.")
     @Column(name = "email")
     private String email;
@@ -63,12 +62,11 @@ public class KhachHang {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ngaySua;
 
-    @NotBlank(message = "Vui lòng không để trống thông tin.")
     @Pattern(regexp = "^0\\d{9}$", message = "Số điện thoại không đúng định dạng.")
     @Column(name="sdt")
     private String sdt;
 
-    @NotBlank(message = "Vui lòng không để trống thông tin.")
+    @Pattern(regexp = "[\\p{L}0-9\\s,./-]+", message = "Địa chỉ không đúng định dạng.")
     @Column(name = "diaChi")
     @Nationalized
     private String diaChi;
@@ -81,4 +79,14 @@ public class KhachHang {
     @JsonIgnore
     private List<DiaChi> diaChis;
 
+    public KhachHang(UUID id, @NotBlank(message = "Vui lòng không để trống thông tin.") @Pattern(regexp = "^[\\p{L}\\s']+", message = "Họ và tên không đúng định dạng.") String hoTen, @NotBlank(message = "Vui lòng không để trống thông tin.") @Pattern(regexp = "^(.+)@(\\S+)$", message = "Email không đúng định dạng.") String email, Integer trangThai, @NotBlank(message = "Vui lòng không để trống thông tin.") String taiKhoan, String matKhau, Date ngayTao, @NotBlank(message = "Vui lòng không để trống thông tin.") @Pattern(regexp = "^0\\d{9}$", message = "Số điện thoại không đúng định dạng.") String sdt) {
+        this.id = id;
+        this.hoTen = hoTen;
+        this.email = email;
+        this.trangThai = trangThai;
+        this.taiKhoan = taiKhoan;
+        this.matKhau = matKhau;
+        this.ngayTao = ngayTao;
+        this.sdt = sdt;
+    }
 }
