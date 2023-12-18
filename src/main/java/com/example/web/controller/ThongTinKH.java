@@ -4,6 +4,7 @@ import com.example.web.Config.BcryptedPasswordEncoderConfig;
 import com.example.web.model.DiaChi;
 import com.example.web.model.KhachHang;
 import com.example.web.service.IDiaChiService;
+import com.example.web.service.IGioHangOnllineService;
 import com.example.web.service.IKhachHangService;
 import com.example.web.service.MailService;
 import com.example.web.util.RandomUntil;
@@ -34,12 +35,16 @@ public class ThongTinKH {
     private IDiaChiService iDiaChiService;
 
     @Autowired
+    private IGioHangOnllineService iGioHangOnllineService;
+
+    @Autowired
     private MailService mailService;
 
     @GetMapping("/thongTin/{taiKhoan}")
     public String thongTin(@PathVariable("taiKhoan") String taiKhoan, Model model){
         UUID id = iKhachHangService.findIdByTaiKhoan(taiKhoan);
         KhachHang khachHang = iKhachHangService.findKhachHangByTaiKhoan(taiKhoan);
+        model.addAttribute("count", iGioHangOnllineService.countSoLuongSPTrongGioHang(khachHang.getId()));
         model.addAttribute("listDiaChi", iDiaChiService.getDiaChiByKhachHang_id(id));
         model.addAttribute("khachHang", khachHang);
         return "login/thongTinKH";

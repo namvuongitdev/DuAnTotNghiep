@@ -89,10 +89,9 @@
                                                 <button type="button" class="btn btn-success" title="Sửa dữ liệu" onclick="myFunction()">
                                                     <a class="text-white" style="text-decoration: none" href="/admin/nhan-vien/view-update/${nv.id}"><i class="bi bi-pencil"></i></a>
                                                 </button>
-                                                <button type="button" class="btn btn-warning" title="Cập nhật trạng thái" onclick="updateStatus({id:`${nv.id}`,trangThai:`${nv.trangThai}`})">
-                                                    <i class="bi bi-arrow-repeat"></i>
+                                                <button type="button" class="${nhanVien.trangThai==0?'btn btn-success':'btn btn-danger'}" title="${nhanVien.trangThai==0?'Làm việc':'Dừng làm việc'}" onclick="if(confirm('Bạn có chắc chắn đổi trạng thái làm việc không?')){window.location.href = '/admin/nhan-vien/stop/${nv.id}';}
+                                                        else{alert('Đổi trạng thái làm việc thất bại!')}"><i class="bi bi-sign-stop"></i>
                                                 </button>
-
                                             </td>
                                         </tr>
                                     </c:forEach>
