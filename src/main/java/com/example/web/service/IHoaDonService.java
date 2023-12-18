@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,4 +70,9 @@ public interface IHoaDonService {
 
     List<Integer> getNams();
 
+    Double getDoanhThuTrongNgayDangChon(Date date);
+
+    Integer tongHoaDonDangChon(Date date);
+
+    Integer tongHoaDonHuyDangChon(Date date);
 }
