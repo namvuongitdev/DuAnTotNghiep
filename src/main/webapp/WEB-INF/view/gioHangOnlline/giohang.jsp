@@ -166,7 +166,7 @@
 <br>
 <!-- Header Section End -->
 <div style="border: 2px solid #eae8e8;border-style: ridge;height: 60px;margin-left: 730px;display: flex;width: 600px">
-    <h5 class="text-uppercase" style="margin-top: 7px;padding-left: 30px">Tổng đơn
+    <h5 class="text-uppercase" style="margin-top: 7px;padding-left: 30px">Tổng tiền
         <font color="red"><fmt:formatNumber pattern="#,###"
                                             value="${tongTien}"></fmt:formatNumber>
             đ</font></h5>

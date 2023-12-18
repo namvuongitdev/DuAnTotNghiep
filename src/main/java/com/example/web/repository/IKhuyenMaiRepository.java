@@ -31,7 +31,7 @@ public interface IKhuyenMaiRepository extends JpaRepository<KhuyenMai , UUID>  ,
     @Query(value = "select km from KhuyenMai km where km.ngayBatDau = current_date")
     List<KhuyenMai> findKhuyenMaiByChuBatDau();
 
-    @Query(value = "select new com.example.web.response.SanPhamAsKhuyenMai(kmsp.id , kmsp.mucGiam) from KhuyenMai km join km.sanPhamKhuyenMais kmsp join kmsp.sanPhamKM sp where sp.id =?1 and km.trangThai = 1 and kmsp.trangThai = 1")
-    SanPhamAsKhuyenMai checkTonTaiSanPham(UUID idSP);
+    @Query(value = "select kmsp from KhuyenMai km join km.sanPhamKhuyenMais kmsp join kmsp.sanPhamKM sp where sp.id =?1 and  (km.trangThai = 1 or km.trangThai = 2) and kmsp.trangThai = 1")
+    SanPhamKhuyenMai checkTonTaiSanPham(UUID idSP);
 
 }

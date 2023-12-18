@@ -42,7 +42,6 @@
                         <li class="active"><a style="width: 80px" href="/index/gioi-thieu">About us</a></li>
                         <li class="active"><a href="/index/home">Home</a></li>
                         <li class="active"><a href="/index/shop">Shop</a></li>
-                        <li class="active"><a href="">Policy</a></li>
 
                         <li class="d-flex align-items-center"> <!-- Add the "d-flex align-items-center" classes here -->
                             <input class="form-control" type="text" name="search" id="search-input" style="width: 300px;" placeholder="Tìm kiếm ....">

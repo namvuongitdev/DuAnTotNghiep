@@ -62,7 +62,7 @@ public class LichSuHoaDonServiceImpl implements ILichSuHoaDonService {
             lshd.setNguoiThaoTac(khachHang.getHoTen());
         }
         if (nhanVien != null) {
-            lshd.setNguoiThaoTac(nhanVien.getHoTen());
+            lshd.setNguoiThaoTac(nhanVien.getHoTen() + " - " + nhanVien.getTaiKhoan());
         }
         iLichSuHoaDonRepository.save(lshd);
     }

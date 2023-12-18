@@ -89,7 +89,7 @@
 
                             <button type="button" class="btn btn-success" title="chi tiết"
                                     onclick="getSanPhamKhuyenMai(`${km.id}`)">
-                                chi tiết
+                                Cập nhập
                             </button>
                         </td>
                     </tr>

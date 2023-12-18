@@ -379,15 +379,14 @@
             <div class="row">
                 <div class="col-lg-6 col-md-7">
                     <div class="header__top__left">
-                        <p>Free shipping, 30-day return or refund guarantee.</p>
+                        <p>SĐT:0321424567</p>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            <a href="#">Sign in</a>
+                            <a href="/login">Sign in</a>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -497,7 +496,7 @@
                         </div>
                         <p>Form dáng : <span>${sanPham.kieuDang.ten}</span></p>
                         <p>Chất liệu : <span>${sanPham.chatLieu.ten}</span></p>
-                        <span>Đặc tính nổi bật</span>
+                        <span>Mô tả</span>
                         <p>${sanPham.moTa}</p>
                         <font color="green">${tong}</font>
                         <div id="tongSanPham"></div>

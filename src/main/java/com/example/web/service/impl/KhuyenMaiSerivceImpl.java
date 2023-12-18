@@ -27,6 +27,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,10 +83,10 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     @Modifying
     public Boolean deleteKhuyenMaiCT(UUID id) {
         Optional<SanPhamKhuyenMai> sanPhamKhuyenMai = sanPhamKhuyenMaiRepository.findById(id);
-        if(sanPhamKhuyenMai.isPresent()){
+        if (sanPhamKhuyenMai.isPresent()) {
             sanPhamKhuyenMaiRepository.delete(sanPhamKhuyenMai.get());
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -101,7 +102,20 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
             khuyenMai.setTen(request.getTen());
             Integer trangThai = validateTrangThai(khuyenMai);
             khuyenMai.setTrangThai(trangThai);
-            if(khuyenMai.getTrangThai() == KhuyenMaiStatus.HET_HAN){
+            if (khuyenMai.getTrangThai() == KhuyenMaiStatus.KICH_HOAT) {
+                // lọc sản phẩm có những sản phẩm gì
+                khuyenMai.getSanPhamKhuyenMais().forEach(o -> {
+                    SanPhamKhuyenMai sanPhamAsKhuyenMai = repository.checkTonTaiSanPham(o.getSanPhamKM().getId());
+                    // kiểm tra sản phẩm có nằm trong khuyến mại khác không
+                    if (sanPhamAsKhuyenMai != null && sanPhamAsKhuyenMai.getKhuyenMai().getMa() != khuyenMai.getMa()) {
+                        System.out.println("khuyen mại trang thai 2");
+                        o.setTrangThai(KhuyenMaiStatus.NGUNG_KICH_HOAT);
+                    } else {
+                        o.setTrangThai(KhuyenMaiStatus.KICH_HOAT);
+                    }
+                });
+            }
+            if (khuyenMai.getTrangThai() == KhuyenMaiStatus.HET_HAN) {
                 khuyenMai.getSanPhamKhuyenMais().forEach(o -> {
                     o.setTrangThai(KhuyenMaiStatus.NGUNG_KICH_HOAT);
                 });
@@ -207,21 +221,19 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
     public SanPham addSanPhamKhuyenMai(KhuyenMaiSanPhamRequest request) {
         Optional<KhuyenMai> khuyenMai = repository.findById(UUID.fromString(request.getIdKM()));
         Optional<SanPham> sanPham = sanPhamRepository.findById(UUID.fromString(request.getIdSanPham()));
-        SanPhamAsKhuyenMai km = repository.checkTonTaiSanPham(sanPham.get().getId());
+//        SanPhamKhuyenMai km = repository.checkTonTaiSanPham(sanPham.get().getId());
         SanPhamKhuyenMai spkm = null;
-        if (km != null) {
-            Integer updateMucGiam =  km.getMucGiam().intValue() + request.getMucGiam().intValue();
-            spkm = sanPhamKhuyenMaiRepository.findById(km.getId()).get();
-           spkm.setMucGiam(BigDecimal.valueOf(updateMucGiam));
-        } else {
-            spkm = SanPhamKhuyenMai.builder()
-                    .khuyenMai(khuyenMai.get())
-                    .sanPhamKM(sanPham.get())
-                    .trangThai(KhuyenMaiStatus.KICH_HOAT)
-                    .mucGiam(request.getMucGiam())
-                    .loaiGiamGia(request.getLoaiGiamGia())
-                    .build();
-        }
+//        if (km != null) {
+//            return null;
+//        } else {
+        spkm = SanPhamKhuyenMai.builder()
+                .khuyenMai(khuyenMai.get())
+                .sanPhamKM(sanPham.get())
+                .trangThai(KhuyenMaiStatus.KICH_HOAT)
+                .mucGiam(request.getMucGiam())
+                .loaiGiamGia(request.getLoaiGiamGia())
+                .build();
+//        }
         if (spkm.getLoaiGiamGia()) {
             Integer donGiaKhiGiamPhanTram = spkm.getSanPhamKM().getGiaBan().intValue() - (spkm.getSanPhamKM().getGiaBan().intValue() / 100) * spkm.getMucGiam().intValue();
             spkm.setDonGiaSauKhiGiam(BigDecimal.valueOf(donGiaKhiGiamPhanTram));
