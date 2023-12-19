@@ -86,39 +86,38 @@ public class ChiTietSanPhamController {
                     if (checkMauSacSize != null) {
                         redirectAttributes.addFlashAttribute("error", "Dữ liệu chi tiết sản phẩm "+checkMauSacSize.getSize().getTen()+", "+checkMauSacSize.getMauSac().getTen() +" đã tồn tại");
                         return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
-                    }
-                    ChiTietSanPham newChiTietSanPham = new ChiTietSanPham();
-                    newChiTietSanPham.setSanPham(sanPham);
-                    newChiTietSanPham.setQrCode(String.valueOf(random.nextInt(1000000000)));
-                    newChiTietSanPham.setTrangThai(1);
-                    Size size = new Size();
-                    size.setId(kichCo);
-                    newChiTietSanPham.setSize(size);
-                    MauSac mauSac1 = new MauSac();
-                    mauSac1.setId(UUID.fromString(mauSac));
-                    newChiTietSanPham.setMauSac(mauSac1);
-                    if(chiTietSanPham.getSoLuong() == null) {
-                        redirectAttributes.addFlashAttribute("error", "Thêm dữ liệu thất bại");
-                        return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
-                    }else if(chiTietSanPham.getSoLuong() < 1){
-                        redirectAttributes.addFlashAttribute("error", "Số lượng phải lớn hơn 0");
-                        return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
                     }else{
-                        newChiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong());
+                        chiTietSanPham.setSanPham(sanPham);
+                        chiTietSanPham.setQrCode(String.valueOf(random.nextInt(1000000000)));
+                        chiTietSanPham.setTrangThai(1);
+                        Size size = new Size();
+                        size.setId(kichCo);
+                        chiTietSanPham.setSize(size);
+                        MauSac mauSac1 = new MauSac();
+                        mauSac1.setId(UUID.fromString(mauSac));
+                        chiTietSanPham.setMauSac(mauSac1);
+                        if(chiTietSanPham.getSoLuong() == null) {
+                            redirectAttributes.addFlashAttribute("error", "Thêm dữ liệu thất bại");
+                            return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
+                        }else if(chiTietSanPham.getSoLuong() < 1){
+                            redirectAttributes.addFlashAttribute("error", "Số lượng phải lớn hơn 0");
+                            return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
+                        }else{
+                            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong());
+                        }
+                        chiTietSanPhamService.save(chiTietSanPham);
+
+                        // Tạo QR code và lưu vào thư mục
+                        int width = 300;
+                        int height = 300;
+                        String format = "png";
+                        String fileName = chiTietSanPham.getSanPham().getMa() + "-" + chiTietSanPham.getQrCode() + "." + format;
+                        Map<EncodeHintType, Object> hints = new HashMap<>();
+                        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+                        BitMatrix bitMatrix = new MultiFormatWriter().encode(chiTietSanPham.getQrCode(), BarcodeFormat.QR_CODE, width, height, hints);
+                        Path filePath = FileSystems.getDefault().getPath(qrcodeDirectory, fileName);
+                        MatrixToImageWriter.writeToPath(bitMatrix, format, filePath);
                     }
-                    chiTietSanPhamService.save(newChiTietSanPham);
-
-                    // Tạo QR code và lưu vào thư mục
-                    int width = 300;
-                    int height = 300;
-                    String format = "png";
-                    String fileName = newChiTietSanPham.getSanPham().getMa() + "-" + newChiTietSanPham.getMauSac().getTen() + "-" + newChiTietSanPham.getSize().getTen() + "-" + newChiTietSanPham.getQrCode() + "." + format;
-                    Map<EncodeHintType, Object> hints = new HashMap<>();
-                    hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-                    BitMatrix bitMatrix = new MultiFormatWriter().encode(newChiTietSanPham.getQrCode(), BarcodeFormat.QR_CODE, width, height, hints);
-                    Path filePath = FileSystems.getDefault().getPath(qrcodeDirectory, fileName);
-                    MatrixToImageWriter.writeToPath(bitMatrix, format, filePath);
-
                 }
             }
             redirectAttributes.addFlashAttribute("success", "Thêm dữ liệu thành công");
