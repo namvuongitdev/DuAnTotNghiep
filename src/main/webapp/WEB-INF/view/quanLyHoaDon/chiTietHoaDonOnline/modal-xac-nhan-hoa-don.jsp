@@ -78,3 +78,52 @@
         </div>
     </div>
 </div>
+
+<div id="modalquayLaiTrangThaiHoaDon" class="modal">
+    <div class="modal-content-1" style="width: 50%">
+        <h5 class="mb-3"><b>Xác nhận quay lại trạng thái hoá đơn</b></h5>
+        <span class="close" id="close_modalquayLaiTrangThaiHoaDon">&times;</span>
+        <div class="row">
+            <c:if test="${hoaDon.trangThai == 2}">
+                <form action="/admin/hoa-don/update-trang-thai?trangThai=1&idHD=${hoaDon.id}" method="post">
+                    <label>Ghi chú</label>
+                    <textarea name="ghiChuXacNhan"   class="form-control 1"></textarea>
+                    <br>
+                    <button class="btn btn-primary" onclick="return vaidateXacNhanQuayLai()">Xác nhận</button>
+                </form>
+            </c:if>
+            <c:if test="${hoaDon.trangThai == 3}">
+                <form action="/admin/hoa-don/update-trang-thai?trangThai=2&idHD=${hoaDon.id}" method="post">
+                    <label>Ghi chú</label>
+                    <textarea name="ghiChuXacNhan" class="form-control"></textarea>
+                    <br>
+                    <button class="btn btn-primary" onclick="return vaidateXacNhanQuayLai()">Xác nhận</button>
+                </form>
+            </c:if>
+            <c:if test="${hoaDon.trangThai == 4}">
+                <form action="/admin/hoa-don/update-trang-thai?trangThai=3&idHD=${hoaDon.id}" method="post">
+                    <label>Ghi chú</label>
+                    <textarea name="ghiChuXacNhan"  class="form-control"></textarea>
+                    <br>
+                    <button class="btn btn-primary" onclick="return vaidateXacNhanQuayLai()">Xác nhận</button>
+                </form>
+            </c:if>
+            <c:if test="${hoaDon.trangThai == 5}">
+                <form action="/admin/hoa-don/update-trang-thai?trangThai=1&idHD=${hoaDon.id}" method="post">
+                    <label>Ghi chú</label>
+                    <textarea name="ghiChuXacNhan"  class="form-control"></textarea>
+                    <br>
+                    <button class="btn btn-primary" onclick="return vaidateXacNhanQuayLai()">Xác nhận</button>
+                </form>
+            </c:if>
+            <c:if test="${hoaDon.trangThai == 6}">
+                <form action="/admin/hoa-don/update-trang-thai?trangThai=3&idHD=${hoaDon.id}" method="post">
+                    <label>Ghi chú</label>
+                    <textarea name="ghiChuXacNhan"  class="form-control"></textarea>
+                    <br>
+                    <button class="btn btn-primary" onclick="return vaidateXacNhanQuayLai()">Xác nhận</button>
+                </form>
+            </c:if>
+        </div>
+    </div>
+</div>

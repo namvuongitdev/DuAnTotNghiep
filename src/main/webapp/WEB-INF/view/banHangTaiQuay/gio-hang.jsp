@@ -141,6 +141,15 @@
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
+                const tienKhachDua = document.getElementById("tienKhachDua").value;
+                const regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+                if(regex.test(tienKhachDua.trim())){
+                    Toast.fire({
+                        icon: "error",
+                        title: "tiền khách đưa phải là số nguyên dương"
+                    });
+                    return;
+                }
                 document.getElementById('xacNhanThanhToan').submit();
             } else if (result.isDenied) {
                 return false;

@@ -50,7 +50,11 @@ function getSanPham(page) {
                         if (e.khuyenMai.trangThai === 1 || e.khuyenMai.trangThai === 2) {
                             if(e.trangThai === 1){
                                 khuyenMai = e;
+                            }else{
+                                khuyenMai = null;
                             }
+                        }else{
+                            khuyenMai = null;
                         }
                     })
                 } else {
@@ -121,9 +125,13 @@ function api(page, data) {
 
                 if (data.content[i].sanPhamKhuyenMais.length > 0) {
                     data.content[i].sanPhamKhuyenMais.map(function (e) {
-                        if (e.khuyenMai.trangThai === 1 || e.khuyenMai.trangThai === 2 && e.trangThai === 1) {
-                            khuyenMai = e;
-                        } else {
+                        if (e.khuyenMai.trangThai === 1 || e.khuyenMai.trangThai === 2) {
+                            if(e.trangThai === 1){
+                                khuyenMai = e;
+                            }else{
+                                khuyenMai = null;
+                            }
+                        }else{
                             khuyenMai = null;
                         }
                     })
@@ -131,7 +139,7 @@ function api(page, data) {
                     khuyenMai = null;
                 }
 
-                sanPham += `<tr><td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img}"></td>
+                sanPham += `<tr id="${data.content[i].ma}"><td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img}"></td>
                   <td>${data.content[i].ma}</td>
                   <td>${data.content[i].ten}</td>
                   <td>

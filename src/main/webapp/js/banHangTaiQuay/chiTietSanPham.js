@@ -143,11 +143,19 @@ async function themSanPhamVaoGioHang(data) {
         return;
     } else {
         for (let i = 0; i < dataCTSP.length; i++) {
+            const regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
             if (data.idCTSP === dataCTSP[i].id) {
                 if(soLuong <= 0){
                     Toast.fire({
                         icon: "error",
                         title: "số lượng sản phẩm không thoả mãn"
+                    });
+                    return;
+                }
+                if(regex.test(soLuong.trim())){
+                    Toast.fire({
+                        icon: "error",
+                        title: "số lượng phải là số lương dương"
                     });
                     return;
                 }

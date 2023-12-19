@@ -1,12 +1,15 @@
 package com.example.web.controller;
 
+import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.DiaChi;
+import com.example.web.model.GioHangChiTiet;
 import com.example.web.model.HoaDon;
 import com.example.web.model.KhachHang;
 import com.example.web.request.CheckoutRequest;
 import com.example.web.request.NewDiaChiOnline;
 import com.example.web.response.GioHangReponse;
 import com.example.web.service.CheckoutService;
+import com.example.web.service.IChiTietSanPhamService;
 import com.example.web.service.IDiaChiService;
 import com.example.web.service.IGioHangOnllineService;
 import com.example.web.service.IHoaDonService;
@@ -48,7 +51,7 @@ public class ThanhToanController {
     private IHoaDonService hoaDonService;
 
     @Autowired
-    private ILichSuHoaDonService lichSuHoaDonService;
+    private IChiTietSanPhamService chiTietSanPhamService;
 
     @Autowired
     private HttpServletRequest request;
@@ -107,6 +110,16 @@ public class ThanhToanController {
         } else {
             checkout = checkoutRequest;
             KhachHang khachHang = khachHangService.getKhachHangLogin();
+            List<GioHangChiTiet> response = gioHangOnllineService.getGHCTByKhachHang_id(khachHang.getId());
+            for (GioHangChiTiet o : response) {
+                ChiTietSanPham chiTietSanPham = chiTietSanPhamService.getOne(o.getChiTietSanPham().getId());
+                if (chiTietSanPham.getSoLuong() < o.getSoLuong()) {
+                    attributes.addFlashAttribute("errorSoLuong", "sản phẩm :" + chiTietSanPham.getSanPham().getTen() + ", size :" + chiTietSanPham.getSize().getTen()
+                            + ",màu sắc :" + chiTietSanPham.getMauSac().getTen() + ", số lượng tại cửa hàng chỉ còn :" + chiTietSanPham.getSoLuong() +
+                            ",bạn vui lòng quay lại giỏ hàng chỉnh sửa lại sản phẩm");
+                    return "redirect:/checkouts";
+                }
+            }
             String url = checkoutService.createOrder(khachHang, checkoutRequest, request);
             return "redirect:" + url;
         }
@@ -121,7 +134,7 @@ public class ThanhToanController {
     }
 
     @GetMapping(value = "/payment/return")
-    public String payment(@RequestParam(name = "vnp_TransactionNo") String maGiaDich , RedirectAttributes attributes) {
+    public String payment(@RequestParam(name = "vnp_TransactionNo") String maGiaDich, RedirectAttributes attributes) {
         Integer ischeck = checkoutService.orderReturn(request);
         KhachHang khachHang = khachHangService.getKhachHangLogin();
         if (ischeck == 1) {

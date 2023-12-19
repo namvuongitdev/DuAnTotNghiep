@@ -156,7 +156,11 @@ async function addKhuyenMaiCT(idKM) {
                     if (e.khuyenMai.trangThai === 1 || e.khuyenMai.trangThai === 2) {
                         if (e.trangThai === 1) {
                             khuyenMai = e;
+                        }else{
+                            khuyenMai = null;
                         }
+                    }else{
+                        khuyenMai = null;
                     }
                 })
             } else {

@@ -203,6 +203,13 @@
             }
         });
     }
+    if(${errorSoLuong != null}){
+        Swal.fire({
+            title: "lỗi?",
+            icon:"error",
+            text:"${errorSoLuong}"
+        })
+    }
 </script>
 </body>
 </html>
