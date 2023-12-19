@@ -195,9 +195,22 @@
     let enterKeyPressed = false;
 
     function callYourApi(newValue, gioHang) {
-        if (newValue > 0) {
-            window.location.href = "/gio-hang-onl/cap-nhat-gio-hang/" + newValue + "/" + gioHang.idGioHangCT;
-        }
+        fetch('/gio-hang-onl/get-one/' + gioHang.idGioHangCT)
+            .then(response => response.json())
+            .then(data => {
+                if (newValue <= 0) {
+                    alert("Số lượng không hợp lệ.");
+                    window.location.href = "/gio-hang-onl";
+                } else {
+                    if (newValue > data.soLuong) {
+                        alert("Số lượng Tồn không đủ");
+                        window.location.href = "/gio-hang-onl";
+                    } else if (newValue <= data.soLuong) {
+                        window.location.href = "/gio-hang-onl/cap-nhat-gio-hang/" + newValue + "/" + gioHang.idGioHangCT;
+                    }
+                }
+            })
+       
         enterKeyPressed = false; // Reset the flag after handling the event
     }
 

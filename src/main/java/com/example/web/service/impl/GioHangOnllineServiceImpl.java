@@ -90,7 +90,11 @@ public class GioHangOnllineServiceImpl implements IGioHangOnllineService {
                 // nếu sản phẩm đã có trong giỏ hàng chi tiết
                 if (listGHCT.get(i).getChiTietSanPham().getId().equals(chiTietSanPham.getId())) {
                     Integer soLuongHienTai = listGHCT.get(i).getSoLuong();
-                    Integer soLuongMoi = soLuongHienTai + soLuongThem;
+                    Integer soLuongMoi = 0;
+                    soLuongMoi = soLuongHienTai + soLuongThem;
+                    if(soLuongMoi > chiTietSanPham.getSoLuong()){
+                        soLuongMoi = soLuongThem;
+                    }
                     GioHangChiTiet hangChiTiet = iGioHangCTService.getTheoIdGioHangAndIdCTSP(gioHang.getId(), listGHCT.get(i).getChiTietSanPham().getId());
                     //cập nhật lại số lượng
                     hangChiTiet.setSoLuong(soLuongMoi);

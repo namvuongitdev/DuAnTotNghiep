@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -73,19 +74,30 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon, UUID>, JpaSpeci
             "where lshd.thao_tac = 5 and CONVERT(date  ,lshd.ngay_thao_tac) = CONVERT(date , GETDATE())", nativeQuery = true)
     Integer tongHoaDonHuy();
 
+    @Query(value = "select count(hd.id) from hoa_don hd  join lich_su_hoa_don lshd on hd.id = lshd.id_hoa_don\n" +
+            "where lshd.thao_tac = 5 and CONVERT(date  ,lshd.ngay_thao_tac) = ?1", nativeQuery = true)
+    Integer tongHoaDonHuyDangChon(Date date);
+
     @Query(value = "select count(hd.id) from HoaDon hd where  hd.trangThai = 1")
     Integer tongHoaDonChoXacNhan();
 
     @Query(value = "\n" +
-            "\t\t\tselect sum(tong_tien) from hoa_don where trang_thai = 4", nativeQuery = true)
+            "\t\t\tselect sum(tong_tien) from hoa_don where trang_thai = 4 and YEAR(ngay_thanh_toan) = Year(GETDATE())", nativeQuery = true)
     Integer tongDoanhThu();
 
     @Query(value = "select sum(hd.tong_tien) from hoa_don hd join lich_su_hoa_don lshd on hd.id = lshd.id_hoa_don where lshd.thao_tac = 4 and CONVERT(DATE,lshd.ngay_thao_tac) = CONVERT(DATE,GETDATE())"
             , nativeQuery = true)
     Double getDoanhThuTrongNgay();
 
+    @Query(value = "select sum(hd.tong_tien) from hoa_don hd join lich_su_hoa_don lshd on hd.id = lshd.id_hoa_don where lshd.thao_tac = 4 and CONVERT(DATE,lshd.ngay_thao_tac) = ?1"
+            , nativeQuery = true)
+    Double getDoanhThuTrongNgayDangChon(Date date);
+
     @Query(value = "select count(hd.id) from hoa_don hd join lich_su_hoa_don lshd on hd.id = lshd.id_hoa_don where CONVERT(DATE,lshd.ngay_thao_tac) = CONVERT(DATE,GETDATE()) and lshd.thao_tac = 4", nativeQuery = true)
     Integer tongHoaDon();
+
+    @Query(value = "select count(hd.id) from hoa_don hd join lich_su_hoa_don lshd on hd.id = lshd.id_hoa_don where CONVERT(DATE,lshd.ngay_thao_tac) = ?1 and lshd.thao_tac = 4", nativeQuery = true)
+    Integer tongHoaDonDangChon(Date date);
 
     @Query(value = "select sum(hd.tong_tien) from hoa_don hd join lich_su_hoa_don lshd on hd.id = lshd.id_hoa_don where lshd.thao_tac = 4 and MONTH(lshd.ngay_thao_tac) =?1 and  YEAR(lshd.ngay_thao_tac) = ?2", nativeQuery = true)
     Double getDoanhThuTheoThang(Integer thang, Integer nam);

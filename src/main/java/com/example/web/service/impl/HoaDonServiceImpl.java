@@ -417,4 +417,19 @@ public class HoaDonServiceImpl implements IHoaDonService {
     public List<Integer> getNams() {
         return hoaDonRepository.getNam();
     }
+
+    @Override
+    public Double getDoanhThuTrongNgayDangChon(Date date) {
+        return hoaDonRepository.getDoanhThuTrongNgayDangChon(date);
+    }
+
+    @Override
+    public Integer tongHoaDonDangChon(Date date) {
+        return hoaDonRepository.tongHoaDonDangChon(date);
+    }
+
+    @Override
+    public Integer tongHoaDonHuyDangChon(Date date) {
+        return hoaDonRepository.tongHoaDonHuyDangChon(date);
+    }
 }

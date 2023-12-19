@@ -74,14 +74,18 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Doanh thu hôm nay
+
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><fmt:formatNumber
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="datetim"><fmt:formatNumber
                                                     pattern="#,###"
                                                     value="${doanhThuTrongNgay == null ? 0 : doanhThuTrongNgay}"></fmt:formatNumber>
                                                 đ
+
                                             </div>
+
                                         </div>
                                         <div class="col-auto">
+                                            <input  type="date" id="date" oninput="displaySelectedDate()">
                                             <i class="bi bi-cash-coin"></i>
                                         </div>
                                     </div>
@@ -117,9 +121,10 @@
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                 Tổng số hóa đơn thành công hôm nay
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">${tongHoaDon}</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="date1input">${tongHoaDon}</div>
                                         </div>
                                         <div class="col-auto">
+                                            <input  type="date" id="date1" oninput="date1()">
                                             <i class="bi bi-receipt"></i>
                                         </div>
                                     </div>
@@ -135,9 +140,10 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                 <p style="color: red"> Đơn huỷ trong hôm nay</p></div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">${tongHDHuy}</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="huy1">${tongHDHuy}</div>
                                         </div>
                                         <div class="col-auto">
+                                            <input  type="date" id="huy" oninput="huy()">
                                             <i class="bi bi-box-seam"></i>
                                         </div>
                                     </div>
@@ -263,5 +269,82 @@
 <!-- Page level custom scripts -->
 <script src="../../../admin/js/demo/chart-area-demo.js"></script>
 <script src="../../../admin/js/demo/chart-pie-demo.js"></script>
+<script>
+    const VND = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+    });
+    function displaySelectedDate() {
+        var inputDate = document.getElementById("date").value;
+
+        // Check if a date is selected
+        if (inputDate) {
+            var selectedDate = new Date(inputDate);
+
+            var day = selectedDate.getDate();
+            var month = selectedDate.getMonth() + 1; // Month is zero-based
+            var year = selectedDate.getFullYear();
+
+            // Format the date as DD/MM/YYYY
+            var formattedDate = day + '/' + month + '/' + year;
+            console.log(formattedDate);
+            fetch('/admin/thong-ke/ngay/' + day +'/' + month + '/' + year)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("snsss");
+                    document.getElementById("datetim").innerText = VND.format(data[0]);
+                })
+
+        } else {
+            document.getElementById("datetim").innerText = ""; // Clear the content if no date is selected
+        }
+    }
+    function date1() {
+        var inputDate = document.getElementById("date1").value;
+
+        // Check if a date is selected
+        if (inputDate) {
+            var selectedDate = new Date(inputDate);
+
+            var day = selectedDate.getDate();
+            var month = selectedDate.getMonth() + 1; // Month is zero-based
+            var year = selectedDate.getFullYear();
+
+            // Format the date as DD/MM/YYYY
+            var formattedDate = day + '/' + month + '/' + year;
+            fetch('/admin/thong-ke/date1/' + day +'/' + month + '/' + year)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("date1input").innerText = data[0];
+                })
+
+        } else {
+            document.getElementById("date1input").innerText = ""; // Clear the content if no date is selected
+        }
+    }
+    function huy() {
+        var inputDate = document.getElementById("huy").value;
+
+        // Check if a date is selected
+        if (inputDate) {
+            var selectedDate = new Date(inputDate);
+
+            var day = selectedDate.getDate();
+            var month = selectedDate.getMonth() + 1; // Month is zero-based
+            var year = selectedDate.getFullYear();
+
+            // Format the date as DD/MM/YYYY
+            var formattedDate = day + '/' + month + '/' + year;
+            fetch('/admin/thong-ke/huy/' + day +'/' + month + '/' + year)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("huy1").innerText = data[0];
+                })
+
+        } else {
+            document.getElementById("huy1").innerText = ""; // Clear the content if no date is selected
+        }
+    }
+</script>
 </body>
 </html>
