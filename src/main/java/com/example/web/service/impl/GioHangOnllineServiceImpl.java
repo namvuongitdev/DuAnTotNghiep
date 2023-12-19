@@ -92,9 +92,6 @@ public class GioHangOnllineServiceImpl implements IGioHangOnllineService {
                     Integer soLuongHienTai = listGHCT.get(i).getSoLuong();
                     Integer soLuongMoi = 0;
                     soLuongMoi = soLuongHienTai + soLuongThem;
-                    if(soLuongMoi > chiTietSanPham.getSoLuong()){
-                        soLuongMoi = soLuongThem;
-                    }
                     GioHangChiTiet hangChiTiet = iGioHangCTService.getTheoIdGioHangAndIdCTSP(gioHang.getId(), listGHCT.get(i).getChiTietSanPham().getId());
                     //cập nhật lại số lượng
                     hangChiTiet.setSoLuong(soLuongMoi);

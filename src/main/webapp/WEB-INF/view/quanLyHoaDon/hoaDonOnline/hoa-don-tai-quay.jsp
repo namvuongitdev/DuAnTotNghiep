@@ -45,7 +45,6 @@
                                 <th scope="col">Ngày tạo</th>
                                 <th scope="col">Tên Khách hàng</th>
                                 <th scope="col">Tổng tiền</th>
-                                <th scope="col">Hoàn trả</th>
                                 <th scope="col">Tình trạng</th>
                                 <th scope="col">Thao tác</th>
                             </tr>
@@ -81,13 +80,6 @@
                                     </c:choose>
                                     <td style="color:red;">
                                         <fmt:formatNumber pattern="#,###" value="${hd.tongTien()}"/> đ
-                                    </td>
-                                    <td>
-                                            <c:if test="${hd.soLuongSanPhamHoanTra() != 0}">
-                                                <button class="btn btn-danger rounded-pill">${hd.soLuongSanPhamHoanTra()}
-                                                    sản phẩm
-                                                </button>
-                                            </c:if>
                                     </td>
                                     <td>
                                         <c:if test="${hd.trangThai == 4}">

@@ -1,5 +1,6 @@
 package com.example.web.controller;
 
+import com.example.web.Config.status.KhuyenMaiStatus;
 import com.example.web.model.KhuyenMai;
 import com.example.web.model.SanPham;
 import com.example.web.model.SanPhamKhuyenMai;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -96,19 +98,24 @@ public class KhuyenMaiController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid @ModelAttribute("khuyenMaiRequest") KhuyenMaiRequest khuyenMaiRequest, BindingResult result, Model model  , RedirectAttributes attributes) {
+    public String create(@Valid @ModelAttribute("khuyenMaiRequest") KhuyenMaiRequest khuyenMaiRequest, BindingResult result, Model model, RedirectAttributes attributes) {
         if (result.hasErrors()) {
             model.addAttribute("dataKhuyenMai", khuyenMaiRequest);
             return "quanlykhuyenmai/khuyenmai/new-khuyen-mai";
         }
         KhuyenMai response = modelMapper.map(khuyenMaiRequest, KhuyenMai.class);
         Integer trangThai = khuyenMaiService.validateTrangThai(response);
+        if (trangThai == KhuyenMaiStatus.HET_HAN) {
+            model.addAttribute("error", "ngày kết thức phải có sau ngày bắt đầu");
+            model.addAttribute("dataKhuyenMai", khuyenMaiRequest);
+            return "quanlykhuyenmai/khuyenmai/new-khuyen-mai";
+        }
         response.setTrangThai(trangThai);
         KhuyenMai km = khuyenMaiService.addKhuyenMai(response);
-        if(km != null){
-            attributes.addFlashAttribute("success" , "thêm thành công");
-        }else{
-            attributes.addFlashAttribute("error" , "thêm không thành công");
+        if (km != null) {
+            attributes.addFlashAttribute("success", "thêm thành công");
+        } else {
+            attributes.addFlashAttribute("error", "thêm không thành công");
         }
         return "redirect:/admin/khuyen-mai/detail?id=" + km.getId();
     }
@@ -132,6 +139,7 @@ public class KhuyenMaiController {
         Page<SanPhamKhuyenMai> list = khuyenMaiService.getKhuyenMaiById(UUID.fromString(id), page);
         sanPhamController.danhSachThuocTinhSanPham(model);
         model.addAttribute("listChiTietKhuyenMai", list);
+        model.addAttribute("data" , "create");
         model.addAttribute("dataKhuyenMai", km);
         model.addAttribute("url", "/admin/khuyen-mai/update?idKM=" + km.getId());
         model.addAttribute("sanPhamKhuyenMai", new SanPhamKhuyenMai());
@@ -164,18 +172,18 @@ public class KhuyenMaiController {
     }
 
     @PostMapping("delete")
-    public String delete(@RequestParam String idKM , RedirectAttributes attributes){
+    public String delete(@RequestParam String idKM, RedirectAttributes attributes) {
         KhuyenMai khuyenMai = khuyenMaiService.getKhuyenMaiById(UUID.fromString(idKM));
-        if(khuyenMai != null){
-            attributes.addFlashAttribute("success" , "xoá thành công");
-        }else{
-            attributes.addFlashAttribute("error" , "không tìm thấy khuyến mại");
+        if (khuyenMai != null) {
+            attributes.addFlashAttribute("success", "xoá thành công");
+        } else {
+            attributes.addFlashAttribute("error", "không tìm thấy khuyến mại");
         }
         return "redirect:/admin/khuyen-mai/";
     }
 
     @PostMapping("/update-san-pham-khuyen-mai")
-    public String updateSanPhamKhuyenMai(@RequestParam String idSPKM, @ModelAttribute("sanPhamKhuyenMai") SanPhamKhuyenMai sanPhamKhuyenMai , RedirectAttributes attributes) {
+    public String updateSanPhamKhuyenMai(@RequestParam String idSPKM, @ModelAttribute("sanPhamKhuyenMai") SanPhamKhuyenMai sanPhamKhuyenMai, RedirectAttributes attributes) {
         SanPhamKhuyenMai spkm = khuyenMaiService.getSanPhamKhuyenMaiById(UUID.fromString(idSPKM));
         if (sanPhamKhuyenMai.getLoaiGiamGia()) {
             Integer donGiaKhiGiamPhanTram = spkm.getSanPhamKM().getGiaBan().intValue() - (spkm.getSanPhamKM().getGiaBan().intValue() / 100) * sanPhamKhuyenMai.getMucGiam().intValue();
@@ -186,11 +194,11 @@ public class KhuyenMaiController {
         }
         spkm.setLoaiGiamGia(sanPhamKhuyenMai.getLoaiGiamGia());
         spkm.setMucGiam(sanPhamKhuyenMai.getMucGiam());
-        SanPhamKhuyenMai kmsp =  khuyenMaiService.updateSanPhamKhuyenMai(spkm);
-        if(kmsp != null){
-            attributes.addFlashAttribute("success" , "update thành công");
-        }else{
-            attributes.addFlashAttribute("error" , "update không thành công");
+        SanPhamKhuyenMai kmsp = khuyenMaiService.updateSanPhamKhuyenMai(spkm);
+        if (kmsp != null) {
+            attributes.addFlashAttribute("success", "update thành công");
+        } else {
+            attributes.addFlashAttribute("error", "update không thành công");
         }
         if (urlUpdate == null) {
             return "redirect:/admin/khuyen-mai/detail?id=" + spkm.getKhuyenMai().getId();
@@ -200,13 +208,13 @@ public class KhuyenMaiController {
     }
 
     @GetMapping("/delete")
-    public String deleteKhuyenMaiCT(@RequestParam UUID idKMCT , @RequestParam UUID idKM , RedirectAttributes attributes){
+    public String deleteKhuyenMaiCT(@RequestParam UUID idKMCT, @RequestParam UUID idKM, RedirectAttributes attributes) {
         Boolean isCheck = khuyenMaiService.deleteKhuyenMaiCT(idKMCT);
-        if(isCheck){
-            attributes.addFlashAttribute("success" , "xoá thành công");
-        }else{
-            attributes.addFlashAttribute("error" , "không tìm thấy khuyến mại");
+        if (isCheck) {
+            attributes.addFlashAttribute("success", "xoá thành công");
+        } else {
+            attributes.addFlashAttribute("error", "không tìm thấy khuyến mại");
         }
-        return "redirect:/admin/khuyen-mai/detail?id="+idKM;
+        return "redirect:/admin/khuyen-mai/detail?id=" + idKM;
     }
 }

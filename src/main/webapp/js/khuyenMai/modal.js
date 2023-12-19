@@ -101,13 +101,21 @@ function selectLoaiGiamGia(value) {
 
 async function addKhuyenMaiCT(idKM) {
     const mucGiam = document.getElementById("mucGiam").value.trim();
+    const regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     if (mucGiam === "") {
         message.fire({
             text: "Mức giá không được để trống",
             icon: "error"
         });
         return false;
-    } else if (mucGiam <= 0) {
+    }else if(regex.test(mucGiam)){
+        message.fire({
+            text: "Mức giá phải là số nguyến dương",
+            icon: "error"
+        });
+        return false;
+    }
+    else if (mucGiam <= 0) {
         message.fire({
             text: "Mức giảm không thoả mãn",
             icon: "error"

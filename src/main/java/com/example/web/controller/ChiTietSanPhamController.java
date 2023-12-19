@@ -3,6 +3,7 @@ package com.example.web.controller;
 import com.example.web.model.ChiTietSanPham;
 import com.example.web.model.MauSac;
 import com.example.web.model.SanPham;
+import com.example.web.model.Size;
 import com.example.web.request.UpdateChiTietSanPham;
 import com.example.web.response.ChiTietSanPhamResponse;
 import com.example.web.service.IAnhService;
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,37 +68,59 @@ public class ChiTietSanPhamController {
 
 
     @PostMapping(value = "/add")
-    public String addCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, Model model,
-                          @RequestParam("id") String idSanPham, RedirectAttributes redirectAttributes,
-                          @RequestParam("size") String kichCo, @RequestParam("mauSac") UUID mauSac) throws IOException, WriterException {
+    public String addMultipleCTSP(@ModelAttribute("chiTietSanPham") ChiTietSanPham chiTietSanPham, Model model,
+                                  @RequestParam("id") String idSanPham, RedirectAttributes redirectAttributes,
+                                  HttpServletRequest request) throws IOException, WriterException {
+
+        String[] kichCoList = request.getParameterValues("size");
+        String[] mauSacList = request.getParameterValues("mauSac");
 
         Random random = new Random();
         SanPham sanPham = sanPhamService.getOne(UUID.fromString(idSanPham));
+        if(kichCoList == null || mauSacList == null) {
+            redirectAttributes.addFlashAttribute("error", "Thêm dữ liệu thất bại");
+        }else{
+            for (String kichCo : kichCoList) {
+                for (String mauSac : mauSacList) {
+                    ChiTietSanPham checkMauSacSize = chiTietSanPhamService.checkSizeMauSac(UUID.fromString(mauSac), kichCo, UUID.fromString(idSanPham));
+                    if (checkMauSacSize != null) {
+                        redirectAttributes.addFlashAttribute("error", "Dữ liệu chi tiết sản phẩm "+checkMauSacSize.getSize().getTen()+", "+checkMauSacSize.getMauSac().getTen() +" đã tồn tại");
+                        return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
+                    }else{
+                        chiTietSanPham.setSanPham(sanPham);
+                        chiTietSanPham.setQrCode(String.valueOf(random.nextInt(1000000000)));
+                        chiTietSanPham.setTrangThai(1);
+                        Size size = new Size();
+                        size.setId(kichCo);
+                        chiTietSanPham.setSize(size);
+                        MauSac mauSac1 = new MauSac();
+                        mauSac1.setId(UUID.fromString(mauSac));
+                        chiTietSanPham.setMauSac(mauSac1);
+                        if(chiTietSanPham.getSoLuong() == null) {
+                            redirectAttributes.addFlashAttribute("error", "Thêm dữ liệu thất bại");
+                            return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
+                        }else if(chiTietSanPham.getSoLuong() < 1){
+                            redirectAttributes.addFlashAttribute("error", "Số lượng phải lớn hơn 0");
+                            return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
+                        }else{
+                            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong());
+                        }
+                        chiTietSanPhamService.save(chiTietSanPham);
 
-        ChiTietSanPham checkMauSacSize = chiTietSanPhamService.checkSizeMauSac(mauSac, kichCo, UUID.fromString(idSanPham));
-
-        if (chiTietSanPham.getSoLuong() < 1) {
-            redirectAttributes.addFlashAttribute("error", "Số lượng phải lớn hơn 0");
-        }else if(checkMauSacSize != null){
-            redirectAttributes.addFlashAttribute("error", "Dữ liệu này đã tồn tại");
-        } else {
-            chiTietSanPham.setSanPham(sanPham);
-            chiTietSanPham.setQrCode(String.valueOf(random.nextInt(1000000000)));
-            chiTietSanPham.setTrangThai(1);
-            List<ChiTietSanPham> listChiTietSanPham = chiTietSanPhamService.getChiTietSanPham(idSanPham);
-            chiTietSanPhamService.save(chiTietSanPham);
-            redirectAttributes.addFlashAttribute("listChiTietSanPhamBySP", listChiTietSanPham);
+                        // Tạo QR code và lưu vào thư mục
+                        int width = 300;
+                        int height = 300;
+                        String format = "png";
+                        String fileName = chiTietSanPham.getSanPham().getMa() + "-" + chiTietSanPham.getQrCode() + "." + format;
+                        Map<EncodeHintType, Object> hints = new HashMap<>();
+                        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+                        BitMatrix bitMatrix = new MultiFormatWriter().encode(chiTietSanPham.getQrCode(), BarcodeFormat.QR_CODE, width, height, hints);
+                        Path filePath = FileSystems.getDefault().getPath(qrcodeDirectory, fileName);
+                        MatrixToImageWriter.writeToPath(bitMatrix, format, filePath);
+                    }
+                }
+            }
             redirectAttributes.addFlashAttribute("success", "Thêm dữ liệu thành công");
-
-            int width = 300;
-            int height = 300;
-            String format = "png";
-            String fileName = chiTietSanPham.getSanPham().getMa() + "-" + chiTietSanPham.getMauSac().getTen() + "-" + chiTietSanPham.getSize().getTen() + "-" + chiTietSanPham.getQrCode() + "." + format;
-            Map<EncodeHintType, Object> hints = new HashMap<>();
-            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-            BitMatrix bitMatrix = new MultiFormatWriter().encode(chiTietSanPham.getQrCode(), BarcodeFormat.QR_CODE, width, height, hints);
-            Path filePath = FileSystems.getDefault().getPath(qrcodeDirectory, fileName);
-            MatrixToImageWriter.writeToPath(bitMatrix, format, filePath);
         }
         return "redirect:/admin/san-pham/hien-thi/" + idSanPham;
     }

@@ -153,7 +153,6 @@ public class CheckoutServiceImpl implements CheckoutService {
         }
         String diaChi = request.getDiaChi();
         HoaDon hoaDon = HoaDon.builder()
-                .trangThai(HoaDonStatus.CHO_XAC_NHAN)
                 .ngayTao(java.util.Calendar.getInstance().getTime())
                 .ma("HD" + (hoaDonRepository.findAll().size() + 1))
                 .loaiHoaDon(LoaiHoaDon.ONLINE)
@@ -166,6 +165,10 @@ public class CheckoutServiceImpl implements CheckoutService {
                 .build();
         if(hoaDon.getPhuongThucThanhToan() == PhuongThucThanhToanStatus.VNPAY){
              hoaDon.setMaGiaoDich(request.getMaGiaDich());
+             hoaDon.setTrangThai(HoaDonStatus.DA_TIEP_NHAN);
+        }
+        if(hoaDon.getPhuongThucThanhToan() == PhuongThucThanhToanStatus.THANH_TOAN_KHI_NHAN_HANG){
+            hoaDon.setTrangThai(HoaDonStatus.CHO_XAC_NHAN);
         }
        HoaDon hd =  hoaDonRepository.save(hoaDon);
         List<GioHangChiTiet> response = gioHangOnllineService.getGHCTByKhachHang_id(khachHang.getId());

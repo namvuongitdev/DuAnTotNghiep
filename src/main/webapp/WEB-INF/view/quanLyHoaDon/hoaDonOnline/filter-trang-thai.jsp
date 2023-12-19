@@ -30,32 +30,5 @@
             <label class="btn btn-outline-secondary" for="daHoanThanh" ${fillter.trangThai == '4'? 'style="background: #95999c ; color: white"':''}><b>Đã hoàn thành</b></label>
             <input type="submit" name="trangThai" value="4" id="daHoanThanh" class="btn-check">
         </div>
-        <div>
-            <label class="btn btn-outline-secondary" for="hoanTra" ${fillter.trangThai == '2'? 'style="background: #95999c ; color: white"':''}><b>Hoàn trả</b></label>
-            <input type="submit" name="trangThai" value="2" id="hoanTra" class="btn-check">
-        </div>
     </div>
 </nav>
-
-<%--<select class="form-select" name="trangThai"--%>
-<%--        aria-label="Default select example">--%>
-<%--    <option value="">Tất cả</option>--%>
-<%--    <option value="1" ${fillter.trangThai == '1'? 'selected':''}--%>
-<%--    >Chờ xác nhận--%>
-<%--    </option>--%>
-<%--    <option value="2" ${fillter.trangThai == '2'? 'selected':''}--%>
-<%--    >Đã xác nhận--%>
-<%--    </option>--%>
-<%--    <option value="3" ${fillter.trangThai == '3'? 'selected':''}--%>
-<%--    >Giao Hàng--%>
-<%--    </option>--%>
-<%--    <option value="5" ${fillter.trangThai == '5'? 'selected':''}--%>
-<%--    >Huỷ--%>
-<%--    </option>--%>
-<%--    <option value="6" ${fillter.trangThai == '6'? 'selected':''}--%>
-<%--    >Giao thành công--%>
-<%--    </option>--%>
-<%--    <option value="4" ${fillter.trangThai == '4'? 'selected':''}--%>
-<%--    >Đã hoàn thành--%>
-<%--    </option>--%>
-<%--</select>--%>

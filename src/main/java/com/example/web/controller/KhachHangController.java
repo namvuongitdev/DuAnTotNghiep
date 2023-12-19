@@ -77,7 +77,19 @@ public class KhachHangController {
     @PostMapping("/create")
     @ResponseBody
     public KhachHang createKhachHang(@RequestBody KhachHang khachHang){
-      return khachHangService.themMoiKhachHang(khachHang);
+        char[] password = RandomUntil.randomFull();
+        Date date = java.util.Calendar.getInstance().getTime();
+        khachHang.setTrangThai(0);
+        khachHang.setNgayTao(date);
+        khachHang.setMatKhau(passwordEncoder.encode(new String(password)));
+        mailService.sendMail("sportsclothing46@gmail.com",
+                khachHang.getEmail(),
+                "Chúc mừng bạn đã đến với Sport Clothing.",
+                "Tên đăng nhập: " + khachHang.getTaiKhoan() + "\n"
+                        + "Mật khẩu : " + new String(password) + "\n\n"
+                        + "Họ tên  : " + khachHang.getHoTen() + "\n"
+                        + "Số điện thoại  :" + khachHang.getSdt() + "\n\n");
+      return  khachHangService.themMoiKhachHang(khachHang);
     }
 //    /----------------------------------------------------------/
     @GetMapping("/hien-thi")

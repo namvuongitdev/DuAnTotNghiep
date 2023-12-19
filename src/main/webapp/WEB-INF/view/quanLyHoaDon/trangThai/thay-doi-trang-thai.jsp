@@ -24,7 +24,7 @@
 <c:if test="${hoaDon.trangThai == 4 && isChecks}">
     <button class="btn btn-danger" id="xacNhanHuyHoaDon">Huỷ</button>
 </c:if>
-<c:if test="${hoaDon.trangThai == 2 || hoaDon.trangThai == 3 || hoaDon.trangThai == 6}">
-     <button class="btn btn-warning" id="xacNhanQuayLai">Quay lại</button>
-</c:if>
+<%--<c:if test="${hoaDon.trangThai == 2 || hoaDon.trangThai == 3 || hoaDon.trangThai == 6}">--%>
+<%--     <button class="btn btn-warning" id="xacNhanQuayLai">Quay lại</button>--%>
+<%--</c:if>--%>
 

@@ -331,6 +331,11 @@ public class HoaDonServiceImpl implements IHoaDonService {
                     return 2;
                 }
             }
+            if(trangThai == HoaDonStatus.GIAO_HANG && hd.getLoaiHoaDon() == LoaiHoaDon.ONLINE && hd.getPhuongThucThanhToan() == PhuongThucThanhToanStatus.VNPAY){
+                if (hd.getPhiVanChuyen() == null) {
+                    return 2;
+                }
+            }
             if (trangThai == HoaDonStatus.GIAO_HANG) {
                 BigDecimal tongTien = hoaDonRepository.tongTien(idHD);
                 hd.setTongTien(BigDecimal.valueOf(tongTien.intValue() + hd.getPhiVanChuyen().intValue()));

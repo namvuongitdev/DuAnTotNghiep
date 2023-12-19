@@ -19,7 +19,7 @@
                                 <div class="row">
                                     <div class="mb-3">
                                         <label class="form-label">Kích cỡ :</label>
-                                        <select id="size" name="size" class="form-select">
+                                        <select id="size" name="size" class="selectpicker" multiple>
                                             <option ng-repeat="kichCo in lstKichCo" value="{{kichCo.id}}">
                                                 {{kichCo.ten}}
                                             </option>
@@ -29,7 +29,7 @@
                                 <div class="row">
                                     <div class="mb-3">
                                         <label class="form-label">Màu sắc:</label>
-                                        <select id="mauSac" name="mauSac" class="form-select">
+                                        <select id="mauSac" name="mauSac" class="selectpicker" multiple>
                                             <option ng-repeat="mauSac in lstMauSac" value="{{mauSac.id}}">
                                                 {{mauSac.ten}}
                                             </option>

@@ -64,7 +64,7 @@ async function modalQrCode(idctsp) {
     const data = await api.json();
     console.log(data[0][0]);
     document.getElementById("modalHienThiQrcode").innerHTML = `
-         <img src="/qr/${data[0][0]}-${data[0][2]}-${data[0][3]}-${data[0][1]}.png" alt="" style="width: 200px;height: 200px">
+         <img src="/qr/${data[0][0]}-${data[0][1]}.png" alt="" style="width: 200px;height: 200px">
        <p style="text-align: center">${data[0][1]}</p> 
       `
 }

@@ -77,7 +77,7 @@
                                                    style="text-decoration: none; color: black">Quản lý Khuyến mại</a>
                     </li>
                     <li class="breadcrumb-item">Chi tiết</li>
-                    <li class="breadcrumb-item" style="color: #1da1f2">${dataKhuyenMai.ma}</li>
+               <li class="breadcrumb-item" style="color: #1da1f2">${data != null ? dataKhuyenMai.ma : "" }</li>
                 </ol>
             </nav>
         </div>
@@ -126,7 +126,7 @@
                         <div class="row">
                             <div>
                                 <button class="btn btn-primary"
-                                        onclick="confirmKhuyenMai(event , `${dataKhuyenMai.ma != null ? 'update' : 'Thêm'}`)">${dataKhuyenMai.ma != null ? "Cập nhập" : "Thêm"}</button>
+                                        onclick="confirmKhuyenMai(event , `${data != null ? 'update' : 'Thêm'}`)">${data != null ? "Cập nhập" : "Thêm"}</button>
                             </div>
                         </div>
                         <div class="col-sm-3">

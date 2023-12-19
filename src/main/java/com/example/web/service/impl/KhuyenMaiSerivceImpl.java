@@ -108,7 +108,6 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
                     SanPhamKhuyenMai sanPhamAsKhuyenMai = repository.checkTonTaiSanPham(o.getSanPhamKM().getId());
                     // kiểm tra sản phẩm có nằm trong khuyến mại khác không
                     if (sanPhamAsKhuyenMai != null && sanPhamAsKhuyenMai.getKhuyenMai().getMa() != khuyenMai.getMa()) {
-                        System.out.println("khuyen mại trang thai 2");
                         o.setTrangThai(KhuyenMaiStatus.NGUNG_KICH_HOAT);
                     } else {
                         o.setTrangThai(KhuyenMaiStatus.KICH_HOAT);
@@ -287,7 +286,7 @@ public class KhuyenMaiSerivceImpl implements IKhuyenMaiService {
         listKhuyenMai.forEach(o -> {
             o.setTrangThai(KhuyenMaiStatus.HET_HAN);
             o.getSanPhamKhuyenMais().forEach(kmct -> {
-                kmct.setTrangThai(KhuyenMaiStatus.NGUNG_KICH_HOAT);
+                sanPhamKhuyenMaiRepository.delete(sanPhamKhuyenMaiRepository.getReferenceById(kmct.getId()));
             });
             repository.save(o);
         });

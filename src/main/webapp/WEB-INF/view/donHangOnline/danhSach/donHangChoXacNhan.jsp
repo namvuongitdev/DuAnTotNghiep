@@ -136,13 +136,6 @@
                             </div>
                         </td>
                         <td>
-                            <c:if test="${hd[5]==1}">
-                                <div>
-                                    <button class="xacNhanHuyHoaDon" id="xacNhanHuyHoaDon${hd[0]}" style="border: none; background-color: white">
-                                        <a class="btn btn-danger text-light">Huỷ</a>
-                                    </button>
-                                </div>
-                            </c:if>
                             <div>
                                 <button class="xacNhanHoaDon" id="xacNhanHoaDon" style="visibility: hidden;border: none; background-color: white">
                                     <a class="btn btn-success text-light">Đã nhận</a>
@@ -152,21 +145,6 @@
                     </tr>
                     </tbody>
                 </table>
-                <%--hủy đơn--%>
-                <div id="modalXacNhanHuyHoaDon${hd[0]}" class="modal">
-                    <div class="modal-content-1" style="width: 50%">
-                        <h5 class="mb-3"><b>Xác nhận huỷ hoá đơn</b></h5>
-                        <span class="close" id="close_modalXacNhanHuyHoaDon${hd[0]}">&times;</span>
-                        <div class="row">
-                            <form action="/cuaToi/update-trang-thai?trangThai=5&idHD=${hd[0]}" method="post">
-                                <label>Ghi chú</label>
-                                <textarea name="ghiChuXacNhan" class="form-control"></textarea>
-                                <br>
-                                <button class="btn btn-primary">Xác nhận</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </c:forEach>
             <%--end--%>
             <%--                  phân trang--%>

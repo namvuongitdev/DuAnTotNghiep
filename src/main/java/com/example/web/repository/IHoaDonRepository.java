@@ -82,7 +82,7 @@ public interface IHoaDonRepository extends JpaRepository<HoaDon, UUID>, JpaSpeci
     Integer tongHoaDonChoXacNhan();
 
     @Query(value = "\n" +
-            "\t\t\tselect sum(tong_tien) from hoa_don where trang_thai = 4 and YEAR(ngay_thanh_toan) = Year(GETDATE())", nativeQuery = true)
+            "\t\t\tselect sum(tong_tien) from hoa_don where trang_thai = 4 and YEAR(ngay_nhan_hang) = Year(GETDATE())", nativeQuery = true)
     Integer tongDoanhThu();
 
     @Query(value = "select sum(hd.tong_tien) from hoa_don hd join lich_su_hoa_don lshd on hd.id = lshd.id_hoa_don where lshd.thao_tac = 4 and CONVERT(DATE,lshd.ngay_thao_tac) = CONVERT(DATE,GETDATE())"

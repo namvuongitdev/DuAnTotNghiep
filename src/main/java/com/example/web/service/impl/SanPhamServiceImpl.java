@@ -106,10 +106,10 @@ public class SanPhamServiceImpl implements ISanPhamService {
                 if (filter.getGioiTinh() != null) {
                     predicates.add(criteriaBuilder.and(criteriaBuilder.equal(root.get("gioiTinh"), filter.getGioiTinh())));
                 }
-                if (!sapXep.isEmpty() && sapXep != null && sapXep.equalsIgnoreCase("ngayTao")) {
+                if (!sapXep.isEmpty() && sapXep.equalsIgnoreCase("ngayTao")) {
                     query.orderBy(criteriaBuilder.desc(root.get(filter.getSapXep())));
-                } else if (!sapXep.isEmpty() && sapXep != null && sapXep.equalsIgnoreCase("price-asc")) {
-                    if (request.getRequestURI().contains("/admin/san-pham/api-filter") || request.getRequestURI().contains("/index/api-filter")) {
+                } else if (!sapXep.isEmpty() && sapXep.equalsIgnoreCase("price-asc")) {
+                    if (request.getRequestURI().contains("api-filter")) {
                         query.orderBy(criteriaBuilder.asc(criteriaBuilder.selectCase()
                                 .when(sanPhamKhuyenMais.get("donGiaSauKhiGiam").isNull(), root.get("giaBan"))
                                 .when(criteriaBuilder.and(sanPhamKhuyenMais.get("donGiaSauKhiGiam").isNotNull(), criteriaBuilder.equal(sanPhamKhuyenMais.join("khuyenMai", JoinType.LEFT).get("trangThai"), 1), criteriaBuilder.equal(sanPhamKhuyenMais.get("trangThai"), 1)),
@@ -120,7 +120,7 @@ public class SanPhamServiceImpl implements ISanPhamService {
                         query.orderBy(criteriaBuilder.asc(root.get("giaBan")));
                     }
                 } else {
-                    if (request.getRequestURI().contains("/admin/san-pham/api-filter") || request.getRequestURI().contains("/index/api-filter")) {
+                    if (request.getRequestURI().contains("api-filter")) {
                         query.orderBy(criteriaBuilder.desc(criteriaBuilder.selectCase()
                                 .when(sanPhamKhuyenMais.get("donGiaSauKhiGiam").isNull(), root.get("giaBan"))
                                 .when(criteriaBuilder.and(sanPhamKhuyenMais.get("donGiaSauKhiGiam").isNotNull(), criteriaBuilder.equal(sanPhamKhuyenMais.join("khuyenMai", JoinType.LEFT).get("trangThai"), 1), criteriaBuilder.equal(sanPhamKhuyenMais.get("trangThai"), 1)),

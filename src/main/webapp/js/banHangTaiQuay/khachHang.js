@@ -97,25 +97,69 @@ btnThemKhachHang.onclick = function () {
 }
 
 async function themKhachHang() {
-    const tenKhachHang = document.getElementById('tenKhachHang')
-    const sdt = document.getElementById('soDienThoaiKhachHang')
-    const diaChi = document.getElementById('diaChiKhachHangThemMoi')
-    const email = document.getElementById('emailKhachHang')
+    const tenKhachHang = document.getElementById('tenKhachHang').value.trim()
+    const sdt = document.getElementById('soDienThoaiKhachHang').value.trim()
+    const email = document.getElementById('emailKhachHang').value.trim()
+    const taiKhoan = document.getElementById('taiKhoan').value.trim()
 
-    const data = {
-        hoTen: tenKhachHang.value,
-        sdt: sdt.value,
-        diaChi: diaChi.value,
-        email: email.value
+    if(tenKhachHang === ""){
+        Toast.fire({
+            text:"tên không được để trống",
+            icon:"error"
+        })
+        return ;
+    }else if(sdt === ""){
+        Toast.fire({
+            text:"số điện thoại không để trống",
+            icon:"error"
+        })
+        return ;
+    }else if(email === ""){
+        Toast.fire({
+            text:"email không để trống",
+            icon:"error"
+        })
+        return ;
+    }
+    else if(taiKhoan === ""){
+        Toast.fire({
+            text:"tài khoản không để trống",
+            icon:"error"
+        })
+        return ;
+    }
+   else {
+        const rexge = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
+        const rexgeEmail = /^\S+@\S+\.\S+$/;
+        if(!rexge.test(sdt)){
+            Toast.fire({
+                text:"số điện không đúng định dạng",
+                icon:"error"
+            })
+            return ;
+        }
+        if(!rexgeEmail.test(email)){
+            Toast.fire({
+                text:"email không đúng định dạng",
+                icon:"error"
+            })
+            return ;
+        }
+        const data = {
+            hoTen: tenKhachHang,
+            sdt: sdt,
+            email: email,
+            taiKhoan:taiKhoan
+        }
+
+        const options = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        };
+        await fetch('/admin/khach-hang/create', options)
+            .then(response => response.json())
+        modalThemKhachHang.style.display = "none";
     }
 
-    const options = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-    };
-   await fetch('/admin/khach-hang/create', options)
-        .then(response => response.json())
-
-    modalThemKhachHang.style.display = "none";
 }
