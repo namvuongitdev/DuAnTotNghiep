@@ -113,6 +113,7 @@ app.controller("controller", function ($scope, $http) {
         });
     }
     $scope.addChatLieu = function () {
+        var regex = /^[^\d!"@#\$%\^&\*\(\)_\+=\[\]\{\}\|;:'",<>\?\/\\`~]+$/; // Chỉ chấp nhận chữ cái và khoảng trắng
         Swal.fire({
             title: "Bạn có muốn thêm không?",
             showDenyButton: true,
@@ -121,6 +122,8 @@ app.controller("controller", function ($scope, $http) {
         }).then((result) => {
             if (result.isConfirmed) {
                 if ($scope.chatLieu.ten == null) {
+                    Swal.fire("Thêm dữ liệu thất bại", "", "error");
+                }else if(!regex.test($scope.chatLieu.ten)){
                     Swal.fire("Thêm dữ liệu thất bại", "", "error");
                 } else {
                     // Kiểm tra trùng tên dữ liệu
@@ -161,6 +164,7 @@ app.controller("controller", function ($scope, $http) {
         });
     }
     $scope.addDanhMuc = function () {
+        var regex = /^[^\d!"@#\$%\^&\*\(\)_\+=\[\]\{\}\|;:'",<>\?\/\\`~]+$/; // Chỉ chấp nhận chữ cái và khoảng trắng
         Swal.fire({
             title: "Bạn có muốn thêm không?",
             showDenyButton: true,
@@ -170,6 +174,8 @@ app.controller("controller", function ($scope, $http) {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 if ($scope.danhMuc.ten == null) {
+                    Swal.fire("Thêm dữ liệu thất bại", "", "error");
+                }else if(!regex.test($scope.danhMuc.ten)){
                     Swal.fire("Thêm dữ liệu thất bại", "", "error");
                 } else {
                     // Kiểm tra trùng tên dữ liệu
@@ -210,6 +216,7 @@ app.controller("controller", function ($scope, $http) {
         });
     }
     $scope.addKieuDang = function () {
+        var regex = /^[^\d!"@#\$%\^&\*\(\)_\+=\[\]\{\}\|;:'",<>\?\/\\`~]+$/; // Chỉ chấp nhận chữ cái và khoảng trắng
         Swal.fire({
             title: "Bạn có muốn thêm không?",
             showDenyButton: true,
@@ -219,6 +226,8 @@ app.controller("controller", function ($scope, $http) {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 if ($scope.kieuDang.ten == null) {
+                    Swal.fire("Thêm dữ liệu thất bại", "", "error");
+                }else if(!regex.test($scope.kieuDang.ten)){
                     Swal.fire("Thêm dữ liệu thất bại", "", "error");
                 } else {
                     $http.get(`${host}/check-tenKieuDang/` + $scope.kieuDang.ten).then(response => {
@@ -258,6 +267,7 @@ app.controller("controller", function ($scope, $http) {
         });
     }
     $scope.addKichCo = function () {
+        var regex = /^[^\d!"@#\$%\^&\*\(\)_\+=\[\]\{\}\|;:'",<>\?\/\\`~]+$/; // Chỉ chấp nhận chữ cái và khoảng trắng
         Swal.fire({
             title: "Bạn có muốn thêm không?",
             showDenyButton: true,
@@ -267,6 +277,8 @@ app.controller("controller", function ($scope, $http) {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 if ($scope.kichCo.ten == null) {
+                    Swal.fire("Thêm dữ liệu thất bại", "", "error");
+                }else if(!regex.test($scope.kichCo.ten)){
                     Swal.fire("Thêm dữ liệu thất bại", "", "error");
                 } else {
                     $http.get(`${host}/check-tenKichCo/` + $scope.kichCo.ten).then(response => {
@@ -305,6 +317,7 @@ app.controller("controller", function ($scope, $http) {
         });
     }
     $scope.addMauSac = function () {
+        var regex = /^[^\d!"@#\$%\^&\*\(\)_\+=\[\]\{\}\|;:'",<>\?\/\\`~]+$/; // Chỉ chấp nhận chữ cái và khoảng trắng
         Swal.fire({
             title: "Bạn có muốn thêm không?",
             showDenyButton: true,
@@ -314,6 +327,8 @@ app.controller("controller", function ($scope, $http) {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 if ($scope.mauSac.ten == null) {
+                    Swal.fire("Thêm dữ liệu thất bại", "", "error");
+                }else if(!regex.test($scope.mauSac.ten)){
                     Swal.fire("Thêm dữ liệu thất bại", "", "error");
                 } else {
                     $http.get(`${host}/check-tenMauSac/` + $scope.mauSac.ten).then(response => {
