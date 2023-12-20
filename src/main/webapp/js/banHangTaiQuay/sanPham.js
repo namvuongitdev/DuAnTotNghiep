@@ -12,40 +12,6 @@ let data = {
 };
 let modalHienThiSanPham = document.getElementById("modalHienThiSanPham");
 
-function htmlLoadSanPhamKhuyenMai(khuyenMai, data) {
-
-    return `<tr id="${data.id}">
-                   <td><img style="width: 60px ; height: 60px" src="/image/${data.img} "></td>
-                    <td>${data.ma}</td>
-                    <td>${data.ten}</td>
-                    <td>
-                    ${khuyenMai != null ?
-        `<div><span style="color: #03AA28">${VND.format(khuyenMai.donGiaSauKhiGiam)}</span></div>
-
-                     <div style="display: flex">
-                     <strike>${VND.format(data.giaBan)}</strike>
-                     <p style="color: #E43535">${khuyenMai.loaiGiamGia === true ? '-' + khuyenMai.mucGiam + '%' : '-' + VND.format(khuyenMai.mucGiam)}</p>
-                     </div>`
-
-        : `<span style="color: #03AA28">${VND.format(data.giaBan)}</span>`}
-                    </td>
-                    
-                    ${data.trangThai != 0 ? `<td style="color: #E43535">ngừng kinh doanh</td>` :
-        `<td>
-                   <button  id="myBtn"  onclick="getModal(
-                       {idSanPham:'${data.id}' , 
-                       tenSanPham:'${data.ten}' ,
-                       giaBan:'${data.giaBan}',
-                       img:'${data.img}',
-                       donGiaSauKhiGiam:'${khuyenMai != null ? khuyenMai.donGiaSauKhiGiam : null}',
-                       loaiGiamGia:'${khuyenMai != null ? khuyenMai.loaiGiamGia : null}',
-                       mucGiam:'${khuyenMai != null ? khuyenMai.mucGiam : null}'
-                       },
-                       )" class="btn btn-warning" >Chọn</button>
-                   </td>`}
-                   </tr>`
-
-}
 
 function getSanPham(page) {
     modalHienThiSanPham.style.display = "block";
@@ -69,16 +35,44 @@ function getSanPham(page) {
                     data.content[i].sanPhamKhuyenMais.map(function (e) {
                         if (e.khuyenMai.trangThai === 1 && e.trangThai === 1) {
                             khuyenMai = e;
-                            sanPham += htmlLoadSanPhamKhuyenMai(khuyenMai, data.content[i])
                         } else {
                             khuyenMai = null;
-                            sanPham += htmlLoadSanPhamKhuyenMai(khuyenMai, data.content[i])
                         }
                     })
                 } else {
                     khuyenMai = null;
-                    sanPham += htmlLoadSanPhamKhuyenMai(khuyenMai, data.content[i])
                 }
+
+                sanPham += `<tr>
+                   <td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img} "></td>
+                    <td>${data.content[i].ma}</td>
+                    <td>${data.content[i].ten}</td>
+                    <td>
+                    ${khuyenMai != null ?
+                    `<div><span style="color: #03AA28">${VND.format(khuyenMai.donGiaSauKhiGiam)}</span></div>
+
+                     <div style="display: flex">
+                     <strike>${VND.format(data.content[i].giaBan)}</strike>
+                     <p style="color: #E43535">${khuyenMai.loaiGiamGia == true ? '-'+khuyenMai.mucGiam+'%' : '-'+VND.format(khuyenMai.mucGiam)}</p>
+                     </div>`
+
+                    : `<span style="color: #03AA28">${VND.format(data.content[i].giaBan)}</span>`}
+                    </td>
+                    
+                    ${data.content[i].trangThai != 0 ? `<td style="color: #E43535">ngừng kinh doanh</td>` :
+                    `<td>
+                   <button  id="myBtn"  onclick="getModal(
+                       {idSanPham:'${data.content[i].id}' , 
+                       tenSanPham:'${data.content[i].ten}' ,
+                       giaBan:'${data.content[i].giaBan}',
+                       img:'${data.content[i].img}',
+                       donGiaSauKhiGiam:'${khuyenMai != null ? khuyenMai.donGiaSauKhiGiam : null }',
+                       loaiGiamGia:'${khuyenMai != null ? khuyenMai.loaiGiamGia : null}',
+                       mucGiam:'${khuyenMai != null ? khuyenMai.mucGiam : null}'
+                       },
+                       )" class="btn btn-warning" >Chọn</button>
+                   </td>`}
+                   </tr>`
             }
             for (let i = 1; i <= data.totalPages; i++) {
                 active = page == i ? "active" : ""
@@ -116,16 +110,44 @@ function api(page, data) {
                     data.content[i].sanPhamKhuyenMais.map(function (e) {
                         if (e.khuyenMai.trangThai === 1 && e.trangThai === 1) {
                             khuyenMai = e;
-                            sanPham += htmlLoadSanPhamKhuyenMai(khuyenMai, data.content[i])
                         } else {
                             khuyenMai = null;
-                            sanPham += htmlLoadSanPhamKhuyenMai(khuyenMai, data.content[i])
                         }
                     })
                 } else {
                     khuyenMai = null;
-                    sanPham += htmlLoadSanPhamKhuyenMai(khuyenMai, data.content[i])
                 }
+
+                sanPham += `<tr>
+                   <td><img style="width: 60px ; height: 60px" src="/image/${data.content[i].img} "></td>
+                    <td>${data.content[i].ma}</td>
+                    <td>${data.content[i].ten}</td>
+                    <td>
+                    ${khuyenMai != null ?
+                    `<div><span style="color: #03AA28">${VND.format(khuyenMai.donGiaSauKhiGiam)}</span></div>
+
+                     <div style="display: flex">
+                     <strike>${VND.format(data.content[i].giaBan)}</strike>
+                     <p style="color: #E43535">${khuyenMai.loaiGiamGia == true ? '-'+khuyenMai.mucGiam+'%' : '-'+VND.format(khuyenMai.mucGiam)}</p>
+                     </div>`
+
+                    : `<span style="color: #03AA28">${VND.format(data.content[i].giaBan)}</span>`}
+                    </td>
+                    
+                    ${data.content[i].trangThai != 0 ? `<td style="color: #E43535">ngừng kinh doanh</td>` :
+                    `<td>
+                   <button  id="myBtn"  onclick="getModal(
+                       {idSanPham:'${data.content[i].id}' , 
+                       tenSanPham:'${data.content[i].ten}' ,
+                       giaBan:'${data.content[i].giaBan}',
+                       img:'${data.content[i].img}',
+                       donGiaSauKhiGiam:'${khuyenMai != null ? khuyenMai.donGiaSauKhiGiam : null }',
+                       loaiGiamGia:'${khuyenMai != null ? khuyenMai.loaiGiamGia : null}',
+                       mucGiam:'${khuyenMai != null ? khuyenMai.mucGiam : null}'
+                       },
+                       )" class="btn btn-warning" >Chọn</button>
+                   </td>`}
+                   </tr>`
             }
 
             for (let i = 1; i <= data.totalPages; i++) {
