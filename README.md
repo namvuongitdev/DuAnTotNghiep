@@ -2,7 +2,7 @@ Tổng quan trang web
 
 ![image](https://github.com/namvuongitdev/DuAnTotNghiep/assets/113433953/114e0265-5c9c-4ef3-8560-d09babfaad4b)
 
-![image](https://github.com/namvuongitdev/DuAnTotNghiep/assets/113433953/af5b1770-8be6-4111-ac67-c9edc5921d5e)
+![image](https://github.com/namvuongitdev/DuAnTotNghiep/assets/113433953/16a1df6a-4737-4918-978f-a38594370f4d)
 
 Trang quản trị
 
